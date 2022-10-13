@@ -1,0 +1,31 @@
+#!/bin/sh
+
+# This is a template file for libmpich-dev.postinst, since it will be processed
+# by debian/rules. The update-alternatives command below needs the path to the
+# lib*.so files, which depends on the multiarch triplet. This can be gotten
+# from dpkg-architecture, but to avoid dependence on dpkg-dev, we instead
+# determine it at package build-time, and include a processed version of this
+# file as the libmpich-dev.postinst, where the variable @DEB_HOST_MULTIARCH@ has been replaced
+# by its appropriate value, depending on the build host architecture.
+
+set -e
+
+if [ "$1" = "configure" ]; then
+
+update-alternatives \
+	--install /usr/include/@DEB_HOST_MULTIARCH@/mpi mpi-@DEB_HOST_MULTIARCH@ /usr/include/@DEB_HOST_MULTIARCH@/mpich 40 \
+	--slave /usr/lib/@DEB_HOST_MULTIARCH@/libmpi.so libmpi.so-@DEB_HOST_MULTIARCH@ /usr/lib/@DEB_HOST_MULTIARCH@/libmpich.so \
+	--slave /usr/lib/@DEB_HOST_MULTIARCH@/libmpi++.so libmpi++.so-@DEB_HOST_MULTIARCH@ /usr/lib/@DEB_HOST_MULTIARCH@/libmpichcxx.so \
+	--slave /usr/lib/@DEB_HOST_MULTIARCH@/libmpicxx.so libmpicxx.so-@DEB_HOST_MULTIARCH@ /usr/lib/@DEB_HOST_MULTIARCH@/libmpichcxx.so \
+	--slave /usr/lib/@DEB_HOST_MULTIARCH@/libmpifort.so libmpifort.so-@DEB_HOST_MULTIARCH@ /usr/lib/@DEB_HOST_MULTIARCH@/libmpichfort.so \
+	--slave /usr/lib/@DEB_HOST_MULTIARCH@/libmpif77.so libmpif77.so-@DEB_HOST_MULTIARCH@ /usr/lib/@DEB_HOST_MULTIARCH@/libmpichfort.so \
+	--slave /usr/lib/@DEB_HOST_MULTIARCH@/libmpif90.so libmpif90.so-@DEB_HOST_MULTIARCH@ /usr/lib/@DEB_HOST_MULTIARCH@/libmpichfort.so \
+	--slave /usr/lib/@DEB_HOST_MULTIARCH@/pkgconfig/mpi.pc mpi.pc-@DEB_HOST_MULTIARCH@ /usr/lib/@DEB_HOST_MULTIARCH@/pkgconfig/mpich.pc \
+
+#	--slave /usr/lib/@DEB_HOST_MULTIARCH@/pkgconfig/mpi-c.pc mpi-c.pc-@DEB_HOST_MULTIARCH@ /usr/lib/@DEB_HOST_MULTIARCH@/pkgconfig/mpich-c.pc \
+#	--slave /usr/lib/@DEB_HOST_MULTIARCH@/pkgconfig/mpi-cxx.pc mpi-cxx.pc-@DEB_HOST_MULTIARCH@ /usr/lib/@DEB_HOST_MULTIARCH@/pkgconfig/mpich-cxx.pc \
+#	--slave /usr/lib/@DEB_HOST_MULTIARCH@/pkgconfig/mpi-fort.pc mpi-fort.pc-@DEB_HOST_MULTIARCH@ /usr/lib/@DEB_HOST_MULTIARCH@/pkgconfig/mpich-fort.pc
+
+fi
+
+#DEBHELPER#

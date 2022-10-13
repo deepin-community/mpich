@@ -1,0 +1,203 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: MPICH
+Upstream-Contact: The MPICH Team at Argonne National Laboratory
+Source: http://www.mpich.org/
+Copyright: 2002 University of Chicago
+
+Files: *
+Copyright: 2002 University of Chicago
+ 1998--2020, Argonne National Laboratory
+License: other
+            COPYRIGHT
+  .
+  The following is a notice of limited availability of the code, and disclaimer
+  which must be included in the prologue of the code and in all source listings
+  of the code.
+  .
+  Copyright Notice
+  + 2002 University of Chicago
+  .
+  Permission is hereby granted to use, reproduce, prepare derivative works, and
+  to redistribute to others.  This software was authored by:
+  .
+  Argonne National Laboratory Group
+  W. Gropp: (630) 252-4318; FAX: (630) 252-5986; e-mail: gropp@mcs.anl.gov
+  E. Lusk:  (630) 252-7852; FAX: (630) 252-5986; e-mail: lusk@mcs.anl.gov
+  Mathematics and Computer Science Division
+  Argonne National Laboratory, Argonne IL 60439
+  .
+  .
+              GOVERNMENT LICENSE
+  .
+  Portions of this material resulted from work developed under a U.S.
+  Government Contract and are subject to the following license: the Government
+  is granted for itself and others acting on its behalf a paid-up, nonexclusive,
+  irrevocable worldwide license in this computer software to reproduce, prepare
+  derivative works, and perform publicly and display publicly.
+  .
+            DISCLAIMER
+  .
+  This computer code material was prepared, in part, as an account of work
+  sponsored by an agency of the United States Government.  Neither the United
+  States, nor the University of Chicago, nor any of their employees, makes any
+  warranty express or implied, or assumes any legal liability or responsibility
+  for the accuracy, completeness, or usefulness of any information, apparatus,
+  product, or process disclosed, or represents that its use would not infringe
+  privately owned rights.
+  .
+  Portions of this code were written by Microsoft. Those portions are
+  Copyright (c) 2007 Microsoft Corporation. Microsoft grants permission to
+  use, reproduce, prepare derivative works, and to redistribute to
+  others. The code is licensed "as is." The User bears the risk of using
+  it. Microsoft gives no express warranties, guarantees or
+  conditions. To the extent permitted by law, Microsoft excludes the
+  implied warranties of merchantability, fitness for a particular
+  purpose and non-infringement.
+
+
+Files: modules/libfabric/*
+Copyright: 2016 by Argonne National Laboratory.
+License: GPL-2 or BSD-3-Clause
+ On Debian systems, the full text of the GNU General Public
+ License version 3 can be found in the file
+ `/usr/share/common-licenses/GPL-2'.
+
+Files: modules/ucx/*
+ modules/hwloc/*
+ modules/yaksa/*
+Copyright: 2009 CNRS
+           2009 inria
+           2009 Université Bordeaux 1
+           2009 Cisco Systems, Inc.
+           2012 Blue Brain Project, EPFL.
+	   2015-2019 Intel Corporation.
+	   2015-2019 Cisco Systems, Inc.
+License: BSD-3-clause
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+  1. Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+  2. Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+  3. The name of the author may not be used to endorse or promote products
+    derived from this software without specific prior written permission.
+  .
+  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+Files: modules/ucx/install-sh
+ modules/json-c/*
+ modules/libfabric/src/fasthash.c
+ modules/yaksa/m4/install-sh
+ src/mpl/confdb/install-sh
+ test/mpi/confdb/install-sh
+ modules/libfabric/fabtests/common/jsmn.c
+ modules/libfabric/fabtests/include/jsmn.h
+ src/mpi/romio/confdb/install-sh
+ src/pm/hydra/confdb/install-sh
+ src/pm/hydra2/confdb/install-sh
+ test/mpi/dtpools/confdb/install-sh
+ modules/ucx/src/ucs/datastruct/khash.h
+ modules/ucx/test/gtest/common/tap.h
+ src/mpi/romio/mpl/confdb/install-sh
+ src/pm/hydra/mpl/confdb/install-sh
+ src/pm/hydra2/mpl/confdb/install-sh
+ src/pm/hydra/tools/topo/hwloc/hwloc/config/install-sh
+ src/pm/hydra2/libhydra/topo/hwloc/hwloc/config/install-sh
+Copyright: (C) 1994 X Consortium
+License: Expat
+
+
+Files: debian/*
+ modules/hwloc/config/*
+Copyright: 2009, Lucas Nussbaum <lucas@lucas-nussbaum.net>
+License: GPL-3+
+ On Debian systems, the full text of the GNU General Public
+ License version 3 can be found in the file
+ `/usr/share/common-licenses/GPL-3'
+
+Files: debian/missing-sources/vis.js
+Copyright: (C) 2011-2017 Almende B.V, http://almende.com
+License: Apache-2.0 or MIT
+ On Debian systems, the full text of the Apache 2.0 
+ can be found in the file
+ `/usr/share/common-licenses/Apache-2.0'
+ .
+ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ .
+ The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ .
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS F OR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER  N AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Files: confdb/*
+ modules/izem/m4/*
+ modules/yaksa/m4/*
+Copyright: (C) 1996-2014 Free Software Foundation, Inc.
+License: GPL-2
+ On Debian systems, the full text of the GNU General Public
+ License version 3 can be found in the file
+ `/usr/share/common-licenses/GPL-2'
+
+
+Files: src/mpi/romio/confdb/*
+ src/mpi/romio/mpl/confdb/*
+ src/mpl/confdb/*
+ src/pm/hydra/confdb/*
+ src/pm/hydra2/mpl/confdb/*
+ src/pm/hydra2/confdb/*
+ src/pm/hydra2/libhydra/topo/hwloc/hwloc/config/*
+Copyright: 2007-2016 Free Software Foundation, Inc.
+License: FSF-Permissive
+ This file is free software; the Free Software Foundation
+ gives unlimited permission to copy and/or distribute it,
+ with or without modifications, as long as this notice is preserved.
+
+License: EXPAT
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to
+ deal in the Software without restriction, including without limitation the
+ rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+ sell copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+ .
+ The above copyright notice and this permission notice shall be included in
+ all copies or substantial portions of the Software.
+ .
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+ X CONSORTIUM BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
+ AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNEC-
+ TION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ .
+ Except as contained in this notice, the name of the X Consortium shall not
+ be used in advertising or otherwise to promote the sale, use or other deal-
+ ings in this Software without prior written authorization from the X Consor-
+ tium.
+
+Files: hwloc/hwloc/base64.c
+ src/pm/hydra/tools/topo/hwloc/hwloc/hwloc/base64.c
+Copyright: 1996 by Internet Software Consortium.
+License: ISC
+ Permission to use, copy, modify, and distribute this software for any
+ purpose with or without fee is hereby granted, provided that the above
+ copyright notice and this permission notice appear in all copies.
+ .
+ THE SOFTWARE IS PROVIDED "AS IS" AND INTERNET SOFTWARE CONSORTIUM DISCLAIMS
+ ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES
+ OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL INTERNET SOFTWARE
+ CONSORTIUM BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL
+ DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR
+ PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
+ ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
+ SOFTWARE.

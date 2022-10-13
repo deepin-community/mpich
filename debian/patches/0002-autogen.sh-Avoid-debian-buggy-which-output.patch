@@ -1,0 +1,30 @@
+From: Boyuan Yang <byang@debian.org>
+Date: Fri, 15 Oct 2021 22:51:02 -0400
+Subject: autogen.sh: Avoid debian buggy which output
+
+Debian's /usr/bin/which after Debian 11 release starts
+printing deprecation warning, which causes configure error
+("bash not found") when autogen.sh parses output merging
+stdout and stderr using 2>&1.
+
+To circumvent this problem, temporarily replace invocation to
+which tool with POSIX-compliant "command -v".
+
+Signed-off-by: Boyuan Yang <byang@debian.org>
+---
+ autogen.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/autogen.sh b/autogen.sh
+index 839b013..00bc84d 100755
+--- a/autogen.sh
++++ b/autogen.sh
+@@ -545,7 +545,7 @@ fi
+ ########################################################################
+ 
+ echo_n "Checking for bash... "
+-if test "`which bash 2>&1 > /dev/null ; echo $?`" = "0" ;then
++if test "`command -v bash 2>&1 > /dev/null ; echo $?`" = "0" ;then
+     echo "done"
+ else
+     echo "bash not found" ;

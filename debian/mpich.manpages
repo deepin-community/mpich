@@ -1,0 +1,9 @@
+#debian/tmp/usr/share/man/man1/mpiexec.mpich.1
+#debian/tmp/usr/share/man/man1/hydra*
+debian/manpages/parkill.1
+#debian/tmp/usr/share/man/man1/mpicc.mpich.1
+#debian/tmp/usr/share/man/man1/mpicxx.mpich.1
+#debian/tmp/usr/share/man/man1/mpifort.mpich.1
+#debian/tmp/usr/share/man/man1/mpif77.mpich.1
+debian/manpages/mpichversion.1
+debian/manpages/mpivars.1

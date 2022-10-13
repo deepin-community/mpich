@@ -1,0 +1,20 @@
+# Present, but renamed
+usr/bin/mpic++
+usr/bin/mpicc
+usr/bin/mpicxx
+usr/bin/mpiexec
+usr/bin/mpif77
+usr/bin/mpif90
+usr/bin/mpifort
+usr/bin/mpirun
+usr/lib/*/libfmpich.so
+usr/lib/*/libmpich.la
+usr/lib/*/libmpichcxx.la
+usr/lib/*/libmpichf90.so
+usr/lib/*/libmpichfort.la
+usr/lib/*/pkgconfig/yaksa.pc
+usr/share/man/man1/mpicc.1
+usr/share/man/man1/mpicxx.1
+usr/share/man/man1/mpiexec.1
+usr/share/man/man1/mpif77.1
+usr/share/man/man1/mpifort.1

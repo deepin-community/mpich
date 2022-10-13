@@ -1,0 +1,2 @@
+# Include directory
+usr/include/${DEB_HOST_MULTIARCH}/mpich usr/lib/${DEB_HOST_MULTIARCH}/mpich/include

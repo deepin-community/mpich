@@ -1,0 +1,11 @@
+Tests: version
+Depends: mpich
+
+Tests: hello1
+Depends: gcc, mpich, libmpich-dev
+
+Tests: hello2
+Depends: gfortran, mpich, libmpich-dev
+
+Tests: hello4
+Depends: gfortran, mpich, libmpich-dev

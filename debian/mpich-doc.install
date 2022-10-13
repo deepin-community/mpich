@@ -1,0 +1,5 @@
+usr/share/man/man1/*
+usr/share/man/man3/*
+usr/share/doc/mpich/index.html	/usr/share/doc/mpich-doc/html
+usr/share/doc/mpich/www1	/usr/share/doc/mpich-doc/html
+usr/share/doc/mpich/www3	/usr/share/doc/mpich-doc/html

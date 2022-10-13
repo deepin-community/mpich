@@ -1,0 +1,3 @@
+RELEASE_NOTES
+debian/tmp/usr/share/doc/mpich/*.pdf
+#debian/tmp/usr/share/doc/mpich/www*
