@@ -1,5 +1,5 @@
 /**
-* Copyright (C) Mellanox Technologies Ltd. 2001-2018.  ALL RIGHTS RESERVED.
+* Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2001-2018. ALL RIGHTS RESERVED.
 *
 * See file LICENSE for terms.
 */
@@ -9,6 +9,7 @@
 #endif
 
 #include "ucp_listener.h"
+#include "ucp_vfs.h"
 #include "uct/base/uct_cm.h"
 
 #include <ucp/stream/stream.h>
@@ -35,6 +36,7 @@ static unsigned ucp_listener_accept_cb_progress(void *arg)
 
     ucp_ep_update_flags(ep, UCP_EP_FLAG_USED, 0);
     ucp_stream_ep_activate(ep);
+    ++ep->worker->counters.ep_creations;
 
     UCS_ASYNC_UNBLOCK(&ep->worker->async);
 
@@ -271,14 +273,8 @@ static void ucp_listener_vfs_show_ip(void *obj, ucs_string_buffer_t *strb,
 {
     ucp_listener_h listener   = obj;
     struct sockaddr *sockaddr = (struct sockaddr*)&listener->sockaddr;
-    char ip_str[UCS_SOCKADDR_STRING_LEN];
 
-    if (ucs_sockaddr_get_ipstr(sockaddr, ip_str, UCS_SOCKADDR_STRING_LEN) ==
-        UCS_OK) {
-        ucs_string_buffer_appendf(strb, "%s\n", ip_str);
-    } else {
-        ucs_string_buffer_appendf(strb, "<unable to get ip>\n");
-    }
+    ucp_vfs_read_ip(sockaddr, strb);
 }
 
 static void ucp_listener_vfs_show_port(void *obj, ucs_string_buffer_t *strb,
@@ -286,13 +282,8 @@ static void ucp_listener_vfs_show_port(void *obj, ucs_string_buffer_t *strb,
 {
     ucp_listener_h listener   = obj;
     struct sockaddr *sockaddr = (struct sockaddr*)&listener->sockaddr;
-    uint16_t port;
 
-    if (ucs_sockaddr_get_port(sockaddr, &port) == UCS_OK) {
-        ucs_string_buffer_appendf(strb, "%u\n", port);
-    } else {
-        ucs_string_buffer_appendf(strb, "<unable to get port>\n");
-    }
+    ucp_vfs_read_port(sockaddr, strb);
 }
 
 void ucp_listener_vfs_init(ucp_listener_h listener)
@@ -368,7 +359,7 @@ out:
 
 void ucp_listener_destroy(ucp_listener_h listener)
 {
-    ucs_trace("listener %p: destroying", listener);
+    ucs_debug("listener %p: destroying", listener);
 
     UCS_ASYNC_BLOCK(&listener->worker->async);
     ucs_vfs_obj_remove(listener);
@@ -376,6 +367,12 @@ void ucp_listener_destroy(ucp_listener_h listener)
                             ucp_cm_server_conn_request_progress_cb_pred,
                             listener);
     UCS_ASYNC_UNBLOCK(&listener->worker->async);
+
+    if (listener->conn_reqs != 0) {
+        ucs_warn("destroying listener %p with "
+                 "%d unprocessed connection requests",
+                 listener, listener->conn_reqs);
+    }
 
     ucp_listener_free_uct_listeners(listener);
     ucs_free(listener);
@@ -391,6 +388,7 @@ ucs_status_t ucp_listener_reject(ucp_listener_h listener,
     UCS_ASYNC_BLOCK(&worker->async);
     uct_listener_reject(conn_request->uct_listener, conn_request->uct_req);
     ucs_free(conn_request->remote_dev_addr);
+    listener->conn_reqs--;
     UCS_ASYNC_UNBLOCK(&worker->async);
 
     ucs_free(conn_request);

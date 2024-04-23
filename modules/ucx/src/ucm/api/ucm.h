@@ -1,5 +1,5 @@
 /**
- * Copyright (C) Mellanox Technologies Ltd. 2001-2015.  ALL RIGHTS RESERVED.
+ * Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2001-2015. ALL RIGHTS RESERVED.
  * Copyright (C) Advanced Micro Devices, Inc. 2019. ALL RIGHTS RESERVED.
  *
  * See file LICENSE for terms.
@@ -120,6 +120,7 @@ typedef union ucm_event {
         size_t             old_size;
         size_t             new_size;
         int                flags;
+        void               *new_address;
     } mremap;
 
     /*
@@ -222,7 +223,7 @@ typedef struct ucm_global_config {
 
 /*
  * Global UCM configuration to be set externally.
- * @deprecated replaced by @ref ucm_library_init.
+ * @deprecated replaced by @ref ucm_set_global_opts.
  */
 extern ucm_global_config_t ucm_global_opts;
 
@@ -266,14 +267,11 @@ typedef void (*ucm_event_callback_t)(ucm_event_type_t event_type,
 
 
 /**
- * Initialize UCM library and set its configuration.
+ * Set UCM library configuration.
  *
- * @param [in]  ucm_opts   UCM library global configuration. If NULL, default
- *                         configuration is applied.
- *
- * @note Calling this function more than once in the same process has no effect.
+ * @param [in]  ucm_opts   UCM library global configuration.
  */
-void ucm_library_init(const ucm_global_config_t *ucm_opts);
+void ucm_set_global_opts(const ucm_global_config_t *ucm_opts);
 
 
 /**
@@ -390,7 +388,7 @@ int ucm_orig_munmap(void *addr, size_t length);
  * @brief Call the original implementation of @ref mremap without triggering events.
  */
 void *ucm_orig_mremap(void *old_address, size_t old_size, size_t new_size,
-                      int flags);
+                      int flags, void *new_address);
 
 
 /**
@@ -454,7 +452,8 @@ void ucm_vm_munmap(void *addr, size_t length);
  * @brief Call the original implementation of @ref mremap and all handlers
  * associated with it.
  */
-void *ucm_mremap(void *old_address, size_t old_size, size_t new_size, int flags);
+void *
+ucm_mremap(void *old_address, size_t old_size, size_t new_size, int flags, ...);
 
 
 /**

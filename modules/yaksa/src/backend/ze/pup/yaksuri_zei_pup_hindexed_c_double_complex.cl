@@ -15,7 +15,7 @@ typedef unsigned int uint32_t;
 typedef unsigned long uint64_t;
 #include "yaksuri_zei_md.h"
 
-__kernel void yaksuri_zei_kernel_pack_SUM_hindexed_c_double_complex(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
+__kernel void yaksuri_zei_kernel_pack_REPLACE_hindexed_c_double_complex(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
 {
     __global const char *__restrict__ sbuf = (__global char *) inbuf;
     __global char *__restrict__ dbuf = (__global char *) outbuf;
@@ -49,10 +49,10 @@ __kernel void yaksuri_zei_kernel_pack_SUM_hindexed_c_double_complex(__global con
     uintptr_t x2 = res;
     
     intptr_t *array_of_displs1 = md->u.hindexed.array_of_displs;
-    *((double2 *) (void *) (dbuf + idx * sizeof(double2))) += *((const double2 *) (const void *) (sbuf + x0 * extent + array_of_displs1[x1] + x2 * sizeof(double2)));
+    *((double2 *) (void *) (dbuf + idx * sizeof(double2))) = *((const double2 *) (const void *) (sbuf + x0 * extent + array_of_displs1[x1] + x2 * sizeof(double2)));
 }
 
-__kernel void yaksuri_zei_kernel_unpack_SUM_hindexed_c_double_complex(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
+__kernel void yaksuri_zei_kernel_unpack_REPLACE_hindexed_c_double_complex(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
 {
     __global const char *__restrict__ sbuf = (__global char *) inbuf;
     __global char *__restrict__ dbuf = (__global char *) outbuf;
@@ -86,7 +86,7 @@ __kernel void yaksuri_zei_kernel_unpack_SUM_hindexed_c_double_complex(__global c
     uintptr_t x2 = res;
     
     intptr_t *array_of_displs1 = md->u.hindexed.array_of_displs;
-    *((double2 *) (void *) (dbuf + x0 * extent + array_of_displs1[x1] + x2 * sizeof(double2))) += *((const double2 *) (const void *) (sbuf + idx * sizeof(double2)));
+    *((double2 *) (void *) (dbuf + x0 * extent + array_of_displs1[x1] + x2 * sizeof(double2))) = *((const double2 *) (const void *) (sbuf + idx * sizeof(double2)));
 }
 
 __kernel void yaksuri_zei_kernel_pack_PROD_hindexed_c_double_complex(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
@@ -173,7 +173,7 @@ __kernel void yaksuri_zei_kernel_unpack_PROD_hindexed_c_double_complex(__global 
     *((double2 *) (void *) (dbuf + x0 * extent + array_of_displs1[x1] + x2 * sizeof(double2))) = dest;
 }
 
-__kernel void yaksuri_zei_kernel_pack_REPLACE_hindexed_c_double_complex(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
+__kernel void yaksuri_zei_kernel_pack_SUM_hindexed_c_double_complex(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
 {
     __global const char *__restrict__ sbuf = (__global char *) inbuf;
     __global char *__restrict__ dbuf = (__global char *) outbuf;
@@ -207,10 +207,10 @@ __kernel void yaksuri_zei_kernel_pack_REPLACE_hindexed_c_double_complex(__global
     uintptr_t x2 = res;
     
     intptr_t *array_of_displs1 = md->u.hindexed.array_of_displs;
-    *((double2 *) (void *) (dbuf + idx * sizeof(double2))) = *((const double2 *) (const void *) (sbuf + x0 * extent + array_of_displs1[x1] + x2 * sizeof(double2)));
+    *((double2 *) (void *) (dbuf + idx * sizeof(double2))) += *((const double2 *) (const void *) (sbuf + x0 * extent + array_of_displs1[x1] + x2 * sizeof(double2)));
 }
 
-__kernel void yaksuri_zei_kernel_unpack_REPLACE_hindexed_c_double_complex(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
+__kernel void yaksuri_zei_kernel_unpack_SUM_hindexed_c_double_complex(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
 {
     __global const char *__restrict__ sbuf = (__global char *) inbuf;
     __global char *__restrict__ dbuf = (__global char *) outbuf;
@@ -244,6 +244,6 @@ __kernel void yaksuri_zei_kernel_unpack_REPLACE_hindexed_c_double_complex(__glob
     uintptr_t x2 = res;
     
     intptr_t *array_of_displs1 = md->u.hindexed.array_of_displs;
-    *((double2 *) (void *) (dbuf + x0 * extent + array_of_displs1[x1] + x2 * sizeof(double2))) = *((const double2 *) (const void *) (sbuf + idx * sizeof(double2)));
+    *((double2 *) (void *) (dbuf + x0 * extent + array_of_displs1[x1] + x2 * sizeof(double2))) += *((const double2 *) (const void *) (sbuf + idx * sizeof(double2)));
 }
 

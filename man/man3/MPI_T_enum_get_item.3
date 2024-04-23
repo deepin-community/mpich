@@ -1,10 +1,15 @@
-.TH MPI_T_enum_get_item 3 "2/22/2022" " " "MPI"
+.TH MPI_T_enum_get_item 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_T_enum_get_item \-  Get the information about an item in an enumeration 
 .SH SYNOPSIS
 .nf
-int MPI_T_enum_get_item(MPI_T_enum enumtype, int indx, int *value, char *name, int *name_len)
 .fi
+.nf
+int MPI_T_enum_get_item(MPI_T_enum enumtype, int indx, int *value, char *name,
+int *name_len)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -79,7 +84,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_T_ERR_INVALID 

@@ -18,7 +18,24 @@ void MPIR_free_keyval(MPII_Keyval * keyval_ptr)
             MPIR_Handle_obj_free(&MPII_Keyval_mem, keyval_ptr);
         }
     }
-    return;
+}
+
+int MPIR_Comm_free_keyval_impl(MPII_Keyval * keyval_ptr)
+{
+    MPIR_free_keyval(keyval_ptr);
+    return MPI_SUCCESS;
+}
+
+int MPIR_Type_free_keyval_impl(MPII_Keyval * keyval_ptr)
+{
+    MPIR_free_keyval(keyval_ptr);
+    return MPI_SUCCESS;
+}
+
+int MPIR_Win_free_keyval_impl(MPII_Keyval * keyval_ptr)
+{
+    MPIR_free_keyval(keyval_ptr);
+    return MPI_SUCCESS;
 }
 
 int MPIR_Comm_create_keyval_impl(MPI_Comm_copy_attr_function * comm_copy_attr_fn,
@@ -277,7 +294,15 @@ int MPIR_Comm_get_attr_impl(MPIR_Comm * comm_ptr, int comm_keyval, void *attribu
             }
         }
     } else {
-        MPIR_Attribute *p = comm_ptr->attributes;
+        MPIR_Attribute *p;
+        p = comm_ptr->attributes;
+#ifdef ENABLE_THREADCOMM
+        if (comm_ptr->threadcomm) {
+            MPIR_threadcomm_tls_t *tls = MPIR_threadcomm_get_tls(comm_ptr->threadcomm);
+            MPIR_Assert(tls);
+            p = tls->attributes;
+        }
+#endif
 
         /*   */
         *flag = 0;
@@ -327,7 +352,7 @@ int MPIR_Comm_set_attr_impl(MPIR_Comm * comm_ptr, MPII_Keyval * keyval_ptr, void
                             MPIR_Attr_type attrType)
 {
     int mpi_errno = MPI_SUCCESS;
-    MPIR_Attribute *p;
+    MPIR_Attribute *p, **old_p; /* old_p is needed if we are adding new attribute */
 
     /* CHANGE FOR MPI 2.2:  Look for attribute.  They are ordered by when they
      * were added, with the most recent first. This uses
@@ -336,6 +361,15 @@ int MPIR_Comm_set_attr_impl(MPIR_Comm * comm_ptr, MPII_Keyval * keyval_ptr, void
 
     /* printf("Setting attr val to %x\n", attribute_val); */
     p = comm_ptr->attributes;
+    old_p = &(comm_ptr->attributes);
+#ifdef ENABLE_THREADCOMM
+    if (comm_ptr->threadcomm) {
+        MPIR_threadcomm_tls_t *tls = MPIR_threadcomm_get_tls(comm_ptr->threadcomm);
+        MPIR_Assert(tls);
+        p = tls->attributes;
+        old_p = &(tls->attributes);
+    }
+#endif
     while (p) {
         if (p->keyval->handle == keyval_ptr->handle) {
             /* If found, call the delete function before replacing the
@@ -370,9 +404,9 @@ int MPIR_Comm_set_attr_impl(MPIR_Comm * comm_ptr, MPII_Keyval * keyval_ptr, void
         /* FIXME: See the comment above on this dual cast. */
         new_p->value = (MPII_Attr_val_t) (intptr_t) attribute_val;
         new_p->post_sentinal = 0;
-        new_p->next = comm_ptr->attributes;
+        new_p->next = *old_p;
         MPII_Keyval_add_ref(keyval_ptr);
-        comm_ptr->attributes = new_p;
+        *old_p = new_p;
         /* printf("Creating attr at %x\n", &new_p->value); */
     }
 
@@ -388,20 +422,51 @@ int MPIR_Comm_set_attr_impl(MPIR_Comm * comm_ptr, MPII_Keyval * keyval_ptr, void
     goto fn_exit;
 }
 
+static void delete_attr(MPIR_Attribute ** attributes_list, MPIR_Attribute * attr)
+{
+    MPIR_Attribute *p, **old_p;
+
+    p = *attributes_list;
+    old_p = attributes_list;
+
+    while (p) {
+        if (p == attr) {
+            *old_p = p->next;
+
+            int in_use;
+            MPII_Keyval_release_ref(p->keyval, &in_use);
+            if (!in_use) {
+                MPIR_Handle_obj_free(&MPII_Keyval_mem, p->keyval);
+            }
+            MPID_Attr_free(p);
+            break;
+        }
+        old_p = &p->next;
+        p = p->next;
+    }
+}
+
 int MPIR_Comm_delete_attr_impl(MPIR_Comm * comm_ptr, MPII_Keyval * keyval_ptr)
 {
     int mpi_errno = MPI_SUCCESS;
-    MPIR_Attribute *p, **old_p;
+    MPIR_Attribute *p, **attributes_list;
 
     /* Look for attribute.  They are ordered by keyval handle */
 
-    old_p = &comm_ptr->attributes;
-    p = comm_ptr->attributes;
+    attributes_list = &comm_ptr->attributes;
+#ifdef ENABLE_THREADCOMM
+    MPIR_threadcomm_tls_t *tls = NULL;
+    if (comm_ptr->threadcomm) {
+        tls = MPIR_threadcomm_get_tls(comm_ptr->threadcomm);
+        MPIR_Assert(tls);
+        attributes_list = &tls->attributes;
+    }
+#endif
+    p = *attributes_list;
     while (p) {
         if (p->keyval->handle == keyval_ptr->handle) {
             break;
         }
-        old_p = &p->next;
         p = p->next;
     }
 
@@ -410,8 +475,6 @@ int MPIR_Comm_delete_attr_impl(MPIR_Comm * comm_ptr, MPII_Keyval * keyval_ptr)
      * code */
 
     if (p) {
-        int in_use;
-
         /* Run the delete function, if any, and then free the
          * attribute storage.  Note that due to an ambiguity in the
          * standard, if the usr function returns something other than
@@ -423,14 +486,9 @@ int MPIR_Comm_delete_attr_impl(MPIR_Comm * comm_ptr, MPII_Keyval * keyval_ptr)
         if (mpi_errno)
             goto fn_fail;
 
-        /* We found the attribute.  Remove it from the list */
-        *old_p = p->next;
-        /* Decrement the use of the keyval */
-        MPII_Keyval_release_ref(p->keyval, &in_use);
-        if (!in_use) {
-            MPIR_Handle_obj_free(&MPII_Keyval_mem, p->keyval);
-        }
-        MPID_Attr_free(p);
+        /* NOTE: it's incorrect to remove p by its parent pointer because the delete function
+         *       may have invalidated the parent pointer, e.g. by removing the parent attribute */
+        delete_attr(attributes_list, p);
     }
 
   fn_exit:
@@ -561,17 +619,15 @@ int MPIR_Type_set_attr_impl(MPIR_Datatype * type_ptr, MPII_Keyval * keyval_ptr, 
 int MPIR_Type_delete_attr_impl(MPIR_Datatype * type_ptr, MPII_Keyval * keyval_ptr)
 {
     int mpi_errno = MPI_SUCCESS;
-    MPIR_Attribute *p, **old_p;
+    MPIR_Attribute *p;
 
     /* Look for attribute.  They are ordered by keyval handle */
 
-    old_p = &type_ptr->attributes;
     p = type_ptr->attributes;
     while (p) {
         if (p->keyval->handle == keyval_ptr->handle) {
             break;
         }
-        old_p = &p->next;
         p = p->next;
     }
 
@@ -580,8 +636,6 @@ int MPIR_Type_delete_attr_impl(MPIR_Datatype * type_ptr, MPII_Keyval * keyval_pt
      * code */
 
     if (p) {
-        int in_use;
-
         /* Run the delete function, if any, and then free the
          * attribute storage.  Note that due to an ambiguity in the
          * standard, if the usr function returns something other than
@@ -593,14 +647,7 @@ int MPIR_Type_delete_attr_impl(MPIR_Datatype * type_ptr, MPII_Keyval * keyval_pt
         if (mpi_errno)
             goto fn_fail;
 
-        /* We found the attribute.  Remove it from the list */
-        *old_p = p->next;
-        /* Decrement the use of the keyval */
-        MPII_Keyval_release_ref(p->keyval, &in_use);
-        if (!in_use) {
-            MPIR_Handle_obj_free(&MPII_Keyval_mem, p->keyval);
-        }
-        MPID_Attr_free(p);
+        delete_attr(&type_ptr->attributes, p);
     }
 
   fn_exit:
@@ -798,17 +845,15 @@ int MPIR_Win_set_attr_impl(MPIR_Win * win_ptr, MPII_Keyval * keyval_ptr, void *a
 int MPIR_Win_delete_attr_impl(MPIR_Win * win_ptr, MPII_Keyval * keyval_ptr)
 {
     int mpi_errno = MPI_SUCCESS;
-    MPIR_Attribute *p, **old_p;
+    MPIR_Attribute *p;
 
     /* Look for attribute.  They are ordered by keyval handle */
 
-    old_p = &win_ptr->attributes;
     p = win_ptr->attributes;
     while (p) {
         if (p->keyval->handle == keyval_ptr->handle) {
             break;
         }
-        old_p = &p->next;
         p = p->next;
     }
 
@@ -817,8 +862,6 @@ int MPIR_Win_delete_attr_impl(MPIR_Win * win_ptr, MPII_Keyval * keyval_ptr)
      * code */
 
     if (p) {
-        int in_use;
-
         /* Run the delete function, if any, and then free the
          * attribute storage.  Note that due to an ambiguity in the
          * standard, if the usr function returns something other than
@@ -830,14 +873,7 @@ int MPIR_Win_delete_attr_impl(MPIR_Win * win_ptr, MPII_Keyval * keyval_ptr)
         if (mpi_errno)
             goto fn_fail;
 
-        /* We found the attribute.  Remove it from the list */
-        *old_p = p->next;
-        /* Decrement the use of the keyval */
-        MPII_Keyval_release_ref(p->keyval, &in_use);
-        if (!in_use) {
-            MPIR_Handle_obj_free(&MPII_Keyval_mem, p->keyval);
-        }
-        MPID_Attr_free(p);
+        delete_attr(&win_ptr->attributes, p);
     }
 
   fn_exit:

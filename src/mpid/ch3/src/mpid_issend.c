@@ -8,7 +8,7 @@
 /*
  * MPID_Issend()
  */
-int MPID_Issend(const void * buf, int count, MPI_Datatype datatype, int rank, int tag, MPIR_Comm * comm, int context_offset,
+int MPID_Issend(const void * buf, MPI_Aint count, MPI_Datatype datatype, int rank, int tag, MPIR_Comm * comm, int attr,
 		MPIR_Request ** request)
 {
     intptr_t data_sz;
@@ -25,6 +25,7 @@ int MPID_Issend(const void * buf, int count, MPI_Datatype datatype, int rank, in
 
     MPIR_FUNC_ENTER;
 
+    int context_offset = MPIR_PT2PT_ATTR_CONTEXT_OFFSET(attr);
     MPL_DBG_MSG_FMT(MPIDI_CH3_DBG_OTHER,VERBOSE,(MPL_DBG_FDEST,
                  "rank=%d, tag=%d, context=%d", 
                  rank, tag, comm->context_id + context_offset));
@@ -56,14 +57,14 @@ int MPID_Issend(const void * buf, int count, MPI_Datatype datatype, int rank, in
     MPIDI_Request_create_sreq(sreq, mpi_errno, goto fn_exit);
     MPIDI_Request_set_type(sreq, MPIDI_REQUEST_TYPE_SSEND);
     
-    MPIDI_Datatype_get_info(count, datatype, dt_contig, data_sz, dt_ptr, dt_true_lb);
-    
-    if (data_sz == 0)
+    if (count == 0)
     {
 	mpi_errno = MPIDI_CH3_EagerSyncZero( &sreq, rank, tag, comm, 
 					     context_offset );
 	goto fn_exit;
     }
+
+    MPIDI_Datatype_get_info(count, datatype, dt_contig, data_sz, dt_ptr, dt_true_lb);
 
     MPIDI_CH3_GET_EAGER_THRESHOLD(&eager_threshold, comm, vc);
 
@@ -104,6 +105,9 @@ int MPID_Issend(const void * buf, int count, MPI_Datatype datatype, int rank, in
 
   fn_exit:
     *request = sreq;
+    if (sreq) {
+        MPII_SENDQ_REMEMBER(sreq, rank, tag, comm->recvcontext_id, buf, count);
+    }
     
     MPL_DBG_STMT(MPIDI_CH3_DBG_OTHER,VERBOSE,
     {

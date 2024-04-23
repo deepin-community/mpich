@@ -188,6 +188,7 @@ static void ft_print_comp(struct ft_info *test)
 	printf(", rx: ");
 	ft_print_comp_flag(test->rx_cq_bind_flags, test->rx_op_flags);
 	printf(", ");
+	printf("[%s], ", fi_tostr(&test_info.cq_format, FI_TYPE_CQ_FORMAT));
 }
 
 static void ft_show_test_info(void)
@@ -406,51 +407,55 @@ static int ft_server_child()
 {
 	struct fi_info *hints = NULL;
 	struct fi_info *info  = NULL;
-	int ret, result;
+	int ret, sockerr = 0;
 
 	printf("Starting test %d:\n", test_info.test_index);
 
-	ret = ft_server_setup(hints, info);
+	ret = ft_hmem_init(opts.iface);
 	if (ret)
 		return ret;
 
+	ret = ft_server_setup(hints, info);
+	if (ret)
+		goto cleanup;
+
 	ret = ft_send_result(0, info);
 	if (ret)
-		return ret;
+		goto cleanup;
 
 	ret = ft_sock_send(sock, &test_info, sizeof test_info);
 	if (ret) {
 		FT_PRINTERR("ft_sock_send", ret);
-		return ret;
+		goto cleanup;
 	}
 
 	ret = ft_recv_result(info);
 	if (ret)
-		return ret;
+		goto cleanup;
 
 	ret = ft_init_test();
 	if (ret)
-		return ret;
+		goto cleanup;
 
-	result = ft_run_test();
+	ret = ft_run_test();
+	if (ret)
+		FT_PRINTERR("ft_run_test", ret);
 
-	ret = ft_sock_send(sock, &result, sizeof result);
-	if (result) {
-		FT_PRINTERR("ft_run_test", result);
-	}
+	sockerr = ft_sock_send(sock, &ret, sizeof ret);
 
+cleanup:
 	fi_freeinfo(hints);
 	ft_cleanup();
 
-	if (ret) {
-		FT_PRINTERR("ft_sock_send", ret);
-		return ret;
+	if (sockerr) {
+		FT_PRINTERR("ft_sock_send", sockerr);
+		return sockerr;
 	}
 
 	printf("Ending test %d, result: %s\n", test_info.test_index,
-		fi_strerror(-result));
+		fi_strerror(-ret));
 
-	return result;
+	return ret;
 }
 
 static int ft_fw_server(void)
@@ -485,9 +490,11 @@ static int ft_fw_server(void)
 
 	return ret;
 }
+
 static int ft_client_setup(struct fi_info *hints, struct fi_info *info)
 {
 	int ret;
+
 	ret = ft_recv_test_info();
 	if (ret)
 		goto err;
@@ -529,65 +536,65 @@ err:
 	ft_send_result(ret, info);
 	return ret;
 }
+
 static int ft_client_child(void)
 {
 	struct fi_info *hints = NULL;
 	struct fi_info  *info = NULL;
-	int ret, result, sresult = 0;
-	result = -FI_ENODATA;
+	int ret, sockerr, svr_ret;
+
+	ret = ft_hmem_init(opts.iface);
+	if (ret)
+		return ret;
 
 	ret = ft_sock_send(sock, &test_info, sizeof test_info);
-	if (ret)
-		goto err;
+	if (ret) {
+		ft_send_result(ret, info);
+		return -FI_ENODATA;
+	}
 
 	printf("Starting test %d / %d:\n", test_info.test_index,
 		series->test_count);
 
 	ret = ft_recv_result(info);
 	if (ret)
-		return ret;
+		goto cleanup;
 
 	ret = ft_client_setup(hints, info);
 	if (ret)
-		return ret;
+		goto cleanup;
 
 	ret = ft_send_result(0, info);
 	if (ret)
-		return ret;
+		goto cleanup;
 
-	result = ft_init_test();
-	if (result)
-		return result;
+	ret = ft_init_test();
+	if (ret)
+		goto cleanup;
 
-	result = ft_run_test();
-	ret = ft_sock_recv(sock, &sresult, sizeof sresult);
-	if (result && result != -FI_EIO) {
-		FT_PRINTERR("ft_run_test", result);
+	ret = ft_run_test();
+
+	sockerr = ft_sock_recv(sock, &svr_ret, sizeof svr_ret);
+
+	if (ret && ret != -FI_EIO) {
+		FT_PRINTERR("ft_run_test", ret);
 		fprintf(stderr, "Node: %s\nService: %s \n",
 			test_info.node, test_info.service);
 		fprintf(stderr, "%s\n", fi_tostr(hints, FI_TYPE_INFO));
-		ret = -FI_EOTHER;
-	} else if (ret) {
-		FT_PRINTERR("ft_sock_recv", ret);
-		result = ret;
-		ret = -FI_EOTHER;
-	} else if (sresult) {
-		result = sresult;
-		if (sresult != -FI_EIO)
-			ret = -FI_EOTHER;
+	} else if (sockerr) {
+		FT_PRINTERR("ft_sock_recv", sockerr);
+		ret = sockerr;
+	} else if (svr_ret) {
+		ret = svr_ret;
 	}
 
 	printf("Ending test %d / %d, result: %s\n", test_info.test_index,
-		series->test_count, fi_strerror(-result));
+		series->test_count, fi_strerror(-ret));
 
+cleanup:
 	fi_freeinfo(hints);
 	ft_cleanup();
-
-	return result;
-
-err:
-	ft_send_result(ret, info);
-	return result;
+	return ret;
 }
 
 static int ft_fw_client(void)
@@ -668,7 +675,8 @@ int main(int argc, char **argv)
 	opts = INIT_OPTS;
 	int ret, op;
 
-	while ((op = getopt(argc, argv, "u:q:xy:z:hfd:" ADDR_OPTS)) != -1) {
+	while ((op = getopt(argc, argv, "u:q:xy:z:hfd:" ADDR_OPTS HMEM_OPTS))
+		!= -1) {
 		switch (op) {
 		case 'u':
 			filename = strdup(optarg);
@@ -692,6 +700,7 @@ int main(int argc, char **argv)
 			domain_name = strdup(optarg);
 			break;
 		default:
+			ft_parse_hmem_opts(op, optarg, &opts);
 			ft_parse_addr_opts(op, optarg, &opts);
 			break;
 		case '?':

@@ -1,12 +1,18 @@
-.TH MPI_T_source_get_info 3 "2/22/2022" " " "MPI"
+.TH MPI_T_source_get_info 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_T_source_get_info \-  Returns additional information on the source identified by the source_index argument 
 .SH SYNOPSIS
 .nf
-int MPI_T_source_get_info(int source_index, char *name, int *name_len, char *desc, int *desc_len,
-MPI_T_source_order *ordering, MPI_Count *ticks_per_second,
-MPI_Count *max_ticks, MPI_Info *info)
 .fi
+.nf
+int MPI_T_source_get_info(int source_index, char *name, int *name_len,
+char *desc, int *desc_len,
+MPI_T_source_order *ordering,
+MPI_Count *ticks_per_second, MPI_Count *max_ticks,
+MPI_Info *info)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -101,7 +107,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_T_ERR_INVALID 

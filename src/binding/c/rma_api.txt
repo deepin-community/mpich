@@ -51,6 +51,16 @@ MPI_Accumulate:
     .seealso: MPI_Raccumulate
     .impl: mpid
     .earlyreturn: pt2pt_proc_null
+{ -- error_check --
+    MPI_Datatype origin_elem, target_elem;
+    MPIR_Datatype_get_basic_type(origin_datatype, origin_elem);
+    MPIR_Datatype_get_basic_type(target_datatype, target_elem);
+    if ((origin_count > 0 && origin_elem != MPI_DATATYPE_NULL) ||
+        (target_count > 0 && target_elem != MPI_DATATYPE_NULL)) {
+        MPIR_ERR_CHKANDJUMP(origin_elem != target_elem, mpi_errno, MPI_ERR_TYPE,
+                            "**dtypemismatch");
+    }
+}
 
 MPI_Compare_and_swap:
     .desc: Perform one-sided atomic compare-and-swap.
@@ -271,6 +281,15 @@ MPI_Win_create:
         operation or 'MPI_NO_OP'. This can eliminate the need to protect access for
         certain operation types where the hardware can guarantee atomicity. The default
         is same_op_no_op.
+
+    . mpi_accumulate_granularity - Controls the desired synchronization granularity
+        for accumulate ops. It sets the size of memory range in bytes for which the
+        MPI library should acquire a synchronization primitive to ensure the atomicity
+        of updates. The default is 0 which let the MPI library decides the granularity.
+        When the info hint is set to a positive value, the actual range of synchroniation
+        is round-up to the next size that fits the Datatype used in the accumulate
+        operation (see MPI standard 4.1). All processes in the group of a windows must
+        set to the same value.
 */
 
 MPI_Win_create_dynamic:
@@ -419,10 +438,6 @@ MPI_Win_get_info:
 
 MPI_Win_get_name:
     .desc: Get the print name associated with the MPI RMA window
-{
-    MPL_strncpy(win_name, win_ptr->name, MPI_MAX_OBJECT_NAME);
-    *resultlen = (int) strlen(win_name);
-}
 
 MPI_Win_lock:
     .desc: Begin an RMA access epoch at the target process
@@ -526,32 +541,16 @@ MPI_Win_set_info:
 
 MPI_Win_set_name:
     .desc: Set the print name for an MPI RMA window
-{
-    MPL_strncpy(win_ptr->name, win_name, MPI_MAX_OBJECT_NAME);
-}
 
 MPI_Win_shared_query:
     .desc: Query the size and base pointer for a patch of a shared memory window
     .seealso: MPI_Win_allocate_shared
+    .poly_impl: use_aint
 /*
     Notes:
     The returned baseptr points to the calling process' address space of the
     shared segment belonging to the target rank.
 */
-{
-    mpi_errno = MPID_Win_shared_query(win_ptr, rank, size, disp_unit, baseptr);
-    if (mpi_errno) {
-        goto fn_fail;
-    }
-}
-{ -- large_count --
-    int disp_unit_c;
-    mpi_errno = MPID_Win_shared_query(win_ptr, rank, size, &disp_unit_c, baseptr);
-    if (mpi_errno) {
-        goto fn_fail;
-    }
-    *disp_unit = disp_unit_c;
-}
 
 MPI_Win_start:
     .desc: Start an RMA access epoch for MPI

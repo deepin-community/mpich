@@ -1,13 +1,28 @@
-.TH MPI_Type_create_darray 3 "2/22/2022" " " "MPI"
+.TH MPI_Type_create_darray 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Type_create_darray \-  Create a datatype representing a distributed array 
 .SH SYNOPSIS
 .nf
-int MPI_Type_create_darray(int size, int rank, int ndims, const int array_of_gsizes[],
-const int array_of_distribs[], const int array_of_dargs[],
-const int array_of_psizes[], int order, MPI_Datatype oldtype,
-MPI_Datatype *newtype)
 .fi
+.nf
+int MPI_Type_create_darray(int size, int rank, int ndims,
+const int array_of_gsizes[],
+const int array_of_distribs[],
+const int array_of_dargs[],
+const int array_of_psizes[], int order,
+MPI_Datatype oldtype, MPI_Datatype *newtype)
+.fi
+
+.nf
+int MPI_Type_create_darray_c(int size, int rank, int ndims,
+const MPI_Count array_of_gsizes[],
+const int array_of_distribs[],
+const int array_of_dargs[],
+const int array_of_psizes[], int order,
+MPI_Datatype oldtype, MPI_Datatype *newtype)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -128,7 +143,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

@@ -1,10 +1,14 @@
-.TH MPI_Comm_dup_with_info 3 "2/22/2022" " " "MPI"
+.TH MPI_Comm_dup_with_info 3 "2/9/2024" " " "MPI"
 .SH NAME
-MPI_Comm_dup_with_info \-  Duplicates an existing communicator with all its cached information 
+MPI_Comm_dup_with_info \-  Duplicates an existing communicator using the supplied info hints 
 .SH SYNOPSIS
+.nf
+.fi
 .nf
 int MPI_Comm_dup_with_info(MPI_Comm comm, MPI_Info info, MPI_Comm *newcomm)
 .fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -29,6 +33,54 @@ MPI_Comm_dup_with_info behaves exactly as MPI_Comm_dup except that
 the info hints associated with the communicator comm are not
 duplicated in newcomm.  The hints provided by the argument info are
 associated with the output communicator newcomm instead.
+
+.SH INFO HINTS
+.PD 0
+.TP
+.B mpi_assert_no_any_tag 
+- boolean, default = false.
+If set to true, user promises that MPI_ANY_TAG will not be used with the
+communicator. This potentially allows MPICH to treat messages with different
+tags independent and seek to improve performance, e.g. by employ multiple
+network context.
+.PD 1
+.PD 0
+.TP
+.B mpi_assert_no_any_source 
+- boolean, default = false.
+If set to true, user promises that MPI_ANY_SOURCE will not be used with the
+communicator. This potentially allows MPICH to treat messages send to different
+ranks or receive from different ranks independent and seek to improve
+performance, e.g. by employ multiple network context.
+.PD 1
+.PD 0
+.TP
+.B mpi_assert_exact_length 
+- boolean, default = false.
+If set to true, user promises that the lengths of messages received by the
+process will always equal to the size of the corresponding receive buffers.
+.PD 1
+.PD 0
+.TP
+.B mpi_assert_allow_overtaking 
+- boolean, default = false.
+If set to true, user asserts that send operations are not required to be matched
+at the receiver in the order in which the send operations were performed by the
+sender, and receive operations are not required to be matched in the order in
+which they were performed by the receivers.
+.PD 1
+.PD 0
+.TP
+.B mpi_assert_strict_persistent_collective_ordering 
+- boolean, default = false.
+If set to true, then the implementation may assume that all the persistent
+collective operations are started in the same order across all MPI processes in
+the group of the communicator. It is required that if this assertion is made on
+one member of the communicator
+.I s group, then it must be made on all members of
+that communicator
+s group with the same value.
+.PD 1
 
 .SH THREAD AND INTERRUPT SAFETY
 
@@ -96,7 +148,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

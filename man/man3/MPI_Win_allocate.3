@@ -1,11 +1,20 @@
-.TH MPI_Win_allocate 3 "2/22/2022" " " "MPI"
+.TH MPI_Win_allocate 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Win_allocate \-  Create and allocate an MPI Window object for one-sided communication 
 .SH SYNOPSIS
 .nf
-int MPI_Win_allocate(MPI_Aint size, int disp_unit, MPI_Info info, MPI_Comm comm, void *baseptr,
-MPI_Win *win)
 .fi
+.nf
+int MPI_Win_allocate(MPI_Aint size, int disp_unit, MPI_Info info, MPI_Comm comm,
+void *baseptr, MPI_Win *win)
+.fi
+
+.nf
+int MPI_Win_allocate_c(MPI_Aint size, MPI_Aint disp_unit, MPI_Info info,
+MPI_Comm comm, void *baseptr, MPI_Win *win)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -106,7 +115,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

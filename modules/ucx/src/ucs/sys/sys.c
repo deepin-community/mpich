@@ -1,5 +1,5 @@
 /**
- * Copyright (C) Mellanox Technologies Ltd. 2001-2012.  ALL RIGHTS RESERVED.
+ * Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2001-2012. ALL RIGHTS RESERVED.
  * Copyright (c) UT-Battelle, LLC. 2014-2019. ALL RIGHTS RESERVED.
  * Copyright (C) ARM Ltd. 2016-2017.  ALL RIGHTS RESERVED.
  *
@@ -45,6 +45,7 @@
 #define UCS_PROCESS_NS_DIR         "/proc/self/ns"
 #define UCS_PROCESS_BOOTID_FILE    "/proc/sys/kernel/random/boot_id"
 #define UCS_PROCESS_BOOTID_FMT     "%x-%4hx-%4hx-%4hx-%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx"
+#define UCS_PROCCESS_STAT_FMT      "/proc/%d/stat"
 #define UCS_PROCESS_NS_FIRST       0xF0000000U
 #define UCS_PROCESS_NS_NET_DFLT    0xF0000080U
 
@@ -254,7 +255,9 @@ static long ucs_sysconf(int name)
     errno = 0;
 
     rc = sysconf(name);
-    ucs_assert_always(errno == 0);
+    if (rc == -1) {
+        ucs_assert_always(errno == 0);
+    }
 
     return rc;
 }
@@ -389,6 +392,27 @@ ucs_open_output_stream(const char *config_str, ucs_log_level_t err_log_level,
     }
 
     return UCS_OK;
+}
+
+FILE *ucs_open_file(const char *mode, ucs_log_level_t err_log_level,
+                    const char *filename_fmt, ...)
+{
+    char filename[MAXPATHLEN];
+    va_list ap;
+    FILE *fp;
+
+    va_start(ap, filename_fmt);
+    ucs_vsnprintf_safe(filename, MAXPATHLEN, filename_fmt, ap);
+    va_end(ap);
+
+    fp = fopen(filename, mode);
+    if (fp == NULL) {
+        ucs_log(err_log_level, "failed to open '%s' mode '%s': %m", filename,
+                mode);
+        return NULL;
+    }
+
+    return fp;
 }
 
 static ssize_t ucs_read_file_vararg(char *buffer, size_t max, int silent,
@@ -766,7 +790,13 @@ ucs_status_t ucs_sys_get_proc_cap(uint32_t *effective)
 #endif
 }
 
-static void ucs_sysv_shmget_error_check_EPERM(int flags, char *buf, size_t max)
+/**
+ * Checks whether the process has memory lock capability.
+ *
+ * @return A boolean that indicates whether the
+ *         process has the required capability.
+ */
+static int ucs_sys_get_mlock_cap()
 {
 #if HAVE_SYS_CAPABILITY_H
     ucs_status_t status;
@@ -774,15 +804,20 @@ static void ucs_sysv_shmget_error_check_EPERM(int flags, char *buf, size_t max)
 
     UCS_STATIC_ASSERT(CAP_IPC_LOCK < 32);
     status = ucs_sys_get_proc_cap(&ecap);
-    if ((status == UCS_OK) && !(ecap & UCS_BIT(CAP_IPC_LOCK))) {
-        /* detected missing CAP_IPC_LOCK */
-        snprintf(buf, max, ", CAP_IPC_LOCK privilege is needed for SHM_HUGETLB");
-        return;
-    }
+    return (status == UCS_OK) && (ecap & UCS_BIT(CAP_IPC_LOCK));
+#else
+    return 0;
 #endif
+}
 
-    snprintf(buf, max,
-             ", please check for CAP_IPC_LOCK privilege for using SHM_HUGETLB");
+static void ucs_sysv_shmget_error_check_EPERM(int flags, char *buf, size_t max)
+{
+    if (!ucs_sys_get_mlock_cap()) {
+        /* detected missing CAP_IPC_LOCK */
+        snprintf(buf, max,
+                 ", please check for CAP_IPC_LOCK privilege for using "
+                 "SHM_HUGETLB");
+    }
 }
 
 static void ucs_sysv_shmget_format_error(size_t alloc_size, int flags,
@@ -1321,6 +1356,16 @@ int ucs_sys_getaffinity(ucs_sys_cpuset_t *cpuset)
     return ret;
 }
 
+ucs_status_t ucs_sys_pthread_getaffinity(ucs_sys_cpuset_t *cpuset)
+{
+    if (pthread_getaffinity_np(pthread_self(), sizeof(*cpuset), cpuset)) {
+        ucs_error("pthread_getaffinity_np() failed: %m");
+        return UCS_ERR_INVALID_PARAM;
+    }
+
+    return UCS_OK;
+}
+
 void ucs_sys_cpuset_copy(ucs_cpu_set_t *dst, const ucs_sys_cpuset_t *src)
 {
     int c;
@@ -1446,12 +1491,14 @@ failed_no_mem:
     return res;
 }
 
-static ucs_status_t ucs_sys_enum_threads_cb(struct dirent *entry, void *_ctx)
+static ucs_status_t
+ucs_sys_enum_threads_cb(const struct dirent *entry, void *arg)
 {
-    ucs_sys_enum_threads_t *ctx = (ucs_sys_enum_threads_t*)_ctx;
+    ucs_sys_enum_threads_t *ctx = (ucs_sys_enum_threads_t*)arg;
 
     return strncmp(entry->d_name, ".", 1) ?
-           ctx->cb((pid_t)atoi(entry->d_name), ctx->ctx) : UCS_OK;
+                   ctx->cb((pid_t)atoi(entry->d_name), ctx->ctx) :
+                   UCS_OK;
 }
 
 ucs_status_t ucs_sys_enum_threads(ucs_sys_enum_threads_cb_t cb, void *ctx)
@@ -1460,32 +1507,6 @@ ucs_status_t ucs_sys_enum_threads(ucs_sys_enum_threads_cb_t cb, void *ctx)
     ucs_sys_enum_threads_t param = {.ctx = ctx, .cb = cb};
 
     return ucs_sys_readdir(task_dir, &ucs_sys_enum_threads_cb, &param);
-}
-
-ucs_status_t ucs_sys_get_file_time(const char *name, ucs_sys_file_time_t type,
-                                   struct timespec *ts)
-{
-    struct stat stat_buf;
-    int res;
-
-    res = stat(name, &stat_buf);
-    if (res != 0) {
-        return UCS_ERR_IO_ERROR; /* failed to get file info */
-    }
-
-    switch (type) {
-    case UCS_SYS_FILE_TIME_CTIME:
-        *ts = stat_buf.st_ctim;
-        return UCS_OK;
-    case UCS_SYS_FILE_TIME_ATIME:
-        *ts = stat_buf.st_atim;
-        return UCS_OK;
-    case UCS_SYS_FILE_TIME_MTIME:
-        *ts = stat_buf.st_mtim;
-        return UCS_OK;
-    default:
-        return UCS_ERR_INVALID_PARAM;
-    }
 }
 
 ucs_status_t ucs_sys_check_fd_limit_per_process()
@@ -1540,4 +1561,92 @@ long ucs_sys_get_num_cpus()
     }
 
     return num_cpus;
+}
+
+unsigned long ucs_sys_get_proc_create_time(pid_t pid)
+{
+    char stat[1024];
+    char *start_str;
+    ssize_t size;
+    unsigned long stime;
+    int res;
+
+    size = ucs_read_file_str(stat, sizeof(stat), 1, UCS_PROCCESS_STAT_FMT, pid);
+    if (size < 0) {
+        goto err;
+    }
+
+    /* Start sscanf right after the executable name which may contain spaces or
+     * brackets itself */
+    start_str = strrchr(stat, ')');
+    if (start_str == NULL) {
+        goto scan_err;
+    }
+
+    res = sscanf(start_str, ") %*c %*d %*d %*d %*d %*d %*u %*u %*u %*u %*u %*u"
+                 "%*u %*d %*d %*d %*d %*d %*d %lu", &stime);
+    if (res == 1) {
+        return stime;
+    }
+
+scan_err:
+    ucs_error("failed to scan "UCS_PROCCESS_STAT_FMT, pid);
+err:
+    return 0ul;
+}
+
+ucs_status_t ucs_sys_get_effective_memlock_rlimit(size_t *rlimit_value)
+{
+    struct rlimit limit_info;
+    int res;
+
+    /* Privileged users have no lock limit */
+    if (ucs_sys_get_mlock_cap()) {
+        *rlimit_value = SIZE_MAX;
+        return UCS_OK;
+    }
+
+    /* Check the value of the max locked memory which is set on the system
+     * (ulimit -l) */
+    res = getrlimit(RLIMIT_MEMLOCK, &limit_info);
+    if (res != 0) {
+        ucs_debug("unable to get the max locked memory limit: %m");
+        return UCS_ERR_IO_ERROR;
+    }
+
+    *rlimit_value = (limit_info.rlim_cur == RLIM_INFINITY) ?
+                            SIZE_MAX :
+                            limit_info.rlim_cur;
+    return UCS_OK;
+}
+
+int ucs_sys_is_dynamic_lib(void)
+{
+#ifdef UCX_SHARED_LIB
+    return 1;
+#else
+    return 0;
+#endif
+}
+
+ucs_status_t ucs_sys_read_sysfs_file(const char *dev_name,
+                                     const char *sysfs_path,
+                                     const char *file_name, char *output_buffer,
+                                     size_t max, ucs_log_level_t err_level)
+{
+    ssize_t nread;
+
+    if (sysfs_path == NULL) {
+        return UCS_ERR_NO_ELEM;
+    }
+
+    nread = ucs_read_file_str(output_buffer, max, 1, "%s/%s", sysfs_path,
+                              file_name);
+    if (nread < 0) {
+        ucs_log(err_level, "%s: could not read from '%s/%s'", dev_name,
+                sysfs_path, file_name);
+        return UCS_ERR_NO_ELEM;
+    }
+
+    return UCS_OK;
 }

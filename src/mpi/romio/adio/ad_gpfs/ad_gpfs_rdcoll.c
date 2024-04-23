@@ -71,7 +71,7 @@ static void ADIOI_Fill_user_buffer(ADIO_File fd, void *buf, ADIOI_Flatlist_node
                                    ADIO_Offset fd_size, ADIO_Offset * fd_start,
                                    ADIO_Offset * fd_end, MPI_Aint buftype_extent);
 
-extern void ADIOI_Calc_my_off_len(ADIO_File fd, int bufcount, MPI_Datatype
+extern void ADIOI_Calc_my_off_len(ADIO_File fd, MPI_Aint bufcount, MPI_Datatype
                                   datatype, int file_ptr_type, ADIO_Offset
                                   offset, ADIO_Offset ** offset_list_ptr, ADIO_Offset
                                   ** len_list_ptr, ADIO_Offset * start_offset_ptr,
@@ -80,7 +80,7 @@ extern void ADIOI_Calc_my_off_len(ADIO_File fd, int bufcount, MPI_Datatype
 
 
 
-void ADIOI_GPFS_ReadStridedColl(ADIO_File fd, void *buf, int count,
+void ADIOI_GPFS_ReadStridedColl(ADIO_File fd, void *buf, MPI_Aint count,
                                 MPI_Datatype datatype, int file_ptr_type,
                                 ADIO_Offset offset, ADIO_Status * status, int
                                 *error_code)
@@ -476,7 +476,7 @@ static void ADIOI_Read_and_exch(ADIO_File fd, void *buf, MPI_Datatype
     MPI_Status status;
     ADIOI_Flatlist_node *flat_buf = NULL;
     MPI_Aint lb, buftype_extent;
-    int coll_bufsize;
+    MPI_Aint coll_bufsize;
 #ifdef RDCOLL_DEBUG
     int iii;
 #endif
@@ -608,7 +608,7 @@ static void ADIOI_Read_and_exch(ADIO_File fd, void *buf, MPI_Datatype
 #ifdef PROFILE
         MPE_Log_event(13, 0, "start computation");
 #endif
-        size = MPL_MIN((unsigned) coll_bufsize, end_loc - st_loc + 1 - done);
+        size = MPL_MIN(coll_bufsize, end_loc - st_loc + 1 - done);
         real_off = off - for_curr_iter;
         real_size = size + for_curr_iter;
 
@@ -680,7 +680,7 @@ static void ADIOI_Read_and_exch(ADIO_File fd, void *buf, MPI_Datatype
 #endif
         if (flag) {
             char round[50];
-            MPL_snprintf(round, sizeof(round), "two-phase-round=%d", m);
+            snprintf(round, sizeof(round), "two-phase-round=%d", m);
             setenv("LIBIOLOG_EXTRA_INFO", round, 1);
             ADIOI_Assert(size == (int) size);
             ADIO_ReadContig(fd, read_buf + for_curr_iter, (int) size, MPI_BYTE,

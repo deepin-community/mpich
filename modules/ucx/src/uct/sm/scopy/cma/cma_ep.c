@@ -1,6 +1,6 @@
 /**
 * Copyright (C) UT-Battelle, LLC. 2015. ALL RIGHTS RESERVED.
-* Copyright (C) Mellanox Technologies Ltd. 2001-2019.  ALL RIGHTS RESERVED.
+* Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2001-2019. ALL RIGHTS RESERVED.
 * Copyright (C) ARM Ltd. 2016.  ALL RIGHTS RESERVED.
 * See file LICENSE for terms.
 */
@@ -42,16 +42,14 @@ static UCS_CLASS_INIT_FUNC(uct_cma_ep_t, const uct_ep_params_t *params)
     UCT_EP_PARAMS_CHECK_DEV_IFACE_ADDRS(params);
     UCS_CLASS_CALL_SUPER_INIT(uct_scopy_ep_t, params);
 
-    self->remote_pid = *(const pid_t*)params->iface_addr &
-                       ~UCT_CMA_IFACE_ADDR_FLAG_PID_NS;
-    self->keepalive  = NULL;
+    self->remote_pid           = *(const pid_t*)params->iface_addr &
+                                 ~UCT_CMA_IFACE_ADDR_FLAG_PID_NS;
 
-    return UCS_OK;
+    return uct_ep_keepalive_init(&self->keepalive, self->remote_pid);
 }
 
 static UCS_CLASS_CLEANUP_FUNC(uct_cma_ep_t)
 {
-    ucs_free(self->keepalive);
 }
 
 UCS_CLASS_DEFINE(uct_cma_ep_t, uct_scopy_ep_t)
@@ -91,10 +89,9 @@ ucs_status_t uct_cma_ep_tx(uct_ep_h tl_ep, const uct_iov_t *iov, size_t iov_cnt,
                            uint64_t remote_addr, uct_rkey_t rkey,
                            uct_scopy_tx_op_t tx_op)
 {
-    uct_cma_ep_t *ep                   = ucs_derived_of(tl_ep, uct_cma_ep_t);
-    size_t local_iov_idx               = 0;
-    size_t UCS_V_UNUSED remote_iov_idx = 0;
-    size_t local_iov_cnt               = UCT_SM_MAX_IOV;
+    uct_cma_ep_t *ep     = ucs_derived_of(tl_ep, uct_cma_ep_t);
+    size_t local_iov_idx = 0;
+    size_t local_iov_cnt = UCT_SM_MAX_IOV;
     size_t total_iov_length;
     struct iovec local_iov[UCT_SM_MAX_IOV], remote_iov;
     ssize_t ret;
@@ -130,6 +127,7 @@ ucs_status_t uct_cma_ep_check(const uct_ep_h tl_ep, unsigned flags,
 {
     uct_cma_ep_t *ep = ucs_derived_of(tl_ep, uct_cma_ep_t);
 
-    return uct_ep_keepalive_check(tl_ep, &ep->keepalive, ep->remote_pid, flags,
-                                  comp);
+    UCT_EP_KEEPALIVE_CHECK_PARAM(flags, comp);
+    uct_ep_keepalive_check(tl_ep, &ep->keepalive, ep->remote_pid, flags, comp);
+    return UCS_OK;
 }

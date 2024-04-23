@@ -456,7 +456,8 @@ static int lmt_shm_send_progress(MPIDI_VC_t *vc, MPIR_Request *req, int *done)
 
         MPI_Aint actual_pack_bytes;
         MPIR_Typerep_pack(req->dev.user_buf, req->dev.user_count, req->dev.datatype, first,
-                       (void *)copy_buf->buf[buf_num], max_pack_bytes, &actual_pack_bytes);
+                       (void *)copy_buf->buf[buf_num], max_pack_bytes, &actual_pack_bytes,
+                       MPIR_TYPEREP_FLAG_NONE);
 
         MPL_atomic_write_barrier();
         MPIR_Assign_trunc(copy_buf->len[buf_num].val, actual_pack_bytes, int);
@@ -545,7 +546,7 @@ static int lmt_shm_recv_progress(MPIDI_VC_t *vc, MPIR_Request *req, int *done)
         MPI_Aint actual_unpack_bytes;
         MPIR_Typerep_unpack(src_buf, last - first,
                          req->dev.user_buf, req->dev.user_count, req->dev.datatype,
-                         first, &actual_unpack_bytes);
+                         first, &actual_unpack_bytes, MPIR_TYPEREP_FLAG_NONE);
         last = first + actual_unpack_bytes;
 
         MPL_DBG_MSG_FMT(MPIDI_CH3_DBG_CHANNEL, VERBOSE, (MPL_DBG_FDEST, "recvd data.  last=%" PRIdPTR " data_sz=%" PRIdPTR, last, data_sz));
@@ -754,13 +755,11 @@ int MPID_nem_lmt_shm_vc_terminated(MPIDI_VC_t *vc)
 
     /* If there is anything in the RTS queue, it needs to be cleared out. */
     if (MPIR_CVAR_ENABLE_FT) {
-        MPID_THREAD_CS_ENTER(POBJ, MPIR_THREAD_GLOBAL_ALLFUNC_MUTEX);
         while (!MPID_nem_lmt_rtsq_empty(vc_ch->lmt_rts_queue)) {
             MPID_nem_lmt_rtsq_dequeue(&vc_ch->lmt_rts_queue, &req);
             req->status.MPI_ERROR = req_errno;
             MPID_Request_complete(req);
         }
-        MPID_THREAD_CS_EXIT(POBJ, MPIR_THREAD_GLOBAL_ALLFUNC_MUTEX);
     }
 
     /* We empty the vc queue, but don't remove the vc from the global

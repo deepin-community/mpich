@@ -24,9 +24,10 @@ int MPIR_TSP_Igather_sched_intra_tree(const void *sendbuf, MPI_Aint sendcount,
     const void *data_buf = NULL;
     int tree_type, vtx_id;
     MPIR_Treealgo_tree_t my_tree, parents_tree;
-    int next_child, num_children, *child_subtree_size = NULL, *child_data_offset = NULL;
-    int offset, recv_size, num_dependencies;
+    int next_child, num_children, *child_subtree_size = NULL;
+    int num_dependencies;
     MPIR_Errflag_t errflag ATTRIBUTE((unused)) = MPIR_ERR_NONE;
+    MPI_Aint *child_data_offset;
     MPIR_CHKLMEM_DECL(3);
 
     MPIR_FUNC_ENTER;
@@ -67,7 +68,7 @@ int MPIR_TSP_Igather_sched_intra_tree(const void *sendbuf, MPI_Aint sendcount,
 
     num_children = my_tree.num_children;
     MPIR_CHKLMEM_MALLOC(child_subtree_size, int *, sizeof(int) * num_children, mpi_errno, "child_subtree_size buffer", MPL_MEM_COLL);   /* to store size of subtree of each child */
-    MPIR_CHKLMEM_MALLOC(child_data_offset, int *, sizeof(int) * num_children, mpi_errno, "child_data_offset buffer", MPL_MEM_COLL);     /* to store the offset of the data to be sent to each child  */
+    MPIR_CHKLMEM_MALLOC(child_data_offset, MPI_Aint *, sizeof(MPI_Aint) * num_children, mpi_errno, "child_data_offset buffer", MPL_MEM_COLL);   /* to store the offset of the data to be sent to each child  */
 
     /* calculate size of subtree of each child */
 
@@ -79,6 +80,7 @@ int MPIR_TSP_Igather_sched_intra_tree(const void *sendbuf, MPI_Aint sendcount,
         parents_tree.num_children = 0;
     }
 
+    MPI_Aint recv_size;
     recv_size = 1;      /* total size of the data to be received from the parent.
                          * 1 is to count yourself, now add the size of each child's subtree */
     for (i = 0; i < num_children; i++) {
@@ -109,6 +111,8 @@ int MPIR_TSP_Igather_sched_intra_tree(const void *sendbuf, MPI_Aint sendcount,
     MPIR_Treealgo_tree_free(&parents_tree);
 
     recv_size *= (lrank == 0) ? recvcount : sendcount;
+
+    MPI_Aint offset;
     offset = (lrank == 0) ? recvcount : sendcount;
 
     for (i = 0; i < num_children; i++) {
@@ -134,7 +138,7 @@ int MPIR_TSP_Igather_sched_intra_tree(const void *sendbuf, MPI_Aint sendcount,
         mpi_errno =
             MPIR_TSP_sched_isend(tmp_buf, sendcount, sendtype, my_tree.parent, tag, comm, sched, 0,
                                  NULL, &vtx_id);
-        MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag);
+        MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
         MPL_DBG_MSG_FMT(MPIR_DBG_COLL, VERBOSE, (MPL_DBG_FDEST, "rank:%d posts recv\n", rank));
     } else {
         num_dependencies = 0;
@@ -148,7 +152,7 @@ int MPIR_TSP_Igather_sched_intra_tree(const void *sendbuf, MPI_Aint sendcount,
             mpi_errno =
                 MPIR_TSP_sched_localcopy(data_buf, sendcount, sendtype,
                                          tmp_buf, recvcount, recvtype, sched, 0, NULL, &dtcopy_id);
-            MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag);
+            MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
             num_dependencies++;
         }
 
@@ -158,13 +162,13 @@ int MPIR_TSP_Igather_sched_intra_tree(const void *sendbuf, MPI_Aint sendcount,
                 MPIR_TSP_sched_irecv((char *) tmp_buf + child_data_offset[i] * recvtype_extent,
                                      child_subtree_size[i] * recvcount, recvtype, child, tag, comm,
                                      sched, num_dependencies, &dtcopy_id, &recv_id[i]);
-            MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag);
+            MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
         }
 
         if (my_tree.parent != -1) {
             mpi_errno = MPIR_TSP_sched_isend(tmp_buf, recv_size, recvtype, my_tree.parent,
                                              tag, comm, sched, num_children, recv_id, &vtx_id);
-            MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag);
+            MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
         }
 
     }
@@ -174,12 +178,12 @@ int MPIR_TSP_Igather_sched_intra_tree(const void *sendbuf, MPI_Aint sendcount,
                                              (char *) recvbuf + root * recvcount * recvtype_extent,
                                              (size - root) * recvcount, recvtype, sched,
                                              num_children, recv_id, &dtcopy_id);
-        MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag);
+        MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
         mpi_errno =
             MPIR_TSP_sched_localcopy((char *) tmp_buf + (size - root) * recvcount * recvtype_extent,
                                      root * recvcount, recvtype, recvbuf, root * recvcount,
                                      recvtype, sched, 1, &dtcopy_id, &vtx_id);
-        MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag);
+        MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
     }
 
     MPIR_Treealgo_tree_free(&my_tree);

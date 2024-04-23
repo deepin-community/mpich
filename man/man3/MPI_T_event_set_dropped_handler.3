@@ -1,11 +1,15 @@
-.TH MPI_T_event_set_dropped_handler 3 "2/22/2022" " " "MPI"
+.TH MPI_T_event_set_dropped_handler 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_T_event_set_dropped_handler \-  Registers a function to be called when event information is dropped for the registration handle specified in event_registration 
 .SH SYNOPSIS
 .nf
+.fi
+.nf
 int MPI_T_event_set_dropped_handler(MPI_T_event_registration event_registration,
 MPI_T_event_dropped_cb_function dropped_cb_function)
 .fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -61,7 +65,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_T_ERR_INVALID_HANDLE 

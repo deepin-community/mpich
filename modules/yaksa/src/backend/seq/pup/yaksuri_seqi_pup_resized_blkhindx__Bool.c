@@ -39,12 +39,12 @@ int yaksuri_seqi_pack_resized_blkhindx_blklen_1__Bool(const void *inbuf, void *o
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < 1; k2++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -52,12 +52,12 @@ int yaksuri_seqi_pack_resized_blkhindx_blklen_1__Bool(const void *inbuf, void *o
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < 1; k2++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -114,12 +114,12 @@ int yaksuri_seqi_unpack_resized_blkhindx_blklen_1__Bool(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < 1; k2++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -127,12 +127,12 @@ int yaksuri_seqi_unpack_resized_blkhindx_blklen_1__Bool(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < 1; k2++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -189,12 +189,12 @@ int yaksuri_seqi_pack_resized_blkhindx_blklen_2__Bool(const void *inbuf, void *o
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < 2; k2++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -202,12 +202,12 @@ int yaksuri_seqi_pack_resized_blkhindx_blklen_2__Bool(const void *inbuf, void *o
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < 2; k2++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -264,12 +264,12 @@ int yaksuri_seqi_unpack_resized_blkhindx_blklen_2__Bool(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < 2; k2++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -277,12 +277,12 @@ int yaksuri_seqi_unpack_resized_blkhindx_blklen_2__Bool(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < 2; k2++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -339,12 +339,12 @@ int yaksuri_seqi_pack_resized_blkhindx_blklen_3__Bool(const void *inbuf, void *o
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < 3; k2++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -352,12 +352,12 @@ int yaksuri_seqi_pack_resized_blkhindx_blklen_3__Bool(const void *inbuf, void *o
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < 3; k2++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -414,12 +414,12 @@ int yaksuri_seqi_unpack_resized_blkhindx_blklen_3__Bool(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < 3; k2++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -427,12 +427,12 @@ int yaksuri_seqi_unpack_resized_blkhindx_blklen_3__Bool(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < 3; k2++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -489,12 +489,12 @@ int yaksuri_seqi_pack_resized_blkhindx_blklen_4__Bool(const void *inbuf, void *o
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < 4; k2++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -502,12 +502,12 @@ int yaksuri_seqi_pack_resized_blkhindx_blklen_4__Bool(const void *inbuf, void *o
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < 4; k2++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -564,12 +564,12 @@ int yaksuri_seqi_unpack_resized_blkhindx_blklen_4__Bool(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < 4; k2++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -577,12 +577,12 @@ int yaksuri_seqi_unpack_resized_blkhindx_blklen_4__Bool(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < 4; k2++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -639,12 +639,12 @@ int yaksuri_seqi_pack_resized_blkhindx_blklen_5__Bool(const void *inbuf, void *o
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < 5; k2++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -652,12 +652,12 @@ int yaksuri_seqi_pack_resized_blkhindx_blklen_5__Bool(const void *inbuf, void *o
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < 5; k2++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -714,12 +714,12 @@ int yaksuri_seqi_unpack_resized_blkhindx_blklen_5__Bool(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < 5; k2++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -727,12 +727,12 @@ int yaksuri_seqi_unpack_resized_blkhindx_blklen_5__Bool(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < 5; k2++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -789,12 +789,12 @@ int yaksuri_seqi_pack_resized_blkhindx_blklen_6__Bool(const void *inbuf, void *o
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < 6; k2++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -802,12 +802,12 @@ int yaksuri_seqi_pack_resized_blkhindx_blklen_6__Bool(const void *inbuf, void *o
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < 6; k2++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -864,12 +864,12 @@ int yaksuri_seqi_unpack_resized_blkhindx_blklen_6__Bool(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < 6; k2++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -877,12 +877,12 @@ int yaksuri_seqi_unpack_resized_blkhindx_blklen_6__Bool(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < 6; k2++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -939,12 +939,12 @@ int yaksuri_seqi_pack_resized_blkhindx_blklen_7__Bool(const void *inbuf, void *o
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < 7; k2++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -952,12 +952,12 @@ int yaksuri_seqi_pack_resized_blkhindx_blklen_7__Bool(const void *inbuf, void *o
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < 7; k2++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -1014,12 +1014,12 @@ int yaksuri_seqi_unpack_resized_blkhindx_blklen_7__Bool(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < 7; k2++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -1027,12 +1027,12 @@ int yaksuri_seqi_unpack_resized_blkhindx_blklen_7__Bool(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < 7; k2++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -1089,12 +1089,12 @@ int yaksuri_seqi_pack_resized_blkhindx_blklen_8__Bool(const void *inbuf, void *o
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < 8; k2++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -1102,12 +1102,12 @@ int yaksuri_seqi_pack_resized_blkhindx_blklen_8__Bool(const void *inbuf, void *o
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < 8; k2++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -1164,12 +1164,12 @@ int yaksuri_seqi_unpack_resized_blkhindx_blklen_8__Bool(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < 8; k2++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -1177,12 +1177,12 @@ int yaksuri_seqi_unpack_resized_blkhindx_blklen_8__Bool(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < 8; k2++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -1239,12 +1239,12 @@ int yaksuri_seqi_pack_resized_blkhindx_blklen_generic__Bool(const void *inbuf, v
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < blocklength2; k2++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -1252,12 +1252,12 @@ int yaksuri_seqi_pack_resized_blkhindx_blklen_generic__Bool(const void *inbuf, v
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < blocklength2; k2++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -1314,12 +1314,12 @@ int yaksuri_seqi_unpack_resized_blkhindx_blklen_generic__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < blocklength2; k2++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -1327,12 +1327,12 @@ int yaksuri_seqi_unpack_resized_blkhindx_blklen_generic__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < blocklength2; k2++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -1398,14 +1398,14 @@ int yaksuri_seqi_pack_hvector_resized_blkhindx_blklen_1__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -1415,14 +1415,14 @@ int yaksuri_seqi_pack_hvector_resized_blkhindx_blklen_1__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -1494,14 +1494,14 @@ int yaksuri_seqi_unpack_hvector_resized_blkhindx_blklen_1__Bool(const void *inbu
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -1511,14 +1511,14 @@ int yaksuri_seqi_unpack_hvector_resized_blkhindx_blklen_1__Bool(const void *inbu
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -1590,14 +1590,14 @@ int yaksuri_seqi_pack_hvector_resized_blkhindx_blklen_2__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -1607,14 +1607,14 @@ int yaksuri_seqi_pack_hvector_resized_blkhindx_blklen_2__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -1686,14 +1686,14 @@ int yaksuri_seqi_unpack_hvector_resized_blkhindx_blklen_2__Bool(const void *inbu
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -1703,14 +1703,14 @@ int yaksuri_seqi_unpack_hvector_resized_blkhindx_blklen_2__Bool(const void *inbu
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -1782,14 +1782,14 @@ int yaksuri_seqi_pack_hvector_resized_blkhindx_blklen_3__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -1799,14 +1799,14 @@ int yaksuri_seqi_pack_hvector_resized_blkhindx_blklen_3__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -1878,14 +1878,14 @@ int yaksuri_seqi_unpack_hvector_resized_blkhindx_blklen_3__Bool(const void *inbu
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -1895,14 +1895,14 @@ int yaksuri_seqi_unpack_hvector_resized_blkhindx_blklen_3__Bool(const void *inbu
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -1974,14 +1974,14 @@ int yaksuri_seqi_pack_hvector_resized_blkhindx_blklen_4__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -1991,14 +1991,14 @@ int yaksuri_seqi_pack_hvector_resized_blkhindx_blklen_4__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -2070,14 +2070,14 @@ int yaksuri_seqi_unpack_hvector_resized_blkhindx_blklen_4__Bool(const void *inbu
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -2087,14 +2087,14 @@ int yaksuri_seqi_unpack_hvector_resized_blkhindx_blklen_4__Bool(const void *inbu
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -2166,14 +2166,14 @@ int yaksuri_seqi_pack_hvector_resized_blkhindx_blklen_5__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -2183,14 +2183,14 @@ int yaksuri_seqi_pack_hvector_resized_blkhindx_blklen_5__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -2262,14 +2262,14 @@ int yaksuri_seqi_unpack_hvector_resized_blkhindx_blklen_5__Bool(const void *inbu
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -2279,14 +2279,14 @@ int yaksuri_seqi_unpack_hvector_resized_blkhindx_blklen_5__Bool(const void *inbu
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -2358,14 +2358,14 @@ int yaksuri_seqi_pack_hvector_resized_blkhindx_blklen_6__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -2375,14 +2375,14 @@ int yaksuri_seqi_pack_hvector_resized_blkhindx_blklen_6__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -2454,14 +2454,14 @@ int yaksuri_seqi_unpack_hvector_resized_blkhindx_blklen_6__Bool(const void *inbu
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -2471,14 +2471,14 @@ int yaksuri_seqi_unpack_hvector_resized_blkhindx_blklen_6__Bool(const void *inbu
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -2550,14 +2550,14 @@ int yaksuri_seqi_pack_hvector_resized_blkhindx_blklen_7__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -2567,14 +2567,14 @@ int yaksuri_seqi_pack_hvector_resized_blkhindx_blklen_7__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -2646,14 +2646,14 @@ int yaksuri_seqi_unpack_hvector_resized_blkhindx_blklen_7__Bool(const void *inbu
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -2663,14 +2663,14 @@ int yaksuri_seqi_unpack_hvector_resized_blkhindx_blklen_7__Bool(const void *inbu
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -2742,14 +2742,14 @@ int yaksuri_seqi_pack_hvector_resized_blkhindx_blklen_8__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -2759,14 +2759,14 @@ int yaksuri_seqi_pack_hvector_resized_blkhindx_blklen_8__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -2838,14 +2838,14 @@ int yaksuri_seqi_unpack_hvector_resized_blkhindx_blklen_8__Bool(const void *inbu
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -2855,14 +2855,14 @@ int yaksuri_seqi_unpack_hvector_resized_blkhindx_blklen_8__Bool(const void *inbu
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -2934,14 +2934,14 @@ int yaksuri_seqi_pack_hvector_resized_blkhindx_blklen_generic__Bool(const void *
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -2951,14 +2951,14 @@ int yaksuri_seqi_pack_hvector_resized_blkhindx_blklen_generic__Bool(const void *
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -3030,14 +3030,14 @@ int yaksuri_seqi_unpack_hvector_resized_blkhindx_blklen_generic__Bool(const void
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -3047,14 +3047,14 @@ int yaksuri_seqi_unpack_hvector_resized_blkhindx_blklen_generic__Bool(const void
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -3126,14 +3126,14 @@ int yaksuri_seqi_pack_blkhindx_resized_blkhindx_blklen_1__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -3143,14 +3143,14 @@ int yaksuri_seqi_pack_blkhindx_resized_blkhindx_blklen_1__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -3222,14 +3222,14 @@ int yaksuri_seqi_unpack_blkhindx_resized_blkhindx_blklen_1__Bool(const void *inb
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -3239,14 +3239,14 @@ int yaksuri_seqi_unpack_blkhindx_resized_blkhindx_blklen_1__Bool(const void *inb
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -3318,14 +3318,14 @@ int yaksuri_seqi_pack_blkhindx_resized_blkhindx_blklen_2__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -3335,14 +3335,14 @@ int yaksuri_seqi_pack_blkhindx_resized_blkhindx_blklen_2__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -3414,14 +3414,14 @@ int yaksuri_seqi_unpack_blkhindx_resized_blkhindx_blklen_2__Bool(const void *inb
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -3431,14 +3431,14 @@ int yaksuri_seqi_unpack_blkhindx_resized_blkhindx_blklen_2__Bool(const void *inb
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -3510,14 +3510,14 @@ int yaksuri_seqi_pack_blkhindx_resized_blkhindx_blklen_3__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -3527,14 +3527,14 @@ int yaksuri_seqi_pack_blkhindx_resized_blkhindx_blklen_3__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -3606,14 +3606,14 @@ int yaksuri_seqi_unpack_blkhindx_resized_blkhindx_blklen_3__Bool(const void *inb
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -3623,14 +3623,14 @@ int yaksuri_seqi_unpack_blkhindx_resized_blkhindx_blklen_3__Bool(const void *inb
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -3702,14 +3702,14 @@ int yaksuri_seqi_pack_blkhindx_resized_blkhindx_blklen_4__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -3719,14 +3719,14 @@ int yaksuri_seqi_pack_blkhindx_resized_blkhindx_blklen_4__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -3798,14 +3798,14 @@ int yaksuri_seqi_unpack_blkhindx_resized_blkhindx_blklen_4__Bool(const void *inb
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -3815,14 +3815,14 @@ int yaksuri_seqi_unpack_blkhindx_resized_blkhindx_blklen_4__Bool(const void *inb
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -3894,14 +3894,14 @@ int yaksuri_seqi_pack_blkhindx_resized_blkhindx_blklen_5__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -3911,14 +3911,14 @@ int yaksuri_seqi_pack_blkhindx_resized_blkhindx_blklen_5__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -3990,14 +3990,14 @@ int yaksuri_seqi_unpack_blkhindx_resized_blkhindx_blklen_5__Bool(const void *inb
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -4007,14 +4007,14 @@ int yaksuri_seqi_unpack_blkhindx_resized_blkhindx_blklen_5__Bool(const void *inb
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -4086,14 +4086,14 @@ int yaksuri_seqi_pack_blkhindx_resized_blkhindx_blklen_6__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -4103,14 +4103,14 @@ int yaksuri_seqi_pack_blkhindx_resized_blkhindx_blklen_6__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -4182,14 +4182,14 @@ int yaksuri_seqi_unpack_blkhindx_resized_blkhindx_blklen_6__Bool(const void *inb
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -4199,14 +4199,14 @@ int yaksuri_seqi_unpack_blkhindx_resized_blkhindx_blklen_6__Bool(const void *inb
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -4278,14 +4278,14 @@ int yaksuri_seqi_pack_blkhindx_resized_blkhindx_blklen_7__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -4295,14 +4295,14 @@ int yaksuri_seqi_pack_blkhindx_resized_blkhindx_blklen_7__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -4374,14 +4374,14 @@ int yaksuri_seqi_unpack_blkhindx_resized_blkhindx_blklen_7__Bool(const void *inb
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -4391,14 +4391,14 @@ int yaksuri_seqi_unpack_blkhindx_resized_blkhindx_blklen_7__Bool(const void *inb
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -4470,14 +4470,14 @@ int yaksuri_seqi_pack_blkhindx_resized_blkhindx_blklen_8__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -4487,14 +4487,14 @@ int yaksuri_seqi_pack_blkhindx_resized_blkhindx_blklen_8__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -4566,14 +4566,14 @@ int yaksuri_seqi_unpack_blkhindx_resized_blkhindx_blklen_8__Bool(const void *inb
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -4583,14 +4583,14 @@ int yaksuri_seqi_unpack_blkhindx_resized_blkhindx_blklen_8__Bool(const void *inb
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -4662,14 +4662,14 @@ int yaksuri_seqi_pack_blkhindx_resized_blkhindx_blklen_generic__Bool(const void 
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -4679,14 +4679,14 @@ int yaksuri_seqi_pack_blkhindx_resized_blkhindx_blklen_generic__Bool(const void 
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -4758,14 +4758,14 @@ int yaksuri_seqi_unpack_blkhindx_resized_blkhindx_blklen_generic__Bool(const voi
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -4775,14 +4775,14 @@ int yaksuri_seqi_unpack_blkhindx_resized_blkhindx_blklen_generic__Bool(const voi
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -4854,14 +4854,14 @@ int yaksuri_seqi_pack_hindexed_resized_blkhindx_blklen_1__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -4871,14 +4871,14 @@ int yaksuri_seqi_pack_hindexed_resized_blkhindx_blklen_1__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -4950,14 +4950,14 @@ int yaksuri_seqi_unpack_hindexed_resized_blkhindx_blklen_1__Bool(const void *inb
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -4967,14 +4967,14 @@ int yaksuri_seqi_unpack_hindexed_resized_blkhindx_blklen_1__Bool(const void *inb
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -5046,14 +5046,14 @@ int yaksuri_seqi_pack_hindexed_resized_blkhindx_blklen_2__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -5063,14 +5063,14 @@ int yaksuri_seqi_pack_hindexed_resized_blkhindx_blklen_2__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -5142,14 +5142,14 @@ int yaksuri_seqi_unpack_hindexed_resized_blkhindx_blklen_2__Bool(const void *inb
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -5159,14 +5159,14 @@ int yaksuri_seqi_unpack_hindexed_resized_blkhindx_blklen_2__Bool(const void *inb
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -5238,14 +5238,14 @@ int yaksuri_seqi_pack_hindexed_resized_blkhindx_blklen_3__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -5255,14 +5255,14 @@ int yaksuri_seqi_pack_hindexed_resized_blkhindx_blklen_3__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -5334,14 +5334,14 @@ int yaksuri_seqi_unpack_hindexed_resized_blkhindx_blklen_3__Bool(const void *inb
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -5351,14 +5351,14 @@ int yaksuri_seqi_unpack_hindexed_resized_blkhindx_blklen_3__Bool(const void *inb
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -5430,14 +5430,14 @@ int yaksuri_seqi_pack_hindexed_resized_blkhindx_blklen_4__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -5447,14 +5447,14 @@ int yaksuri_seqi_pack_hindexed_resized_blkhindx_blklen_4__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -5526,14 +5526,14 @@ int yaksuri_seqi_unpack_hindexed_resized_blkhindx_blklen_4__Bool(const void *inb
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -5543,14 +5543,14 @@ int yaksuri_seqi_unpack_hindexed_resized_blkhindx_blklen_4__Bool(const void *inb
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -5622,14 +5622,14 @@ int yaksuri_seqi_pack_hindexed_resized_blkhindx_blklen_5__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -5639,14 +5639,14 @@ int yaksuri_seqi_pack_hindexed_resized_blkhindx_blklen_5__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -5718,14 +5718,14 @@ int yaksuri_seqi_unpack_hindexed_resized_blkhindx_blklen_5__Bool(const void *inb
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -5735,14 +5735,14 @@ int yaksuri_seqi_unpack_hindexed_resized_blkhindx_blklen_5__Bool(const void *inb
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -5814,14 +5814,14 @@ int yaksuri_seqi_pack_hindexed_resized_blkhindx_blklen_6__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -5831,14 +5831,14 @@ int yaksuri_seqi_pack_hindexed_resized_blkhindx_blklen_6__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -5910,14 +5910,14 @@ int yaksuri_seqi_unpack_hindexed_resized_blkhindx_blklen_6__Bool(const void *inb
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -5927,14 +5927,14 @@ int yaksuri_seqi_unpack_hindexed_resized_blkhindx_blklen_6__Bool(const void *inb
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -6006,14 +6006,14 @@ int yaksuri_seqi_pack_hindexed_resized_blkhindx_blklen_7__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -6023,14 +6023,14 @@ int yaksuri_seqi_pack_hindexed_resized_blkhindx_blklen_7__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -6102,14 +6102,14 @@ int yaksuri_seqi_unpack_hindexed_resized_blkhindx_blklen_7__Bool(const void *inb
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -6119,14 +6119,14 @@ int yaksuri_seqi_unpack_hindexed_resized_blkhindx_blklen_7__Bool(const void *inb
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -6198,14 +6198,14 @@ int yaksuri_seqi_pack_hindexed_resized_blkhindx_blklen_8__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -6215,14 +6215,14 @@ int yaksuri_seqi_pack_hindexed_resized_blkhindx_blklen_8__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -6294,14 +6294,14 @@ int yaksuri_seqi_unpack_hindexed_resized_blkhindx_blklen_8__Bool(const void *inb
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -6311,14 +6311,14 @@ int yaksuri_seqi_unpack_hindexed_resized_blkhindx_blklen_8__Bool(const void *inb
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -6390,14 +6390,14 @@ int yaksuri_seqi_pack_hindexed_resized_blkhindx_blklen_generic__Bool(const void 
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -6407,14 +6407,14 @@ int yaksuri_seqi_pack_hindexed_resized_blkhindx_blklen_generic__Bool(const void 
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -6486,14 +6486,14 @@ int yaksuri_seqi_unpack_hindexed_resized_blkhindx_blklen_generic__Bool(const voi
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -6503,14 +6503,14 @@ int yaksuri_seqi_unpack_hindexed_resized_blkhindx_blklen_generic__Bool(const voi
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                                 idx += sizeof(_Bool);
                             }
                         }
@@ -6579,13 +6579,13 @@ int yaksuri_seqi_pack_contig_resized_blkhindx_blklen_1__Bool(const void *inbuf, 
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < 1; k3++) {
-                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -6594,13 +6594,13 @@ int yaksuri_seqi_pack_contig_resized_blkhindx_blklen_1__Bool(const void *inbuf, 
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < 1; k3++) {
-                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -6666,13 +6666,13 @@ int yaksuri_seqi_unpack_contig_resized_blkhindx_blklen_1__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < 1; k3++) {
-                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -6681,13 +6681,13 @@ int yaksuri_seqi_unpack_contig_resized_blkhindx_blklen_1__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < 1; k3++) {
-                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -6753,13 +6753,13 @@ int yaksuri_seqi_pack_contig_resized_blkhindx_blklen_2__Bool(const void *inbuf, 
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < 2; k3++) {
-                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -6768,13 +6768,13 @@ int yaksuri_seqi_pack_contig_resized_blkhindx_blklen_2__Bool(const void *inbuf, 
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < 2; k3++) {
-                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -6840,13 +6840,13 @@ int yaksuri_seqi_unpack_contig_resized_blkhindx_blklen_2__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < 2; k3++) {
-                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -6855,13 +6855,13 @@ int yaksuri_seqi_unpack_contig_resized_blkhindx_blklen_2__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < 2; k3++) {
-                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -6927,13 +6927,13 @@ int yaksuri_seqi_pack_contig_resized_blkhindx_blklen_3__Bool(const void *inbuf, 
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < 3; k3++) {
-                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -6942,13 +6942,13 @@ int yaksuri_seqi_pack_contig_resized_blkhindx_blklen_3__Bool(const void *inbuf, 
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < 3; k3++) {
-                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -7014,13 +7014,13 @@ int yaksuri_seqi_unpack_contig_resized_blkhindx_blklen_3__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < 3; k3++) {
-                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -7029,13 +7029,13 @@ int yaksuri_seqi_unpack_contig_resized_blkhindx_blklen_3__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < 3; k3++) {
-                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -7101,13 +7101,13 @@ int yaksuri_seqi_pack_contig_resized_blkhindx_blklen_4__Bool(const void *inbuf, 
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < 4; k3++) {
-                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -7116,13 +7116,13 @@ int yaksuri_seqi_pack_contig_resized_blkhindx_blklen_4__Bool(const void *inbuf, 
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < 4; k3++) {
-                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -7188,13 +7188,13 @@ int yaksuri_seqi_unpack_contig_resized_blkhindx_blklen_4__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < 4; k3++) {
-                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -7203,13 +7203,13 @@ int yaksuri_seqi_unpack_contig_resized_blkhindx_blklen_4__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < 4; k3++) {
-                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -7275,13 +7275,13 @@ int yaksuri_seqi_pack_contig_resized_blkhindx_blklen_5__Bool(const void *inbuf, 
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < 5; k3++) {
-                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -7290,13 +7290,13 @@ int yaksuri_seqi_pack_contig_resized_blkhindx_blklen_5__Bool(const void *inbuf, 
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < 5; k3++) {
-                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -7362,13 +7362,13 @@ int yaksuri_seqi_unpack_contig_resized_blkhindx_blklen_5__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < 5; k3++) {
-                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -7377,13 +7377,13 @@ int yaksuri_seqi_unpack_contig_resized_blkhindx_blklen_5__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < 5; k3++) {
-                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -7449,13 +7449,13 @@ int yaksuri_seqi_pack_contig_resized_blkhindx_blklen_6__Bool(const void *inbuf, 
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < 6; k3++) {
-                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -7464,13 +7464,13 @@ int yaksuri_seqi_pack_contig_resized_blkhindx_blklen_6__Bool(const void *inbuf, 
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < 6; k3++) {
-                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -7536,13 +7536,13 @@ int yaksuri_seqi_unpack_contig_resized_blkhindx_blklen_6__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < 6; k3++) {
-                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -7551,13 +7551,13 @@ int yaksuri_seqi_unpack_contig_resized_blkhindx_blklen_6__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < 6; k3++) {
-                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -7623,13 +7623,13 @@ int yaksuri_seqi_pack_contig_resized_blkhindx_blklen_7__Bool(const void *inbuf, 
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < 7; k3++) {
-                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -7638,13 +7638,13 @@ int yaksuri_seqi_pack_contig_resized_blkhindx_blklen_7__Bool(const void *inbuf, 
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < 7; k3++) {
-                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -7710,13 +7710,13 @@ int yaksuri_seqi_unpack_contig_resized_blkhindx_blklen_7__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < 7; k3++) {
-                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -7725,13 +7725,13 @@ int yaksuri_seqi_unpack_contig_resized_blkhindx_blklen_7__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < 7; k3++) {
-                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -7797,13 +7797,13 @@ int yaksuri_seqi_pack_contig_resized_blkhindx_blklen_8__Bool(const void *inbuf, 
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < 8; k3++) {
-                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -7812,13 +7812,13 @@ int yaksuri_seqi_pack_contig_resized_blkhindx_blklen_8__Bool(const void *inbuf, 
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < 8; k3++) {
-                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -7884,13 +7884,13 @@ int yaksuri_seqi_unpack_contig_resized_blkhindx_blklen_8__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < 8; k3++) {
-                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -7899,13 +7899,13 @@ int yaksuri_seqi_unpack_contig_resized_blkhindx_blklen_8__Bool(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < 8; k3++) {
-                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -7971,13 +7971,13 @@ int yaksuri_seqi_pack_contig_resized_blkhindx_blklen_generic__Bool(const void *i
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -7986,13 +7986,13 @@ int yaksuri_seqi_pack_contig_resized_blkhindx_blklen_generic__Bool(const void *i
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -8058,13 +8058,13 @@ int yaksuri_seqi_unpack_contig_resized_blkhindx_blklen_generic__Bool(const void 
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -8073,13 +8073,13 @@ int yaksuri_seqi_unpack_contig_resized_blkhindx_blklen_generic__Bool(const void 
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                            YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                            YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                             idx += sizeof(_Bool);
                         }
                     }
@@ -8141,12 +8141,12 @@ int yaksuri_seqi_pack_resized_resized_blkhindx_blklen_1__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < 1; k3++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -8154,12 +8154,12 @@ int yaksuri_seqi_pack_resized_resized_blkhindx_blklen_1__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < 1; k3++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -8218,12 +8218,12 @@ int yaksuri_seqi_unpack_resized_resized_blkhindx_blklen_1__Bool(const void *inbu
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < 1; k3++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -8231,12 +8231,12 @@ int yaksuri_seqi_unpack_resized_resized_blkhindx_blklen_1__Bool(const void *inbu
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < 1; k3++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -8295,12 +8295,12 @@ int yaksuri_seqi_pack_resized_resized_blkhindx_blklen_2__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < 2; k3++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -8308,12 +8308,12 @@ int yaksuri_seqi_pack_resized_resized_blkhindx_blklen_2__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < 2; k3++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -8372,12 +8372,12 @@ int yaksuri_seqi_unpack_resized_resized_blkhindx_blklen_2__Bool(const void *inbu
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < 2; k3++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -8385,12 +8385,12 @@ int yaksuri_seqi_unpack_resized_resized_blkhindx_blklen_2__Bool(const void *inbu
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < 2; k3++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -8449,12 +8449,12 @@ int yaksuri_seqi_pack_resized_resized_blkhindx_blklen_3__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < 3; k3++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -8462,12 +8462,12 @@ int yaksuri_seqi_pack_resized_resized_blkhindx_blklen_3__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < 3; k3++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -8526,12 +8526,12 @@ int yaksuri_seqi_unpack_resized_resized_blkhindx_blklen_3__Bool(const void *inbu
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < 3; k3++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -8539,12 +8539,12 @@ int yaksuri_seqi_unpack_resized_resized_blkhindx_blklen_3__Bool(const void *inbu
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < 3; k3++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -8603,12 +8603,12 @@ int yaksuri_seqi_pack_resized_resized_blkhindx_blklen_4__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < 4; k3++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -8616,12 +8616,12 @@ int yaksuri_seqi_pack_resized_resized_blkhindx_blklen_4__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < 4; k3++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -8680,12 +8680,12 @@ int yaksuri_seqi_unpack_resized_resized_blkhindx_blklen_4__Bool(const void *inbu
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < 4; k3++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -8693,12 +8693,12 @@ int yaksuri_seqi_unpack_resized_resized_blkhindx_blklen_4__Bool(const void *inbu
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < 4; k3++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -8757,12 +8757,12 @@ int yaksuri_seqi_pack_resized_resized_blkhindx_blklen_5__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < 5; k3++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -8770,12 +8770,12 @@ int yaksuri_seqi_pack_resized_resized_blkhindx_blklen_5__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < 5; k3++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -8834,12 +8834,12 @@ int yaksuri_seqi_unpack_resized_resized_blkhindx_blklen_5__Bool(const void *inbu
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < 5; k3++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -8847,12 +8847,12 @@ int yaksuri_seqi_unpack_resized_resized_blkhindx_blklen_5__Bool(const void *inbu
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < 5; k3++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -8911,12 +8911,12 @@ int yaksuri_seqi_pack_resized_resized_blkhindx_blklen_6__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < 6; k3++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -8924,12 +8924,12 @@ int yaksuri_seqi_pack_resized_resized_blkhindx_blklen_6__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < 6; k3++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -8988,12 +8988,12 @@ int yaksuri_seqi_unpack_resized_resized_blkhindx_blklen_6__Bool(const void *inbu
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < 6; k3++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -9001,12 +9001,12 @@ int yaksuri_seqi_unpack_resized_resized_blkhindx_blklen_6__Bool(const void *inbu
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < 6; k3++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -9065,12 +9065,12 @@ int yaksuri_seqi_pack_resized_resized_blkhindx_blklen_7__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < 7; k3++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -9078,12 +9078,12 @@ int yaksuri_seqi_pack_resized_resized_blkhindx_blklen_7__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < 7; k3++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -9142,12 +9142,12 @@ int yaksuri_seqi_unpack_resized_resized_blkhindx_blklen_7__Bool(const void *inbu
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < 7; k3++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -9155,12 +9155,12 @@ int yaksuri_seqi_unpack_resized_resized_blkhindx_blklen_7__Bool(const void *inbu
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < 7; k3++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -9219,12 +9219,12 @@ int yaksuri_seqi_pack_resized_resized_blkhindx_blklen_8__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < 8; k3++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -9232,12 +9232,12 @@ int yaksuri_seqi_pack_resized_resized_blkhindx_blklen_8__Bool(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < 8; k3++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -9296,12 +9296,12 @@ int yaksuri_seqi_unpack_resized_resized_blkhindx_blklen_8__Bool(const void *inbu
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < 8; k3++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -9309,12 +9309,12 @@ int yaksuri_seqi_unpack_resized_resized_blkhindx_blklen_8__Bool(const void *inbu
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < 8; k3++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -9373,12 +9373,12 @@ int yaksuri_seqi_pack_resized_resized_blkhindx_blklen_generic__Bool(const void *
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -9386,12 +9386,12 @@ int yaksuri_seqi_pack_resized_resized_blkhindx_blklen_generic__Bool(const void *
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))), *((_Bool *) (void *) (dbuf + idx)));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -9450,12 +9450,12 @@ int yaksuri_seqi_unpack_resized_resized_blkhindx_blklen_generic__Bool(const void
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }
@@ -9463,12 +9463,12 @@ int yaksuri_seqi_unpack_resized_resized_blkhindx_blklen_generic__Bool(const void
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                     for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                        YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
+                        YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent + array_of_displs3[j3] + k3 * sizeof(_Bool))));
                         idx += sizeof(_Bool);
                     }
                 }

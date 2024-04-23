@@ -1,12 +1,24 @@
-.TH MPI_Reduce_scatter_block_init 3 "2/22/2022" " " "MPI"
+.TH MPI_Reduce_scatter_block_init 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Reduce_scatter_block_init \-  Create a persistent request for reduce_scatter_block. 
 .SH SYNOPSIS
 .nf
-int MPI_Reduce_scatter_block_init(const void *sendbuf, void *recvbuf, int recvcount,
-MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Info info,
+.fi
+.nf
+int MPI_Reduce_scatter_block_init(const void *sendbuf, void *recvbuf,
+int recvcount, MPI_Datatype datatype,
+MPI_Op op, MPI_Comm comm, MPI_Info info,
 MPI_Request *request)
 .fi
+
+.nf
+int MPI_Reduce_scatter_block_init_c(const void *sendbuf, void *recvbuf,
+MPI_Count recvcount, MPI_Datatype datatype,
+MPI_Op op, MPI_Comm comm, MPI_Info info,
+MPI_Request *request)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -117,7 +129,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

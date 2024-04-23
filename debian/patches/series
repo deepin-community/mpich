@@ -1,2 +1,2 @@
 missing-conf.patch
-# autotools.patch
+0002-autogen.sh-Avoid-debian-buggy-which-output.patch

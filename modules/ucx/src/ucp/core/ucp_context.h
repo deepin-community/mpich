@@ -1,5 +1,5 @@
 /**
- * Copyright (C) Mellanox Technologies Ltd. 2001-2015.  ALL RIGHTS RESERVED.
+ * Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2001-2015. ALL RIGHTS RESERVED.
  * Copyright (C) ARM Ltd. 2016.  ALL RIGHTS RESERVED.
  * Copyright (C) Advanced Micro Devices, Inc. 2019. ALL RIGHTS RESERVED.
  *
@@ -17,6 +17,7 @@
 #include <ucp/dt/dt.h>
 #include <ucp/proto/proto.h>
 #include <uct/api/uct.h>
+#include <uct/api/v2/uct_v2.h>
 #include <ucs/datastruct/mpool.h>
 #include <ucs/datastruct/queue_types.h>
 #include <ucs/datastruct/bitmap.h>
@@ -28,13 +29,18 @@
 #include <ucs/type/param.h>
 
 
+/* Hash map of rcaches which contain imported memory handles got from peers */
+KHASH_TYPE(ucp_context_imported_mem_hash, uint64_t, ucs_rcache_t*);
+typedef khash_t(ucp_context_imported_mem_hash) ucp_context_imported_mem_hash_t;
+
+KHASH_IMPL(ucp_context_imported_mem_hash, uint64_t, ucs_rcache_t*, 1,
+           kh_int64_hash_func, kh_int64_hash_equal);
+
+
 enum {
     /* The flag indicates that the resource may be used for auxiliary
      * wireup communications only */
-    UCP_TL_RSC_FLAG_AUX      = UCS_BIT(0),
-    /* The flag indicates that the resource may be used for client-server
-     * connection establishment with a sockaddr */
-    UCP_TL_RSC_FLAG_SOCKADDR = UCS_BIT(1)
+    UCP_TL_RSC_FLAG_AUX = UCS_BIT(0)
 };
 
 
@@ -55,6 +61,8 @@ typedef struct ucp_context_config {
     /** Maximal allowed ratio between slowest and fastest lane in a multi-lane
      *  protocol. Lanes slower than the specified ratio will not be used */
     double                                 multi_lane_max_ratio;
+    /* Bandwidth efficiency ratio */
+    double                                 multi_path_ratio;
     /** Threshold for switching UCP to zero copy protocol */
     size_t                                 zcopy_thresh;
     /** Communication scheme in RNDV protocol */
@@ -69,8 +77,12 @@ typedef struct ucp_context_config {
     size_t                                 rndv_frag_size[UCS_MEMORY_TYPE_LAST];
     /** Number of RNDV pipeline fragments per allocation */
     size_t                                 rndv_num_frags[UCS_MEMORY_TYPE_LAST];
+    /** Memory type of fragments used for RNDV pipeline protocol */
+    ucs_memory_type_t                      rndv_frag_mem_type;
     /** RNDV pipeline send threshold */
     size_t                                 rndv_pipeline_send_thresh;
+    /** Enabling 2-stage pipeline rndv protocol */
+    int                                    rndv_shm_ppln_enable;
     /** Threshold for using tag matching offload capabilities. Smaller buffers
      *  will not be posted to the transport. */
     size_t                                 tm_thresh;
@@ -95,12 +107,19 @@ typedef struct ucp_context_config {
     unsigned                               max_eager_lanes;
     /** Rendezvous-get multi-lane support */
     unsigned                               max_rndv_lanes;
+    /** RMA multi-lane support */
+    unsigned                               max_rma_lanes;
+    /** Minimum allowed chunk size when splitting rndv message over multiple
+     *  lanes */
+    size_t                                 min_rndv_chunk_size;
     /** Estimated number of endpoints */
     size_t                                 estimated_num_eps;
     /** Estimated number of processes per node */
     size_t                                 estimated_num_ppn;
     /** Enable flushing endpoints while flushing a worker */
     int                                    flush_worker_eps;
+    /** Fence mode */
+    ucp_fence_mode_t                       fence_mode;
     /** Enable optimizations suitable for homogeneous systems */
     int                                    unified_mode;
     /** Enable cm wireup message exchange to select the best transports
@@ -110,11 +129,16 @@ typedef struct ucp_context_config {
     size_t                                 listener_backlog;
     /** Enable new protocol selection logic */
     int                                    proto_enable;
+    /** Force request reset after wireup */
+    int                                    proto_request_reset;
     /** Time period between keepalive rounds */
     ucs_time_t                             keepalive_interval;
     /** Maximal number of endpoints to check on every keepalive round
      * (0 - disabled, inf - check all endpoints on every round) */
     unsigned                               keepalive_num_eps;
+    /** Defines whether resolving remote endpoint ID is required or not when
+     *  creating a local endpoint */
+    ucs_on_off_auto_value_t                resolve_remote_ep_id;
     /** Enable indirect IDs to object pointers in wire protocols */
     ucs_on_off_auto_value_t                proto_indirect_id;
     /** Bitmap of memory types whose allocations are registered fully */
@@ -130,6 +154,16 @@ typedef struct ucp_context_config {
     int                                    rkey_mpool_max_md;
     /** Worker address format version */
     ucp_object_version_t                   worker_addr_version;
+    /** Threshold for enabling RNDV data split alignment */
+    size_t                                 rndv_align_thresh;
+    /** Print protocols information */
+    char                                   *proto_info;
+    /** MD to compare for transport selection scores */
+    char                                   *select_distance_md;
+    /** Directory to write protocol selection information */
+    char                                   *proto_info_dir;
+    /** Memory types that perform non-blocking registration by default */
+    uint64_t                               reg_nb_mem_types;
 } ucp_context_config_t;
 
 
@@ -151,22 +185,20 @@ struct ucp_config {
     ucp_context_config_names_t             rndv_frag_sizes;
     /** Array of rendezvous fragment elems per allocation */
     ucp_context_config_names_t             rndv_frag_elems;
-    /** Array of transports for partial worker address to pack */
-    UCS_CONFIG_STRING_ARRAY_FIELD(aux_tls) sockaddr_aux_tls;
     /** Array of transports for client-server transports and port selection */
     UCS_CONFIG_STRING_ARRAY_FIELD(cm_tls)  sockaddr_cm_tls;
     /** Warn on invalid configuration */
     int                                    warn_invalid_config;
-    /** This config environment prefix */
-    char                                   *env_prefix;
-    /** MD to compare for transport selection scores */
-    char                                   *selection_cmp;
+    /** Array of worker memory pool sizes */
+    UCS_CONFIG_ARRAY_FIELD(size_t, memunits) mpool_sizes;
+    /** Memory registration cache */
+    ucs_ternary_auto_value_t               enable_rcache;
     /** Configuration saved directly in the context */
     ucp_context_config_t                   ctx;
     /** Save ucx configurations not listed in ucp_config_table **/
     ucs_list_link_t                        cached_key_list;
-    /** Array of worker memory pool sizes */
-    UCS_CONFIG_ARRAY_FIELD(size_t, memunits) mpool_sizes;
+    /** This config environment prefix */
+    char                                   *env_prefix;
 };
 
 
@@ -205,10 +237,30 @@ typedef struct ucp_tl_cmpt {
  * Memory domain.
  */
 typedef struct ucp_tl_md {
-    uct_md_h                      md;         /* Memory domain handle */
-    ucp_rsc_index_t               cmpt_index; /* Index of owning component */
-    uct_md_resource_desc_t        rsc;        /* Memory domain resource */
-    uct_md_attr_t                 attr;       /* Memory domain attributes */
+    /**
+     * Memory domain handle
+     */
+    uct_md_h               md;
+
+    /**
+     * Index of owning component
+     */
+    ucp_rsc_index_t        cmpt_index;
+
+    /**
+     * Memory domain resource
+     */
+    uct_md_resource_desc_t rsc;
+
+    /**
+     * Memory domain attributes
+     */
+    uct_md_attr_v2_t       attr;
+
+    /**
+     * Flags mask parameter for @ref uct_md_mkey_pack_v2
+     */
+    unsigned               pack_flags_mask;
 } ucp_tl_md_t;
 
 
@@ -222,15 +274,34 @@ typedef struct ucp_context {
     ucp_tl_md_t                   *tl_mds;    /* Memory domain resources */
     ucp_md_index_t                num_mds;    /* Number of memory domains */
 
-    /* Map of memory domains that have valid memory keys for host memory
-       allocated with ucp_mem_mmap_common().
-       It's initialized on first access. */
-    int                           alloc_md_map_initialized;
-    ucp_md_map_t                  alloc_md_map;
+    /* Index of memory domain that is used to allocate memory of the given type
+     * using ucp_memh_alloc(). */
+    int                           alloc_md_index_initialized;
+    ucp_md_index_t                alloc_md_index[UCS_MEMORY_TYPE_LAST];
+
+    /* Map of MDs that provide registration for given memory type,
+       ucp_mem_map() will register memory for all those domains. */
+    ucp_md_map_t                  reg_md_map[UCS_MEMORY_TYPE_LAST];
+
+    /* Map of MDs that require caching registrations for given memory type. */
+    ucp_md_map_t                  cache_md_map[UCS_MEMORY_TYPE_LAST];
+
+    /* Map of MDs that provide registration of a memory buffer for a given
+       memory type to be exported to other processes. */
+    ucp_md_map_t                  export_md_map;
+
+    /* Map of MDs that support dmabuf registration */
+    ucp_md_map_t                  dmabuf_reg_md_map;
 
     /* List of MDs that detect non host memory type */
     ucp_md_index_t                mem_type_detect_mds[UCS_MEMORY_TYPE_LAST];
     ucp_md_index_t                num_mem_type_detect_mds;  /* Number of mem type MDs */
+
+    /* Map of dmabuf providers per memory type. Each entry in the array is
+       either the index of the provider MD, or UCP_NULL_RESOURCE if no such MD
+       exists. */
+    ucp_md_index_t                dmabuf_mds[UCS_MEMORY_TYPE_LAST];
+
     uint64_t                      mem_type_mask;            /* Supported mem type mask */
 
     ucp_tl_resource_desc_t        *tl_rscs;   /* Array of communication resources */
@@ -238,11 +309,13 @@ typedef struct ucp_context {
                                                * Not all resources may be used if unified
                                                * mode is enabled. */
     ucp_rsc_index_t               num_tls;    /* Number of resources in the array */
-
-    /* Mask of memory type communication resources */
-    ucp_tl_bitmap_t               mem_type_access_tls[UCS_MEMORY_TYPE_LAST];
-
     ucp_proto_id_mask_t           proto_bitmap;  /* Enabled protocols */
+
+    /* Mem handle registration cache */
+    ucs_rcache_t                  *rcache;
+
+    /* Hash of rcaches which contain imported memory handles got from peers */
+    ucp_context_imported_mem_hash_t *imported_mem_hash;
 
     struct {
 
@@ -286,8 +359,9 @@ typedef struct ucp_context {
         /* Config environment prefix used to create the context */
         char                      *env_prefix;
 
-        /* MD to compare for transport selection scores */
-        char                      *selection_cmp;
+        /* worker_fence implementation method */
+        unsigned                  worker_strong_fence;
+
         struct {
            unsigned               count;
            size_t                 *sizes;
@@ -298,6 +372,12 @@ typedef struct ucp_context {
     ucp_mt_lock_t                 mt_lock;
 
     char                          name[UCP_ENTITY_NAME_MAX];
+
+    /* Global unique identifier */
+    uint64_t                      uuid;
+
+    /* Next memory handle registration identifier */
+    uint64_t                      next_memh_reg_id;
 
     /* Save cached uct configurations */
     ucs_list_link_t               cached_key_list;
@@ -333,22 +413,31 @@ typedef struct ucp_tl_iface_atomic_flags {
 
 
 /*
- * Define UCP active message handler.
+ * Define UCP active message handler helper macro.
  */
-#define UCP_DEFINE_AM(_features, _id, _cb, _tracer, _flags) \
-    UCS_STATIC_INIT { \
-        ucp_am_handlers[_id].features = _features; \
-        ucp_am_handlers[_id].cb       = _cb; \
-        ucp_am_handlers[_id].tracer   = _tracer; \
-        ucp_am_handlers[_id].flags    = _flags; \
+#define _UCP_DEFINE_AM(_features, _id, _cb, _tracer, _flags, _proxy) \
+    ucp_am_handler_t ucp_am_handler_##_id  = { \
+        .features = _features, \
+        .cb       = _cb, \
+        .tracer   = _tracer, \
+        .flags    = _flags, \
+        .proxy_cb = _proxy \
     }
 
 
-/**
- * Defines a proxy handler which counts received messages on ucp_worker_iface_t
- * context. It's used to determine if there is activity on a transport interface.
+/*
+ * Define UCP active message handler.
  */
-#define UCP_DEFINE_AM_PROXY(_id) \
+#define UCP_DEFINE_AM(_features, _id, _cb, _tracer, _flags) \
+    _UCP_DEFINE_AM(_features, _id, _cb, _tracer, _flags, NULL)
+
+
+/**
+ * Defines UCP active message handler with proxy handler which counts received
+ * messages on ucp_worker_iface_t context. It's used to determine if there is
+ * activity on a transport interface.
+ */
+#define UCP_DEFINE_AM_WITH_PROXY(_features, _id, _cb, _tracer, _flags) \
     \
     static ucs_status_t \
     ucp_am_##_id##_counting_proxy(void *arg, void *data, size_t length, \
@@ -356,12 +445,11 @@ typedef struct ucp_tl_iface_atomic_flags {
     { \
         ucp_worker_iface_t *wiface = arg; \
         wiface->proxy_recv_count++; \
-        return ucp_am_handlers[_id].cb(wiface->worker, data, length, flags); \
+        return _cb(wiface->worker, data, length, flags); \
     } \
     \
-    UCS_STATIC_INIT { \
-        ucp_am_handlers[_id].proxy_cb = ucp_am_##_id##_counting_proxy; \
-    }
+    _UCP_DEFINE_AM(_features, _id, _cb, _tracer, _flags, \
+                   ucp_am_##_id##_counting_proxy)
 
 
 #define UCP_CHECK_PARAM_NON_NULL(_param, _status, _action) \
@@ -408,9 +496,24 @@ typedef struct ucp_tl_iface_atomic_flags {
     ucs_assert(ucp_memory_type_detect(_context, _buffer, _length) == (_mem_type))
 
 
-extern ucp_am_handler_t ucp_am_handlers[];
-extern const char      *ucp_feature_str[];
-extern const char  *ucp_operation_names[];
+#define UCP_CONTEXT_MEM_CAP_TLS(_context, _mem_type, _cap_field, _tl_bitmap) \
+    { \
+        const uct_md_attr_v2_t *md_attr; \
+        ucp_md_index_t md_index; \
+        ucp_rsc_index_t tl_id; \
+        UCS_BITMAP_CLEAR(&(_tl_bitmap)); \
+        UCS_BITMAP_FOR_EACH_BIT((_context)->tl_bitmap, tl_id) { \
+            md_index = (_context)->tl_rscs[tl_id].md_index; \
+            md_attr  = &(_context)->tl_mds[md_index].attr; \
+            if (md_attr->_cap_field & UCS_BIT(_mem_type)) { \
+                UCS_BITMAP_SET(_tl_bitmap, tl_id); \
+            } \
+        } \
+    }
+
+
+extern ucp_am_handler_t *ucp_am_handlers[];
+extern const char       *ucp_feature_str[];
 
 
 void ucp_dump_payload(ucp_context_h context, char *buffer, size_t max,
@@ -487,6 +590,14 @@ ucp_tl_iface_bandwidth(ucp_context_h context, const uct_ppn_bandwidth_t *bandwid
            (bandwidth->shared / context->config.est_num_ppn);
 }
 
+static UCS_F_ALWAYS_INLINE const uct_component_attr_t*
+ucp_cmpt_attr_by_md_index(ucp_context_h context, ucp_md_index_t md_index)
+{
+    ucp_tl_md_t *tl_md = &context->tl_mds[md_index];
+
+    return &context->tl_cmpts[tl_md->cmpt_index].attr;
+}
+
 static UCS_F_ALWAYS_INLINE void
 ucp_memory_info_set_host(ucp_memory_info_t *mem_info)
 {
@@ -505,25 +616,28 @@ ucp_memory_detect_internal(ucp_context_h context, const void *address,
     }
 
     status = ucs_memtype_cache_lookup(address, length, mem_info);
-    if (status != UCS_ERR_NO_ELEM) {
-        if (ucs_likely(status != UCS_OK)) {
-            ucs_assert(status == UCS_ERR_NO_ELEM);
-            goto out_host_mem;
+    if (ucs_likely(status == UCS_ERR_NO_ELEM)) {
+        ucs_trace_req("address %p length %zu: not found in memtype cache, "
+                      "assuming host memory",
+                      address, length);
+        goto out_host_mem;
+    } else if (ucs_likely(status == UCS_OK)) {
+        if (ucs_unlikely(mem_info->type == UCS_MEMORY_TYPE_UNKNOWN)) {
+            ucs_trace_req(
+                    "address %p length %zu: memtype cache returned 'unknown'",
+                    address, length);
+            ucp_memory_detect_slowpath(context, address, length, mem_info);
+        } else {
+            ucs_trace_req(
+                    "address %p length %zu: memtype cache returned '%s' %s",
+                    address, length, ucs_memory_type_names[mem_info->type],
+                    ucs_topo_sys_device_get_name(mem_info->sys_dev));
         }
-
-        if ((mem_info->type != UCS_MEMORY_TYPE_UNKNOWN) &&
-            ((mem_info->sys_dev != UCS_SYS_DEVICE_ID_UNKNOWN))) {
-            return;
-        }
-
-        /* Fall thru to slow-path memory type and system device detection by UCT
-         * memory domains. In any case, the memory type cache is not expected to
-         * return HOST memory type.
-         */
-        ucs_assert(mem_info->type != UCS_MEMORY_TYPE_HOST);
+    } else {
+        ucp_memory_detect_slowpath(context, address, length, mem_info);
     }
 
-    ucp_memory_detect_slowpath(context, address, length, mem_info);
+    /* Memory type and system device was detected successfully */
     return;
 
 out_host_mem:

@@ -1,11 +1,16 @@
-.TH MPI_Dist_graph_neighbors 3 "2/22/2022" " " "MPI"
+.TH MPI_Dist_graph_neighbors 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Dist_graph_neighbors \-  Provides adjacency information for a distributed graph topology 
 .SH SYNOPSIS
 .nf
-int MPI_Dist_graph_neighbors(MPI_Comm comm, int maxindegree, int sources[], int sourceweights[],
-int maxoutdegree, int destinations[], int destweights[])
 .fi
+.nf
+int MPI_Dist_graph_neighbors(MPI_Comm comm, int maxindegree, int sources[],
+int sourceweights[], int maxoutdegree,
+int destinations[], int destweights[])
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -111,7 +116,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

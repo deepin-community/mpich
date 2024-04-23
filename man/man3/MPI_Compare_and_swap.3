@@ -1,11 +1,16 @@
-.TH MPI_Compare_and_swap 3 "2/22/2022" " " "MPI"
+.TH MPI_Compare_and_swap 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Compare_and_swap \-  Perform one-sided atomic compare-and-swap. 
 .SH SYNOPSIS
 .nf
-int MPI_Compare_and_swap(const void *origin_addr, const void *compare_addr, void *result_addr,
-MPI_Datatype datatype, int target_rank, MPI_Aint target_disp, MPI_Win win)
 .fi
+.nf
+int MPI_Compare_and_swap(const void *origin_addr, const void *compare_addr,
+void *result_addr, MPI_Datatype datatype,
+int target_rank, MPI_Aint target_disp, MPI_Win win)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -110,7 +115,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

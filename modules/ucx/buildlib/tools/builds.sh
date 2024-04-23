@@ -1,4 +1,9 @@
 #!/bin/bash -eExl
+#
+# Copyright (c) 2022, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+#
+# See file LICENSE for terms.
+#
 
 realdir=$(realpath $(dirname $0))
 source ${realdir}/common.sh
@@ -46,17 +51,6 @@ build_no_verbs() {
 }
 
 #
-# Build without numa support check
-#
-build_disable_numa() {
-	echo "==== Check --disable-numa compilation option ===="
-	${WORKSPACE}/contrib/configure-release --prefix=$ucx_inst --disable-numa
-	$MAKEP
-	# Make sure config.h file undefines HAVE_NUMA proceprocessor macro
-	grep 'undef HAVE_NUMA' config.h || exit 1
-}
-
-#
 # Build a package in release mode
 #
 build_release_pkg() {
@@ -82,21 +76,33 @@ build_release_pkg() {
 
 	if [[ "$rpm_based" == "no" && -x /usr/bin/dpkg-buildpackage ]]; then
 		echo "==== Build debian package ===="
-		dpkg-buildpackage -us -uc
+		(
+			tarball=$(ls -t ucx-*.tar.gz | head -n1)
+			tar xzf $tarball
+			subdir=${tarball%.tar.gz}
+			cd $subdir
+			dpkg-buildpackage -us -uc
+		)
 	else
 		echo "==== Build RPM ===="
 		echo "$PWD"
 		${WORKSPACE}/contrib/buildrpm.sh -s -b --nodeps --define "_topdir $PWD"
-		if rpm -qp ${PWD}/ls ucx-[0-9]*.rpm --requires | grep cuda; then
+		if rpm -qp ${PWD}/rpm-dist/ucx-[0-9]*.rpm --requires | grep cuda; then
 			azure_log_error "Release build depends on CUDA while it should not"
 			exit 1
 		fi
+		echo "==== Build debug RPM ===="
+		${WORKSPACE}/contrib/buildrpm.sh -s -b -d --nodeps --define "_topdir $PWD/debug"
 	fi
 
 	# check that UCX version is present in spec file
 	cd ${WORKSPACE}
-	# extract version from configure.ac and convert to MAJOR.MINOR.PATCH representation
-	version=$(grep -P "define\S+ucx_ver" configure.ac | awk '{print $2}' | sed 's,),,' | xargs echo | tr ' ' '.')
+	# extract version from configure.ac and convert to (MAJOR).(MINOR).(PATCH)(EXTRA) representation
+	major_ver=$(grep -P "define\S+ucx_ver_major" configure.ac | awk '{print $2}' | sed 's/)//')
+	minor_ver=$(grep -P "define\S+ucx_ver_minor" configure.ac | awk '{print $2}' | sed 's/)//')
+	patch_ver=$(grep -P "define\S+ucx_ver_patch" configure.ac | awk '{print $2}' | sed 's/)//')
+	extra_ver=$(grep -P "define\S+ucx_ver_extra" configure.ac | awk '{print $2}' | sed 's/)//')
+	version=${major_ver}.${minor_ver}.${patch_ver}${extra_ver}
 	if ! grep -q "$version" ucx.spec.in; then
 		azure_log_error "Current UCX version ($version) is not present in ucx.spec.in changelog"
 		exit 1
@@ -224,6 +230,19 @@ build_cuda() {
 }
 
 #
+# Build ROCm
+#
+build_rocm() {
+	if [ -f /opt/rocm/bin/rocminfo ]; then
+		echo "==== Build with enable rocm  ===="
+		${WORKSPACE}/contrib/configure-devel --prefix=$ucx_inst --with-rocm
+		$MAKEP
+	else
+		echo "==== Not building with rocm ===="
+	fi
+}
+
+#
 # Build with clang compiler
 #
 build_clang() {
@@ -242,6 +261,8 @@ build_clang() {
 # Build with gcc-latest module
 #
 build_gcc() {
+	cflags=$1
+
 	#If the glibc version on the host is older than 2.14, don't run
 	#check the glibc version with the ldd version since it comes with glibc
 	#see https://www.linuxquestions.org/questions/linux-software-2/how-to-check-glibc-version-263103/
@@ -258,7 +279,7 @@ build_gcc() {
 		if az_module_load $GCC_MODULE
 		then
 			echo "==== Build with GCC compiler ($(gcc --version|head -1)) ===="
-			${WORKSPACE}/contrib/configure-devel --prefix=$ucx_inst
+			${WORKSPACE}/contrib/configure-devel CFLAGS="$cflags" CXXFLAGS="$cflags" --prefix=$ucx_inst
 			$MAKEP
 			$MAKEP install
 			az_module_unload $GCC_MODULE
@@ -266,6 +287,10 @@ build_gcc() {
 	else
 		azure_log_warning "Not building with gcc compiler, glibc version is too old ($ldd_ver)"
 	fi
+}
+
+build_gcc_debug_opt() {
+	build_gcc "-Og"
 }
 
 #
@@ -349,6 +374,27 @@ build_cmake_examples() {
 }
 
 #
+# Build with FUSE
+#
+build_fuse() {
+	if az_module_load $FUSE3_MODULE
+	then
+		echo "==== Build with FUSE (dynamic link) ===="
+		${WORKSPACE}/contrib/configure-devel --prefix=$ucx_inst --with-fuse3
+		$MAKEP
+		make_clean distclean
+
+		echo "==== Build with FUSE (static link) ===="
+		${WORKSPACE}/contrib/configure-devel --prefix=$ucx_inst --with-fuse3-static
+		$MAKEP
+
+		az_module_unload $FUSE3_MODULE
+	else
+		azure_log_warning "cannot load FUSE module, skipping build with FUSE"
+	fi
+}
+
+#
 # Do a given task and update progress indicator
 #
 do_task() {
@@ -373,11 +419,12 @@ do_task "${prog}" build_docs
 do_task "${prog}" build_debug
 do_task "${prog}" build_prof
 do_task "${prog}" build_ugni
-do_task "${prog}" build_disable_numa
 do_task "${prog}" build_cuda
+do_task "${prog}" build_rocm
 do_task "${prog}" build_no_verbs
 do_task "${prog}" build_release_pkg
 do_task "${prog}" build_cmake_examples
+do_task "${prog}" build_fuse
 
 if [ "${long_test}" = "yes" ]
 then
@@ -386,6 +433,7 @@ then
 	do_task 10 build_icc
 	do_task 10 build_pgi
 	do_task 10 build_gcc
+	do_task 10 build_gcc_debug_opt
 	do_task 10 build_clang
 	do_task 10 build_armclang
 fi

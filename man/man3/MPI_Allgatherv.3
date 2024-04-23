@@ -1,12 +1,23 @@
-.TH MPI_Allgatherv 3 "2/22/2022" " " "MPI"
+.TH MPI_Allgatherv 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Allgatherv \-  Gathers data from all tasks and deliver the combined data to all tasks 
 .SH SYNOPSIS
 .nf
-int MPI_Allgatherv(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf,
-const int recvcounts[], const int displs[], MPI_Datatype recvtype,
-MPI_Comm comm)
 .fi
+.nf
+int MPI_Allgatherv(const void *sendbuf, int sendcount, MPI_Datatype sendtype,
+void *recvbuf, const int recvcounts[], const int displs[],
+MPI_Datatype recvtype, MPI_Comm comm)
+.fi
+
+.nf
+int MPI_Allgatherv_c(const void *sendbuf, MPI_Count sendcount,
+MPI_Datatype sendtype, void *recvbuf,
+const MPI_Count recvcounts[], const MPI_Aint displs[],
+MPI_Datatype recvtype, MPI_Comm comm)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -150,7 +161,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_BUFFER 

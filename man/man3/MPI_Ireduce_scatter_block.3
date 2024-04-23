@@ -1,12 +1,22 @@
-.TH MPI_Ireduce_scatter_block 3 "2/22/2022" " " "MPI"
+.TH MPI_Ireduce_scatter_block 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Ireduce_scatter_block \-  Combines values and scatters the results in a nonblocking way 
 .SH SYNOPSIS
+.nf
+.fi
 .nf
 int MPI_Ireduce_scatter_block(const void *sendbuf, void *recvbuf, int recvcount,
 MPI_Datatype datatype, MPI_Op op, MPI_Comm comm,
 MPI_Request *request)
 .fi
+
+.nf
+int MPI_Ireduce_scatter_block_c(const void *sendbuf, void *recvbuf,
+MPI_Count recvcount, MPI_Datatype datatype,
+MPI_Op op, MPI_Comm comm, MPI_Request *request)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -112,7 +122,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

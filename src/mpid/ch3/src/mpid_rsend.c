@@ -12,7 +12,7 @@
 /*
  * MPID_Rsend()
  */
-int MPID_Rsend(const void * buf, int count, MPI_Datatype datatype, int rank, int tag, MPIR_Comm * comm, int context_offset,
+int MPID_Rsend(const void * buf, MPI_Aint count, MPI_Datatype datatype, int rank, int tag, MPIR_Comm * comm, int attr,
 	       MPIR_Request ** request)
 {
     intptr_t data_sz;
@@ -28,6 +28,7 @@ int MPID_Rsend(const void * buf, int count, MPI_Datatype datatype, int rank, int
 
     MPIR_FUNC_ENTER;
 
+    int context_offset = MPIR_PT2PT_ATTR_CONTEXT_OFFSET(attr);
     MPL_DBG_MSG_FMT(MPIDI_CH3_DBG_OTHER,VERBOSE,(MPL_DBG_FDEST,
 					"rank=%d, tag=%d, context=%d", 
                               rank, tag, comm->context_id + context_offset));
@@ -74,9 +75,7 @@ int MPID_Rsend(const void * buf, int count, MPI_Datatype datatype, int rank, int
 	MPIDI_VC_FAI_send_seqnum(vc, seqnum);
 	MPIDI_Pkt_set_seqnum(ready_pkt, seqnum);
 	
-	MPID_THREAD_CS_ENTER(POBJ, vc->pobj_mutex);
 	mpi_errno = MPIDI_CH3_iStartMsg(vc, ready_pkt, sizeof(*ready_pkt), &sreq);
-	MPID_THREAD_CS_EXIT(POBJ, vc->pobj_mutex);
 	/* --BEGIN ERROR HANDLING-- */
 	if (mpi_errno != MPI_SUCCESS)
 	{
@@ -130,6 +129,9 @@ int MPID_Rsend(const void * buf, int count, MPI_Datatype datatype, int rank, int
 
   fn_exit:
     *request = sreq;
+    if (sreq) {
+        MPII_SENDQ_REMEMBER(sreq, rank, tag, comm->recvcontext_id, buf, count);
+    }
 
     MPL_DBG_STMT(MPIDI_CH3_DBG_OTHER,VERBOSE,
     {

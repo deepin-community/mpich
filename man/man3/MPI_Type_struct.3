@@ -1,11 +1,16 @@
-.TH MPI_Type_struct 3 "2/22/2022" " " "MPI"
+.TH MPI_Type_struct 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Type_struct \-  Creates a struct datatype 
 .SH SYNOPSIS
 .nf
-int MPI_Type_struct(int count, int array_of_blocklengths[], MPI_Aint array_of_displacements[],
+.fi
+.nf
+int MPI_Type_struct(int count, int array_of_blocklengths[],
+MPI_Aint array_of_displacements[],
 MPI_Datatype array_of_types[], MPI_Datatype *newtype)
 .fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -164,7 +169,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_OTHER 

@@ -9,8 +9,13 @@
 Waits for all given MPI Requests to complete 
 <H2>Synopsis</H2>
 <PRE>
-int MPI_Waitall(int count, MPI_Request array_of_requests[], MPI_Status array_of_statuses[])
 </PRE>
+<PRE>
+int MPI_Waitall(int count, MPI_Request array_of_requests[],
+                MPI_Status *array_of_statuses)
+</PRE>
+
+<P>
 <H2>Input Parameters</H2>
 <DL>
 <DT><B>count </B> <DD> lists length (non-negative integer)
@@ -93,7 +98,10 @@ possible.
 <DL>
 <DT><B>MPI_SUCCESS </B> <DD> No error; MPI routine completed successfully.
 </DL>
-<P>
+<DL>
+<DT><B>MPI_ERR_ARG </B> <DD> Invalid argument.  Some argument is invalid and is not
+identified by a specific error class (e.g., <tt>MPI_ERR_RANK</tt>).
+</DL>
 <DL>
 <DT><B>MPI_ERR_COUNT </B> <DD> Invalid count argument.  Count arguments must be 
 non-negative; a count of zero is often valid.

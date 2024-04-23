@@ -1,13 +1,18 @@
-.TH MPI_Intercomm_create_from_groups 3 "2/22/2022" " " "MPI"
+.TH MPI_Intercomm_create_from_groups 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Intercomm_create_from_groups \-  Create an intercommuncator from local and remote groups 
 .SH SYNOPSIS
 .nf
+.fi
+.nf
 int MPI_Intercomm_create_from_groups(MPI_Group local_group, int local_leader,
 MPI_Group remote_group, int remote_leader,
 const char *stringtag, MPI_Info info,
-MPI_Errhandler errhandler, MPI_Comm *newintercomm)
+MPI_Errhandler errhandler,
+MPI_Comm *newintercomm)
 .fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -118,7 +123,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

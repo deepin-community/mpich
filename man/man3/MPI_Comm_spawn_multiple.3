@@ -1,12 +1,19 @@
-.TH MPI_Comm_spawn_multiple 3 "2/22/2022" " " "MPI"
+.TH MPI_Comm_spawn_multiple 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Comm_spawn_multiple \-  Spawn up multiple MPI applications 
 .SH SYNOPSIS
 .nf
-int MPI_Comm_spawn_multiple(int count, char *array_of_commands[], char **array_of_argv[],
-const int array_of_maxprocs[], const MPI_Info array_of_info[], int root,
-MPI_Comm comm, MPI_Comm *intercomm, int array_of_errcodes[])
 .fi
+.nf
+int MPI_Comm_spawn_multiple(int count, char *array_of_commands[],
+char **array_of_argv[],
+const int array_of_maxprocs[],
+const MPI_Info array_of_info[], int root,
+MPI_Comm comm, MPI_Comm *intercomm,
+int array_of_errcodes[])
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -122,7 +129,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

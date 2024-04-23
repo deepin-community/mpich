@@ -1,11 +1,22 @@
-.TH MPI_Pack_external 3 "2/22/2022" " " "MPI"
+.TH MPI_Pack_external 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Pack_external \-  Packs a datatype into contiguous memory, using the external32 format 
 .SH SYNOPSIS
 .nf
-int MPI_Pack_external(const char *datarep, const void *inbuf, int incount, MPI_Datatype datatype,
-void *outbuf, MPI_Aint outsize, MPI_Aint *position)
 .fi
+.nf
+int MPI_Pack_external(const char *datarep, const void *inbuf, int incount,
+MPI_Datatype datatype, void *outbuf, MPI_Aint outsize,
+MPI_Aint *position)
+.fi
+
+.nf
+int MPI_Pack_external_c(const char *datarep, const void *inbuf,
+MPI_Count incount, MPI_Datatype datatype, void *outbuf,
+MPI_Count outsize, MPI_Count *position)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -113,7 +124,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

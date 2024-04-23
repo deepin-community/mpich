@@ -1,12 +1,26 @@
-.TH MPI_Neighbor_alltoallv 3 "2/22/2022" " " "MPI"
+.TH MPI_Neighbor_alltoallv 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Neighbor_alltoallv \-  The vector variant of MPI_Neighbor_alltoall allows sending/receiving different numbers of elements to and from each neighbor. 
 .SH SYNOPSIS
 .nf
-int MPI_Neighbor_alltoallv(const void *sendbuf, const int sendcounts[], const int sdispls[],
-MPI_Datatype sendtype, void *recvbuf, const int recvcounts[],
-const int rdispls[], MPI_Datatype recvtype, MPI_Comm comm)
 .fi
+.nf
+int MPI_Neighbor_alltoallv(const void *sendbuf, const int sendcounts[],
+const int sdispls[], MPI_Datatype sendtype,
+void *recvbuf, const int recvcounts[],
+const int rdispls[], MPI_Datatype recvtype,
+MPI_Comm comm)
+.fi
+
+.nf
+int MPI_Neighbor_alltoallv_c(const void *sendbuf, const MPI_Count sendcounts[],
+const MPI_Aint sdispls[], MPI_Datatype sendtype,
+void *recvbuf, const MPI_Count recvcounts[],
+const MPI_Aint rdispls[], MPI_Datatype recvtype,
+MPI_Comm comm)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -122,7 +136,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_BUFFER 

@@ -1,11 +1,23 @@
-.TH MPI_Get 3 "2/22/2022" " " "MPI"
+.TH MPI_Get 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Get \-  Get data from a memory window on a remote process 
 .SH SYNOPSIS
 .nf
-int MPI_Get(void *origin_addr, int origin_count, MPI_Datatype origin_datatype, int target_rank,
-MPI_Aint target_disp, int target_count, MPI_Datatype target_datatype, MPI_Win win)
 .fi
+.nf
+int MPI_Get(void *origin_addr, int origin_count, MPI_Datatype origin_datatype,
+int target_rank, MPI_Aint target_disp, int target_count,
+MPI_Datatype target_datatype, MPI_Win win)
+.fi
+
+.nf
+int MPI_Get_c(void *origin_addr, MPI_Count origin_count,
+MPI_Datatype origin_datatype, int target_rank,
+MPI_Aint target_disp, MPI_Count target_count,
+MPI_Datatype target_datatype, MPI_Win win)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -116,7 +128,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_BUFFER 

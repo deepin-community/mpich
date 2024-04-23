@@ -1,11 +1,16 @@
-.TH MPI_T_event_handle_free 3 "2/22/2022" " " "MPI"
+.TH MPI_T_event_handle_free 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_T_event_handle_free \-  Initiates deallocation of the event-registration handle specified by event_registration 
 .SH SYNOPSIS
 .nf
-int MPI_T_event_handle_free(MPI_T_event_registration event_registration, void *user_data,
+.fi
+.nf
+int MPI_T_event_handle_free(MPI_T_event_registration event_registration,
+void *user_data,
 MPI_T_event_free_cb_function free_cb_function)
 .fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -66,7 +71,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_T_ERR_INVALID_HANDLE 

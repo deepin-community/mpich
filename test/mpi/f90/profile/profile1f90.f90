@@ -57,7 +57,7 @@
        end
 !
        subroutine mpi_send( smsg, count, dtype, dest, tag, comm, ierr )
-       use mpi
+       use mpi, skip_mpi_send => mpi_send
        integer count, dtype, dest, tag, comm, ierr
        integer smsg(count)
        common /myinfo/ calls, amount, rcalls, ramount
@@ -71,7 +71,7 @@
 !
       subroutine mpi_recv( rmsg, count, dtype, src, tag, comm, status, &
       &     ierr ) 
-       use mpi
+       use mpi, skip_mpi_recv => mpi_recv
        integer count, dtype, src, tag, comm, status(MPI_STATUS_SIZE), &
       &      ierr 
        integer rmsg(count)

@@ -1,11 +1,16 @@
-.TH MPI_Keyval_create 3 "2/22/2022" " " "MPI"
+.TH MPI_Keyval_create 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Keyval_create \-  Creates a new attribute key 
 .SH SYNOPSIS
 .nf
-int MPI_Keyval_create(MPI_Copy_function *copy_fn, MPI_Delete_function *delete_fn, int *keyval,
+.fi
+.nf
+int MPI_Keyval_create(MPI_Copy_function *copy_fn,
+MPI_Delete_function *delete_fn, int *keyval,
 void *extra_state)
 .fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -104,7 +109,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_OTHER 

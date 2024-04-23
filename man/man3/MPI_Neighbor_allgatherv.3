@@ -1,12 +1,25 @@
-.TH MPI_Neighbor_allgatherv 3 "2/22/2022" " " "MPI"
+.TH MPI_Neighbor_allgatherv 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Neighbor_allgatherv \-  The vector variant of MPI_Neighbor_allgather. 
 .SH SYNOPSIS
 .nf
-int MPI_Neighbor_allgatherv(const void *sendbuf, int sendcount, MPI_Datatype sendtype,
-void *recvbuf, const int recvcounts[], const int displs[],
+.fi
+.nf
+int MPI_Neighbor_allgatherv(const void *sendbuf, int sendcount,
+MPI_Datatype sendtype, void *recvbuf,
+const int recvcounts[], const int displs[],
 MPI_Datatype recvtype, MPI_Comm comm)
 .fi
+
+.nf
+int MPI_Neighbor_allgatherv_c(const void *sendbuf, MPI_Count sendcount,
+MPI_Datatype sendtype, void *recvbuf,
+const MPI_Count recvcounts[],
+const MPI_Aint displs[], MPI_Datatype recvtype,
+MPI_Comm comm)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -117,7 +130,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_BUFFER 

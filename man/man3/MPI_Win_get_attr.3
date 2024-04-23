@@ -1,10 +1,15 @@
-.TH MPI_Win_get_attr 3 "2/22/2022" " " "MPI"
+.TH MPI_Win_get_attr 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Win_get_attr \-  Get attribute cached on an MPI window object 
 .SH SYNOPSIS
 .nf
-int MPI_Win_get_attr(MPI_Win win, int win_keyval, void *attribute_val, int *flag)
 .fi
+.nf
+int MPI_Win_get_attr(MPI_Win win, int win_keyval, void *attribute_val,
+int *flag)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -141,7 +146,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

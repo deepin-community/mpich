@@ -1,11 +1,15 @@
-.TH MPI_Comm_connect 3 "2/22/2022" " " "MPI"
+.TH MPI_Comm_connect 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Comm_connect \-  Make a request to form a new intercommunicator 
 .SH SYNOPSIS
 .nf
-int MPI_Comm_connect(const char *port_name, MPI_Info info, int root, MPI_Comm comm,
-MPI_Comm *newcomm)
 .fi
+.nf
+int MPI_Comm_connect(const char *port_name, MPI_Info info, int root,
+MPI_Comm comm, MPI_Comm *newcomm)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -101,7 +105,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

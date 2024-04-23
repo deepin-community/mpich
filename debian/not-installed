@@ -7,14 +7,12 @@ usr/bin/mpif77
 usr/bin/mpif90
 usr/bin/mpifort
 usr/bin/mpirun
-usr/lib/*/libfmpich.so
-usr/lib/*/libmpich.la
-usr/lib/*/libmpichcxx.la
-usr/lib/*/libmpichf90.so
-usr/lib/*/libmpichfort.la
-usr/lib/*/pkgconfig/yaksa.pc
+usr/lib/*/mpich/lib/lib*.so
+usr/lib/*/mpich/lib/lib*.la
 usr/share/man/man1/mpicc.1
 usr/share/man/man1/mpicxx.1
 usr/share/man/man1/mpiexec.1
 usr/share/man/man1/mpif77.1
 usr/share/man/man1/mpifort.1
+# Installed seperately
+#usr/lib/*/mpich/include/*.mod

@@ -589,7 +589,9 @@ static int win_lock_advance(MPIR_Win * win)
         else
             MPIR_ERR_SETANDJUMP(mpi_errno, MPI_ERR_OTHER, "**rmasync");
 
-        CH4_CALL(am_send_hdr_reply(win->comm_ptr, lock->rank, handler_id, &msg, sizeof(msg), 0, 0),
+        int vci = MPIDI_WIN(win, am_vci);
+        CH4_CALL(am_send_hdr_reply
+                 (win->comm_ptr, lock->rank, handler_id, &msg, sizeof(msg), vci, vci),
                  MPIDI_rank_is_local(lock->rank, win->comm_ptr), mpi_errno);
         MPIR_ERR_CHECK(mpi_errno);
         MPL_free(lock);
@@ -667,8 +669,9 @@ static void win_unlock_proc(const MPIDIG_win_cntrl_msg_t * info, int is_local, M
     msg.win_id = MPIDIG_WIN(win, win_id);
     msg.origin_rank = win->comm_ptr->rank;
 
+    int vci = MPIDI_WIN(win, am_vci);
     CH4_CALL(am_send_hdr_reply(win->comm_ptr, info->origin_rank, MPIDIG_WIN_UNLOCK_ACK,
-                               &msg, sizeof(msg), 0, 0), is_local, mpi_errno);
+                               &msg, sizeof(msg), vci, vci), is_local, mpi_errno);
     MPIR_ERR_CHECK(mpi_errno);
   fn_exit:
     MPIR_FUNC_EXIT;
@@ -805,7 +808,7 @@ static int handle_get_acc_cmpl(MPIR_Request * rreq)
                       MPIDIG_REQUEST(rreq, req->areq.target_count), MPIDIG_REQUEST(rreq,
                                                                                    req->
                                                                                    areq.target_datatype),
-                      0, original, result_data_sz, &actual_pack_bytes);
+                      0, original, result_data_sz, &actual_pack_bytes, MPIR_TYPEREP_FLAG_NONE);
     MPIR_Assert(actual_pack_bytes == result_data_sz);
 
     mpi_errno = MPIDIG_compute_acc_op(MPIDIG_REQUEST(rreq, req->areq.data),
@@ -1062,10 +1065,13 @@ static int cswap_target_cmpl_cb(MPIR_Request * rreq)
 
     if (MPIR_Compare_equal((void *) MPIDIG_REQUEST(rreq, buffer), compare_addr,
                            MPIDIG_REQUEST(rreq, datatype))) {
-        MPIR_Typerep_copy(compare_addr, (void *) MPIDIG_REQUEST(rreq, buffer), data_sz);
-        MPIR_Typerep_copy((void *) MPIDIG_REQUEST(rreq, buffer), origin_addr, data_sz);
+        MPIR_Typerep_copy(compare_addr, (void *) MPIDIG_REQUEST(rreq, buffer), data_sz,
+                          MPIR_TYPEREP_FLAG_NONE);
+        MPIR_Typerep_copy((void *) MPIDIG_REQUEST(rreq, buffer), origin_addr, data_sz,
+                          MPIR_TYPEREP_FLAG_NONE);
     } else {
-        MPIR_Typerep_copy(compare_addr, (void *) MPIDIG_REQUEST(rreq, buffer), data_sz);
+        MPIR_Typerep_copy(compare_addr, (void *) MPIDIG_REQUEST(rreq, buffer), data_sz,
+                          MPIR_TYPEREP_FLAG_NONE);
     }
 
 #ifndef MPIDI_CH4_DIRECT_NETMOD
@@ -1358,7 +1364,7 @@ static int win_ctrl_handler(int handler_id, void *am_hdr, void *data, MPI_Aint i
             break;
 
         default:
-            MPL_snprintf(buff, sizeof(buff), "Invalid message type: %d\n", handler_id);
+            snprintf(buff, sizeof(buff), "Invalid message type: %d\n", handler_id);
             MPID_Abort(NULL, MPI_ERR_INTERN, 1, buff);
     }
 

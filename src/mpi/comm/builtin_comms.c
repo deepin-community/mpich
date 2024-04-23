@@ -127,7 +127,20 @@ static int finalize_builtin_comm(MPIR_Comm * comm)
         comm->errhandler = NULL;
     }
 
-    MPIR_Comm_release_always(comm);
+    MPIR_Comm_free_inactive_requests(comm);
+
+    int ref_count = MPIR_Object_get_ref(comm);
+    if (ref_count != 1) {
+        MPL_internal_error_printf("WARNING: Builtin communicator %x has pending %d references.\n",
+                                  comm->handle, ref_count - 1);
+        if (MPIR_CVAR_FINALIZE_WAIT) {
+            MPL_internal_error_printf("WARNING: polling progress until all references clears.\n");
+            while (MPIR_Object_get_ref(comm) > 1) {
+                MPID_Stream_progress(NULL);
+            }
+        }
+    }
+    mpi_errno = MPIR_Comm_release(comm);
 
   fn_exit:
     return mpi_errno;
@@ -157,6 +170,11 @@ int MPIR_finalize_builtin_comms(void)
         MPIR_Free_contextid(COMM_WORLD_CTXID);
     }
 
+    if (MPIR_Process.comm_parent) {
+        mpi_errno = finalize_builtin_comm(MPIR_Process.comm_parent);
+        MPIR_ERR_CHECK(mpi_errno);
+        MPIR_Process.comm_parent = NULL;
+    }
 #ifdef MPID_NEEDS_ICOMM_WORLD
     if (MPIR_Process.icomm_world) {
         mpi_errno = finalize_builtin_comm(MPIR_Process.icomm_world);

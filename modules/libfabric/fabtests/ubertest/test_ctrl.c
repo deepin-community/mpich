@@ -67,7 +67,7 @@ static int ft_init_rx_control(void)
 	if (ret)
 		return ret;
 
-	ft_rx_ctrl.cq_format = FI_CQ_FORMAT_DATA;
+	ft_rx_ctrl.cq_format = test_info.cq_format;
 	ft_rx_ctrl.addr = FI_ADDR_UNSPEC;
 
 	ft_rx_ctrl.msg_size = ft_ctrl.size_array[ft_ctrl.size_cnt - 1];
@@ -137,7 +137,9 @@ static int ft_init_control(void)
 
 static void ft_cleanup_xcontrol(struct ft_xcontrol *ctrl)
 {
-	free(ctrl->buf);
+	ft_hmem_free(opts.iface, ctrl->buf);
+	free(ctrl->cpy_buf);
+	FT_CLOSE_FID(ctrl->mr);
 	free(ctrl->iov);
 	free(ctrl->iov_desc);
 	free(ctrl->ctx);
@@ -148,6 +150,7 @@ static void ft_cleanup_atomic_control(struct ft_atomic_control *ctrl)
 {
 	free(ctrl->res_buf);
 	free(ctrl->comp_buf);
+	FT_CLOSE_FID(ctrl->comp_mr);
 	free(ctrl->ioc);
 	free(ctrl->res_ioc);
 	free(ctrl->comp_ioc);
@@ -158,6 +161,7 @@ static void ft_cleanup_atomic_control(struct ft_atomic_control *ctrl)
 static void ft_cleanup_mr_control(struct ft_mr_control *ctrl)
 {
 	free(ctrl->buf);
+	FT_CLOSE_FID(ctrl->mr);
 	memset(ctrl, 0, sizeof *ctrl);
 }
 
@@ -418,8 +422,7 @@ static int ft_sync_msg_needed(void)
 
 static int ft_check_verify_cnt()
 {
-	if (test_info.msg_flags == FI_REMOTE_CQ_DATA &&
-	    ft_ctrl.verify_cnt != ft_ctrl.xfer_iter)
+	if (ft_generates_rx_comp() && ft_ctrl.verify_cnt != ft_ctrl.xfer_iter)
 		return -FI_EIO;
 	return 0;
 }
@@ -862,8 +865,12 @@ static int ft_unit_atomic(void)
 			return ret;
 
 		ret = ft_verify_bufs();
-		if (ret)
-			fail = -FI_EIO;
+		if (ret) {
+			if (ret < 0)
+				fail = -FI_EIO;
+			else
+				fail = 1;
+		}
 	}
 
 	ret = ft_check_verify_cnt();
@@ -947,12 +954,19 @@ static int ft_run_unit(void)
 
 		ret = ft_unit();
 		if (ret) {
-			if (ret != -FI_EIO)
-				return ret;
-			fail = -FI_EIO;
+			if (ret < 0) {
+				if (ret != -FI_EIO)
+					return ret;
+				fail = -FI_EIO;
+			} else if (!fail)
+				fail = ret;
 		}
 	}
-	if (fail)
+	if (fail > 0) {
+		printf("unit test UNVERIFIED\n");
+		/* Allow testing to continue. */
+		fail = 0;
+	} else if (fail < 0)
 		printf("unit test FAILED\n");
 	else
 		printf("unit test PASSED\n");
@@ -962,49 +976,85 @@ static int ft_run_unit(void)
 
 void ft_cleanup(void)
 {
+	if (ft_mr_ctrl.mr && (test_info.mr_mode & FI_MR_RAW))
+		fi_mr_unmap_key(domain, ft_mr_ctrl.peer_mr_key);
+
 	FT_CLOSE_FID(ft_rx_ctrl.mr);
 	FT_CLOSE_FID(ft_tx_ctrl.mr);
 	FT_CLOSE_FID(ft_mr_ctrl.mr);
 	FT_CLOSE_FID(ft_atom_ctrl.res_mr);
 	FT_CLOSE_FID(ft_atom_ctrl.comp_mr);
-	ft_free_res();
 	ft_cleanup_xcontrol(&ft_rx_ctrl);
 	ft_cleanup_xcontrol(&ft_tx_ctrl);
+	ft_free_host_tx_buf();
 	ft_cleanup_mr_control(&ft_mr_ctrl);
 	ft_cleanup_atomic_control(&ft_atom_ctrl);
+	ft_free_res();
 	memset(&ft_ctrl, 0, sizeof ft_ctrl);
 }
 
 static int ft_exchange_mr_addr_key(void)
 {
-	struct fi_rma_iov local_rma_iov = {0};
-	struct fi_rma_iov peer_rma_iov = {0};
+	char temp1[FT_MAX_CTRL_MSG];
+	char temp2[FT_MAX_CTRL_MSG];
+	struct fi_rma_iov *rma_iov = (void *) temp1;
+	struct fi_rma_iov *peer_rma_iov = (void *) temp2;
+	size_t len, key_size = 0;
+	uint64_t addr;
 	int ret;
 
 	if (!(test_info.mr_mode & (FI_MR_VIRT_ADDR | FI_MR_PROV_KEY)))
 		return 0;
 
 	if (test_info.mr_mode & FI_MR_VIRT_ADDR)
-		local_rma_iov.addr = (uint64_t) ft_mr_ctrl.buf;
+		rma_iov->addr = (uint64_t) ft_mr_ctrl.buf;
+	else
+		rma_iov->addr = 0;
 
-	if (test_info.mr_mode & FI_MR_PROV_KEY)
-		local_rma_iov.key = ft_mr_ctrl.mr_key;
+	if (ft_mr_ctrl.mr && (test_info.mr_mode & FI_MR_RAW)) {
+		ret = fi_mr_raw_attr(ft_mr_ctrl.mr, &addr, NULL, &key_size, 0);
+		if (ret != -FI_ETOOSMALL)
+			return ret;
+		len = sizeof(*rma_iov) + key_size - sizeof(rma_iov->key);
+		if (len > FT_MAX_CTRL_MSG) {
+			FT_PRINTERR("Raw key too large for ctrl message",
+				    -FI_ETOOSMALL);
+			return -FI_ETOOSMALL;
+		}
+		ret = fi_mr_raw_attr(ft_mr_ctrl.mr, &addr, (uint8_t *) &rma_iov->key,
+				     &key_size, 0);
+		if (ret)
+			return ret;
+	} else {
+		len = sizeof(*rma_iov);
+		if (test_info.mr_mode & FI_MR_PROV_KEY)
+			rma_iov->key = ft_mr_ctrl.mr_key;
+	}
 
-	ret = ft_sock_send(sock, &local_rma_iov, sizeof local_rma_iov);
+	ret = ft_sock_send(sock, rma_iov, len);
 	if (ret) {
 		FT_PRINTERR("ft_sock_send", ret);
 		return ret;
 	}
 
-	ret = ft_sock_recv(sock, &peer_rma_iov, sizeof peer_rma_iov);
+	ret = ft_sock_recv(sock, peer_rma_iov, len);
 	if (ret) {
 		FT_PRINTERR("ft_sock_recv", ret);
 		return ret;
 	}
 
-	ft_mr_ctrl.peer_mr_addr = peer_rma_iov.addr;
-	if (test_info.mr_mode & FI_MR_PROV_KEY)
-		ft_mr_ctrl.peer_mr_key = peer_rma_iov.key;
+	ft_mr_ctrl.peer_mr_addr = peer_rma_iov->addr;
+
+        if (ft_mr_ctrl.mr && (test_info.mr_mode & FI_MR_RAW)) {
+                ret = fi_mr_map_raw(domain, peer_rma_iov->addr,
+                                    (uint8_t *) &peer_rma_iov->key, key_size,
+                                    &ft_mr_ctrl.peer_mr_key, 0);
+                if (ret)
+                        return ret;
+        } else {
+		if (test_info.mr_mode & FI_MR_PROV_KEY)
+			ft_mr_ctrl.peer_mr_key = peer_rma_iov->key;
+        }
 
 	return 0;
 }

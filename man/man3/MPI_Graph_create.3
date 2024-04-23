@@ -1,11 +1,15 @@
-.TH MPI_Graph_create 3 "2/22/2022" " " "MPI"
+.TH MPI_Graph_create 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Graph_create \-  Makes a new communicator to which topology information 
 .SH SYNOPSIS
 .nf
-int MPI_Graph_create(MPI_Comm comm_old, int nnodes, const int indx[], const int edges[],
-int reorder, MPI_Comm *comm_graph)
 .fi
+.nf
+int MPI_Graph_create(MPI_Comm comm_old, int nnodes, const int indx[],
+const int edges[], int reorder, MPI_Comm *comm_graph)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -20,17 +24,17 @@ int reorder, MPI_Comm *comm_graph)
 .PD 0
 .TP
 .B indx 
-- array of integers describing node degrees (see below) (integer)
+- array of integers describing node degrees (see below)
 .PD 1
 .PD 0
 .TP
 .B edges 
-- array of integers describing graph edges (see below) (integer)
+- array of integers describing graph edges (see below)
 .PD 1
 .PD 0
 .TP
 .B reorder 
-- ranking may be reordered (true) or not (false) (logical)
+- ranking may be reordered (true) or not (false)
 .PD 1
 
 .SH OUTPUT PARAMETERS
@@ -115,7 +119,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

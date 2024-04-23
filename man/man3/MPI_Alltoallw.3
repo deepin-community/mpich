@@ -1,12 +1,25 @@
-.TH MPI_Alltoallw 3 "2/22/2022" " " "MPI"
+.TH MPI_Alltoallw 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Alltoallw \-  Generalized all-to-all communication allowing different datatypes, counts, and displacements for each partner 
 .SH SYNOPSIS
 .nf
-int MPI_Alltoallw(const void *sendbuf, const int sendcounts[], const int sdispls[],
-const MPI_Datatype sendtypes[], void *recvbuf, const int recvcounts[],
-const int rdispls[], const MPI_Datatype recvtypes[], MPI_Comm comm)
 .fi
+.nf
+int MPI_Alltoallw(const void *sendbuf, const int sendcounts[],
+const int sdispls[], const MPI_Datatype sendtypes[],
+void *recvbuf, const int recvcounts[], const int rdispls[],
+const MPI_Datatype recvtypes[], MPI_Comm comm)
+.fi
+
+.nf
+int MPI_Alltoallw_c(const void *sendbuf, const MPI_Count sendcounts[],
+const MPI_Aint sdispls[], const MPI_Datatype sendtypes[],
+void *recvbuf, const MPI_Count recvcounts[],
+const MPI_Aint rdispls[], const MPI_Datatype recvtypes[],
+MPI_Comm comm)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -122,7 +135,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_BUFFER 

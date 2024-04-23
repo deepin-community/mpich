@@ -9,10 +9,11 @@ int (*MPIDI_Anysource_improbe_fn)(int tag, MPIR_Comm * comm, int context_offset,
                                   int *flag, MPIR_Request **message,
                                   MPI_Status * status) = NULL;
 
-int MPID_Improbe(int source, int tag, MPIR_Comm *comm, int context_offset,
+int MPID_Improbe(int source, int tag, MPIR_Comm *comm, int attr,
                  int *flag, MPIR_Request **message, MPI_Status *status)
 {
     int mpi_errno = MPI_SUCCESS;
+    int context_offset = MPIR_PT2PT_ATTR_CONTEXT_OFFSET(attr);
     int context_id = comm->recvcontext_id + context_offset;
 
     *message = NULL;
@@ -29,9 +30,7 @@ int MPID_Improbe(int source, int tag, MPIR_Comm *comm, int context_offset,
                If still not found, call progress, and check again. */
 
             /* check shm*/
-            MPID_THREAD_CS_ENTER(POBJ, MPIR_THREAD_POBJ_MSGQ_MUTEX);
             *message = MPIDI_CH3U_Recvq_FDU_matchonly(source, tag, context_id, comm, flag);
-            MPID_THREAD_CS_EXIT(POBJ, MPIR_THREAD_POBJ_MSGQ_MUTEX);
             if (!*flag) {
                 /* not found, check network */
                 mpi_errno = MPIDI_Anysource_improbe_fn(tag, comm, context_offset, flag, message, status);
@@ -41,9 +40,7 @@ int MPID_Improbe(int source, int tag, MPIR_Comm *comm, int context_offset,
                     mpi_errno = MPIDI_CH3_Progress_poke();
                     MPIR_ERR_CHECK(mpi_errno);
                     /* check shm again */
-                    MPID_THREAD_CS_ENTER(POBJ, MPIR_THREAD_POBJ_MSGQ_MUTEX);
                     *message = MPIDI_CH3U_Recvq_FDU_matchonly(source, tag, context_id, comm, flag);
-                    MPID_THREAD_CS_EXIT(POBJ, MPIR_THREAD_POBJ_MSGQ_MUTEX);
                     if (!*flag) {
                         /* check network again */
                         mpi_errno = MPIDI_Anysource_improbe_fn(tag, comm, context_offset, flag, message, status);
@@ -67,9 +64,7 @@ int MPID_Improbe(int source, int tag, MPIR_Comm *comm, int context_offset,
     }
 #endif
 
-    MPID_THREAD_CS_ENTER(POBJ, MPIR_THREAD_POBJ_MSGQ_MUTEX);
     *message = MPIDI_CH3U_Recvq_FDU_matchonly(source, tag, context_id, comm, flag);
-    MPID_THREAD_CS_EXIT(POBJ, MPIR_THREAD_POBJ_MSGQ_MUTEX);
 
     if (!*flag) {
         /* Always try to advance progress before returning failure
@@ -80,9 +75,7 @@ int MPID_Improbe(int source, int tag, MPIR_Comm *comm, int context_offset,
            had changed */
         mpi_errno = MPID_Progress_poke();
         MPIR_ERR_CHECK(mpi_errno);
-        MPID_THREAD_CS_ENTER(POBJ, MPIR_THREAD_POBJ_MSGQ_MUTEX);
         *message = MPIDI_CH3U_Recvq_FDU_matchonly(source, tag, context_id, comm, flag);
-        MPID_THREAD_CS_EXIT(POBJ, MPIR_THREAD_POBJ_MSGQ_MUTEX);
     }
 
     if (*flag && *message) {

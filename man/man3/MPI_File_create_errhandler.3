@@ -1,11 +1,15 @@
-.TH MPI_File_create_errhandler 3 "2/22/2022" " " "MPI"
+.TH MPI_File_create_errhandler 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_File_create_errhandler \-  Create a file error handler 
 .SH SYNOPSIS
 .nf
+.fi
+.nf
 int MPI_File_create_errhandler(MPI_File_errhandler_function *file_errhandler_fn,
 MPI_Errhandler *errhandler)
 .fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -86,7 +90,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

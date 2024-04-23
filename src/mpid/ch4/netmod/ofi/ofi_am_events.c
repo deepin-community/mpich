@@ -19,15 +19,15 @@ int MPIDI_OFI_am_rdma_read_ack_handler(void *am_hdr, void *data,
     ack_msg = (MPIDI_OFI_am_rdma_read_ack_msg_t *) am_hdr;
     sreq = ack_msg->sreq_ptr;
 
-    int vni_local = MPIDIG_AM_ATTR_DST_VCI(attr);
+    int vci_local = MPIDIG_AM_ATTR_DST_VCI(attr);
     if (!MPIDI_OFI_ENABLE_MR_PROV_KEY) {
         uint64_t mr_key = fi_mr_key(MPIDI_OFI_AM_SREQ_HDR(sreq, lmt_mr));
         MPIDI_OFI_mr_key_free(MPIDI_OFI_LOCAL_MR_KEY, mr_key);
     }
     MPIDI_OFI_CALL(fi_close(&MPIDI_OFI_AM_SREQ_HDR(sreq, lmt_mr)->fid), mr_unreg);
-    MPIDI_OFI_global.per_vni[vni_local].am_inflight_rma_send_mrs -= 1;
+    MPIDI_OFI_global.per_vci[vci_local].am_inflight_rma_send_mrs -= 1;
 
-    MPIR_gpu_free_host(MPIDI_OFI_AM_SREQ_HDR(sreq, pack_buffer));
+    MPL_free(MPIDI_OFI_AM_SREQ_HDR(sreq, pack_buffer));
 
     /* retrieve the handler_id of the original send request for origin cb. Note the handler_id
      * parameter is MPIDI_OFI_AM_RDMA_READ_ACK and should never be called with origin_cbs */

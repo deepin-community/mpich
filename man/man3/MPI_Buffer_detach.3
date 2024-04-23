@@ -1,10 +1,18 @@
-.TH MPI_Buffer_detach 3 "2/22/2022" " " "MPI"
+.TH MPI_Buffer_detach 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Buffer_detach \-  Removes an existing buffer (for use in MPI_Bsend etc) 
 .SH SYNOPSIS
 .nf
+.fi
+.nf
 int MPI_Buffer_detach(void *buffer_addr, int *size)
 .fi
+
+.nf
+int MPI_Buffer_detach_c(void *buffer_addr, MPI_Count *size)
+.fi
+
+
 .SH OUTPUT PARAMETERS
 .PD 0
 .TP
@@ -159,7 +167,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

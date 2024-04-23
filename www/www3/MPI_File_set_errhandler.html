@@ -9,8 +9,12 @@
 Set the error handler for an MPI file 
 <H2>Synopsis</H2>
 <PRE>
+</PRE>
+<PRE>
 int MPI_File_set_errhandler(MPI_File file, MPI_Errhandler errhandler)
 </PRE>
+
+<P>
 <H2>Input Parameters</H2>
 <DL>
 <DT><B>file </B> <DD> file (handle)
@@ -60,11 +64,6 @@ possible.
 <P>
 <DL>
 <DT><B>MPI_SUCCESS </B> <DD> No error; MPI routine completed successfully.
-</DL>
-<P>
-<DL>
-<DT><B>MPI_ERR_ARG </B> <DD> Invalid argument.  Some argument is invalid and is not
-identified by a specific error class (e.g., <tt>MPI_ERR_RANK</tt>).
 </DL>
 <DL>
 <DT><B>MPI_ERR_OTHER </B> <DD> Other error; use <tt>MPI_Error_string</tt> to get more information

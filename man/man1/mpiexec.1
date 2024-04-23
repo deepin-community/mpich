@@ -1,4 +1,4 @@
-.TH mpiexec 1 "2/21/2022" " " "MPI"
+.TH mpiexec 1 "2/8/2024" " " "HYDRA"
 .SH NAME
 mpiexec \-  Run an MPI program 
 .SH SYNOPSIS
@@ -108,6 +108,15 @@ mpiexec -n 4 ocean : -n 8 air
 
 
 .SH MPICH-SPECIFIC ARGUMENTS
+
+MPICH implements a few process managers. Here we list a general set of
+arguments that many of the implementations support. More detailed options
+that are supported by a particular implementation, e.g. hydra, are
+available via:
+.nf
+mpiexec -h
+.fi
+
 
 Many of the implementations of process managers in MPICH support the
 following arguments to 
@@ -266,50 +275,6 @@ is used if
 .I MPIEXEC_PORT_RANGE
 is not set.
 .PD 1
-.PD 0
-.TP
-.B MPIEXEC_PREFIX_DEFAULT 
-- If this environment variable is set, output
-to standard output is prefixed by the rank in 
-.I MPI_COMM_WORLD
-of the 
-process and output to standard error is prefixed by the rank and the 
-text 
-.I (err)
-; both are followed by an angle bracket (
-.I >
-).  If
-this variable is not set, there is no prefix.
-.PD 1
-.PD 0
-.TP
-.B MPIEXEC_PREFIX_STDOUT 
-- Set the prefix used for lines sent to standard
-output.  A 
-.I %d
-is replaced with the rank in 
-.I MPI_COMM_WORLD
-; a 
-.I %w
-is 
-replaced with an indication of which 
-.I MPI_COMM_WORLD
-in MPI jobs that
-involve multiple 
-.I MPI_COMM_WORLD
-s (e.g., ones that use 
-.I MPI_Comm_spawn
-or
-.I MPI_Comm_connect
-).
-.PD 1
-.PD 0
-.TP
-.B MPIEXEC_PREFIX_STDERR 
-- Like 
-.I MPIEXEC_PREFIX_STDOUT
-, but for standard error.
-.PD 1
 
 .SH RETURN STATUS
 .I mpiexec
@@ -319,3 +284,5 @@ processes created by
 \&.
 
 
+.SH LOCATION
+/var/tmp/jbAQ60iA2q/mpich-4.2.0/src/pm/hydra/mansrc/mpiexec.txt

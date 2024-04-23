@@ -1,12 +1,17 @@
-.TH MPI_Dist_graph_create 3 "2/22/2022" " " "MPI"
+.TH MPI_Dist_graph_create 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Dist_graph_create \-  MPI_DIST_GRAPH_CREATE returns a handle to a new communicator to which the distributed graph topology information is attached 
 .SH SYNOPSIS
 .nf
-int MPI_Dist_graph_create(MPI_Comm comm_old, int n, const int sources[], const int degrees[],
-const int destinations[], const int weights[], MPI_Info info, int reorder,
+.fi
+.nf
+int MPI_Dist_graph_create(MPI_Comm comm_old, int n, const int sources[],
+const int degrees[], const int destinations[],
+const int weights[], MPI_Info info, int reorder,
 MPI_Comm *comm_dist_graph)
 .fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -46,7 +51,7 @@ MPI_Comm *comm_dist_graph)
 .PD 0
 .TP
 .B reorder 
-- the ranks may be reordered (true) or not~(false) (logical)
+- the ranks may be reordered (true) or not~(false)
 .PD 1
 
 .SH OUTPUT PARAMETERS
@@ -122,7 +127,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

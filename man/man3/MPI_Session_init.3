@@ -1,10 +1,15 @@
-.TH MPI_Session_init 3 "2/22/2022" " " "MPI"
+.TH MPI_Session_init 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Session_init \-  Initialize an MPI session 
 .SH SYNOPSIS
 .nf
-int MPI_Session_init(MPI_Info info, MPI_Errhandler errhandler, MPI_Session *session)
 .fi
+.nf
+int MPI_Session_init(MPI_Info info, MPI_Errhandler errhandler,
+MPI_Session *session)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -90,7 +95,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

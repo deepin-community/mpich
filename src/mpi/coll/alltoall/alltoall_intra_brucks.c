@@ -23,23 +23,21 @@ int MPIR_Alltoall_intra_brucks(const void *sendbuf,
                                MPI_Datatype sendtype,
                                void *recvbuf,
                                MPI_Aint recvcount,
-                               MPI_Datatype recvtype,
-                               MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
+                               MPI_Datatype recvtype, MPIR_Comm * comm_ptr, MPIR_Errflag_t errflag)
 {
     int comm_size, i, pof2;
     MPI_Aint sendtype_extent, recvtype_extent;
     MPI_Aint recvtype_sz;
     int mpi_errno = MPI_SUCCESS, src, dst, rank;
     int mpi_errno_ret = MPI_SUCCESS;
-    int block, *displs, count;
+    int block, count;
     MPI_Aint pack_size;
     MPI_Datatype newtype = MPI_DATATYPE_NULL;
     MPI_Aint newtype_sz;
     void *tmp_buf;
     MPIR_CHKLMEM_DECL(6);
 
-    comm_size = comm_ptr->local_size;
-    rank = comm_ptr->rank;
+    MPIR_THREADCOMM_RANK_SIZE(comm_ptr, rank, comm_size);
 
 #ifdef HAVE_ERROR_CHECKING
     MPIR_Assert(sendbuf != MPI_IN_PLACE);
@@ -76,7 +74,8 @@ int MPIR_Alltoall_intra_brucks(const void *sendbuf,
     /* allocate displacements array for indexed datatype used in
      * communication */
 
-    MPIR_CHKLMEM_MALLOC(displs, int *, comm_size * sizeof(int), mpi_errno, "displs",
+    MPI_Aint *displs;
+    MPIR_CHKLMEM_MALLOC(displs, MPI_Aint *, comm_size * sizeof(MPI_Aint), mpi_errno, "displs",
                         MPL_MEM_BUFFER);
 
     pof2 = 1;
@@ -96,7 +95,7 @@ int MPIR_Alltoall_intra_brucks(const void *sendbuf,
         }
 
         mpi_errno =
-            MPIR_Type_create_indexed_block_impl(count, recvcount, displs, recvtype, &newtype);
+            MPIR_Type_create_indexed_block_large_impl(count, recvcount, displs, recvtype, &newtype);
         MPIR_ERR_CHECK(mpi_errno);
 
         mpi_errno = MPIR_Type_commit_impl(&newtype);
@@ -109,14 +108,7 @@ int MPIR_Alltoall_intra_brucks(const void *sendbuf,
         mpi_errno = MPIC_Sendrecv(tmp_buf, newtype_sz, MPI_BYTE, dst,
                                   MPIR_ALLTOALL_TAG, recvbuf, 1, newtype,
                                   src, MPIR_ALLTOALL_TAG, comm_ptr, MPI_STATUS_IGNORE, errflag);
-        if (mpi_errno) {
-            /* for communication errors, just record the error but continue */
-            *errflag =
-                MPIX_ERR_PROC_FAILED ==
-                MPIR_ERR_GET_CLASS(mpi_errno) ? MPIR_ERR_PROC_FAILED : MPIR_ERR_OTHER;
-            MPIR_ERR_SET(mpi_errno, *errflag, "**fail");
-            MPIR_ERR_ADD(mpi_errno_ret, mpi_errno);
-        }
+        MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
 
         MPIR_Type_free_impl(&newtype);
 
@@ -148,14 +140,10 @@ int MPIR_Alltoall_intra_brucks(const void *sendbuf,
 
   fn_exit:
     MPIR_CHKLMEM_FREEALL();
-    if (mpi_errno_ret)
-        mpi_errno = mpi_errno_ret;
-    else if (*errflag != MPIR_ERR_NONE)
-        MPIR_ERR_SET(mpi_errno, *errflag, "**coll_fail");
-
-    return mpi_errno;
+    return mpi_errno_ret;
   fn_fail:
     if (newtype != MPI_DATATYPE_NULL)
         MPIR_Type_free_impl(&newtype);
+    mpi_errno_ret = mpi_errno;
     goto fn_exit;
 }

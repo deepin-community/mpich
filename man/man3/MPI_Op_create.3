@@ -1,10 +1,18 @@
-.TH MPI_Op_create 3 "2/22/2022" " " "MPI"
+.TH MPI_Op_create 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Op_create \-  Creates a user-defined combination function handle 
 .SH SYNOPSIS
 .nf
+.fi
+.nf
 int MPI_Op_create(MPI_User_function *user_fn, int commute, MPI_Op *op)
 .fi
+
+.nf
+int MPI_Op_create_c(MPI_User_function_c *user_fn, int commute, MPI_Op *op)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -131,7 +139,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

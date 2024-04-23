@@ -1,10 +1,20 @@
-.TH MPI_Status_set_elements 3 "2/22/2022" " " "MPI"
+.TH MPI_Status_set_elements 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Status_set_elements \-  Set the number of elements in a status 
 .SH SYNOPSIS
 .nf
-int MPI_Status_set_elements(MPI_Status *status, MPI_Datatype datatype, int count)
 .fi
+.nf
+int MPI_Status_set_elements(MPI_Status *status, MPI_Datatype datatype,
+int count)
+.fi
+
+.nf
+int MPI_Status_set_elements_c(MPI_Status *status, MPI_Datatype datatype,
+MPI_Count count)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -90,7 +100,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

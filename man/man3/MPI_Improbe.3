@@ -1,11 +1,15 @@
-.TH MPI_Improbe 3 "2/22/2022" " " "MPI"
+.TH MPI_Improbe 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Improbe \-  Nonblocking matched probe. 
 .SH SYNOPSIS
 .nf
-int MPI_Improbe(int source, int tag, MPI_Comm comm, int *flag, MPI_Message *message,
-MPI_Status *status)
 .fi
+.nf
+int MPI_Improbe(int source, int tag, MPI_Comm comm, int *flag,
+MPI_Message *message, MPI_Status *status)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -106,7 +110,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

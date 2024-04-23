@@ -1951,7 +1951,7 @@ class File  {
     inline operator MPI_File() const { return the_real_file; }
     File& operator=(const MPI_File& obj) {
       the_real_file = obj; return *this; }
-#ifdef MPI_MODE_RDONLY
+#if @HAVE_CXX_IO@
     virtual Aint Get_type_extent( const Datatype &v2 ) const
     {
         MPI_Aint v3;
@@ -2482,7 +2482,7 @@ extern     void Open_port( const Info &v1, char * v2 ) ;
 extern     bool Is_finalized( void ) ;
 extern     bool Is_thread_main( void ) ;
 
-#ifdef MPI_MODE_RDONLY
+#if @HAVE_CXX_IO@
 typedef int Datarep_extent_function( const Datatype&, Aint&, void *);
 typedef int Datarep_conversion_function( void *, Datatype &, int, void *,
                 Offset, void * );
@@ -2670,7 +2670,7 @@ extern const int DISTRIBUTE_NONE;
 extern const int ORDER_C;
 extern const int ORDER_FORTRAN;
 // Include these only if MPI-IO is available
-#ifdef MPI_MODE_RDONLY
+#if @HAVE_CXX_IO@
 extern const int MAX_DATAREP_STRING;
 extern const MPI_Offset DISPLACEMENT_CURRENT;
 extern const int MODE_APPEND;

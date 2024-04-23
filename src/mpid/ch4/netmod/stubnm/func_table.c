@@ -15,6 +15,7 @@ MPIDI_NM_funcs_t MPIDI_NM_stubnm_funcs = {
     .init_local = MPIDI_STUBNM_init_local,
     .init_world = MPIDI_STUBNM_init_world,
     .mpi_finalize_hook = MPIDI_STUBNM_mpi_finalize_hook,
+    .init_vcis = MPIDI_STUBNM_init_vcis,
     .post_init = MPIDI_STUBNM_post_init,
     .progress = MPIDI_NM_progress,
     .comm_set_hints = MPIDI_STUBNM_comm_set_hints,
@@ -52,8 +53,6 @@ MPIDI_NM_funcs_t MPIDI_NM_stubnm_funcs = {
 
 MPIDI_NM_native_funcs_t MPIDI_NM_native_stubnm_funcs = {
     .mpi_isend = MPIDI_NM_mpi_isend,
-    .isend_coll = MPIDI_NM_isend_coll,
-    .mpi_issend = MPIDI_NM_mpi_issend,
     .mpi_cancel_send = MPIDI_NM_mpi_cancel_send,
     .mpi_irecv = MPIDI_NM_mpi_irecv,
     .mpi_imrecv = MPIDI_NM_mpi_imrecv,

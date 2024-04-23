@@ -1,2 +1,17 @@
 # Include directory
-usr/include/${DEB_HOST_MULTIARCH}/mpich usr/lib/${DEB_HOST_MULTIARCH}/mpich/include
+usr/lib/${DEB_HOST_MULTIARCH}/mpich/include/ usr/include/${DEB_HOST_MULTIARCH}/mpich
+# pkgconfig
+usr/lib/${DEB_HOST_MULTIARCH}/mpich/lib/pkgconfig/mpich.pc usr/lib/${DEB_HOST_MULTIARCH}/pkgconfig/mpich.pc
+# soname links
+usr/lib/${DEB_HOST_MULTIARCH}/libmpichcxx.so.12   usr/lib/${DEB_HOST_MULTIARCH}/libmpichcxx.so
+usr/lib/${DEB_HOST_MULTIARCH}/libmpichf90.so.12   usr/lib/${DEB_HOST_MULTIARCH}/libmpichf90.so
+usr/lib/${DEB_HOST_MULTIARCH}/libmpichfort.so.12  usr/lib/${DEB_HOST_MULTIARCH}/libmpichfort.so
+usr/lib/${DEB_HOST_MULTIARCH}/libmpich.so.12      usr/lib/${DEB_HOST_MULTIARCH}/libmpich.so
+# 
+usr/lib/${DEB_HOST_MULTIARCH}/libmpichcxx.so   usr/lib/${DEB_HOST_MULTIARCH}/mpich/lib/libmpichcxx.so
+usr/lib/${DEB_HOST_MULTIARCH}/libmpichf90.so   usr/lib/${DEB_HOST_MULTIARCH}/mpich/lib/libmpichf90.so
+usr/lib/${DEB_HOST_MULTIARCH}/libmpichfort.so  usr/lib/${DEB_HOST_MULTIARCH}/mpich/lib/libmpichfort.so
+usr/lib/${DEB_HOST_MULTIARCH}/libmpich.so      usr/lib/${DEB_HOST_MULTIARCH}/mpich/lib/libmpich.so
+usr/lib/${DEB_HOST_MULTIARCH}/libmpl.so        usr/lib/${DEB_HOST_MULTIARCH}/mpich/lib/libmpl.so
+usr/lib/${DEB_HOST_MULTIARCH}/libopa.so         usr/lib/${DEB_HOST_MULTIARCH}/mpich/lib/libopa.so
+

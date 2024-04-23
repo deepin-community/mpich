@@ -1,11 +1,15 @@
-.TH MPI_Testsome 3 "2/22/2022" " " "MPI"
+.TH MPI_Testsome 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Testsome \-  Tests for some given requests to complete 
 .SH SYNOPSIS
 .nf
-int MPI_Testsome(int incount, MPI_Request array_of_requests[], int *outcount,
-int array_of_indices[], MPI_Status array_of_statuses[])
 .fi
+.nf
+int MPI_Testsome(int incount, MPI_Request array_of_requests[], int *outcount,
+int array_of_indices[], MPI_Status *array_of_statuses)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -152,7 +156,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

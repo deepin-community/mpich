@@ -1,11 +1,15 @@
-.TH MPI_T_cvar_handle_alloc 3 "2/22/2022" " " "MPI"
+.TH MPI_T_cvar_handle_alloc 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_T_cvar_handle_alloc \-  Allocate a handle for a control variable 
 .SH SYNOPSIS
 .nf
-int MPI_T_cvar_handle_alloc(int cvar_index, void *obj_handle, MPI_T_cvar_handle *handle,
-int *count)
 .fi
+.nf
+int MPI_T_cvar_handle_alloc(int cvar_index, void *obj_handle,
+MPI_T_cvar_handle *handle, int *count)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -73,7 +77,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_T_ERR_INVALID 

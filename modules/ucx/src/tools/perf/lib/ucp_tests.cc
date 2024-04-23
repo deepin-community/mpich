@@ -1,5 +1,5 @@
 /**
-* Copyright (C) Mellanox Technologies Ltd. 2001-2015.  ALL RIGHTS RESERVED.
+* Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2001-2015. ALL RIGHTS RESERVED.
 * Copyright (C) The University of Tennessee and The University
 *               of Tennessee Research Foundation. 2016. ALL RIGHTS RESERVED.
 * Copyright (C) ARM Ltd. 2020.  ALL RIGHTS RESERVED.
@@ -170,6 +170,7 @@ public:
             m_am_rx_params.user_data    = this;
             m_am_rx_buffer              = *recv_buffer;
             m_am_rx_length              = *recv_length;
+            fill_prereg_params(m_am_rx_params, m_perf.ucp.recv_memh);
         }
 
         fill_send_params(m_send_params, *send_buffer, *send_dt, send_cb, 0);
@@ -182,6 +183,7 @@ public:
         m_recv_params.datatype     = *recv_dt;
         m_recv_params.cb.recv      = tag_recv_cb;
         m_recv_params.user_data    = this;
+        fill_prereg_params(m_recv_params, m_perf.ucp.recv_memh);
     }
 
     void fill_send_params(ucp_request_param_t &params, void *reply_buffer,
@@ -203,6 +205,16 @@ public:
             (CMD == UCX_PERF_CMD_CSWAP)) {
             params.op_attr_mask |= UCP_OP_ATTR_FIELD_REPLY_BUFFER;
             params.reply_buffer  = reply_buffer;
+        }
+
+        fill_prereg_params(params, m_perf.ucp.send_memh);
+    }
+
+    void fill_prereg_params(ucp_request_param_t &params, ucp_mem_h memh)
+    {
+        if (m_perf.params.flags & UCX_PERF_TEST_FLAG_PREREG) {
+            params.op_attr_mask |= UCP_OP_ATTR_FIELD_MEMH;
+            params.memh          = memh;
         }
     }
 
@@ -303,7 +315,13 @@ public:
             return test->am_rndv_recv(data, length, param);
         }
 
-        /* TODO: Add option to do memcopy here */
+        if (test->m_perf.params.flags & UCX_PERF_TEST_FLAG_AM_RECV_COPY) {
+            ucs_assertv(length == test->m_am_rx_length,
+                        "wrong buffer length %ld != %ld",
+                        length, test->m_am_rx_length);
+            memcpy(test->m_am_rx_buffer, data, test->m_am_rx_length);
+        }
+
         test->recv_completed();
         return UCS_OK;
     }
@@ -357,22 +375,24 @@ public:
         if (mem_type == UCS_MEMORY_TYPE_HOST) {
             return *(const volatile psn_t*)ptr;
         } else {
-            m_perf.allocator->memcpy(&sn, UCS_MEMORY_TYPE_HOST, ptr, mem_type,
-                                     sizeof(sn));
+            m_perf.recv_allocator->memcpy(&sn, UCS_MEMORY_TYPE_HOST, ptr,
+                                          mem_type, sizeof(sn));
             return sn;
         }
     }
 
     UCS_F_ALWAYS_INLINE void
-    write_sn(void *buffer, ucs_memory_type_t mem_type, size_t length, psn_t sn)
+    write_sn(void *buffer, ucs_memory_type_t mem_type,
+             size_t length, psn_t sn,
+             const ucx_perf_allocator_t *allocator)
     {
         void *ptr = sn_ptr(buffer, length);
 
         if (mem_type == UCS_MEMORY_TYPE_HOST) {
             *(volatile psn_t*)ptr = sn;
         } else {
-            m_perf.allocator->memcpy(ptr, mem_type, &sn, UCS_MEMORY_TYPE_HOST,
-                                     sizeof(sn));
+            allocator->memcpy(ptr, mem_type, &sn, UCS_MEMORY_TYPE_HOST,
+                              sizeof(sn));
         }
     }
 
@@ -390,35 +410,26 @@ public:
         /* coverity[switch_selector_expr_is_constant] */
         switch (CMD) {
         case UCX_PERF_CMD_TAG:
+            request = ucp_tag_send_nbx(ep, buffer, length, TAG, param);
+            break;
         case UCX_PERF_CMD_TAG_SYNC:
+            request = ucp_tag_send_sync_nbx(ep, buffer, length, TAG, param);
+            break;
         case UCX_PERF_CMD_STREAM:
+            request = ucp_stream_send_nbx(ep, buffer, length, param);
+            break;
         case UCX_PERF_CMD_AM:
-            /* coverity[switch_selector_expr_is_constant] */
-            switch (CMD) {
-            case UCX_PERF_CMD_TAG:
-                request = ucp_tag_send_nbx(ep, buffer, length, TAG, param);
-                break;
-            case UCX_PERF_CMD_TAG_SYNC:
-                request = ucp_tag_send_sync_nbx(ep, buffer, length, TAG, param);
-                break;
-            case UCX_PERF_CMD_STREAM:
-                request = ucp_stream_send_nbx(ep, buffer, length, param);
-                break;
-            case UCX_PERF_CMD_AM:
-                request = ucp_am_send_nbx(ep, AM_ID, m_perf.ucp.am_hdr,
-                                          m_perf.params.ucp.am_hdr_size, buffer,
-                                          length, param);
-                break;
-            default:
-                return UCS_ERR_INVALID_PARAM;
-            }
+            request = ucp_am_send_nbx(ep, AM_ID, m_perf.ucp.am_hdr,
+                                      m_perf.params.ucp.am_hdr_size, buffer,
+                                      length, param);
             break;
         case UCX_PERF_CMD_PUT:
             /* coverity[switch_selector_expr_is_constant] */
             switch (TYPE) {
             case UCX_PERF_TEST_TYPE_PINGPONG:
             case UCX_PERF_TEST_TYPE_PINGPONG_WAIT_MEM:
-                write_sn(buffer, m_perf.params.send_mem_type, length, sn);
+                write_sn(buffer, m_perf.params.send_mem_type, length, sn,
+                         m_perf.send_allocator);
                 break;
             case UCX_PERF_TEST_TYPE_STREAM_UNI:
                 break;
@@ -556,10 +567,12 @@ public:
         /* Make sure that doing the last opetarion will write 1 to the end of
            the remote buffer */
         if (CMD == UCX_PERF_CMD_PUT) {
-            write_sn(buffer, m_perf.params.send_mem_type, size, LAST_ITER_SN);
+            write_sn(buffer, m_perf.params.send_mem_type, size, LAST_ITER_SN,
+                     m_perf.send_allocator);
         } else if (is_atomic()) {
             atomic_value = 0;
-            write_sn(&atomic_value, UCS_MEMORY_TYPE_HOST, size, LAST_ITER_SN);
+            write_sn(&atomic_value, UCS_MEMORY_TYPE_HOST, size, LAST_ITER_SN,
+                     NULL);
             atomic_param.op_attr_mask = UCP_OP_ATTR_FIELD_DATATYPE |
                                         UCP_OP_ATTR_FIELD_CALLBACK |
                                         UCP_OP_ATTR_FIELD_USER_DATA;
@@ -636,8 +649,10 @@ public:
             return;
         }
 
-        write_sn(m_perf.send_buffer, m_perf.params.send_mem_type, length, sn);
-        write_sn(m_perf.recv_buffer, m_perf.params.recv_mem_type, length, sn);
+        write_sn(m_perf.send_buffer, m_perf.params.send_mem_type, length, sn,
+                 m_perf.send_allocator);
+        write_sn(m_perf.recv_buffer, m_perf.params.recv_mem_type, length, sn,
+                 m_perf.recv_allocator);
     }
 
     ucs_status_t run_pingpong()

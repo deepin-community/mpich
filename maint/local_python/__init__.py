@@ -40,7 +40,9 @@ class MPI_API_Global:
     # command line options and arguments
     # By default assumes sizes for LP64 model.
     # The F08 bindings use the sizes to detect duplicate large interfaces
-    opts = {'fint-size':4, 'aint-size':8, 'count-size':8, 'cint-size':4}
+    # The F90 bindings use the sizes to implement MPI_SIZEOF (although deprecated in MPI-4)
+    opts = {'fint-size':4, 'aint-size':8, 'count-size':8, 'cint-size':4, 'f-logical-size':4,
+            'iso-c-binding':'yes'}
 
     args = []
     # output
@@ -55,6 +57,10 @@ class MPI_API_Global:
     mpi_declares = []
     impl_declares = []
     mpi_errnames = []
+    mpix_symbols = {}
+
+    status_fields = ["count_lo", "count_hi_and_cancelled", "MPI_SOURCE", "MPI_TAG", "MPI_ERROR"]
+    handle_list = ["MPI_Comm", "MPI_Datatype", "MPI_Errhandler", "MPI_File", "MPI_Group", "MPI_Info", "MPI_Op", "MPI_Request", "MPI_Win", "MPI_Message", "MPI_Session", "MPIX_Stream"]
 
     handle_mpir_types = {
         'COMMUNICATOR': "MPIR_Comm",
@@ -69,13 +75,14 @@ class MPI_API_Global:
         'MESSAGE': "MPIR_Request",
         'SESSION': "MPIR_Session",
         'GREQUEST_CLASS': "MPIR_Grequest_class",
+        'STREAM': "MPIR_Stream",
     }
 
     handle_error_codes = {
         'COMMUNICATOR': "MPI_ERR_COMM",
         'GROUP': "MPI_ERR_GROUP",
         'DATATYPE': "MPI_ERR_TYPE",
-        'ERRHANDLER': "MPI_ERR_ARG",
+        'ERRHANDLER': "MPI_ERR_ERRHANDLER",
         'OPERATION': "MPI_ERR_OP",
         'INFO': "MPI_ERR_INFO",
         'WINDOW': "MPI_ERR_WIN",
@@ -84,6 +91,7 @@ class MPI_API_Global:
         'MESSAGE': "MPI_ERR_REQUEST",
         'SESSION': "MPI_ERR_SESSION",
         'GREQUEST_CLASS': "",
+        'STREAM': "MPIX_ERR_STREAM",
     }
 
     handle_out_do_ptrs = {
@@ -99,6 +107,7 @@ class MPI_API_Global:
         'MESSAGE': 1,
         'SESSION': 1,
         'GREQUEST_CLASS': 1,
+        'STREAM': 1,
     }
 
     handle_NULLs = {
@@ -109,11 +118,12 @@ class MPI_API_Global:
         'OPERATION': "MPI_OP_NULL",
         'INFO': "MPI_INFO_NULL",
         'WINDOW': "MPI_WIN_NULL",
-        # 'KEYVAL': "",
+        'KEYVAL': "MPI_KEYVAL_INVALID",
         'REQUEST': "MPI_REQUEST_NULL",
         'MESSAGE': "MPI_MESSAGE_NULL",
         'SESSION': "MPI_SESSION_NULL",
         # 'GREQUEST_CLASS': "",
+        'STREAM': "MPIX_STREAM_NULL",
     }
 
     copyright_c = [
@@ -147,6 +157,7 @@ class MPI_API_Global:
     ]
 
     def parse_cmdline():
+        print("  [", " ".join(sys.argv), "]")
         for a in sys.argv[1:]:
             if RE.match(r'--?([\w-]+)=(.*)', a):
                 MPI_API_Global.opts[RE.m.group(1)] = RE.m.group(2)

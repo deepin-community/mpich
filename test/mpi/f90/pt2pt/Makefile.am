@@ -24,6 +24,7 @@ noinst_PROGRAMS = sendf90 \
                   sendrecvf90 \
                   sendrecvreplf90 \
                   statusesf90 greqf90 \
+		  bsendf90 \
                   mprobef90
 
 sendf90_SOURCES = sendf90.f90 utilsf90.f90
@@ -38,6 +39,7 @@ pssendf90_SOURCES = pssendf90.f90 utilsf90.f90
 sendrecvf90_SOURCES = sendrecvf90.f90 utilsf90.f90
 sendrecvreplf90_SOURCES = sendrecvreplf90.f90 utilsf90.f90
 greqf90_SOURCES = greqf90.f90 dummyf90.f90
+bsendf90_SOURCES = bsendf90.f90
 
 ## attr1aints.h will be distributed because it's listed in AC_CONFIG_FILES/AC_OUTPUT
 

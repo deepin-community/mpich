@@ -7,9 +7,9 @@
  */
 /* style: c++ header */
 
+#include "mpichconf.h"
 #include "mpi.h"
 #include <stdarg.h>
-#include "mpichconf.h"
 /* style:PMPIuse:PMPI_Type_set_name:4 sig:0 */
 
 // #define MPIX_TRACE_MEMORY
@@ -225,7 +225,7 @@ const int DISTRIBUTE_NONE = MPI_DISTRIBUTE_NONE;
 const int ORDER_C = MPI_ORDER_C;
 const int ORDER_FORTRAN = MPI_ORDER_FORTRAN;
 // Include these only if MPI-IO is available
-#ifdef MPI_MODE_RDONLY
+#ifdef HAVE_ROMIO
 const int MAX_DATAREP_STRING = MPI_MAX_DATAREP_STRING;
 const MPI_Offset DISPLACEMENT_CURRENT = MPI_DISPLACEMENT_CURRENT;
 const int MODE_APPEND = MPI_MODE_APPEND;
@@ -663,7 +663,7 @@ void MPIR_Call_errhandler_function( int kind, int *handle, int *errcode,
 		}
 	    }
 	    break;
-#ifdef MPI_MODE_RDONLY
+#ifdef HAVE_ROMIO
     case 1: // file
 	    {
 		MPI::File fh = (MPI_File)*(MPI_File*)handle;
@@ -681,7 +681,7 @@ void MPIR_Call_errhandler_function( int kind, int *handle, int *errcode,
 	    break;
     }
 }
-#ifdef MPI_MODE_RDONLY
+#ifdef HAVE_ROMIO
 Errhandler File::Create_errhandler( Errhandler_function *f )
 {
     MPI_Errhandler eh;
@@ -763,7 +763,7 @@ void Win::Call_errhandler( int errorcode ) const
     MPI_Win_call_errhandler( (MPI_Win) the_real_win, errorcode );
 }
 
-#ifdef MPI_MODE_RDONLY
+#ifdef HAVE_ROMIO
 void File::Call_errhandler( int errorcode ) const
 {
     // we must free the Errhandler object returned from Get_errhandler because
@@ -789,7 +789,7 @@ void MPIR_Call_world_errhand( int err )
 }
 
 
-#ifdef MPI_MODE_RDONLY
+#ifdef HAVE_ROMIO
 
 extern "C" {
 //

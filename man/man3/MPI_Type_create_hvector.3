@@ -1,11 +1,21 @@
-.TH MPI_Type_create_hvector 3 "2/22/2022" " " "MPI"
+.TH MPI_Type_create_hvector 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Type_create_hvector \-  Create a datatype with a constant stride given in bytes 
 .SH SYNOPSIS
 .nf
-int MPI_Type_create_hvector(int count, int blocklength, MPI_Aint stride, MPI_Datatype oldtype,
+.fi
+.nf
+int MPI_Type_create_hvector(int count, int blocklength, MPI_Aint stride,
+MPI_Datatype oldtype, MPI_Datatype *newtype)
+.fi
+
+.nf
+int MPI_Type_create_hvector_c(MPI_Count count, MPI_Count blocklength,
+MPI_Count stride, MPI_Datatype oldtype,
 MPI_Datatype *newtype)
 .fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -101,7 +111,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

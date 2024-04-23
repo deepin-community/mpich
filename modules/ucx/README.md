@@ -48,8 +48,16 @@ Please review our ["Membership Voluntary Consensus Standard"](https://ucfconsort
 ### Release Builds
 
 Building UCX is typically a combination of running "configure" and "make".
-Execute the following commands to install the UCX system from within the
-directory at the top of the tree:
+If using a release tarball execute the following commands to install the
+UCX system from within the directory at the top of the tree:
+
+```sh
+$ ./contrib/configure-release --prefix=/where/to/install
+$ make -j8
+$ make install
+```
+
+If directly cloning the git repository use:
 
 ```sh
 $ ./autogen.sh
@@ -131,6 +139,12 @@ $ make -C test/gtest test
   OS distribution or build glibc from source using versions less than 2.25 or
   greater than 2.29.
 
+* Due to compatibility flaw when using UCX with rdma-core v22 setting
+  UCX_DC_MLX5_RX_INLINE=0 is unsupported and will make DC transport unavailable.
+  This issue is fixed in rdma-core v24 and backported to rdma-core-22.4-2.el7 rpm.
+  See [ucx issue 5749](https://github.com/openucx/ucx/issues/5749) for more
+  details.
+
 <hr>
 
 
@@ -159,6 +173,7 @@ $ make -C test/gtest test
     * posix, sysv, [cma](https://dl.acm.org/citation.cfm?id=2616532), [knem](http://knem.gforge.inria.fr/), and [xpmem](https://github.com/hjelmn/xpmem)
 * TCP/IP
 
+  **NOTE:** UCX >= 1.12.0 requires rdma-core >= 28.0 or MLNX_OFED >= 5.0 for [Infiniband](https://www.infinibandta.org/) and [RoCE](http://www.roceinitiative.org/) transports support.
 <hr>
 
 ## Supported CPU Architectures
