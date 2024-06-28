@@ -6,6 +6,10 @@
 #ifndef MPIR_GPU_H_INCLUDED
 #define MPIR_GPU_H_INCLUDED
 
+/* mpidpre.h and mpir_thread.h are needed by mpir_cvars.h */
+#include "mpidpre.h"
+#include "mpir_thread.h"
+#include "mpir_cvars.h"
 #include "mpir_err.h"
 
 /*
@@ -28,15 +32,45 @@ cvars:
         and we do not query the buffer type internally because we assume
         no GPU buffer is use.
 
+    - name        : MPIR_CVAR_GPU_HAS_WAIT_KERNEL
+      category    : GPU
+      type        : int
+      default     : 0
+      class       : none
+      verbosity   : MPI_T_VERBOSITY_USER_BASIC
+      scope       : MPI_T_SCOPE_ALL_EQ
+      description : >-
+        If set to 1, avoid allocate allocating GPU registered host buffers
+        for temporary buffers. When stream workq and GPU wait kernels are
+        in use, access APIs for GPU registered memory may cause deadlock.
+
+    - name        : MPIR_CVAR_ENABLE_GPU_REGISTER
+      category    : GPU
+      type        : boolean
+      default     : true
+      class       : none
+      verbosity   : MPI_T_VERBOSITY_USER_BASIC
+      scope       : MPI_T_SCOPE_ALL_EQ
+      description : >-
+        Control whether to actually register buffers with the GPU runtime in
+        MPIR_gpu_register_host. This could lower the latency of certain GPU
+        communication at the cost of some amount of GPU memory consumed by
+        the MPI library. By default, registration is enabled.
+
 === END_MPI_T_CVAR_INFO_BLOCK ===
 */
 
 extern int MPIR_CVAR_ENABLE_GPU;
+extern MPL_TLS bool MPIR_disable_gpu;   /* per-thread level locally disable gpu */
 
 #undef ENABLE_GPU
 
 #ifdef MPL_HAVE_GPU
+#ifdef MPL_HAS_TLS
+#define ENABLE_GPU MPIR_CVAR_ENABLE_GPU && !MPIR_disable_gpu
+#else
 #define ENABLE_GPU MPIR_CVAR_ENABLE_GPU
+#endif
 #else
 #define ENABLE_GPU FALSE
 #endif
@@ -65,18 +99,29 @@ MPL_STATIC_INLINE_PREFIX int MPIR_GPU_query_pointer_attr(const void *ptr, MPL_po
 MPL_STATIC_INLINE_PREFIX bool MPIR_GPU_query_pointer_is_dev(const void *ptr)
 {
     if (ENABLE_GPU && ptr != NULL) {
-        MPL_pointer_attr_t attr;
-        MPL_gpu_query_pointer_attr(ptr, &attr);
-
-        return attr.type == MPL_GPU_POINTER_DEV;
+        return MPL_gpu_query_pointer_is_dev(ptr, NULL);
     }
 
     return false;
 }
 
+MPL_STATIC_INLINE_PREFIX bool MPIR_GPU_query_pointer_is_strict_dev(const void *ptr,
+                                                                   MPL_pointer_attr_t * attr)
+{
+    if (ENABLE_GPU && ptr != NULL) {
+        return MPL_gpu_query_pointer_is_strict_dev(ptr, attr);
+    }
+
+    return false;
+}
+
+/* gpu registration or pinning has huge latency (~500us), thus the following
+ * functions should be avoided at all critical paths. Use unregistered buffer
+ * (MPL_malloc) instead. */
+
 MPL_STATIC_INLINE_PREFIX int MPIR_gpu_register_host(const void *ptr, size_t size)
 {
-    if (ENABLE_GPU) {
+    if (ENABLE_GPU && MPIR_CVAR_ENABLE_GPU_REGISTER) {
         return MPL_gpu_register_host(ptr, size);
     }
     return MPI_SUCCESS;
@@ -84,7 +129,7 @@ MPL_STATIC_INLINE_PREFIX int MPIR_gpu_register_host(const void *ptr, size_t size
 
 MPL_STATIC_INLINE_PREFIX int MPIR_gpu_unregister_host(const void *ptr)
 {
-    if (ENABLE_GPU) {
+    if (ENABLE_GPU && MPIR_CVAR_ENABLE_GPU_REGISTER) {
         return MPL_gpu_unregister_host(ptr);
     }
     return MPI_SUCCESS;

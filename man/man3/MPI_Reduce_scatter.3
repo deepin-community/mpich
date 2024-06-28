@@ -1,11 +1,22 @@
-.TH MPI_Reduce_scatter 3 "2/22/2022" " " "MPI"
+.TH MPI_Reduce_scatter 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Reduce_scatter \-  Combines values and scatters the results 
 .SH SYNOPSIS
 .nf
-int MPI_Reduce_scatter(const void *sendbuf, void *recvbuf, const int recvcounts[],
-MPI_Datatype datatype, MPI_Op op, MPI_Comm comm)
 .fi
+.nf
+int MPI_Reduce_scatter(const void *sendbuf, void *recvbuf,
+const int recvcounts[], MPI_Datatype datatype, MPI_Op op,
+MPI_Comm comm)
+.fi
+
+.nf
+int MPI_Reduce_scatter_c(const void *sendbuf, void *recvbuf,
+const MPI_Count recvcounts[], MPI_Datatype datatype,
+MPI_Op op, MPI_Comm comm)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -123,7 +134,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_BUFFER 

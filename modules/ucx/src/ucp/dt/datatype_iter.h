@@ -1,5 +1,5 @@
 /**
- * Copyright (C) Mellanox Technologies Ltd. 2020.  ALL RIGHTS RESERVED.
+ * Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2020. ALL RIGHTS RESERVED.
  *
  * See file LICENSE for terms.
  */
@@ -11,6 +11,7 @@
 #include "dt_generic.h"
 
 #include <ucp/api/ucp.h>
+#include <ucp/core/ucp_mm.h>
 #include <ucs/memory/memtype_cache.h>
 #include <ucs/datastruct/string_buffer.h>
 
@@ -40,9 +41,11 @@ typedef struct {
     union {
         struct {
             void                  *buffer;    /* Contiguous buffer pointer */
-            ucp_dt_reg_t          reg;        /* Memory registration state */
+            ucp_mem_h             memh;       /* Memory registration handle */
         } contig;
         struct {
+            void                  *buffer;    /* Buffer pointer, needed for restart */
+            size_t                count;      /* Count, needed for restart */
             ucp_dt_generic_t      *dt_gen;    /* Generic datatype handle */
             void                  *state;     /* User-defined state */
         } generic;
@@ -53,7 +56,7 @@ typedef struct {
 #endif
             size_t                iov_index;  /* Index of current IOV item */
             size_t                iov_offset; /* Offset in the current IOV item */
-            ucp_dt_reg_t          *reg;
+            ucp_mem_h             *memh;
             /* TODO support memory registration with IOV */
             /* TODO duplicate the iov array, and save the "start offset" instead
              * of "iov_length" in each element, this way we don't need to keep
@@ -65,17 +68,8 @@ typedef struct {
     } type;
 } ucp_datatype_iter_t;
 
-
 ucs_status_t
-ucp_datatype_iter_mem_reg_internal(ucp_context_h context, void *address,
-                                   size_t length, unsigned uct_flags,
-                                   ucs_memory_type_t mem_type,
-                                   ucp_md_map_t md_map, ucp_dt_reg_t *dt_reg);
-
-
-void ucp_datatype_iter_mem_dereg_internal(ucp_context_h context,
-                                          ucp_dt_reg_t *dt_reg);
-
+ucp_datatype_iter_set_iov_memh(ucp_datatype_iter_t *dt_iter, ucp_mem_h memh);
 
 ucs_status_t ucp_datatype_iter_iov_mem_reg(ucp_context_h context,
                                            ucp_datatype_iter_t *dt_iter,
@@ -93,8 +87,13 @@ size_t ucp_datatype_iter_iov_next_iov(const ucp_datatype_iter_t *dt_iter,
                                       ucp_datatype_iter_t *next_iter,
                                       uct_iov_t *iov, size_t max_iov);
 
+size_t ucp_datatype_iter_iov_count(const ucp_datatype_iter_t *dt_iter);
 
 void ucp_datatype_iter_str(const ucp_datatype_iter_t *dt_iter,
                            ucs_string_buffer_t *strb);
+
+ucs_status_t
+ucp_datatype_iter_is_user_memh_valid(const ucp_datatype_iter_t *dt_iter,
+                                     const ucp_mem_h memh);
 
 #endif

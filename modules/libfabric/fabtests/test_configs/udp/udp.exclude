@@ -3,6 +3,7 @@
 # Feature not supported by udp provider
 cq_data
 inj_complete -e dgram
+inject_test
 
 # No utility provider available for MSG EP support
 ^fi_msg
@@ -10,6 +11,7 @@ inj_complete -e dgram
 cm_data
 
 # Not supported by ofi_rxd provider
+-k
 scalable_ep
 shared_ctx
 shared_av

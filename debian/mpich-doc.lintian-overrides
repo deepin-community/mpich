@@ -1,0 +1,4 @@
+# binary in mpich
+spare-manual-page [usr/share/man/man1/hydra_nameserver.1.gz]
+spare-manual-page [usr/share/man/man1/hydra_persist.1.gz]
+spare-manual-page [usr/share/man/man1/hydra_pmi_proxy.1.gz]

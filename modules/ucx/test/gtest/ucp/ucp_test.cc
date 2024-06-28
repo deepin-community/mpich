@@ -1,5 +1,5 @@
 /**
-* Copyright (C) Mellanox Technologies Ltd. 2001-2014.  ALL RIGHTS RESERVED.
+* Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2001-2014. ALL RIGHTS RESERVED.
 * See file LICENSE for terms.
 */
 
@@ -15,7 +15,6 @@ extern "C" {
 #include <uct/ib/ud/base/ud_iface.h>
 #endif
 #include <ucs/arch/atomic.h>
-#include <ucs/stats/stats.h>
 }
 
 #include <queue>
@@ -160,15 +159,20 @@ ucp_ep_params_t ucp_test::get_ep_params() {
     return params;
 }
 
-unsigned ucp_test::progress(int worker_index) const {
+unsigned ucp_test::progress(const std::vector<entity*> &entities,
+                            int worker_index) const
+{
     unsigned count = 0;
-    for (ucs::ptr_vector<entity>::const_iterator iter = entities().begin();
-         iter != entities().end(); ++iter)
-    {
-        count += (*iter)->progress(worker_index);
+    for (auto e : entities) {
+        count += e->progress(worker_index);
         sched_yield();
     }
+
     return count;
+}
+
+unsigned ucp_test::progress(int worker_index) const {
+    return progress(entities(), worker_index);
 }
 
 void ucp_test::short_progress_loop(int worker_index) const {
@@ -181,13 +185,14 @@ void ucp_test::short_progress_loop(int worker_index) const {
 void ucp_test::flush_ep(const entity &e, int worker_index, int ep_index)
 {
     void *request = e.flush_ep_nb(worker_index, ep_index);
-    request_wait(request, worker_index);
+    request_wait(request, {}, worker_index);
 }
 
-void ucp_test::flush_worker(const entity &e, int worker_index)
+void ucp_test::flush_worker(const entity &e, int worker_index,
+                            const std::vector<entity*> &entities)
 {
     void *request = e.flush_worker_nb(worker_index);
-    request_wait(request, worker_index);
+    request_wait(request, entities, worker_index, false);
 }
 
 void ucp_test::flush_workers()
@@ -201,24 +206,20 @@ void ucp_test::flush_workers()
     }
 }
 
-void ucp_test::disconnect(entity& e) {
-    bool has_failed_entity = false;
-    for (ucs::ptr_vector<entity>::const_iterator iter = entities().begin();
-         !has_failed_entity && (iter != entities().end()); ++iter) {
-        has_failed_entity = ((*iter)->get_err_num() > 0);
-    }
+void ucp_test::disconnect(entity &e)
+{
+    bool has_failed_entity = std::any_of(entities().begin(), entities().end(),
+                                         [](const entity *en) {
+                                             return en->get_err_num() > 0;
+                                         });
 
     for (int i = 0; i < e.get_num_workers(); i++) {
-        enum ucp_ep_close_mode close_mode;
-
-        if (has_failed_entity) {
-            close_mode = UCP_EP_CLOSE_MODE_FORCE;
-        } else {
+        if (!has_failed_entity) {
             flush_worker(e, i);
-            close_mode = UCP_EP_CLOSE_MODE_FLUSH;
         }
 
-        e.close_all_eps(*this, i, close_mode);
+        e.close_all_eps(*this, i,
+                        has_failed_entity ? UCP_EP_CLOSE_FLAG_FORCE : 0);
     }
 }
 
@@ -238,7 +239,37 @@ ucp_tag_message_h ucp_test::message_wait(entity& e, ucp_tag_t tag,
     return message;
 }
 
-ucs_status_t ucp_test::request_process(void *req, int worker_index, bool wait)
+void ucp_test::check_events(const std::vector<entity*> &entities, bool wakeup,
+                            int worker_index)
+{
+    if (progress(entities, worker_index)) {
+        return;
+    }
+
+    if (wakeup) {
+        int ret = wait_for_wakeup(entities, -1, worker_index);
+        EXPECT_GE(ret, 1);
+    }
+}
+
+ucs_status_t
+ucp_test::request_progress(void *req, const std::vector<entity*> &entities,
+                           double timeout, int worker_index)
+{
+    ucs_time_t loop_end_limit = ucs_get_time() + ucs_time_from_sec(timeout);
+    ucs_status_t status;
+    do {
+        progress(entities, worker_index);
+        status = ucp_request_check_status(req);
+    } while ((status == UCS_INPROGRESS) &&
+             (ucs_get_time() < loop_end_limit));
+
+    return status;
+}
+
+ucs_status_t ucp_test::request_process(void *req, int worker_index, bool wait,
+                                       bool wakeup,
+                                       const std::vector<entity*> &entity_list)
 {
     if (req == NULL) {
         return UCS_OK;
@@ -250,17 +281,15 @@ ucs_status_t ucp_test::request_process(void *req, int worker_index, bool wait)
         return UCS_PTR_STATUS(req);
     }
 
-    ucs_status_t status;
-    if (wait) {
-        ucs_time_t deadline = ucs::get_deadline();
-        do {
-            progress(worker_index);
-            status = ucp_request_check_status(req);
-        } while ((status == UCS_INPROGRESS) && (ucs_get_time() < deadline));
-    } else {
-        status = ucp_request_check_status(req);
+    ucs_time_t deadline = ucs::get_deadline();
+    while (wait &&
+           (ucp_request_check_status(req) == UCS_INPROGRESS) &&
+           (ucs_get_time() < deadline)) {
+        check_events(entity_list.empty() ? entities() : entity_list, wakeup,
+                     worker_index);
     }
 
+    ucs_status_t status = ucp_request_check_status(req);
     if (status == UCS_INPROGRESS) {
         if (wait) {
             ucs_error("request %p did not complete on time", req);
@@ -275,9 +304,11 @@ ucs_status_t ucp_test::request_process(void *req, int worker_index, bool wait)
     return status;
 }
 
-ucs_status_t ucp_test::request_wait(void *req, int worker_index)
+ucs_status_t ucp_test::request_wait(void *req,
+                                    const std::vector<entity*> &entities,
+                                    int worker_index, bool wakeup)
 {
-    return request_process(req, worker_index, true);
+    return request_process(req, worker_index, true, wakeup, entities);
 }
 
 ucs_status_t ucp_test::requests_wait(std::vector<void*> &reqs,
@@ -286,7 +317,7 @@ ucs_status_t ucp_test::requests_wait(std::vector<void*> &reqs,
     ucs_status_t ret_status = UCS_OK;
 
     while (!reqs.empty()) {
-        ucs_status_t status = request_wait(reqs.back(), worker_index);
+        ucs_status_t status = request_wait(reqs.back(), {}, worker_index);
         if (ret_status == UCS_OK) {
             // Save the first failure
             ret_status = status;
@@ -297,17 +328,35 @@ ucs_status_t ucp_test::requests_wait(std::vector<void*> &reqs,
     return ret_status;
 }
 
+ucs_status_t
+ucp_test::requests_wait(const std::initializer_list<void*> reqs_list,
+                        int worker_index)
+{
+    std::vector<void*> reqs(reqs_list);
+    return requests_wait(reqs, worker_index);
+}
+
 void ucp_test::request_release(void *req)
 {
     request_process(req, 0, false);
 }
 
-void ucp_test::wait_for_wakeup(const std::vector<ucp_worker_h> &workers,
-                               int poll_timeout, bool drain)
+void ucp_test::request_cancel(entity &e, void *req)
 {
+    if (UCS_PTR_IS_PTR(req)) {
+        ucp_request_cancel(e.worker(), req);
+        ucp_request_free(req);
+    }
+}
+
+int ucp_test::wait_for_wakeup(const std::vector<entity*> &entities,
+                              int poll_timeout, int worker_index)
+{
+    int total_ret = 0, ret;
     std::vector<int> efds;
 
-    for (auto worker : workers) {
+    for (auto e : entities) {
+        ucp_worker_h worker = e->worker(worker_index);
         int efd;
 
         ASSERT_UCS_OK(ucp_worker_get_efd(worker, &efd));
@@ -315,27 +364,33 @@ void ucp_test::wait_for_wakeup(const std::vector<ucp_worker_h> &workers,
 
         ucs_status_t status = ucp_worker_arm(worker);
         if (status == UCS_ERR_BUSY) {
-            return;
+            ++total_ret;
+        } else {
+            ASSERT_UCS_OK(status);
         }
-        ASSERT_UCS_OK(status);
     }
 
-    int ret;
+    if (total_ret > 0) {
+        return total_ret;
+    }
+
+    std::vector<struct pollfd> pfd;
+    for (int fd : efds) {
+        pfd.push_back({ fd, POLLIN });
+    }
+
     do {
-        std::vector<struct pollfd> pfd;
-
-        for (int fd : efds) {
-            pfd.push_back({ fd, POLLIN });
-        }
-
         ret = poll(&pfd[0], efds.size(), poll_timeout);
-    } while (((ret < 0) && (errno == EINTR)) || (drain && (ret > 0)));
+        if (ret > 0) {
+            total_ret += ret;
+        }
+    } while ((ret < 0) && (errno == EINTR));
 
     if (ret < 0) {
         UCS_TEST_MESSAGE << "poll() failed: " << strerror(errno);
     }
 
-    EXPECT_GE(ret, 1);
+    return total_ret;
 }
 
 int ucp_test::max_connections() {
@@ -346,7 +401,7 @@ int ucp_test::max_connections() {
     }
 }
 
-void ucp_test::set_tl_small_timeouts()
+void ucp_test::configure_peer_failure_settings()
 {
     /* Set small TL timeouts to reduce testing time */
     m_env.push_back(new ucs::scoped_setenv("UCX_RC_TIMEOUT",     "10ms"));
@@ -493,31 +548,19 @@ void ucp_test::modify_config(const std::string& name, const std::string& value,
 {
     ucs_status_t status;
 
-    status = ucp_config_modify_internal(m_ucp_config, name.c_str(), value.c_str());
-    if (status == UCS_ERR_NO_ELEM) {
-        test_base::modify_config(name, value, mode);
-    } else if (status != UCS_OK) {
-        UCS_TEST_ABORT("Couldn't modify ucp config parameter: " <<
-                        name.c_str() << " to " << value.c_str() << ": " <<
-                        ucs_status_string(status));
+    if (mode == IGNORE_IF_NOT_EXIST) {
+        (void)ucp_config_modify(m_ucp_config, name.c_str(), value.c_str());
+    } else {
+        status = ucp_config_modify_internal(m_ucp_config, name.c_str(),
+                                            value.c_str());
+        if (status == UCS_ERR_NO_ELEM) {
+            test_base::modify_config(name, value, mode);
+        } else if (status != UCS_OK) {
+            UCS_TEST_ABORT("Couldn't modify ucp config parameter: "
+                           << name.c_str() << " to " << value.c_str() << ": "
+                           << ucs_status_string(status));
+        }
     }
-}
-
-void ucp_test::stats_activate()
-{
-    ucs_stats_cleanup();
-    push_config();
-    modify_config("STATS_DEST",    "file:/dev/null");
-    modify_config("STATS_TRIGGER", "exit");
-    ucs_stats_init();
-    ASSERT_TRUE(ucs_stats_is_active());
-}
-
-void ucp_test::stats_restore()
-{
-    ucs_stats_cleanup();
-    pop_config();
-    ucs_stats_init();
 }
 
 bool ucp_test::check_tls(const std::string& tls)
@@ -617,6 +660,9 @@ ucp_test_base::entity::entity(const ucp_test_param& test_param,
 
     m_workers.resize(num_workers);
     for (int i = 0; i < num_workers; i++) {
+        /* We could have "invalid configuration" errors only when used
+           ucp_config_modify(), in which case we wanted to ignore them. */
+        scoped_log_handler slh(hide_config_warns_logger);
         UCS_TEST_CREATE_HANDLE(ucp_worker_h, m_workers[i].first,
                                ucp_worker_destroy, ucp_worker_create, m_ucph,
                                &local_worker_params);
@@ -744,6 +790,20 @@ void ucp_test_base::entity::set_ep(ucp_ep_h ep, int worker_index, int ep_index)
     }
 }
 
+ucs_log_func_rc_t ucp_test_base::entity::hide_config_warns_logger(
+        const char *file, unsigned line, const char *function,
+        ucs_log_level_t level, const ucs_log_component_config_t *comp_conf,
+        const char *message, va_list ap)
+{
+    if (strstr(message, "invalid configuration") == NULL) {
+        return UCS_LOG_FUNC_RC_CONTINUE;
+    }
+
+    return common_logger(UCS_LOG_LEVEL_WARN, false, m_warnings,
+                         std::numeric_limits<size_t>::max(), file, line,
+                         function, level, comp_conf, message, ap);
+}
+
 void ucp_test_base::entity::empty_send_completion(void *r, ucs_status_t status) {
 }
 
@@ -793,13 +853,14 @@ void ucp_test_base::entity::fence(int worker_index) const {
 }
 
 void *ucp_test_base::entity::disconnect_nb(int worker_index, int ep_index,
-                                           enum ucp_ep_close_mode mode) {
+                                           uint32_t close_flags)
+{
     ucp_ep_h ep = revoke_ep(worker_index, ep_index);
     if (ep == NULL) {
         return NULL;
     }
 
-    void *req = ucp_ep_close_nb(ep, mode);
+    void *req = ep_close_nbx(ep, close_flags);
     if (UCS_PTR_IS_PTR(req)) {
         m_close_ep_reqs.push_back(req);
         return req;
@@ -819,7 +880,7 @@ void ucp_test_base::entity::close_ep_req_free(void *close_req) {
     ASSERT_NE(UCS_INPROGRESS, status) << "free not completed EP close request: "
                                       << close_req;
     if (status != UCS_OK) {
-        UCS_TEST_MESSAGE << "ucp_ep_close_nb completed with status "
+        UCS_TEST_MESSAGE << "ucp_ep_close_nbx completed with status "
                          << ucs_status_string(status);
     }
 
@@ -829,9 +890,10 @@ void ucp_test_base::entity::close_ep_req_free(void *close_req) {
 }
 
 void ucp_test_base::entity::close_all_eps(const ucp_test &test, int worker_idx,
-                                          enum ucp_ep_close_mode mode) {
+                                          uint32_t close_flags)
+{
     for (int j = 0; j < get_num_eps(worker_idx); j++) {
-        disconnect_nb(worker_idx, j, mode);
+        disconnect_nb(worker_idx, j, close_flags);
     }
 
     ucs_time_t deadline = ucs::get_deadline();
@@ -970,7 +1032,30 @@ unsigned ucp_test_base::entity::progress(int worker_index)
     return progress_count + ucp_worker_progress(ucp_worker);
 }
 
-int ucp_test_base::entity::get_num_workers() const {
+ucp_mem_h ucp_test_base::entity::mem_map(void *address, size_t length)
+{
+    ucp_mem_map_params_t params;
+
+    params.field_mask = UCP_MEM_MAP_PARAM_FIELD_ADDRESS |
+                        UCP_MEM_MAP_PARAM_FIELD_LENGTH;
+    params.address    = address;
+    params.length     = length;
+
+    ucp_mem_h memh;
+    ucs_status_t status = ucp_mem_map(ucph(), &params, &memh);
+    ASSERT_UCS_OK(status);
+
+    return memh;
+}
+
+void ucp_test_base::entity::mem_unmap(ucp_mem_h memh)
+{
+    ucs_status_t status = ucp_mem_unmap(ucph(), memh);
+    ASSERT_UCS_OK(status);
+}
+
+int ucp_test_base::entity::get_num_workers() const
+{
     return m_workers.size();
 }
 
@@ -1013,7 +1098,7 @@ void ucp_test_base::entity::warn_existing_eps() const {
     }
 }
 
-double ucp_test_base::entity::set_ib_ud_timeout(double timeout_sec)
+double ucp_test_base::entity::set_ib_ud_peer_timeout(double timeout_sec)
 {
     double prev_timeout_sec = 0.;
 #if HAVE_IB
@@ -1072,7 +1157,7 @@ bool ucp_test_base::entity::has_lane_with_caps(uint64_t caps) const
 
     for (lane = 0; lane < ucp_ep_config(ep)->key.num_lanes; lane++) {
         iface_attr = ucp_worker_iface_get_attr(worker,
-                                               ucp_ep_config(ep)->key.lanes[lane].rsc_index);
+                                               ucp_ep_get_rsc_index(ep, lane));
         if (ucs_test_all_flags(iface_attr->cap.flags, caps)) {
             return true;
         }
@@ -1089,6 +1174,14 @@ bool ucp_test_base::entity::is_conn_reqs_queue_empty() const
 bool ucp_test_base::is_request_completed(void *request) {
     return (request == NULL) ||
            (ucp_request_check_status(request) != UCS_INPROGRESS);
+}
+
+void *ucp_test_base::ep_close_nbx(ucp_ep_h ep, uint32_t flags)
+{
+    ucp_request_param_t param;
+    param.op_attr_mask = UCP_OP_ATTR_FIELD_FLAGS;
+    param.flags        = flags;
+    return ucp_ep_close_nbx(ep, &param);
 }
 
 ucp_test::mapped_buffer::mapped_buffer(size_t size, const entity& entity,
@@ -1155,8 +1248,7 @@ void ucp_test::disable_keepalive()
 
 bool ucp_test::check_reg_mem_types(const entity& e, ucs_memory_type_t mem_type) {
     for (ucp_lane_index_t lane = 0; lane < ucp_ep_num_lanes(e.ep()); lane++) {
-        const uct_md_attr_t* attr = ucp_ep_md_attr(e.ep(), lane);
-        if (attr->cap.reg_mem_types & UCS_BIT(mem_type)) {
+        if (ucp_ep_md_attr(e.ep(), lane)->reg_mem_types & UCS_BIT(mem_type)) {
             return true;
         }
     }

@@ -6,7 +6,7 @@
 #include "mpidimpl.h"
 
 int MPID_Recv(void * buf, MPI_Aint count, MPI_Datatype datatype, int rank, int tag,
-	      MPIR_Comm * comm, int context_offset,
+	      MPIR_Comm * comm, int attr,
 	      MPI_Status * status, MPIR_Request ** request)
 {
     /* FIXME: in the common case, we want to simply complete the message
@@ -22,6 +22,7 @@ int MPID_Recv(void * buf, MPI_Aint count, MPI_Datatype datatype, int rank, int t
 
     MPIR_FUNC_ENTER;
 
+    int context_offset = MPIR_PT2PT_ATTR_CONTEXT_OFFSET(attr);
     MPL_DBG_MSG_FMT(MPIDI_CH3_DBG_OTHER,VERBOSE,(MPL_DBG_FDEST,
                       "rank=%d, tag=%d, context=%d", rank, tag,
 		      comm->recvcontext_id + context_offset));
@@ -33,12 +34,10 @@ int MPID_Recv(void * buf, MPI_Aint count, MPI_Datatype datatype, int rank, int t
         MPIR_ERR_SETANDJUMP(mpi_errno,MPIX_ERR_REVOKED,"**revoked");
     }
 
-    MPID_THREAD_CS_ENTER(POBJ, MPIR_THREAD_POBJ_MSGQ_MUTEX);
     rreq = MPIDI_CH3U_Recvq_FDU_or_AEP(rank, tag, 
 				       comm->recvcontext_id + context_offset,
                                        comm, buf, count, datatype, &found);
     if (rreq == NULL) {
-	MPID_THREAD_CS_EXIT(POBJ, MPIR_THREAD_POBJ_MSGQ_MUTEX);
 	MPIR_ERR_SETANDJUMP(mpi_errno,MPI_ERR_OTHER,"**nomemreq");
     }
 
@@ -51,7 +50,6 @@ int MPID_Recv(void * buf, MPI_Aint count, MPI_Datatype datatype, int rank, int t
 
 	/* Release the message queue - we've removed this request from 
 	   the queue already */
-	MPID_THREAD_CS_EXIT(POBJ, MPIR_THREAD_POBJ_MSGQ_MUTEX);
 	if (MPIDI_Request_get_msg_type(rreq) == MPIDI_REQUEST_EAGER_MSG)
 	{
 	    int recv_pending;
@@ -167,7 +165,6 @@ int MPID_Recv(void * buf, MPI_Aint count, MPI_Datatype datatype, int rank, int t
 	/* We must wait until here to exit the msgqueue critical section
 	   on this request (we needed to set the recv_pending_count
 	   and the datatype pointer) */
-        MPID_THREAD_CS_EXIT(POBJ, MPIR_THREAD_POBJ_MSGQ_MUTEX);
     }
 
   fn_exit:
@@ -177,6 +174,7 @@ int MPID_Recv(void * buf, MPI_Aint count, MPI_Datatype datatype, int rank, int t
     {
 	MPL_DBG_MSG_P(MPIDI_CH3_DBG_OTHER,VERBOSE,
 		       "request allocated, handle=0x%08x", rreq->handle);
+        MPII_RECVQ_REMEMBER(rreq, rank, tag, comm->recvcontext_id, buf, count);
     }
     else
     {

@@ -1,12 +1,16 @@
-.TH MPI_Type_create_keyval 3 "2/22/2022" " " "MPI"
+.TH MPI_Type_create_keyval 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Type_create_keyval \-  Create an attribute keyval for MPI datatypes 
 .SH SYNOPSIS
 .nf
-int MPI_Type_create_keyval(MPI_Type_copy_attr_function *type_copy_attr_fn,
-MPI_Type_delete_attr_function *type_delete_attr_fn, int *type_keyval,
-void *extra_state)
 .fi
+.nf
+int MPI_Type_create_keyval(MPI_Type_copy_attr_function *type_copy_attr_fn,
+MPI_Type_delete_attr_function *type_delete_attr_fn,
+int *type_keyval, void *extra_state)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -137,7 +141,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

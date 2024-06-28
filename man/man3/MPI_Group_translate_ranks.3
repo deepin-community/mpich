@@ -1,11 +1,15 @@
-.TH MPI_Group_translate_ranks 3 "2/22/2022" " " "MPI"
+.TH MPI_Group_translate_ranks 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Group_translate_ranks \-  Translates the ranks of processes in one group to those in another group 
 .SH SYNOPSIS
 .nf
-int MPI_Group_translate_ranks(MPI_Group group1, int n, const int ranks1[], MPI_Group group2,
-int ranks2[])
 .fi
+.nf
+int MPI_Group_translate_ranks(MPI_Group group1, int n, const int ranks1[],
+MPI_Group group2, int ranks2[])
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -107,7 +111,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

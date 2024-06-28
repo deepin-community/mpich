@@ -1,11 +1,23 @@
-.TH MPI_Type_get_envelope 3 "2/22/2022" " " "MPI"
+.TH MPI_Type_get_envelope 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Type_get_envelope \-  get type envelope 
 .SH SYNOPSIS
 .nf
-int MPI_Type_get_envelope(MPI_Datatype datatype, int *num_integers, int *num_addresses,
+.fi
+.nf
+int MPI_Type_get_envelope(MPI_Datatype datatype, int *num_integers,
+int *num_addresses, int *num_large_counts,
 int *num_datatypes, int *combiner)
 .fi
+
+.nf
+int MPI_Type_get_envelope_c(MPI_Datatype datatype, MPI_Count *num_integers,
+MPI_Count *num_addresses,
+MPI_Count *num_large_counts,
+MPI_Count *num_datatypes, int *combiner)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -26,6 +38,11 @@ int *num_datatypes, int *combiner)
 .PD 1
 .PD 0
 .TP
+.B num_large_counts 
+- number of input large counts used in call constructing combiner (non-negative integer)
+.PD 1
+.PD 0
+.TP
 .B num_datatypes 
 - number of input datatypes used in call constructing combiner (non-negative integer)
 .PD 1
@@ -34,6 +51,15 @@ int *num_datatypes, int *combiner)
 .B combiner 
 - combiner (state)
 .PD 1
+
+.SH THREAD AND INTERRUPT SAFETY
+
+This routine is thread-safe.  This means that this routine may be
+safely used by multiple threads without the need for any user-provided
+thread locks.  However, the routine is not interrupt safe.  Typically,
+this is due to the use of memory allocation routines such as 
+.I malloc
+or other non-MPICH runtime routines that are themselves not interrupt-safe.
 
 .SH NOTES FOR FORTRAN
 All MPI routines in Fortran (except for 
@@ -92,7 +118,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

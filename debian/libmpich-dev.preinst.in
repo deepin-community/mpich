@@ -1,0 +1,40 @@
+#!/bin/sh
+set -e
+
+if	dpkg --compare-versions "$2" lt-nl "4.2.0-6~" && \
+	dpkg --compare-versions "$2" ge "4.2.0"
+then
+	# missing dir_to_symlink/symlink_to_dir caused files at a location
+	# where dpkg does not recognize proper ownership:
+	# dpkg-maintscript-helper: error: directory '/usr/include/x86_64-linux-gnu/mpich' contains files not owned by package libmpich-dev:amd64, cannot switch to symlink
+	if [ ! -L '/usr/include/@DEB_HOST_MULTIARCH@/mpich' ] && \
+		[ -d '/usr/include/@DEB_HOST_MULTIARCH@/mpich' ]
+	then
+		rm -fv \
+			'/usr/include/@DEB_HOST_MULTIARCH@/mpich/mpi.h' \
+			'/usr/include/@DEB_HOST_MULTIARCH@/mpich/mpi_proto.h' \
+			'/usr/include/@DEB_HOST_MULTIARCH@/mpich/mpicxx.h' \
+			'/usr/include/@DEB_HOST_MULTIARCH@/mpich/mpif.h' \
+			'/usr/include/@DEB_HOST_MULTIARCH@/mpich/mpio.h' \
+			'/usr/include/@DEB_HOST_MULTIARCH@/mpich/mpiof.h' \
+			'/usr/include/@DEB_HOST_MULTIARCH@/mpich/mpi.mod' \
+			'/usr/include/@DEB_HOST_MULTIARCH@/mpich/mpi_base.mod' \
+			'/usr/include/@DEB_HOST_MULTIARCH@/mpich/mpi_c_interface.mod' \
+			'/usr/include/@DEB_HOST_MULTIARCH@/mpich/mpi_c_interface_cdesc.mod' \
+			'/usr/include/@DEB_HOST_MULTIARCH@/mpich/mpi_c_interface_glue.mod' \
+			'/usr/include/@DEB_HOST_MULTIARCH@/mpich/mpi_c_interface_nobuf.mod' \
+			'/usr/include/@DEB_HOST_MULTIARCH@/mpich/mpi_c_interface_types.mod' \
+			'/usr/include/@DEB_HOST_MULTIARCH@/mpich/mpi_constants.mod' \
+			'/usr/include/@DEB_HOST_MULTIARCH@/mpich/mpi_f08.mod' \
+			'/usr/include/@DEB_HOST_MULTIARCH@/mpich/mpi_f08_callbacks.mod' \
+			'/usr/include/@DEB_HOST_MULTIARCH@/mpich/mpi_f08_compile_constants.mod' \
+			'/usr/include/@DEB_HOST_MULTIARCH@/mpich/mpi_f08_link_constants.mod' \
+			'/usr/include/@DEB_HOST_MULTIARCH@/mpich/mpi_f08_types.mod' \
+			'/usr/include/@DEB_HOST_MULTIARCH@/mpich/mpi_sizeofs.mod' \
+			'/usr/include/@DEB_HOST_MULTIARCH@/mpich/pmpi_base.mod' \
+			'/usr/include/@DEB_HOST_MULTIARCH@/mpich/pmpi_f08.mod' \
+
+	fi
+fi
+
+#DEBHELPER#

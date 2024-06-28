@@ -1,10 +1,15 @@
-.TH MPI_T_event_get_source 3 "2/22/2022" " " "MPI"
+.TH MPI_T_event_get_source 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_T_event_get_source \-  Returns the index of the source of the event instance 
 .SH SYNOPSIS
 .nf
-int MPI_T_event_get_source(MPI_T_event_instance event_instance, int *source_index)
 .fi
+.nf
+int MPI_T_event_get_source(MPI_T_event_instance event_instance,
+int *source_index)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -62,7 +67,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_T_ERR_INVALID 

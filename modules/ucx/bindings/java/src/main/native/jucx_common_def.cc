@@ -1,5 +1,5 @@
 /*
- * Copyright (C) Mellanox Technologies Ltd. 2019. ALL RIGHTS RESERVED.
+ * Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2019. ALL RIGHTS RESERVED.
  * See file LICENSE for terms.
  */
 
@@ -28,6 +28,8 @@ static jfieldID sender_tag_field;
 static jfieldID request_callback;
 static jfieldID request_status;
 static jfieldID request_iov_vec;
+static jfieldID request_params_mem_type;
+static jfieldID request_params_memh;
 
 static jmethodID jucx_request_constructor;
 static jmethodID jucx_endpoint_constructor;
@@ -55,6 +57,7 @@ extern "C" JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *jvm, void* reserved) {
     jclass jucx_endpoint_cls_local = env->FindClass("org/openucx/jucx/ucp/UcpEndpoint");
     jclass jucx_am_data_cls_local = env->FindClass("org/openucx/jucx/ucp/UcpAmData");
     jclass jucx_am_recv_callback_cls_local = env->FindClass("org/openucx/jucx/ucp/UcpAmRecvCallback");
+    jclass ucp_request_params_cls_local = env->FindClass("org/openucx/jucx/ucp/UcpRequestParams");
 
     jucx_request_cls = (jclass) env->NewGlobalRef(jucx_request_cls_local);
     ucp_rkey_cls = (jclass) env->NewGlobalRef(ucp_rkey_cls_local);
@@ -68,6 +71,8 @@ extern "C" JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *jvm, void* reserved) {
     recv_size_field = env->GetFieldID(jucx_request_cls, "recvSize", "J");
     request_iov_vec = env->GetFieldID(jucx_request_cls, "iovVector", "J");
     sender_tag_field = env->GetFieldID(jucx_request_cls, "senderTag", "J");
+    request_params_mem_type = env->GetFieldID(ucp_request_params_cls_local, "memType", "I");
+    request_params_memh = env->GetFieldID(ucp_request_params_cls_local, "memHandle", "J");
 
     jucx_set_native_id = env->GetMethodID(jucx_request_cls, "setNativeId", "(J)V");
     on_success = env->GetMethodID(jucx_callback_cls, "onSuccess",
@@ -106,24 +111,30 @@ jobject c2jInetSockAddr(JNIEnv *env, const sockaddr_storage* ss)
 {
     jbyteArray buff;
     int port = 0;
-
-    // 1. Construct InetAddress object
-    jclass inet_address_cls = env->FindClass("java/net/InetAddress");
-    jmethodID getByAddress = env->GetStaticMethodID(inet_address_cls, "getByAddress",
-                                                    "([B)Ljava/net/InetAddress;");
+    jobject inet_address_obj;
+    
     if(ss->ss_family == AF_INET6) {
         const sockaddr_in6* sin6 = reinterpret_cast<const sockaddr_in6*>(ss);
+        int scope_id = sin6->sin6_scope_id;
         buff = env->NewByteArray(16);
         env->SetByteArrayRegion(buff, 0, 16, (jbyte*)&sin6->sin6_addr.s6_addr);
         port = ntohs(sin6->sin6_port);
+        jclass inet_address_cls = env->FindClass("java/net/Inet6Address");
+        jmethodID getByAddress = env->GetStaticMethodID(inet_address_cls, "getByAddress",
+                                                        "(Ljava/lang/String;[BI)Ljava/net/Inet6Address;");
+        inet_address_obj = env->CallStaticObjectMethod(inet_address_cls, getByAddress, NULL,
+            buff, scope_id);
     } else {
         const sockaddr_in* sin = reinterpret_cast<const sockaddr_in*>(ss);
         buff = env->NewByteArray(4);
         env->SetByteArrayRegion(buff, 0, 4, (jbyte*)&sin->sin_addr);
         port = ntohs(sin->sin_port);
+        jclass inet_address_cls = env->FindClass("java/net/InetAddress");
+        jmethodID getByAddress = env->GetStaticMethodID(inet_address_cls, "getByAddress",
+                                                        "([B)Ljava/net/InetAddress;");
+        inet_address_obj = env->CallStaticObjectMethod(inet_address_cls, getByAddress, buff);
     }
-
-    jobject inet_address_obj = env->CallStaticObjectMethod(inet_address_cls, getByAddress, buff);
+     
     // 2. Construct InetSocketAddress object from InetAddress, port
     jclass inet_socket_address_cls = env->FindClass("java/net/InetSocketAddress");
     jmethodID inetSocketAddress_constructor = env->GetMethodID(inet_socket_address_cls,
@@ -352,8 +363,16 @@ ucs_status_t am_recv_callback(void *arg, const void *header, size_t header_lengt
 }
 
 jobject jucx_request_allocate(JNIEnv *env, const jobject callback,
-                              ucp_request_param_t *param, jint memory_type)
+                              ucp_request_param_t *param, jobject requestParams)
 {
+    jint memory_type = UCS_MEMORY_TYPE_UNKNOWN;
+    jlong memory_handle = 0;
+
+    if (requestParams != NULL) {
+        memory_type = env->GetIntField(requestParams, request_params_mem_type);
+        memory_handle = env->GetLongField(requestParams, request_params_memh);
+    }
+
     jobject jucx_request = env->NewObject(jucx_request_cls, jucx_request_constructor);
 
     param->op_attr_mask = UCP_OP_ATTR_FIELD_USER_DATA |
@@ -362,6 +381,11 @@ jobject jucx_request_allocate(JNIEnv *env, const jobject callback,
     param->user_data    = env->NewGlobalRef(jucx_request);
     param->memory_type  = static_cast<ucs_memory_type_t>(memory_type);
 
+    if (memory_handle != 0) {
+        param->op_attr_mask |= UCP_OP_ATTR_FIELD_MEMH;
+        param->memh          = reinterpret_cast<ucp_mem_h>(memory_handle);
+    }
+
     if (callback != NULL) {
          env->SetObjectField(jucx_request, request_callback, callback);
     }
@@ -369,17 +393,19 @@ jobject jucx_request_allocate(JNIEnv *env, const jobject callback,
     return jucx_request;
 }
 
-void process_request(JNIEnv *env, jobject jucx_request, ucs_status_ptr_t status)
+void process_request(JNIEnv *env, const ucp_request_param_t *request_params, ucs_status_ptr_t status)
 {
     // If status is error - throw an exception in java.
     if (UCS_PTR_IS_ERR(status)) {
         JNU_ThrowExceptionByStatus(env, UCS_PTR_STATUS(status));
     }
 
+    jobject jucx_request = reinterpret_cast<jobject>(request_params->user_data);
+
     if (UCS_PTR_IS_PTR(status)) {
       env->CallVoidMethod(jucx_request, jucx_set_native_id, (native_ptr)status);
     } else {
-        // Request completed immidiately. Call jucx callback.
+        // Request completed immediately. Call jucx callback.
         set_jucx_request_completed(env, jucx_request, UCS_PTR_RAW_STATUS(status));
         jobject callback = env->GetObjectField(jucx_request, request_callback);
         if (callback != NULL) {
@@ -387,6 +413,8 @@ void process_request(JNIEnv *env, jobject jucx_request, ucs_status_ptr_t status)
             // Remove callback reference from request.
             env->SetObjectField(jucx_request, request_callback, NULL);
         }
+
+        env->DeleteGlobalRef(jucx_request);
     }
 }
 

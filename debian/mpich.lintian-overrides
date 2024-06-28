@@ -1,0 +1,4 @@
+# manpage in mpich-doc
+no-manual-page [usr/bin/hydra_nameserver]
+no-manual-page [usr/bin/hydra_persist]
+no-manual-page [usr/bin/hydra_pmi_proxy]

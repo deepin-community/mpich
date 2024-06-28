@@ -1,5 +1,5 @@
 /**
-* Copyright (C) Mellanox Technologies Ltd. 2001-2014.  ALL RIGHTS RESERVED.
+* Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2001-2014. ALL RIGHTS RESERVED.
 *
 * See file LICENSE for terms.
 */
@@ -53,7 +53,7 @@ ucs_queue_is_tail(ucs_queue_head_t *queue, ucs_queue_elem_t *elem)
 /**
  * @return Whether the queue is empty.
  */
-static inline int ucs_queue_is_empty(ucs_queue_head_t *queue)
+static inline int ucs_queue_is_empty(const ucs_queue_head_t *queue)
 {
     return queue->ptail == &queue->head;
 }

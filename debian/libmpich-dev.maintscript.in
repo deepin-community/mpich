@@ -1,0 +1,2 @@
+symlink_to_dir /usr/lib/@DEB_HOST_MULTIARCH@/mpich/include ../../../include/@DEB_HOST_MULTIARCH@/mpich 4.2.0-6~
+dir_to_symlink /usr/include/@DEB_HOST_MULTIARCH@/mpich ../../lib/@DEB_HOST_MULTIARCH@/mpich/include 4.2.0-6~

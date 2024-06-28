@@ -11,7 +11,7 @@
 # The default approach is to prepare the coverage for this MPICH 
 # distribution and to place the coverage web pages into a 
 # (mpichsrc)/www/coverage
-srcdir=/tmp/DXpzZMf46K/mpich-4.0.2
+srcdir=/var/tmp/jbAQ60iA2q/mpich-4.2.0
 tsuites=$srcdir/tests/mpi
 weblocbase=$srcdir/www/coverage
 weblocprefix=""

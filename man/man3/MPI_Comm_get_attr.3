@@ -1,10 +1,15 @@
-.TH MPI_Comm_get_attr 3 "2/22/2022" " " "MPI"
+.TH MPI_Comm_get_attr 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Comm_get_attr \-  Retrieves attribute value by key 
 .SH SYNOPSIS
 .nf
-int MPI_Comm_get_attr(MPI_Comm comm, int comm_keyval, void *attribute_val, int *flag)
 .fi
+.nf
+int MPI_Comm_get_attr(MPI_Comm comm, int comm_keyval, void *attribute_val,
+int *flag)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -123,7 +128,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

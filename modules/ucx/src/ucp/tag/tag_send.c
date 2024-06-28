@@ -1,5 +1,5 @@
 /**
- * Copyright (C) Mellanox Technologies Ltd. 2001-2020.  ALL RIGHTS RESERVED.
+ * Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2001-2020. ALL RIGHTS RESERVED.
  *
  * See file LICENSE for terms.
  */
@@ -85,7 +85,7 @@ ucp_tag_send_req(ucp_request_t *req, size_t dt_count,
 
     status = ucp_request_send_start(req, max_short, zcopy_thresh, rndv_thresh,
                                     dt_count, 0, req->send.length, msg_config,
-                                    proto);
+                                    proto, param);
     if (ucs_likely(status == UCS_OK)) {
         /* Eager send initialized successfully */
         if (req->flags & UCP_REQUEST_FLAG_SYNC) {
@@ -97,7 +97,7 @@ ucp_tag_send_req(ucp_request_t *req, size_t dt_count,
     } else if (status == UCS_ERR_NO_PROGRESS) {
         /* RMA/AM rendezvous */
         ucs_assert(req->send.length >= rndv_thresh);
-        status = ucp_tag_send_start_rndv(req);
+        status = ucp_tag_send_start_rndv(req, param);
         if (status != UCS_OK) {
             return UCS_STATUS_PTR(status);
         }
@@ -148,18 +148,20 @@ ucp_tag_send_req_init(ucp_request_t *req, ucp_ep_h ep, const void *buffer,
 }
 
 static UCS_F_ALWAYS_INLINE ucs_status_t
-ucp_tag_send_inline(ucp_ep_h ep, const void *buffer, size_t length, ucp_tag_t tag)
+ucp_tag_send_inline(ucp_ep_h ep, const void *buffer, size_t length,
+                    ucp_tag_t tag, const ucp_request_param_t *param)
 {
     ucs_status_t status;
 
-    if (ucp_proto_is_inline(ep, &ucp_ep_config(ep)->tag.max_eager_short, length)) {
+    if (ucp_proto_is_inline(ep, &ucp_ep_config(ep)->tag.max_eager_short,
+                            length, param)) {
         UCS_STATIC_ASSERT(sizeof(ucp_tag_t) == sizeof(ucp_eager_hdr_t));
         UCS_STATIC_ASSERT(sizeof(ucp_tag_t) == sizeof(uint64_t));
         status = uct_ep_am_short(ucp_ep_get_am_uct_ep(ep), UCP_AM_ID_EAGER_ONLY,
                                  tag, buffer, length);
     } else if (ucp_proto_is_inline(ep,
                                    &ucp_ep_config(ep)->tag.offload.max_eager_short,
-                                   length)) {
+                                   length, param)) {
         UCS_STATIC_ASSERT(sizeof(ucp_tag_t) == sizeof(uct_tag_t));
         status = uct_ep_tag_eager_short(ucp_ep_get_tag_uct_ep(ep), tag, buffer,
                                         length);
@@ -252,7 +254,8 @@ UCS_PROFILE_FUNC(ucs_status_ptr_t, ucp_tag_send_nbx,
                 (UCP_OP_ATTR_FIELD_DATATYPE | UCP_OP_ATTR_FLAG_NO_IMM_CMPL);
 
     if (ucs_likely(attr_mask == 0)) {
-        status = UCS_PROFILE_CALL(ucp_tag_send_inline, ep, buffer, count, tag);
+        status = UCS_PROFILE_CALL(ucp_tag_send_inline, ep, buffer, count, tag,
+                                  param);
         ucp_request_send_check_status(status, ret, goto out);
         datatype      = ucp_dt_make_contig(1);
         contig_length = count;
@@ -261,12 +264,18 @@ UCS_PROFILE_FUNC(ucs_status_ptr_t, ucp_tag_send_nbx,
         if (ucs_likely(UCP_DT_IS_CONTIG(datatype))) {
             contig_length = ucp_contig_dt_length(datatype, count);
             status        = UCS_PROFILE_CALL(ucp_tag_send_inline, ep, buffer,
-                                             contig_length, tag);
+                                             contig_length, tag, param);
             ucp_request_send_check_status(status, ret, goto out);
         }
-    } else {
+    } else if (attr_mask == UCP_OP_ATTR_FLAG_NO_IMM_CMPL) {
         datatype      = ucp_dt_make_contig(1);
         contig_length = count;
+    } else {
+        /* UCP_OP_ATTR_FIELD_DATATYPE | UCP_OP_ATTR_FLAG_NO_IMM_CMPL */
+        datatype = param->datatype;
+        if (UCP_DT_IS_CONTIG(datatype)) {
+            contig_length = ucp_contig_dt_length(datatype, count);
+        }
     }
 
     if (ucs_unlikely(param->op_attr_mask & UCP_OP_ATTR_FLAG_FORCE_IMM_CMPL)) {
@@ -286,7 +295,7 @@ UCS_PROFILE_FUNC(ucs_status_ptr_t, ucp_tag_send_nbx,
         ret = ucp_proto_request_send_op(ep, &ucp_ep_config(ep)->proto_select,
                                         UCP_WORKER_CFG_INDEX_NULL, req,
                                         UCP_OP_ID_TAG_SEND, buffer, count,
-                                        datatype, contig_length, param);
+                                        datatype, contig_length, param, 0, 0);
     } else {
         ucp_tag_send_req_init(req, ep, buffer, datatype, count, tag, 0, param);
         ret = ucp_tag_send_req(req, count, &ucp_ep_config(ep)->tag.eager,
@@ -337,7 +346,7 @@ UCS_PROFILE_FUNC(ucs_status_ptr_t, ucp_tag_send_sync_nbx,
         ret = ucp_proto_request_send_op(ep, &ucp_ep_config(ep)->proto_select,
                                         UCP_WORKER_CFG_INDEX_NULL, req,
                                         UCP_OP_ID_TAG_SEND_SYNC, buffer, count,
-                                        datatype, contig_length, param);
+                                        datatype, contig_length, param, 0, 0);
     } else {
         ucp_tag_send_req_init(req, ep, buffer, datatype, count, tag,
                               UCP_REQUEST_FLAG_SYNC, param);

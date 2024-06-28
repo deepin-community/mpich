@@ -5,7 +5,7 @@
 
 #include "mpidimpl.h"
 #include "utlist.h"
-#if defined HAVE_LIBHCOLL
+#if defined HAVE_HCOLL
 #include "../../common/hcoll/hcoll.h"
 #endif
 
@@ -52,7 +52,7 @@ static hook_elt *destroy_hooks_tail = NULL;
 int MPIDI_CH3I_Comm_init(void)
 {
     int mpi_errno = MPI_SUCCESS;
-#if defined HAVE_LIBHCOLL && MPID_CH3I_CH_HCOLL_BCOL
+#if defined HAVE_HCOLL && MPID_CH3I_CH_HCOLL_BCOL
     MPIR_CHKLMEM_DECL(1);
 #endif
 
@@ -64,7 +64,7 @@ int MPIDI_CH3I_Comm_init(void)
     mpi_errno = MPIDI_CH3U_Comm_register_create_hook(comm_created, NULL);
     MPIR_ERR_CHECK(mpi_errno);
 
-#if defined HAVE_LIBHCOLL
+#if defined HAVE_HCOLL
     {
         int r;
 
@@ -84,7 +84,7 @@ int MPIDI_CH3I_Comm_init(void)
             int size = strlen("HCOLL_BCOL=") + strlen(MPID_CH3I_CH_HCOLL_BCOL) + 1;
 
             MPIR_CHKLMEM_MALLOC(envstr, char *, size, mpi_errno, "**malloc", MPL_MEM_COMM);
-            MPL_snprintf(envstr, size, "HCOLL_BCOL=%s", MPID_CH3I_CH_HCOLL_BCOL);
+            snprintf(envstr, size, "HCOLL_BCOL=%s", MPID_CH3I_CH_HCOLL_BCOL);
 
             r = MPL_putenv(envstr);
             MPIR_ERR_CHKANDJUMP(r, mpi_errno, MPI_ERR_OTHER, "**putenv");
@@ -103,7 +103,7 @@ int MPIDI_CH3I_Comm_init(void)
     
  fn_exit:
     MPIR_FUNC_EXIT;
-#if defined HAVE_LIBHCOLL && MPID_CH3I_CH_HCOLL_BCOL
+#if defined HAVE_HCOLL && MPID_CH3I_CH_HCOLL_BCOL
     MPIR_CHKLMEM_FREEALL();
 #endif
     return mpi_errno;
@@ -571,9 +571,9 @@ void MPIDI_CH3I_Comm_find(MPIR_Context_id_t context_id, MPIR_Comm **comm)
     MPIR_FUNC_ENTER;
 
     COMM_FOREACH((*comm)) {
-        if ((*comm)->context_id == context_id || ((*comm)->context_id + MPIR_CONTEXT_INTRA_COLL) == context_id ||
-            ((*comm)->node_comm && ((*comm)->node_comm->context_id == context_id || ((*comm)->node_comm->context_id + MPIR_CONTEXT_INTRA_COLL) == context_id)) ||
-            ((*comm)->node_roots_comm && ((*comm)->node_roots_comm->context_id == context_id || ((*comm)->node_roots_comm->context_id + MPIR_CONTEXT_INTRA_COLL) == context_id)) ) {
+        if ((*comm)->context_id == context_id || ((*comm)->context_id + MPIR_CONTEXT_COLL_OFFSET) == context_id ||
+            ((*comm)->node_comm && ((*comm)->node_comm->context_id == context_id || ((*comm)->node_comm->context_id + MPIR_CONTEXT_COLL_OFFSET) == context_id)) ||
+            ((*comm)->node_roots_comm && ((*comm)->node_roots_comm->context_id == context_id || ((*comm)->node_roots_comm->context_id + MPIR_CONTEXT_COLL_OFFSET) == context_id)) ) {
             MPL_DBG_MSG_D(MPIDI_CH3_DBG_OTHER,VERBOSE,"Found matching context id: %d", (*comm)->context_id);
             break;
         }

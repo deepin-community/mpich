@@ -39,7 +39,7 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_POSIX_mpi_bcast_release_gather(void *buffer,
                                                                   MPI_Aint count,
                                                                   MPI_Datatype datatype,
                                                                   int root, MPIR_Comm * comm_ptr,
-                                                                  MPIR_Errflag_t * errflag)
+                                                                  MPIR_Errflag_t errflag)
 {
     MPIR_FUNC_ENTER;
 
@@ -53,7 +53,6 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_POSIX_mpi_bcast_release_gather(void *buffer,
     MPI_Aint lb, true_lb, true_extent, extent, type_size;
     void *ori_buffer = buffer;
     MPI_Datatype ori_datatype = datatype;
-    int cellsize = MPIDI_POSIX_RELEASE_GATHER_BCAST_CELLSIZE;
 
     /* If there is only one process or no data, return */
     if (count == 0 || (MPIR_Comm_size(comm_ptr) == 1)) {
@@ -79,12 +78,7 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_POSIX_mpi_bcast_release_gather(void *buffer,
     MPIR_Type_get_true_extent_impl(datatype, &true_lb, &true_extent);
 
     MPIR_Datatype_is_contig(datatype, &is_contig);
-
-    if (is_contig) {
-        MPIR_Datatype_get_size_macro(datatype, type_size);
-    } else {
-        MPIR_Pack_size(1, datatype, &type_size);
-    }
+    MPIR_Datatype_get_size_macro(datatype, type_size);
 
     if (!is_contig || type_size >= MPIDI_POSIX_RELEASE_GATHER_BCAST_CELLSIZE) {
         /* Convert to MPI_BYTE datatype */
@@ -100,16 +94,19 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_POSIX_mpi_bcast_release_gather(void *buffer,
                 /* Root packs the data before sending, for non contiguous datatypes */
                 mpi_errno =
                     MPIR_Typerep_pack(ori_buffer, ori_count, ori_datatype, 0, buffer, count,
-                                      &actual_packed_unpacked_bytes);
-                MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, *errflag);
+                                      &actual_packed_unpacked_bytes, MPIR_TYPEREP_FLAG_NONE);
+                MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
             }
         }
     }
+
+    MPIR_Assert(MPIDI_POSIX_RELEASE_GATHER_BCAST_CELLSIZE <= INT_MAX);
+    int cellsize = (int) MPIDI_POSIX_RELEASE_GATHER_BCAST_CELLSIZE;
 #ifdef HAVE_ERROR_CHECKING
     /* When error checking is enabled, only (cellsize-(2*cacheline_size)) bytes are reserved for data.
      * Initial 2 cacheline_size bytes are reserved to put the amount of data being placed and the
-     * errflag respectively */
-    cellsize = MPIDI_POSIX_RELEASE_GATHER_BCAST_CELLSIZE - (2 * MPIDU_SHM_CACHE_LINE_LEN);
+     errflag respectively */
+    cellsize -= (2 * MPIDU_SHM_CACHE_LINE_LEN);
 #endif
 
     /* Calculate chunking information for pipelining */
@@ -117,14 +114,6 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_POSIX_mpi_bcast_release_gather(void *buffer,
      * half a datatype in one chunk, but that is fine */
     MPIR_Algo_calculate_pipeline_chunk_info(cellsize, 1, count * type_size, &num_chunks,
                                             &chunk_count_floor, &chunk_count_ceil);
-    /* Print chunking information */
-/* *INDENT-OFF* */
-    MPL_DBG_MSG_FMT(MPIR_DBG_COLL, VERBOSE, (MPL_DBG_FDEST, "Bcast shmgr pipeline info: segsize=%d\
-                                             count=" MPI_AINT_FMT_DEC_SPEC " num_chunks=" MPI_AINT_FMT_DEC_SPEC " chunk_count_floor=" MPI_AINT_FMT_DEC_SPEC "\
-                                             chunk_count_ceil=" MPI_AINT_FMT_DEC_SPEC " \n",
-                                             cellsize, count * type_size, num_chunks,
-                                             chunk_count_floor, chunk_count_ceil));
-/* *INDENT-ON* */
 
     /* Do pipelined release-gather */
     for (i = 0; i < num_chunks; i++) {
@@ -135,13 +124,13 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_POSIX_mpi_bcast_release_gather(void *buffer,
                                                    chunk_count, MPI_BYTE, root, comm_ptr,
                                                    errflag,
                                                    MPIDI_POSIX_RELEASE_GATHER_OPCODE_BCAST);
-        MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, *errflag);
+        MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
 
         mpi_errno =
             MPIDI_POSIX_mpi_release_gather_gather(NULL, NULL, 0, MPI_DATATYPE_NULL,
                                                   MPI_OP_NULL, root, comm_ptr, errflag,
                                                   MPIDI_POSIX_RELEASE_GATHER_OPCODE_BCAST);
-        MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, *errflag);
+        MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
         offset += chunk_count;
     }
 
@@ -150,8 +139,8 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_POSIX_mpi_bcast_release_gather(void *buffer,
             /* Non-root unpack the data if expecting non-contiguous datatypes */
             mpi_errno =
                 MPIR_Typerep_unpack(buffer, count, ori_buffer, ori_count, ori_datatype, 0,
-                                    &actual_packed_unpacked_bytes);
-            MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, *errflag);
+                                    &actual_packed_unpacked_bytes, MPIR_TYPEREP_FLAG_NONE);
+            MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
         }
         MPL_free(buffer);
     }
@@ -164,7 +153,7 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_POSIX_mpi_bcast_release_gather(void *buffer,
   fallback:
     /* Fall back to other algo as release_gather based bcast cannot be used */
     mpi_errno = MPIR_Bcast_impl(buffer, count, datatype, root, comm_ptr, errflag);
-    MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, *errflag);
+    MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
     goto fn_exit;
 }
 
@@ -179,12 +168,11 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_POSIX_mpi_reduce_release_gather(const void *s
                                                                    MPI_Datatype datatype,
                                                                    MPI_Op op, int root,
                                                                    MPIR_Comm * comm_ptr,
-                                                                   MPIR_Errflag_t * errflag)
+                                                                   MPIR_Errflag_t errflag)
 {
     int i;
     MPI_Aint num_chunks, chunk_size_floor, chunk_size_ceil;
     MPI_Aint offset = 0;
-    int is_contig;
     int mpi_errno = MPI_SUCCESS, mpi_errno_ret = MPI_SUCCESS;
     MPI_Aint lb, true_extent, extent, type_size;
 
@@ -199,8 +187,17 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_POSIX_mpi_reduce_release_gather(const void *s
         /* Simply copy the data from sendbuf to recvbuf if there is only 1 rank and MPI_IN_PLACE
          * is not used */
         mpi_errno = MPIR_Localcopy(sendbuf, count, datatype, recvbuf, count, datatype);
-        MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, *errflag);
+        MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
         goto fn_exit;
+    }
+
+    MPIR_Datatype_get_size_macro(datatype, type_size);
+    MPIR_Type_get_extent_impl(datatype, &lb, &extent);
+    MPIR_Type_get_true_extent_impl(datatype, &lb, &true_extent);
+    extent = MPL_MAX(extent, true_extent);
+    if (MPL_MAX(type_size, extent) >=
+        MPIR_CVAR_REDUCE_INTRANODE_BUFFER_TOTAL_SIZE / MPIR_CVAR_REDUCE_INTRANODE_NUM_CELLS) {
+        goto fallback;
     }
 
     MPIDI_POSIX_COMM(comm_ptr, release_gather).num_collective_calls++;
@@ -218,18 +215,6 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_POSIX_mpi_reduce_release_gather(const void *s
     MPII_COLLECTIVE_FALLBACK_CHECK(MPIR_Comm_rank(comm_ptr), !mpi_errno, mpi_errno_ret,
                                    "release_gather reduce cannot create more shared memory. Falling back to pt2pt algorithms.\n");
 
-    MPIR_Type_get_extent_impl(datatype, &lb, &extent);
-    MPIR_Type_get_true_extent_impl(datatype, &lb, &true_extent);
-    extent = MPL_MAX(extent, true_extent);
-
-    MPIR_Datatype_is_contig(datatype, &is_contig);
-
-    if (is_contig) {
-        MPIR_Datatype_get_size_macro(datatype, type_size);
-    } else {
-        MPIR_Pack_size(1, datatype, &type_size);
-    }
-
     if (sendbuf == MPI_IN_PLACE) {
         sendbuf = recvbuf;
     }
@@ -239,16 +224,6 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_POSIX_mpi_reduce_release_gather(const void *s
                                             MPL_MAX(extent, type_size), count, &num_chunks,
                                             &chunk_size_floor, &chunk_size_ceil);
 
-    /* Print chunking information */
-    MPL_DBG_MSG_FMT(MPIR_DBG_COLL, VERBOSE, (MPL_DBG_FDEST,
-                                             "Reduce shmgr pipeline info: segsize=%d count="
-                                             MPI_AINT_FMT_DEC_SPEC " num_chunks="
-                                             MPI_AINT_FMT_DEC_SPEC " chunk_size_floor="
-                                             MPI_AINT_FMT_DEC_SPEC " chunk_size_ceil="
-                                             MPI_AINT_FMT_DEC_SPEC " \n",
-                                             MPIDI_POSIX_RELEASE_GATHER_REDUCE_CELLSIZE, count,
-                                             num_chunks, chunk_size_floor, chunk_size_ceil));
-
     /* Do pipelined release-gather */
     for (i = 0; i < num_chunks; i++) {
         MPI_Aint chunk_count = (i == 0) ? chunk_size_floor : chunk_size_ceil;
@@ -257,7 +232,7 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_POSIX_mpi_reduce_release_gather(const void *s
             MPIDI_POSIX_mpi_release_gather_release(NULL, 0, MPI_DATATYPE_NULL, root,
                                                    comm_ptr, errflag,
                                                    MPIDI_POSIX_RELEASE_GATHER_OPCODE_REDUCE);
-        MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, *errflag);
+        MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
 
         mpi_errno =
             MPIDI_POSIX_mpi_release_gather_gather((char *) sendbuf + offset * extent,
@@ -265,7 +240,7 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_POSIX_mpi_reduce_release_gather(const void *s
                                                   chunk_count, datatype, op, root, comm_ptr,
                                                   errflag,
                                                   MPIDI_POSIX_RELEASE_GATHER_OPCODE_REDUCE);
-        MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, *errflag);
+        MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
         offset += chunk_count;
     }
 
@@ -277,7 +252,7 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_POSIX_mpi_reduce_release_gather(const void *s
   fallback:
     /* Fall back to other algo as release_gather algo cannot be used */
     mpi_errno = MPIR_Reduce_impl(sendbuf, recvbuf, count, datatype, op, root, comm_ptr, errflag);
-    MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, *errflag);
+    MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
     goto fn_exit;
 }
 
@@ -291,12 +266,11 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_POSIX_mpi_allreduce_release_gather(const void
                                                                       MPI_Datatype datatype,
                                                                       MPI_Op op,
                                                                       MPIR_Comm * comm_ptr,
-                                                                      MPIR_Errflag_t * errflag)
+                                                                      MPIR_Errflag_t errflag)
 {
     int i;
     MPI_Aint num_chunks, chunk_size_floor, chunk_size_ceil;
     MPI_Aint offset = 0;
-    int is_contig;
     int mpi_errno = MPI_SUCCESS, mpi_errno_ret = MPI_SUCCESS;
     MPI_Aint lb, true_extent, extent, type_size;
 
@@ -306,8 +280,17 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_POSIX_mpi_allreduce_release_gather(const void
         /* Simply copy the data from sendbuf to recvbuf if there is only 1 rank and MPI_IN_PLACE
          * is not used */
         mpi_errno = MPIR_Localcopy(sendbuf, count, datatype, recvbuf, count, datatype);
-        MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, *errflag);
+        MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
         goto fn_exit;
+    }
+
+    MPIR_Datatype_get_size_macro(datatype, type_size);
+    MPIR_Type_get_extent_impl(datatype, &lb, &extent);
+    MPIR_Type_get_true_extent_impl(datatype, &lb, &true_extent);
+    extent = MPL_MAX(extent, true_extent);
+    if (MPL_MAX(type_size, extent) >=
+        MPIR_CVAR_REDUCE_INTRANODE_BUFFER_TOTAL_SIZE / MPIR_CVAR_REDUCE_INTRANODE_NUM_CELLS) {
+        goto fallback;
     }
 
     MPIDI_POSIX_COMM(comm_ptr, release_gather).num_collective_calls++;
@@ -325,18 +308,6 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_POSIX_mpi_allreduce_release_gather(const void
     MPII_COLLECTIVE_FALLBACK_CHECK(MPIR_Comm_rank(comm_ptr), !mpi_errno, mpi_errno_ret,
                                    "release_gather allreduce cannot create more shared memory. Falling back to pt2pt algorithms.\n");
 
-    MPIR_Type_get_extent_impl(datatype, &lb, &extent);
-    MPIR_Type_get_true_extent_impl(datatype, &lb, &true_extent);
-    extent = MPL_MAX(extent, true_extent);
-
-    MPIR_Datatype_is_contig(datatype, &is_contig);
-
-    if (is_contig) {
-        MPIR_Datatype_get_size_macro(datatype, type_size);
-    } else {
-        MPIR_Pack_size(1, datatype, &type_size);
-    }
-
     if (sendbuf == MPI_IN_PLACE) {
         sendbuf = recvbuf;
     }
@@ -345,16 +316,6 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_POSIX_mpi_allreduce_release_gather(const void
     MPIR_Algo_calculate_pipeline_chunk_info(MPIDI_POSIX_RELEASE_GATHER_REDUCE_CELLSIZE,
                                             MPL_MAX(extent, type_size), count, &num_chunks,
                                             &chunk_size_floor, &chunk_size_ceil);
-
-    /* Print chunking information */
-    MPL_DBG_MSG_FMT(MPIR_DBG_COLL, VERBOSE, (MPL_DBG_FDEST,
-                                             "Reduce shmgr pipeline info: segsize=%d count="
-                                             MPI_AINT_FMT_DEC_SPEC " num_chunks="
-                                             MPI_AINT_FMT_DEC_SPEC " chunk_size_floor="
-                                             MPI_AINT_FMT_DEC_SPEC " chunk_size_ceil="
-                                             MPI_AINT_FMT_DEC_SPEC " \n",
-                                             MPIDI_POSIX_RELEASE_GATHER_REDUCE_CELLSIZE, count,
-                                             num_chunks, chunk_size_floor, chunk_size_ceil));
 
     /* Do pipelined release-gather */
     for (i = 0; i < num_chunks; i++) {
@@ -366,14 +327,14 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_POSIX_mpi_allreduce_release_gather(const void
                                                   chunk_count, datatype, op, 0, comm_ptr,
                                                   errflag,
                                                   MPIDI_POSIX_RELEASE_GATHER_OPCODE_ALLREDUCE);
-        MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, *errflag);
+        MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
 
         mpi_errno =
             MPIDI_POSIX_mpi_release_gather_release((char *) recvbuf + offset * extent, chunk_count,
                                                    datatype, 0,
                                                    comm_ptr, errflag,
                                                    MPIDI_POSIX_RELEASE_GATHER_OPCODE_ALLREDUCE);
-        MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, *errflag);
+        MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
         offset += chunk_count;
     }
 
@@ -386,7 +347,7 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_POSIX_mpi_allreduce_release_gather(const void
 
   fallback:
     mpi_errno = MPIR_Allreduce_impl(sendbuf, recvbuf, count, datatype, op, comm_ptr, errflag);
-    MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, *errflag);
+    MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
     goto fn_exit;
 }
 
@@ -394,7 +355,7 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_POSIX_mpi_allreduce_release_gather(const void
  * framework.
  */
 MPL_STATIC_INLINE_PREFIX int MPIDI_POSIX_mpi_barrier_release_gather(MPIR_Comm * comm_ptr,
-                                                                    MPIR_Errflag_t * errflag)
+                                                                    MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS, mpi_errno_ret = MPI_SUCCESS;
 
@@ -419,12 +380,12 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_POSIX_mpi_barrier_release_gather(MPIR_Comm * 
         MPIDI_POSIX_mpi_release_gather_gather(NULL, NULL, 0, MPI_DATATYPE_NULL, MPI_OP_NULL, 0,
                                               comm_ptr, errflag,
                                               MPIDI_POSIX_RELEASE_GATHER_OPCODE_BARRIER);
-    MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, *errflag);
+    MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
 
     mpi_errno =
         MPIDI_POSIX_mpi_release_gather_release(NULL, 0, MPI_DATATYPE_NULL, 0, comm_ptr, errflag,
                                                MPIDI_POSIX_RELEASE_GATHER_OPCODE_BARRIER);
-    MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, *errflag);
+    MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
 
   fn_exit:
     MPIR_FUNC_EXIT;
@@ -435,7 +396,7 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_POSIX_mpi_barrier_release_gather(MPIR_Comm * 
 
   fallback:
     mpi_errno = MPIR_Barrier_impl(comm_ptr, errflag);
-    MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, *errflag);
+    MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
     goto fn_exit;
 }
 

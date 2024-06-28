@@ -1,5 +1,5 @@
 /**
- * Copyright (C) Mellanox Technologies Ltd. 2020.  ALL RIGHTS RESERVED.
+ * Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2020. ALL RIGHTS RESERVED.
  *
  * See file LICENSE for terms.
  */
@@ -13,6 +13,7 @@
 #include <ucp/core/ucp_worker.h>
 #include <ucp/core/ucp_request.inl>
 #include <ucp/dt/datatype_iter.inl>
+#include <ucp/proto/proto_init.h>
 #include <ucp/proto/proto_single.inl>
 
 
@@ -59,13 +60,13 @@ static ucs_status_t ucp_proto_get_am_bcopy_progress(uct_pending_req_t *self)
         ucp_send_request_id_alloc(req);
     }
 
-    ucp_worker_flush_ops_count_inc(worker);
+    ucp_worker_flush_ops_count_add(worker, +1);
     status = ucp_proto_am_bcopy_single_progress(
             req, UCP_AM_ID_GET_REQ, spriv->super.lane,
             ucp_proto_get_am_bcopy_pack, req, sizeof(ucp_get_req_hdr_t),
-            ucp_proto_get_am_bcopy_complete);
+            ucp_proto_get_am_bcopy_complete, 0);
     if (status != UCS_OK) {
-        ucp_worker_flush_ops_count_dec(worker);
+        ucp_worker_flush_ops_count_add(worker, -1);
     }
     return status;
 }
@@ -82,27 +83,35 @@ ucp_proto_get_am_bcopy_init(const ucp_proto_init_params_t *init_params)
         .super.cfg_priority  = 20,
         .super.min_length    = 0,
         .super.max_length    = SIZE_MAX,
+        .super.min_iov       = 0,
         .super.min_frag_offs = UCP_PROTO_COMMON_OFFSET_INVALID,
         .super.max_frag_offs = ucs_offsetof(uct_iface_attr_t, cap.am.max_bcopy),
         .super.max_iov_offs  = UCP_PROTO_COMMON_OFFSET_INVALID,
         .super.hdr_size      = sizeof(ucp_get_req_hdr_t),
         .super.send_op       = UCT_EP_OP_AM_BCOPY,
         .super.memtype_op    = UCT_EP_OP_PUT_SHORT,
-        .super.flags         = UCP_PROTO_COMMON_INIT_FLAG_RESPONSE,
+        .super.flags         = UCP_PROTO_COMMON_INIT_FLAG_RESPONSE     |
+                               UCP_PROTO_COMMON_INIT_FLAG_CAP_SEG_SIZE |
+                               UCP_PROTO_COMMON_INIT_FLAG_ERR_HANDLING,
+        .super.exclude_map   = 0,
         .lane_type           = UCP_LANE_TYPE_AM,
         .tl_cap_flags        = UCT_IFACE_FLAG_AM_BCOPY
     };
 
-    UCP_RMA_PROTO_INIT_CHECK(init_params, UCP_OP_ID_GET);
+    if (!ucp_proto_init_check_op(init_params, UCS_BIT(UCP_OP_ID_GET))) {
+        return UCS_ERR_UNSUPPORTED;
+    }
 
     return ucp_proto_single_init(&params);
 }
 
-static ucp_proto_t ucp_get_am_bcopy_proto = {
-    .name       = "get/am/bcopy",
-    .flags      = 0,
-    .init       = ucp_proto_get_am_bcopy_init,
-    .config_str = ucp_proto_single_config_str,
-    .progress   = {ucp_proto_get_am_bcopy_progress}
+ucp_proto_t ucp_get_am_bcopy_proto = {
+    .name     = "get/am/bcopy",
+    .desc     = UCP_PROTO_RMA_EMULATION_DESC,
+    .flags    = 0,
+    .init     = ucp_proto_get_am_bcopy_init,
+    .query    = ucp_proto_single_query,
+    .progress = {ucp_proto_get_am_bcopy_progress},
+    .abort    = ucp_proto_request_bcopy_id_abort,
+    .reset    = ucp_proto_request_bcopy_id_reset
 };
-UCP_PROTO_REGISTER(&ucp_get_am_bcopy_proto);

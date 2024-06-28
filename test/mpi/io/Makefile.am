@@ -13,9 +13,11 @@ EXTRA_DIST = testlist.in
 noinst_PROGRAMS = \
     rdwrord       \
     rdwrzero      \
+    rd_end	  \
     getextent     \
     setinfo       \
     setviewcur    \
+    setview_zero  \
     i_noncontig   \
     async         \
     async_any     \
@@ -27,7 +29,8 @@ noinst_PROGRAMS = \
     simple_collective \
     external32_derived_dtype \
     tst_fileview \
-    zero_count
+    zero_count \
+    striped_hints
 
 
 if BUILD_MPIX_TESTS

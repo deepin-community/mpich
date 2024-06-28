@@ -104,28 +104,28 @@ __global__ void yaksuri_hipi_kernel_unpack_REPLACE_hindexed_blkhindx_char(const 
     YAKSURI_HIPI_OP_REPLACE(*((const char *) (const void *) (sbuf + idx * sizeof(char))), *((char *) (void *) (dbuf + x0 * extent + array_of_displs1[x1] + x2 * extent2 + array_of_displs2[x3] + x4 * sizeof(char))));
 }
 
-void yaksuri_hipi_pack_hindexed_blkhindx_char(const void *inbuf, void *outbuf, uintptr_t count, yaksa_op_t op, yaksuri_hipi_md_s *md, int n_threads, int n_blocks_x, int n_blocks_y, int n_blocks_z, int device)
+void yaksuri_hipi_pack_hindexed_blkhindx_char(const void *inbuf, void *outbuf, uintptr_t count, yaksa_op_t op, yaksuri_hipi_md_s *md, int n_threads, int n_blocks_x, int n_blocks_y, int n_blocks_z, hipStream_t stream)
 {
 void *args[] = { &inbuf, &outbuf, &count, &md };
     hipError_t cerr;
     switch (op) {
         case YAKSA_OP__REPLACE:
         cerr = hipLaunchKernel((const void *) yaksuri_hipi_kernel_pack_REPLACE_hindexed_blkhindx_char,
-            dim3(n_blocks_x, n_blocks_y, n_blocks_z), dim3(n_threads), args, 0, yaksuri_hipi_global.stream[device]);
+            dim3(n_blocks_x, n_blocks_y, n_blocks_z), dim3(n_threads), args, 0, stream);
         YAKSURI_HIPI_HIP_ERR_CHECK(cerr);
         break;
 
     }
 }
 
-void yaksuri_hipi_unpack_hindexed_blkhindx_char(const void *inbuf, void *outbuf, uintptr_t count, yaksa_op_t op, yaksuri_hipi_md_s *md, int n_threads, int n_blocks_x, int n_blocks_y, int n_blocks_z, int device)
+void yaksuri_hipi_unpack_hindexed_blkhindx_char(const void *inbuf, void *outbuf, uintptr_t count, yaksa_op_t op, yaksuri_hipi_md_s *md, int n_threads, int n_blocks_x, int n_blocks_y, int n_blocks_z, hipStream_t stream)
 {
 void *args[] = { &inbuf, &outbuf, &count, &md };
     hipError_t cerr;
     switch (op) {
         case YAKSA_OP__REPLACE:
         cerr = hipLaunchKernel((const void *) yaksuri_hipi_kernel_unpack_REPLACE_hindexed_blkhindx_char,
-            dim3(n_blocks_x, n_blocks_y, n_blocks_z), dim3(n_threads), args, 0, yaksuri_hipi_global.stream[device]);
+            dim3(n_blocks_x, n_blocks_y, n_blocks_z), dim3(n_threads), args, 0, stream);
         YAKSURI_HIPI_HIP_ERR_CHECK(cerr);
         break;
 
@@ -240,28 +240,28 @@ __global__ void yaksuri_hipi_kernel_unpack_REPLACE_hvector_hindexed_blkhindx_cha
     YAKSURI_HIPI_OP_REPLACE(*((const char *) (const void *) (sbuf + idx * sizeof(char))), *((char *) (void *) (dbuf + x0 * extent + x1 * stride1 + x2 * extent2 + array_of_displs2[x3] + x4 * extent3 + array_of_displs3[x5] + x6 * sizeof(char))));
 }
 
-void yaksuri_hipi_pack_hvector_hindexed_blkhindx_char(const void *inbuf, void *outbuf, uintptr_t count, yaksa_op_t op, yaksuri_hipi_md_s *md, int n_threads, int n_blocks_x, int n_blocks_y, int n_blocks_z, int device)
+void yaksuri_hipi_pack_hvector_hindexed_blkhindx_char(const void *inbuf, void *outbuf, uintptr_t count, yaksa_op_t op, yaksuri_hipi_md_s *md, int n_threads, int n_blocks_x, int n_blocks_y, int n_blocks_z, hipStream_t stream)
 {
 void *args[] = { &inbuf, &outbuf, &count, &md };
     hipError_t cerr;
     switch (op) {
         case YAKSA_OP__REPLACE:
         cerr = hipLaunchKernel((const void *) yaksuri_hipi_kernel_pack_REPLACE_hvector_hindexed_blkhindx_char,
-            dim3(n_blocks_x, n_blocks_y, n_blocks_z), dim3(n_threads), args, 0, yaksuri_hipi_global.stream[device]);
+            dim3(n_blocks_x, n_blocks_y, n_blocks_z), dim3(n_threads), args, 0, stream);
         YAKSURI_HIPI_HIP_ERR_CHECK(cerr);
         break;
 
     }
 }
 
-void yaksuri_hipi_unpack_hvector_hindexed_blkhindx_char(const void *inbuf, void *outbuf, uintptr_t count, yaksa_op_t op, yaksuri_hipi_md_s *md, int n_threads, int n_blocks_x, int n_blocks_y, int n_blocks_z, int device)
+void yaksuri_hipi_unpack_hvector_hindexed_blkhindx_char(const void *inbuf, void *outbuf, uintptr_t count, yaksa_op_t op, yaksuri_hipi_md_s *md, int n_threads, int n_blocks_x, int n_blocks_y, int n_blocks_z, hipStream_t stream)
 {
 void *args[] = { &inbuf, &outbuf, &count, &md };
     hipError_t cerr;
     switch (op) {
         case YAKSA_OP__REPLACE:
         cerr = hipLaunchKernel((const void *) yaksuri_hipi_kernel_unpack_REPLACE_hvector_hindexed_blkhindx_char,
-            dim3(n_blocks_x, n_blocks_y, n_blocks_z), dim3(n_threads), args, 0, yaksuri_hipi_global.stream[device]);
+            dim3(n_blocks_x, n_blocks_y, n_blocks_z), dim3(n_threads), args, 0, stream);
         YAKSURI_HIPI_HIP_ERR_CHECK(cerr);
         break;
 
@@ -376,28 +376,28 @@ __global__ void yaksuri_hipi_kernel_unpack_REPLACE_blkhindx_hindexed_blkhindx_ch
     YAKSURI_HIPI_OP_REPLACE(*((const char *) (const void *) (sbuf + idx * sizeof(char))), *((char *) (void *) (dbuf + x0 * extent + array_of_displs1[x1] + x2 * extent2 + array_of_displs2[x3] + x4 * extent3 + array_of_displs3[x5] + x6 * sizeof(char))));
 }
 
-void yaksuri_hipi_pack_blkhindx_hindexed_blkhindx_char(const void *inbuf, void *outbuf, uintptr_t count, yaksa_op_t op, yaksuri_hipi_md_s *md, int n_threads, int n_blocks_x, int n_blocks_y, int n_blocks_z, int device)
+void yaksuri_hipi_pack_blkhindx_hindexed_blkhindx_char(const void *inbuf, void *outbuf, uintptr_t count, yaksa_op_t op, yaksuri_hipi_md_s *md, int n_threads, int n_blocks_x, int n_blocks_y, int n_blocks_z, hipStream_t stream)
 {
 void *args[] = { &inbuf, &outbuf, &count, &md };
     hipError_t cerr;
     switch (op) {
         case YAKSA_OP__REPLACE:
         cerr = hipLaunchKernel((const void *) yaksuri_hipi_kernel_pack_REPLACE_blkhindx_hindexed_blkhindx_char,
-            dim3(n_blocks_x, n_blocks_y, n_blocks_z), dim3(n_threads), args, 0, yaksuri_hipi_global.stream[device]);
+            dim3(n_blocks_x, n_blocks_y, n_blocks_z), dim3(n_threads), args, 0, stream);
         YAKSURI_HIPI_HIP_ERR_CHECK(cerr);
         break;
 
     }
 }
 
-void yaksuri_hipi_unpack_blkhindx_hindexed_blkhindx_char(const void *inbuf, void *outbuf, uintptr_t count, yaksa_op_t op, yaksuri_hipi_md_s *md, int n_threads, int n_blocks_x, int n_blocks_y, int n_blocks_z, int device)
+void yaksuri_hipi_unpack_blkhindx_hindexed_blkhindx_char(const void *inbuf, void *outbuf, uintptr_t count, yaksa_op_t op, yaksuri_hipi_md_s *md, int n_threads, int n_blocks_x, int n_blocks_y, int n_blocks_z, hipStream_t stream)
 {
 void *args[] = { &inbuf, &outbuf, &count, &md };
     hipError_t cerr;
     switch (op) {
         case YAKSA_OP__REPLACE:
         cerr = hipLaunchKernel((const void *) yaksuri_hipi_kernel_unpack_REPLACE_blkhindx_hindexed_blkhindx_char,
-            dim3(n_blocks_x, n_blocks_y, n_blocks_z), dim3(n_threads), args, 0, yaksuri_hipi_global.stream[device]);
+            dim3(n_blocks_x, n_blocks_y, n_blocks_z), dim3(n_threads), args, 0, stream);
         YAKSURI_HIPI_HIP_ERR_CHECK(cerr);
         break;
 
@@ -534,28 +534,28 @@ __global__ void yaksuri_hipi_kernel_unpack_REPLACE_hindexed_hindexed_blkhindx_ch
     YAKSURI_HIPI_OP_REPLACE(*((const char *) (const void *) (sbuf + idx * sizeof(char))), *((char *) (void *) (dbuf + x0 * extent + array_of_displs1[x1] + x2 * extent2 + array_of_displs2[x3] + x4 * extent3 + array_of_displs3[x5] + x6 * sizeof(char))));
 }
 
-void yaksuri_hipi_pack_hindexed_hindexed_blkhindx_char(const void *inbuf, void *outbuf, uintptr_t count, yaksa_op_t op, yaksuri_hipi_md_s *md, int n_threads, int n_blocks_x, int n_blocks_y, int n_blocks_z, int device)
+void yaksuri_hipi_pack_hindexed_hindexed_blkhindx_char(const void *inbuf, void *outbuf, uintptr_t count, yaksa_op_t op, yaksuri_hipi_md_s *md, int n_threads, int n_blocks_x, int n_blocks_y, int n_blocks_z, hipStream_t stream)
 {
 void *args[] = { &inbuf, &outbuf, &count, &md };
     hipError_t cerr;
     switch (op) {
         case YAKSA_OP__REPLACE:
         cerr = hipLaunchKernel((const void *) yaksuri_hipi_kernel_pack_REPLACE_hindexed_hindexed_blkhindx_char,
-            dim3(n_blocks_x, n_blocks_y, n_blocks_z), dim3(n_threads), args, 0, yaksuri_hipi_global.stream[device]);
+            dim3(n_blocks_x, n_blocks_y, n_blocks_z), dim3(n_threads), args, 0, stream);
         YAKSURI_HIPI_HIP_ERR_CHECK(cerr);
         break;
 
     }
 }
 
-void yaksuri_hipi_unpack_hindexed_hindexed_blkhindx_char(const void *inbuf, void *outbuf, uintptr_t count, yaksa_op_t op, yaksuri_hipi_md_s *md, int n_threads, int n_blocks_x, int n_blocks_y, int n_blocks_z, int device)
+void yaksuri_hipi_unpack_hindexed_hindexed_blkhindx_char(const void *inbuf, void *outbuf, uintptr_t count, yaksa_op_t op, yaksuri_hipi_md_s *md, int n_threads, int n_blocks_x, int n_blocks_y, int n_blocks_z, hipStream_t stream)
 {
 void *args[] = { &inbuf, &outbuf, &count, &md };
     hipError_t cerr;
     switch (op) {
         case YAKSA_OP__REPLACE:
         cerr = hipLaunchKernel((const void *) yaksuri_hipi_kernel_unpack_REPLACE_hindexed_hindexed_blkhindx_char,
-            dim3(n_blocks_x, n_blocks_y, n_blocks_z), dim3(n_threads), args, 0, yaksuri_hipi_global.stream[device]);
+            dim3(n_blocks_x, n_blocks_y, n_blocks_z), dim3(n_threads), args, 0, stream);
         YAKSURI_HIPI_HIP_ERR_CHECK(cerr);
         break;
 
@@ -662,28 +662,28 @@ __global__ void yaksuri_hipi_kernel_unpack_REPLACE_contig_hindexed_blkhindx_char
     YAKSURI_HIPI_OP_REPLACE(*((const char *) (const void *) (sbuf + idx * sizeof(char))), *((char *) (void *) (dbuf + x0 * extent + x1 * stride1 + array_of_displs2[x2] + x3 * extent3 + array_of_displs3[x4] + x5 * sizeof(char))));
 }
 
-void yaksuri_hipi_pack_contig_hindexed_blkhindx_char(const void *inbuf, void *outbuf, uintptr_t count, yaksa_op_t op, yaksuri_hipi_md_s *md, int n_threads, int n_blocks_x, int n_blocks_y, int n_blocks_z, int device)
+void yaksuri_hipi_pack_contig_hindexed_blkhindx_char(const void *inbuf, void *outbuf, uintptr_t count, yaksa_op_t op, yaksuri_hipi_md_s *md, int n_threads, int n_blocks_x, int n_blocks_y, int n_blocks_z, hipStream_t stream)
 {
 void *args[] = { &inbuf, &outbuf, &count, &md };
     hipError_t cerr;
     switch (op) {
         case YAKSA_OP__REPLACE:
         cerr = hipLaunchKernel((const void *) yaksuri_hipi_kernel_pack_REPLACE_contig_hindexed_blkhindx_char,
-            dim3(n_blocks_x, n_blocks_y, n_blocks_z), dim3(n_threads), args, 0, yaksuri_hipi_global.stream[device]);
+            dim3(n_blocks_x, n_blocks_y, n_blocks_z), dim3(n_threads), args, 0, stream);
         YAKSURI_HIPI_HIP_ERR_CHECK(cerr);
         break;
 
     }
 }
 
-void yaksuri_hipi_unpack_contig_hindexed_blkhindx_char(const void *inbuf, void *outbuf, uintptr_t count, yaksa_op_t op, yaksuri_hipi_md_s *md, int n_threads, int n_blocks_x, int n_blocks_y, int n_blocks_z, int device)
+void yaksuri_hipi_unpack_contig_hindexed_blkhindx_char(const void *inbuf, void *outbuf, uintptr_t count, yaksa_op_t op, yaksuri_hipi_md_s *md, int n_threads, int n_blocks_x, int n_blocks_y, int n_blocks_z, hipStream_t stream)
 {
 void *args[] = { &inbuf, &outbuf, &count, &md };
     hipError_t cerr;
     switch (op) {
         case YAKSA_OP__REPLACE:
         cerr = hipLaunchKernel((const void *) yaksuri_hipi_kernel_unpack_REPLACE_contig_hindexed_blkhindx_char,
-            dim3(n_blocks_x, n_blocks_y, n_blocks_z), dim3(n_threads), args, 0, yaksuri_hipi_global.stream[device]);
+            dim3(n_blocks_x, n_blocks_y, n_blocks_z), dim3(n_threads), args, 0, stream);
         YAKSURI_HIPI_HIP_ERR_CHECK(cerr);
         break;
 
@@ -780,28 +780,28 @@ __global__ void yaksuri_hipi_kernel_unpack_REPLACE_resized_hindexed_blkhindx_cha
     YAKSURI_HIPI_OP_REPLACE(*((const char *) (const void *) (sbuf + idx * sizeof(char))), *((char *) (void *) (dbuf + x0 * extent + array_of_displs2[x1] + x2 * extent3 + array_of_displs3[x3] + x4 * sizeof(char))));
 }
 
-void yaksuri_hipi_pack_resized_hindexed_blkhindx_char(const void *inbuf, void *outbuf, uintptr_t count, yaksa_op_t op, yaksuri_hipi_md_s *md, int n_threads, int n_blocks_x, int n_blocks_y, int n_blocks_z, int device)
+void yaksuri_hipi_pack_resized_hindexed_blkhindx_char(const void *inbuf, void *outbuf, uintptr_t count, yaksa_op_t op, yaksuri_hipi_md_s *md, int n_threads, int n_blocks_x, int n_blocks_y, int n_blocks_z, hipStream_t stream)
 {
 void *args[] = { &inbuf, &outbuf, &count, &md };
     hipError_t cerr;
     switch (op) {
         case YAKSA_OP__REPLACE:
         cerr = hipLaunchKernel((const void *) yaksuri_hipi_kernel_pack_REPLACE_resized_hindexed_blkhindx_char,
-            dim3(n_blocks_x, n_blocks_y, n_blocks_z), dim3(n_threads), args, 0, yaksuri_hipi_global.stream[device]);
+            dim3(n_blocks_x, n_blocks_y, n_blocks_z), dim3(n_threads), args, 0, stream);
         YAKSURI_HIPI_HIP_ERR_CHECK(cerr);
         break;
 
     }
 }
 
-void yaksuri_hipi_unpack_resized_hindexed_blkhindx_char(const void *inbuf, void *outbuf, uintptr_t count, yaksa_op_t op, yaksuri_hipi_md_s *md, int n_threads, int n_blocks_x, int n_blocks_y, int n_blocks_z, int device)
+void yaksuri_hipi_unpack_resized_hindexed_blkhindx_char(const void *inbuf, void *outbuf, uintptr_t count, yaksa_op_t op, yaksuri_hipi_md_s *md, int n_threads, int n_blocks_x, int n_blocks_y, int n_blocks_z, hipStream_t stream)
 {
 void *args[] = { &inbuf, &outbuf, &count, &md };
     hipError_t cerr;
     switch (op) {
         case YAKSA_OP__REPLACE:
         cerr = hipLaunchKernel((const void *) yaksuri_hipi_kernel_unpack_REPLACE_resized_hindexed_blkhindx_char,
-            dim3(n_blocks_x, n_blocks_y, n_blocks_z), dim3(n_threads), args, 0, yaksuri_hipi_global.stream[device]);
+            dim3(n_blocks_x, n_blocks_y, n_blocks_z), dim3(n_threads), args, 0, stream);
         YAKSURI_HIPI_HIP_ERR_CHECK(cerr);
         break;
 

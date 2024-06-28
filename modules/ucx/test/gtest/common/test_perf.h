@@ -1,5 +1,5 @@
 /**
-* Copyright (C) Mellanox Technologies Ltd. 2001-2015.  ALL RIGHTS RESERVED.
+* Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2001-2015. ALL RIGHTS RESERVED.
 * Copyright (C) ARM Ltd. 2020.  ALL RIGHTS RESERVED.
 *
 * See file LICENSE for terms.
@@ -15,6 +15,17 @@
 class test_perf {
 protected:
     struct test_spec {
+        bool is_amo() const {
+            switch (command) {
+            case UCX_PERF_CMD_ADD:
+            case UCX_PERF_CMD_FADD:
+            case UCX_PERF_CMD_SWAP:
+            case UCX_PERF_CMD_CSWAP:
+                return true;
+            default:
+                return false;
+            }
+        }
         const char             *title;
         const char             *units;
         ucx_perf_api_t         api;
@@ -32,6 +43,8 @@ protected:
         double                 min; /* TODO remove this field */
         double                 max; /* TODO remove this field */
         unsigned               test_flags;
+        ucs_memory_type_t      send_mem_type;
+        ucs_memory_type_t      recv_mem_type;
     };
 
     static std::vector<int> get_affinity();

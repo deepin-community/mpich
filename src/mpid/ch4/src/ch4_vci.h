@@ -13,12 +13,38 @@
 #define MPIDI_Request_get_vci(req) MPIR_REQUEST_POOL(req)
 #define MPIDI_VCI_INVALID (-1)
 
-/* VCI hashing function (fast path)
- * NOTE: The returned vci should always MOD NUMVCIS, where NUMVCIS is
- *       the number of VCIs determined at init time
- *       Potentially, we'd like to make it config constants of power of 2
- * TODO: move the MOD here.
+/* Check for explicit vcis (stream comm and direct attr) */
+#define MPIDI_EXPLICIT_VCIS(comm, attr, src_rank, dst_rank, vci_src, vci_dst) \
+    do { \
+        if ((comm)->stream_comm_type == MPIR_STREAM_COMM_NONE) { \
+            vci_src = 0; \
+            vci_dst = 0; \
+        } else if ((comm)->stream_comm_type == MPIR_STREAM_COMM_SINGLE) { \
+            vci_src = (comm)->stream_comm.single.vci_table[src_rank]; \
+            vci_dst = (comm)->stream_comm.single.vci_table[dst_rank]; \
+        } else if ((comm)->stream_comm_type == MPIR_STREAM_COMM_MULTIPLEX) { \
+            if (MPIR_PT2PT_ATTR_HAS_VCI(attr)) { \
+                vci_src = MPIR_PT2PT_ATTR_SRC_VCI(attr); \
+                vci_dst = MPIR_PT2PT_ATTR_DST_VCI(attr); \
+            } else { \
+                int src_displ = (comm)->stream_comm.multiplex.vci_displs[src_rank]; \
+                int dst_displ = (comm)->stream_comm.multiplex.vci_displs[dst_rank]; \
+                vci_src = (comm)->stream_comm.multiplex.vci_table[src_displ]; \
+                vci_dst = (comm)->stream_comm.multiplex.vci_table[dst_displ]; \
+            } \
+        } else { \
+            MPIR_Assert(0); \
+            vci_src = 0; \
+            vci_dst = 0; \
+        } \
+    } while (0)
+
+/* vci above implicit vci pool are always explciitly allocated by user. It is
+ * always under serial execution context and we can skip thread synchronizations.
  */
+#define MPIDI_VCI_IS_EXPLICIT(vci) (!MPIDI_global.share_reserved_vcis && (vci) >= MPIDI_global.n_vcis)
+
+/* VCI hashing function (fast path) */
 
 /* For consistent hashing, we may need differentiate between src and dst vci and whether
  * it is being called from sender side or receiver side (consdier intercomm). We use an
@@ -31,6 +57,41 @@
 #define DST_VCI_FROM_SENDER 1
 #define SRC_VCI_FROM_RECVER 2   /* Bit 2 marks SENDER/RECVER */
 #define DST_VCI_FROM_RECVER 3
+
+MPL_STATIC_INLINE_PREFIX int MPIDI_hash_local_vci(int raw_vci)
+{
+    return raw_vci % MPIDI_global.n_vcis;
+}
+
+MPL_STATIC_INLINE_PREFIX int MPIDI_hash_remote_vci(int raw_vci, MPIR_Comm * comm_ptr, int rank)
+{
+    if (raw_vci == 0) {
+        return 0;
+    } else if (rank < 0) {
+        /* MPI_ANY_SOURCE, MPI_PROC_NULL, return a dummy, won't be used */
+        return 0;
+    } else {
+        int grank = MPIDIU_rank_to_lpid(rank, comm_ptr);
+        MPIR_Assert(grank >= 0);
+        return raw_vci % MPIDI_global.all_num_vcis[grank];
+    }
+}
+
+MPL_STATIC_INLINE_PREFIX int MPIDI_hash_vci(int raw_vci, int flag,
+                                            MPIR_Comm * comm_ptr, int src_rank, int dst_rank)
+{
+    switch (flag & 0x3) {
+        case 0:
+        case 3:
+            return MPIDI_hash_local_vci(raw_vci);
+        case 1:
+            return MPIDI_hash_remote_vci(raw_vci, comm_ptr, dst_rank);
+        case 2:
+            return MPIDI_hash_remote_vci(raw_vci, comm_ptr, src_rank);
+    }
+    MPIR_Assert(0);
+    return 0;
+}
 
 #if MPIDI_CH4_VCI_METHOD == MPICH_VCI__ZERO
 
@@ -47,11 +108,10 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_get_vci(int flag, MPIR_Comm * comm_ptr,
 MPL_STATIC_INLINE_PREFIX int MPIDI_get_vci(int flag, MPIR_Comm * comm_ptr,
                                            int src_rank, int dst_rank, int tag)
 {
-    return comm_ptr->seq;
+    return MPIDI_hash_vci(comm_ptr->seq, flag, comm_ptr, src_rank, dst_rank);
 }
 
 #elif MPIDI_CH4_VCI_METHOD == MPICH_VCI__TAG
-#error "MPICH_VCI__TAG not implemented."
 /* A way to allow explicit vci by user, based on (undocumented) convention.
    Embed src_vci and dst_vci inside tag, 5 bits each
    NOTE: this serve as temporary replacement for explicit scheme (until mpi-layer api adds support).
@@ -60,12 +120,15 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_get_vci(int flag, MPIR_Comm * comm_ptr,
 MPL_STATIC_INLINE_PREFIX int MPIDI_get_vci(int flag, MPIR_Comm * comm_ptr,
                                            int src_rank, int dst_rank, int tag)
 {
+    int vci;
     if (!(flag & 0x1)) {
         /* src */
-        return (tag == MPI_ANY_TAG) ? 0 : ((tag >> 10) & 0x1f);
+        vci = (tag == MPI_ANY_TAG) ? 0 : ((tag >> 10) & 0x1f);
+        return MPIDI_hash_vci(vci, flag, comm_ptr, src_rank, dst_rank);
     } else {
         /* dst */
-        return (tag == MPI_ANY_TAG) ? 0 : ((tag >> 5) & 0x1f);
+        vci = (tag == MPI_ANY_TAG) ? 0 : ((tag >> 5) & 0x1f);
+        return MPIDI_hash_vci(vci, flag, comm_ptr, src_rank, dst_rank);
     }
 }
 
@@ -74,26 +137,26 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_get_vci(int flag, MPIR_Comm * comm_ptr,
 /* Map comm to vci_idx */
 MPL_STATIC_INLINE_PREFIX int MPIDI_map_contextid_to_vci(MPIR_Context_id_t context_id)
 {
-    return (MPIR_CONTEXT_READ_FIELD(PREFIX, context_id)) % MPIDI_global.n_vcis;
+    return MPIR_CONTEXT_READ_FIELD(PREFIX, context_id);
 }
 
 /* Map comm and rank to vci_idx */
 MPL_STATIC_INLINE_PREFIX int MPIDI_map_contextid_rank_to_vci(MPIR_Context_id_t context_id, int rank)
 {
-    return (MPIR_CONTEXT_READ_FIELD(PREFIX, context_id) + rank) % MPIDI_global.n_vcis;
+    return MPIR_CONTEXT_READ_FIELD(PREFIX, context_id) + rank;
 }
 
 /* Map comm and tag to vci_idx */
 MPL_STATIC_INLINE_PREFIX int MPIDI_map_contextid_tag_to_vci(MPIR_Context_id_t context_id, int tag)
 {
-    return (MPIR_CONTEXT_READ_FIELD(PREFIX, context_id) + tag) % MPIDI_global.n_vcis;;
+    return MPIR_CONTEXT_READ_FIELD(PREFIX, context_id) + tag;
 }
 
 /* Map comm, rank, and tag to vci_idx */
 MPL_STATIC_INLINE_PREFIX int MPIDI_map_contextid_rank_tag_to_vci(MPIR_Context_id_t context_id,
                                                                  int rank, int tag)
 {
-    return (MPIR_CONTEXT_READ_FIELD(PREFIX, context_id) + rank + tag) % MPIDI_global.n_vcis;;
+    return MPIR_CONTEXT_READ_FIELD(PREFIX, context_id) + rank + tag;
 }
 
 static bool is_vci_restricted_to_zero(MPIR_Comm * comm)
@@ -102,11 +165,9 @@ static bool is_vci_restricted_to_zero(MPIR_Comm * comm)
     if (!(comm->comm_kind == MPIR_COMM_KIND__INTRACOMM && !comm->tainted)) {
         vci_restricted |= true;
     }
-#ifdef  MPIDI_OFI_VNI_USE_DOMAIN
     if (!MPIDI_global.is_initialized) {
         vci_restricted |= true;
     }
-#endif /* ifdef  MPIDI_OFI_VNI_USE_DOMAIN */
 
     return vci_restricted;
 }
@@ -184,7 +245,7 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_get_receiver_vci(MPIR_Comm * comm,
     if (is_vci_restricted_to_zero(comm)) {
         vci_idx = 0;
     } else if (use_user_defined_vci) {
-        vci_idx = comm->hints[MPIR_COMM_HINT_RECEIVER_VCI];
+        vci_idx = comm->hints[MPIR_COMM_HINT_RECEIVER_VCI] % MPIDI_global.n_vcis;
     } else {
         /* If mpi_any_tag and mpi_any_source can be used for recv, all messages
          * should be received on a single vci. Otherwise, messages sent from a
@@ -228,13 +289,15 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_get_vci(int flag, MPIR_Comm * comm_ptr,
         ctxid_in_effect = comm_ptr->recvcontext_id;
     }
 
+    int vci;
     if (!(flag & 0x1)) {
         /* src */
-        return MPIDI_get_sender_vci(comm_ptr, ctxid_in_effect, src_rank, dst_rank, tag);
+        vci = MPIDI_get_sender_vci(comm_ptr, ctxid_in_effect, src_rank, dst_rank, tag);
     } else {
         /* dst */
-        return MPIDI_get_receiver_vci(comm_ptr, ctxid_in_effect, src_rank, dst_rank, tag);
+        vci = MPIDI_get_receiver_vci(comm_ptr, ctxid_in_effect, src_rank, dst_rank, tag);
     }
+    return MPIDI_hash_vci(vci, flag, comm_ptr, src_rank, dst_rank);
 }
 
 #elif MPIDI_CH4_VCI_METHOD == MPICH_VCI__EXPLICIT

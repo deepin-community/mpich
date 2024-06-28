@@ -14,7 +14,7 @@ use Data::Dumper;
 use Getopt::Long;
 
 # Help perl find the YAML parsing module
-use lib '/tmp/DXpzZMf46K/mpich-4.0.2/maint/local_perl/lib';
+use lib 'maint/local_perl/lib';
 use YAML::Tiny qw();
 
 # To format README file
@@ -23,13 +23,14 @@ $Text::Wrap::unexpand = 0; # disable hard tabs in output
 
 ##################################################
 
+my @dirs = qw(src/mpi src/mpi_t src/nameserv src/util src/binding src/include src/mpid src/pmi);
+
 # set true to enable debug output
 my $debug = 0;
 my @cvars = ();
 my %cvars; # used for duplication detection
 my @categories=();
 my $yaml = YAML::Tiny->new();
-my @dirs = ();
 my @cfiles = ();
 my %skipfiles = ();
 
@@ -45,9 +46,9 @@ my $dep_ns = "MPICH";
 # Default :output source files
 # NOTE: it's important to use single quote. abs_srcdir may contain sigils
 #   e.g. /var/lib/jenkins/workspace/hzhou-custom@2/config/ch3-sock/label/centos64
-my $header_file = '/tmp/DXpzZMf46K/mpich-4.0.2/maint/../src/include/mpir_cvars.h';
-my $c_file      = '/tmp/DXpzZMf46K/mpich-4.0.2/maint/../src/util/mpir_cvars.c';
-my $readme_file = '/tmp/DXpzZMf46K/mpich-4.0.2/maint/../README.envvar';
+my $header_file = 'src/include/mpir_cvars.h';
+my $c_file      = 'src/util/mpir_cvars.c';
+my $readme_file = 'README.envvar';
 
 sub Usage {
     print <<EOT;
@@ -62,7 +63,6 @@ Supported options:
     --header=STR        - specify the header file name (optional, default=$header_file)
     --c-file=STR        - specify the C file name (optional, default=$c_file)
     --readme-file=STR   - specify the readme file name (optional, default=$readme_file)
-    --dirs=STR          - recursively parse C or header files under the directories as specified
     --skip=STR          - skip parsing files as specified (optional)
 
 EOT
@@ -70,7 +70,6 @@ EOT
 }
 
 # Step 1: Process options
-my $dirline;
 my $skipline = "";
 GetOptions(
     "help!"           => \&Usage,
@@ -80,14 +79,8 @@ GetOptions(
     "header=s"        => \$header_file,
     "c-file=s"        => \$c_file,
     "readme-file=s"   => \$readme_file,
-    "dirs=s"          => \$dirline,
     "skips=s"         => \$skipline
 ) or Usage();
-
-Usage unless $dirline;
-
-print "dirline = $dirline\n" if $debug;
-@dirs = split(/[:,;\s]+/, $dirline);
 
 my @skips = split(/[:,;\s]+/, $skipline);
 %skipfiles = map {$_ => 1} @skips;
@@ -256,17 +249,15 @@ int ${fn_ns}_init(void)
     int mpi_errno = MPI_SUCCESS;
     int rc, got_rc;
     const char *tmp_str;
-    static int initialized = FALSE;
     MPIR_T_cvar_value_t defaultval;
 
     int debug = 0;
+    rc = MPL_env2bool("MPICH_DEBUG_CVARS", &debug);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_DEBUG_CVARS");
+    rc = MPL_env2bool("MPIR_PARAM_DEBUG_CVARS", &debug);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_DEBUG_CVARS");
     rc = MPL_env2bool("MPIR_CVAR_DEBUG_CVARS", &debug);
     MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_DEBUG_CVARS");
-
-    /* FIXME any MT issues here? */
-    if (initialized)
-        return MPI_SUCCESS;
-    initialized = TRUE;
 
 EOT
 
@@ -299,7 +290,7 @@ foreach my $p (@cvars) {
     # Register the cvar
     my $desc = $p->{description};
     $desc =~ s/"/\\"/g;
-    $desc =~ s/\n/\\\n/g;
+    $desc =~ s/\n/\\n"\n"/g;
     printf OUTPUT_C qq(    MPIR_T_CVAR_REGISTER_STATIC(\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s);\n),
         qq(        $mpi_dtype,),
         qq(        ${uc_ns}_$p->{name}, /* name */),

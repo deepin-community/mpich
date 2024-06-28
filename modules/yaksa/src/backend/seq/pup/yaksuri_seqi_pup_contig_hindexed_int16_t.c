@@ -28,28 +28,13 @@ int yaksuri_seqi_pack_contig_hindexed_int16_t(const void *inbuf, void *outbuf, u
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__BAND:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j2 = 0; j2 < count2; j2++) {
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
-                            YAKSURI_SEQI_OP_BAND(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                            idx += sizeof(int16_t);
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__PROD:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t j2 = 0; j2 < count2; j2++) {
-                        for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
-                            YAKSURI_SEQI_OP_PROD(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                            YAKSURI_SEQI_OP_MAX(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
                             idx += sizeof(int16_t);
                         }
                     }
@@ -73,36 +58,6 @@ int yaksuri_seqi_pack_contig_hindexed_int16_t(const void *inbuf, void *outbuf, u
             break;
         }
         
-        case YAKSA_OP__MAX:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t j2 = 0; j2 < count2; j2++) {
-                        for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
-                            YAKSURI_SEQI_OP_MAX(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                            idx += sizeof(int16_t);
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__MIN:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t j2 = 0; j2 < count2; j2++) {
-                        for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
-                            YAKSURI_SEQI_OP_MIN(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                            idx += sizeof(int16_t);
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
         case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
@@ -110,51 +65,6 @@ int yaksuri_seqi_pack_contig_hindexed_int16_t(const void *inbuf, void *outbuf, u
                     for (intptr_t j2 = 0; j2 < count2; j2++) {
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             YAKSURI_SEQI_OP_SUM(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                            idx += sizeof(int16_t);
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__LXOR:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t j2 = 0; j2 < count2; j2++) {
-                        for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
-                            YAKSURI_SEQI_OP_LXOR(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                            idx += sizeof(int16_t);
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__REPLACE:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t j2 = 0; j2 < count2; j2++) {
-                        for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
-                            YAKSURI_SEQI_OP_REPLACE(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                            idx += sizeof(int16_t);
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__BXOR:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t j2 = 0; j2 < count2; j2++) {
-                        for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
-                            YAKSURI_SEQI_OP_BXOR(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
                             idx += sizeof(int16_t);
                         }
                     }
@@ -193,6 +103,96 @@ int yaksuri_seqi_pack_contig_hindexed_int16_t(const void *inbuf, void *outbuf, u
             break;
         }
         
+        case YAKSA_OP__BXOR:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t j2 = 0; j2 < count2; j2++) {
+                        for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
+                            YAKSURI_SEQI_OP_BXOR(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                            idx += sizeof(int16_t);
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__MIN:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t j2 = 0; j2 < count2; j2++) {
+                        for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
+                            YAKSURI_SEQI_OP_MIN(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                            idx += sizeof(int16_t);
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__LXOR:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t j2 = 0; j2 < count2; j2++) {
+                        for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
+                            YAKSURI_SEQI_OP_LXOR(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                            idx += sizeof(int16_t);
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__PROD:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t j2 = 0; j2 < count2; j2++) {
+                        for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
+                            YAKSURI_SEQI_OP_PROD(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                            idx += sizeof(int16_t);
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__BAND:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t j2 = 0; j2 < count2; j2++) {
+                        for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
+                            YAKSURI_SEQI_OP_BAND(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                            idx += sizeof(int16_t);
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__REPLACE:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t j2 = 0; j2 < count2; j2++) {
+                        for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
+                            YAKSURI_SEQI_OP_REPLACE(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                            idx += sizeof(int16_t);
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
         default:
             break;
     }
@@ -218,28 +218,13 @@ int yaksuri_seqi_unpack_contig_hindexed_int16_t(const void *inbuf, void *outbuf,
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__BAND:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j2 = 0; j2 < count2; j2++) {
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
-                            YAKSURI_SEQI_OP_BAND(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * sizeof(int16_t))));
-                            idx += sizeof(int16_t);
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__PROD:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t j2 = 0; j2 < count2; j2++) {
-                        for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
-                            YAKSURI_SEQI_OP_PROD(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * sizeof(int16_t))));
+                            YAKSURI_SEQI_OP_MAX(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * sizeof(int16_t))));
                             idx += sizeof(int16_t);
                         }
                     }
@@ -263,36 +248,6 @@ int yaksuri_seqi_unpack_contig_hindexed_int16_t(const void *inbuf, void *outbuf,
             break;
         }
         
-        case YAKSA_OP__MAX:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t j2 = 0; j2 < count2; j2++) {
-                        for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
-                            YAKSURI_SEQI_OP_MAX(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * sizeof(int16_t))));
-                            idx += sizeof(int16_t);
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__MIN:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t j2 = 0; j2 < count2; j2++) {
-                        for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
-                            YAKSURI_SEQI_OP_MIN(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * sizeof(int16_t))));
-                            idx += sizeof(int16_t);
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
         case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
@@ -300,51 +255,6 @@ int yaksuri_seqi_unpack_contig_hindexed_int16_t(const void *inbuf, void *outbuf,
                     for (intptr_t j2 = 0; j2 < count2; j2++) {
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             YAKSURI_SEQI_OP_SUM(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * sizeof(int16_t))));
-                            idx += sizeof(int16_t);
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__LXOR:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t j2 = 0; j2 < count2; j2++) {
-                        for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
-                            YAKSURI_SEQI_OP_LXOR(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * sizeof(int16_t))));
-                            idx += sizeof(int16_t);
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__REPLACE:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t j2 = 0; j2 < count2; j2++) {
-                        for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
-                            YAKSURI_SEQI_OP_REPLACE(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * sizeof(int16_t))));
-                            idx += sizeof(int16_t);
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__BXOR:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t j2 = 0; j2 < count2; j2++) {
-                        for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
-                            YAKSURI_SEQI_OP_BXOR(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * sizeof(int16_t))));
                             idx += sizeof(int16_t);
                         }
                     }
@@ -383,6 +293,96 @@ int yaksuri_seqi_unpack_contig_hindexed_int16_t(const void *inbuf, void *outbuf,
             break;
         }
         
+        case YAKSA_OP__BXOR:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t j2 = 0; j2 < count2; j2++) {
+                        for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
+                            YAKSURI_SEQI_OP_BXOR(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * sizeof(int16_t))));
+                            idx += sizeof(int16_t);
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__MIN:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t j2 = 0; j2 < count2; j2++) {
+                        for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
+                            YAKSURI_SEQI_OP_MIN(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * sizeof(int16_t))));
+                            idx += sizeof(int16_t);
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__LXOR:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t j2 = 0; j2 < count2; j2++) {
+                        for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
+                            YAKSURI_SEQI_OP_LXOR(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * sizeof(int16_t))));
+                            idx += sizeof(int16_t);
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__PROD:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t j2 = 0; j2 < count2; j2++) {
+                        for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
+                            YAKSURI_SEQI_OP_PROD(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * sizeof(int16_t))));
+                            idx += sizeof(int16_t);
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__BAND:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t j2 = 0; j2 < count2; j2++) {
+                        for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
+                            YAKSURI_SEQI_OP_BAND(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * sizeof(int16_t))));
+                            idx += sizeof(int16_t);
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__REPLACE:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t j2 = 0; j2 < count2; j2++) {
+                        for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
+                            YAKSURI_SEQI_OP_REPLACE(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * sizeof(int16_t))));
+                            idx += sizeof(int16_t);
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
         default:
             break;
     }
@@ -413,7 +413,7 @@ int yaksuri_seqi_pack_hvector_contig_hindexed_int16_t(const void *inbuf, void *o
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__BAND:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -421,26 +421,7 @@ int yaksuri_seqi_pack_hvector_contig_hindexed_int16_t(const void *inbuf, void *o
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_BAND(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__PROD:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_PROD(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                                    YAKSURI_SEQI_OP_MAX(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
                                     idx += sizeof(int16_t);
                                 }
                             }
@@ -470,44 +451,6 @@ int yaksuri_seqi_pack_hvector_contig_hindexed_int16_t(const void *inbuf, void *o
             break;
         }
         
-        case YAKSA_OP__MAX:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_MAX(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__MIN:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_MIN(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
         case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
@@ -517,63 +460,6 @@ int yaksuri_seqi_pack_hvector_contig_hindexed_int16_t(const void *inbuf, void *o
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
                                     YAKSURI_SEQI_OP_SUM(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__LXOR:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_LXOR(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__REPLACE:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_REPLACE(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__BXOR:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_BXOR(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
                                     idx += sizeof(int16_t);
                                 }
                             }
@@ -622,6 +508,120 @@ int yaksuri_seqi_pack_hvector_contig_hindexed_int16_t(const void *inbuf, void *o
             break;
         }
         
+        case YAKSA_OP__BXOR:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_BXOR(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__MIN:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_MIN(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__LXOR:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_LXOR(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__PROD:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_PROD(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__BAND:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_BAND(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__REPLACE:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_REPLACE(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
         default:
             break;
     }
@@ -652,7 +652,7 @@ int yaksuri_seqi_unpack_hvector_contig_hindexed_int16_t(const void *inbuf, void 
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__BAND:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -660,26 +660,7 @@ int yaksuri_seqi_unpack_hvector_contig_hindexed_int16_t(const void *inbuf, void 
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_BAND(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__PROD:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_PROD(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                                    YAKSURI_SEQI_OP_MAX(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
                                     idx += sizeof(int16_t);
                                 }
                             }
@@ -709,44 +690,6 @@ int yaksuri_seqi_unpack_hvector_contig_hindexed_int16_t(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__MAX:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_MAX(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__MIN:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_MIN(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
         case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
@@ -756,63 +699,6 @@ int yaksuri_seqi_unpack_hvector_contig_hindexed_int16_t(const void *inbuf, void 
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
                                     YAKSURI_SEQI_OP_SUM(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__LXOR:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_LXOR(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__REPLACE:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_REPLACE(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__BXOR:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_BXOR(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
                                     idx += sizeof(int16_t);
                                 }
                             }
@@ -861,6 +747,120 @@ int yaksuri_seqi_unpack_hvector_contig_hindexed_int16_t(const void *inbuf, void 
             break;
         }
         
+        case YAKSA_OP__BXOR:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_BXOR(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__MIN:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_MIN(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__LXOR:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_LXOR(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__PROD:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_PROD(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__BAND:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_BAND(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__REPLACE:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_REPLACE(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
         default:
             break;
     }
@@ -891,7 +891,7 @@ int yaksuri_seqi_pack_blkhindx_contig_hindexed_int16_t(const void *inbuf, void *
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__BAND:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -899,26 +899,7 @@ int yaksuri_seqi_pack_blkhindx_contig_hindexed_int16_t(const void *inbuf, void *
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_BAND(*((const int16_t *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__PROD:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_PROD(*((const int16_t *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                                    YAKSURI_SEQI_OP_MAX(*((const int16_t *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
                                     idx += sizeof(int16_t);
                                 }
                             }
@@ -948,44 +929,6 @@ int yaksuri_seqi_pack_blkhindx_contig_hindexed_int16_t(const void *inbuf, void *
             break;
         }
         
-        case YAKSA_OP__MAX:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_MAX(*((const int16_t *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__MIN:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_MIN(*((const int16_t *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
         case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
@@ -995,63 +938,6 @@ int yaksuri_seqi_pack_blkhindx_contig_hindexed_int16_t(const void *inbuf, void *
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
                                     YAKSURI_SEQI_OP_SUM(*((const int16_t *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__LXOR:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_LXOR(*((const int16_t *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__REPLACE:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_REPLACE(*((const int16_t *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__BXOR:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_BXOR(*((const int16_t *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
                                     idx += sizeof(int16_t);
                                 }
                             }
@@ -1090,6 +976,120 @@ int yaksuri_seqi_pack_blkhindx_contig_hindexed_int16_t(const void *inbuf, void *
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
                                     YAKSURI_SEQI_OP_LOR(*((const int16_t *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__BXOR:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_BXOR(*((const int16_t *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__MIN:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_MIN(*((const int16_t *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__LXOR:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_LXOR(*((const int16_t *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__PROD:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_PROD(*((const int16_t *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__BAND:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_BAND(*((const int16_t *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__REPLACE:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_REPLACE(*((const int16_t *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
                                     idx += sizeof(int16_t);
                                 }
                             }
@@ -1130,7 +1130,7 @@ int yaksuri_seqi_unpack_blkhindx_contig_hindexed_int16_t(const void *inbuf, void
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__BAND:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -1138,26 +1138,7 @@ int yaksuri_seqi_unpack_blkhindx_contig_hindexed_int16_t(const void *inbuf, void
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_BAND(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__PROD:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_PROD(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                                    YAKSURI_SEQI_OP_MAX(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
                                     idx += sizeof(int16_t);
                                 }
                             }
@@ -1187,44 +1168,6 @@ int yaksuri_seqi_unpack_blkhindx_contig_hindexed_int16_t(const void *inbuf, void
             break;
         }
         
-        case YAKSA_OP__MAX:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_MAX(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__MIN:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_MIN(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
         case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
@@ -1234,63 +1177,6 @@ int yaksuri_seqi_unpack_blkhindx_contig_hindexed_int16_t(const void *inbuf, void
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
                                     YAKSURI_SEQI_OP_SUM(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__LXOR:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_LXOR(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__REPLACE:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_REPLACE(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__BXOR:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_BXOR(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
                                     idx += sizeof(int16_t);
                                 }
                             }
@@ -1339,6 +1225,120 @@ int yaksuri_seqi_unpack_blkhindx_contig_hindexed_int16_t(const void *inbuf, void
             break;
         }
         
+        case YAKSA_OP__BXOR:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_BXOR(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__MIN:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_MIN(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__LXOR:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_LXOR(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__PROD:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_PROD(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__BAND:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_BAND(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__REPLACE:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < blocklength1; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_REPLACE(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
         default:
             break;
     }
@@ -1369,7 +1369,7 @@ int yaksuri_seqi_pack_hindexed_contig_hindexed_int16_t(const void *inbuf, void *
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__BAND:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -1377,26 +1377,7 @@ int yaksuri_seqi_pack_hindexed_contig_hindexed_int16_t(const void *inbuf, void *
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_BAND(*((const int16_t *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__PROD:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_PROD(*((const int16_t *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                                    YAKSURI_SEQI_OP_MAX(*((const int16_t *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
                                     idx += sizeof(int16_t);
                                 }
                             }
@@ -1426,44 +1407,6 @@ int yaksuri_seqi_pack_hindexed_contig_hindexed_int16_t(const void *inbuf, void *
             break;
         }
         
-        case YAKSA_OP__MAX:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_MAX(*((const int16_t *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__MIN:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_MIN(*((const int16_t *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
         case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
@@ -1473,63 +1416,6 @@ int yaksuri_seqi_pack_hindexed_contig_hindexed_int16_t(const void *inbuf, void *
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
                                     YAKSURI_SEQI_OP_SUM(*((const int16_t *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__LXOR:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_LXOR(*((const int16_t *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__REPLACE:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_REPLACE(*((const int16_t *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__BXOR:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_BXOR(*((const int16_t *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
                                     idx += sizeof(int16_t);
                                 }
                             }
@@ -1578,6 +1464,120 @@ int yaksuri_seqi_pack_hindexed_contig_hindexed_int16_t(const void *inbuf, void *
             break;
         }
         
+        case YAKSA_OP__BXOR:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_BXOR(*((const int16_t *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__MIN:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_MIN(*((const int16_t *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__LXOR:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_LXOR(*((const int16_t *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__PROD:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_PROD(*((const int16_t *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__BAND:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_BAND(*((const int16_t *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__REPLACE:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_REPLACE(*((const int16_t *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
         default:
             break;
     }
@@ -1608,7 +1608,7 @@ int yaksuri_seqi_unpack_hindexed_contig_hindexed_int16_t(const void *inbuf, void
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__BAND:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -1616,26 +1616,7 @@ int yaksuri_seqi_unpack_hindexed_contig_hindexed_int16_t(const void *inbuf, void
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_BAND(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__PROD:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_PROD(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                                    YAKSURI_SEQI_OP_MAX(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
                                     idx += sizeof(int16_t);
                                 }
                             }
@@ -1665,44 +1646,6 @@ int yaksuri_seqi_unpack_hindexed_contig_hindexed_int16_t(const void *inbuf, void
             break;
         }
         
-        case YAKSA_OP__MAX:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_MAX(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__MIN:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_MIN(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
         case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
@@ -1712,63 +1655,6 @@ int yaksuri_seqi_unpack_hindexed_contig_hindexed_int16_t(const void *inbuf, void
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
                                     YAKSURI_SEQI_OP_SUM(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__LXOR:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_LXOR(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__REPLACE:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_REPLACE(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
-                                    idx += sizeof(int16_t);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__BXOR:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
-                        for (intptr_t j2 = 0; j2 < count2; j2++) {
-                            for (intptr_t j3 = 0; j3 < count3; j3++) {
-                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                    YAKSURI_SEQI_OP_BXOR(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
                                     idx += sizeof(int16_t);
                                 }
                             }
@@ -1817,6 +1703,120 @@ int yaksuri_seqi_unpack_hindexed_contig_hindexed_int16_t(const void *inbuf, void
             break;
         }
         
+        case YAKSA_OP__BXOR:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_BXOR(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__MIN:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_MIN(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__LXOR:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_LXOR(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__PROD:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_PROD(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__BAND:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_BAND(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__REPLACE:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
+                        for (intptr_t j2 = 0; j2 < count2; j2++) {
+                            for (intptr_t j3 = 0; j3 < count3; j3++) {
+                                for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                    YAKSURI_SEQI_OP_REPLACE(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                                    idx += sizeof(int16_t);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
         default:
             break;
     }
@@ -1846,31 +1846,14 @@ int yaksuri_seqi_pack_contig_contig_hindexed_int16_t(const void *inbuf, void *ou
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__BAND:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j2 = 0; j2 < count2; j2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                YAKSURI_SEQI_OP_BAND(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                                idx += sizeof(int16_t);
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__PROD:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t j2 = 0; j2 < count2; j2++) {
-                        for (intptr_t j3 = 0; j3 < count3; j3++) {
-                            for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                YAKSURI_SEQI_OP_PROD(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_MAX(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
                                 idx += sizeof(int16_t);
                             }
                         }
@@ -1897,40 +1880,6 @@ int yaksuri_seqi_pack_contig_contig_hindexed_int16_t(const void *inbuf, void *ou
             break;
         }
         
-        case YAKSA_OP__MAX:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t j2 = 0; j2 < count2; j2++) {
-                        for (intptr_t j3 = 0; j3 < count3; j3++) {
-                            for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                YAKSURI_SEQI_OP_MAX(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                                idx += sizeof(int16_t);
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__MIN:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t j2 = 0; j2 < count2; j2++) {
-                        for (intptr_t j3 = 0; j3 < count3; j3++) {
-                            for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                YAKSURI_SEQI_OP_MIN(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                                idx += sizeof(int16_t);
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
         case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
@@ -1939,57 +1888,6 @@ int yaksuri_seqi_pack_contig_contig_hindexed_int16_t(const void *inbuf, void *ou
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
                                 YAKSURI_SEQI_OP_SUM(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                                idx += sizeof(int16_t);
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__LXOR:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t j2 = 0; j2 < count2; j2++) {
-                        for (intptr_t j3 = 0; j3 < count3; j3++) {
-                            for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                YAKSURI_SEQI_OP_LXOR(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                                idx += sizeof(int16_t);
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__REPLACE:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t j2 = 0; j2 < count2; j2++) {
-                        for (intptr_t j3 = 0; j3 < count3; j3++) {
-                            for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                                idx += sizeof(int16_t);
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__BXOR:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t j2 = 0; j2 < count2; j2++) {
-                        for (intptr_t j3 = 0; j3 < count3; j3++) {
-                            for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                YAKSURI_SEQI_OP_BXOR(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
                                 idx += sizeof(int16_t);
                             }
                         }
@@ -2033,6 +1931,108 @@ int yaksuri_seqi_pack_contig_contig_hindexed_int16_t(const void *inbuf, void *ou
             break;
         }
         
+        case YAKSA_OP__BXOR:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t j2 = 0; j2 < count2; j2++) {
+                        for (intptr_t j3 = 0; j3 < count3; j3++) {
+                            for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                YAKSURI_SEQI_OP_BXOR(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                                idx += sizeof(int16_t);
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__MIN:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t j2 = 0; j2 < count2; j2++) {
+                        for (intptr_t j3 = 0; j3 < count3; j3++) {
+                            for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                YAKSURI_SEQI_OP_MIN(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                                idx += sizeof(int16_t);
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__LXOR:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t j2 = 0; j2 < count2; j2++) {
+                        for (intptr_t j3 = 0; j3 < count3; j3++) {
+                            for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                YAKSURI_SEQI_OP_LXOR(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                                idx += sizeof(int16_t);
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__PROD:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t j2 = 0; j2 < count2; j2++) {
+                        for (intptr_t j3 = 0; j3 < count3; j3++) {
+                            for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                YAKSURI_SEQI_OP_PROD(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                                idx += sizeof(int16_t);
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__BAND:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t j2 = 0; j2 < count2; j2++) {
+                        for (intptr_t j3 = 0; j3 < count3; j3++) {
+                            for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                YAKSURI_SEQI_OP_BAND(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                                idx += sizeof(int16_t);
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__REPLACE:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t j2 = 0; j2 < count2; j2++) {
+                        for (intptr_t j3 = 0; j3 < count3; j3++) {
+                            for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                YAKSURI_SEQI_OP_REPLACE(*((const int16_t *) (const void *) (sbuf + i * extent + j1 * stride1 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                                idx += sizeof(int16_t);
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
         default:
             break;
     }
@@ -2062,31 +2062,14 @@ int yaksuri_seqi_unpack_contig_contig_hindexed_int16_t(const void *inbuf, void *
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__BAND:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t j2 = 0; j2 < count2; j2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                YAKSURI_SEQI_OP_BAND(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
-                                idx += sizeof(int16_t);
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__PROD:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t j2 = 0; j2 < count2; j2++) {
-                        for (intptr_t j3 = 0; j3 < count3; j3++) {
-                            for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                YAKSURI_SEQI_OP_PROD(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                                YAKSURI_SEQI_OP_MAX(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
                                 idx += sizeof(int16_t);
                             }
                         }
@@ -2113,40 +2096,6 @@ int yaksuri_seqi_unpack_contig_contig_hindexed_int16_t(const void *inbuf, void *
             break;
         }
         
-        case YAKSA_OP__MAX:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t j2 = 0; j2 < count2; j2++) {
-                        for (intptr_t j3 = 0; j3 < count3; j3++) {
-                            for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                YAKSURI_SEQI_OP_MAX(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
-                                idx += sizeof(int16_t);
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__MIN:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t j2 = 0; j2 < count2; j2++) {
-                        for (intptr_t j3 = 0; j3 < count3; j3++) {
-                            for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                YAKSURI_SEQI_OP_MIN(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
-                                idx += sizeof(int16_t);
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
         case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
@@ -2155,57 +2104,6 @@ int yaksuri_seqi_unpack_contig_contig_hindexed_int16_t(const void *inbuf, void *
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
                                 YAKSURI_SEQI_OP_SUM(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
-                                idx += sizeof(int16_t);
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__LXOR:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t j2 = 0; j2 < count2; j2++) {
-                        for (intptr_t j3 = 0; j3 < count3; j3++) {
-                            for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                YAKSURI_SEQI_OP_LXOR(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
-                                idx += sizeof(int16_t);
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__REPLACE:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t j2 = 0; j2 < count2; j2++) {
-                        for (intptr_t j3 = 0; j3 < count3; j3++) {
-                            for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                YAKSURI_SEQI_OP_REPLACE(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
-                                idx += sizeof(int16_t);
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__BXOR:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    for (intptr_t j2 = 0; j2 < count2; j2++) {
-                        for (intptr_t j3 = 0; j3 < count3; j3++) {
-                            for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                                YAKSURI_SEQI_OP_BXOR(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
                                 idx += sizeof(int16_t);
                             }
                         }
@@ -2249,6 +2147,108 @@ int yaksuri_seqi_unpack_contig_contig_hindexed_int16_t(const void *inbuf, void *
             break;
         }
         
+        case YAKSA_OP__BXOR:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t j2 = 0; j2 < count2; j2++) {
+                        for (intptr_t j3 = 0; j3 < count3; j3++) {
+                            for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                YAKSURI_SEQI_OP_BXOR(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                                idx += sizeof(int16_t);
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__MIN:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t j2 = 0; j2 < count2; j2++) {
+                        for (intptr_t j3 = 0; j3 < count3; j3++) {
+                            for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                YAKSURI_SEQI_OP_MIN(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                                idx += sizeof(int16_t);
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__LXOR:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t j2 = 0; j2 < count2; j2++) {
+                        for (intptr_t j3 = 0; j3 < count3; j3++) {
+                            for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                YAKSURI_SEQI_OP_LXOR(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                                idx += sizeof(int16_t);
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__PROD:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t j2 = 0; j2 < count2; j2++) {
+                        for (intptr_t j3 = 0; j3 < count3; j3++) {
+                            for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                YAKSURI_SEQI_OP_PROD(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                                idx += sizeof(int16_t);
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__BAND:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t j2 = 0; j2 < count2; j2++) {
+                        for (intptr_t j3 = 0; j3 < count3; j3++) {
+                            for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                YAKSURI_SEQI_OP_BAND(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                                idx += sizeof(int16_t);
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__REPLACE:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j1 = 0; j1 < count1; j1++) {
+                    for (intptr_t j2 = 0; j2 < count2; j2++) {
+                        for (intptr_t j3 = 0; j3 < count3; j3++) {
+                            for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                                YAKSURI_SEQI_OP_REPLACE(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j1 * stride1 + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                                idx += sizeof(int16_t);
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
         default:
             break;
     }
@@ -2276,28 +2276,13 @@ int yaksuri_seqi_pack_resized_contig_hindexed_int16_t(const void *inbuf, void *o
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__BAND:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                            YAKSURI_SEQI_OP_BAND(*((const int16_t *) (const void *) (sbuf + i * extent + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                            idx += sizeof(int16_t);
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__PROD:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j2 = 0; j2 < count2; j2++) {
-                    for (intptr_t j3 = 0; j3 < count3; j3++) {
-                        for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                            YAKSURI_SEQI_OP_PROD(*((const int16_t *) (const void *) (sbuf + i * extent + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                            YAKSURI_SEQI_OP_MAX(*((const int16_t *) (const void *) (sbuf + i * extent + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
                             idx += sizeof(int16_t);
                         }
                     }
@@ -2321,36 +2306,6 @@ int yaksuri_seqi_pack_resized_contig_hindexed_int16_t(const void *inbuf, void *o
             break;
         }
         
-        case YAKSA_OP__MAX:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j2 = 0; j2 < count2; j2++) {
-                    for (intptr_t j3 = 0; j3 < count3; j3++) {
-                        for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                            YAKSURI_SEQI_OP_MAX(*((const int16_t *) (const void *) (sbuf + i * extent + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                            idx += sizeof(int16_t);
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__MIN:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j2 = 0; j2 < count2; j2++) {
-                    for (intptr_t j3 = 0; j3 < count3; j3++) {
-                        for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                            YAKSURI_SEQI_OP_MIN(*((const int16_t *) (const void *) (sbuf + i * extent + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                            idx += sizeof(int16_t);
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
         case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
@@ -2358,51 +2313,6 @@ int yaksuri_seqi_pack_resized_contig_hindexed_int16_t(const void *inbuf, void *o
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
                             YAKSURI_SEQI_OP_SUM(*((const int16_t *) (const void *) (sbuf + i * extent + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                            idx += sizeof(int16_t);
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__LXOR:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j2 = 0; j2 < count2; j2++) {
-                    for (intptr_t j3 = 0; j3 < count3; j3++) {
-                        for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                            YAKSURI_SEQI_OP_LXOR(*((const int16_t *) (const void *) (sbuf + i * extent + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                            idx += sizeof(int16_t);
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__REPLACE:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j2 = 0; j2 < count2; j2++) {
-                    for (intptr_t j3 = 0; j3 < count3; j3++) {
-                        for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                            YAKSURI_SEQI_OP_REPLACE(*((const int16_t *) (const void *) (sbuf + i * extent + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
-                            idx += sizeof(int16_t);
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__BXOR:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j2 = 0; j2 < count2; j2++) {
-                    for (intptr_t j3 = 0; j3 < count3; j3++) {
-                        for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                            YAKSURI_SEQI_OP_BXOR(*((const int16_t *) (const void *) (sbuf + i * extent + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
                             idx += sizeof(int16_t);
                         }
                     }
@@ -2441,6 +2351,96 @@ int yaksuri_seqi_pack_resized_contig_hindexed_int16_t(const void *inbuf, void *o
             break;
         }
         
+        case YAKSA_OP__BXOR:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j2 = 0; j2 < count2; j2++) {
+                    for (intptr_t j3 = 0; j3 < count3; j3++) {
+                        for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                            YAKSURI_SEQI_OP_BXOR(*((const int16_t *) (const void *) (sbuf + i * extent + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                            idx += sizeof(int16_t);
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__MIN:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j2 = 0; j2 < count2; j2++) {
+                    for (intptr_t j3 = 0; j3 < count3; j3++) {
+                        for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                            YAKSURI_SEQI_OP_MIN(*((const int16_t *) (const void *) (sbuf + i * extent + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                            idx += sizeof(int16_t);
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__LXOR:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j2 = 0; j2 < count2; j2++) {
+                    for (intptr_t j3 = 0; j3 < count3; j3++) {
+                        for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                            YAKSURI_SEQI_OP_LXOR(*((const int16_t *) (const void *) (sbuf + i * extent + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                            idx += sizeof(int16_t);
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__PROD:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j2 = 0; j2 < count2; j2++) {
+                    for (intptr_t j3 = 0; j3 < count3; j3++) {
+                        for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                            YAKSURI_SEQI_OP_PROD(*((const int16_t *) (const void *) (sbuf + i * extent + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                            idx += sizeof(int16_t);
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__BAND:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j2 = 0; j2 < count2; j2++) {
+                    for (intptr_t j3 = 0; j3 < count3; j3++) {
+                        for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                            YAKSURI_SEQI_OP_BAND(*((const int16_t *) (const void *) (sbuf + i * extent + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                            idx += sizeof(int16_t);
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__REPLACE:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j2 = 0; j2 < count2; j2++) {
+                    for (intptr_t j3 = 0; j3 < count3; j3++) {
+                        for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                            YAKSURI_SEQI_OP_REPLACE(*((const int16_t *) (const void *) (sbuf + i * extent + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))), *((int16_t *) (void *) (dbuf + idx)));
+                            idx += sizeof(int16_t);
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
         default:
             break;
     }
@@ -2468,28 +2468,13 @@ int yaksuri_seqi_unpack_resized_contig_hindexed_int16_t(const void *inbuf, void 
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__BAND:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                            YAKSURI_SEQI_OP_BAND(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
-                            idx += sizeof(int16_t);
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__PROD:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j2 = 0; j2 < count2; j2++) {
-                    for (intptr_t j3 = 0; j3 < count3; j3++) {
-                        for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                            YAKSURI_SEQI_OP_PROD(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                            YAKSURI_SEQI_OP_MAX(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
                             idx += sizeof(int16_t);
                         }
                     }
@@ -2513,36 +2498,6 @@ int yaksuri_seqi_unpack_resized_contig_hindexed_int16_t(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__MAX:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j2 = 0; j2 < count2; j2++) {
-                    for (intptr_t j3 = 0; j3 < count3; j3++) {
-                        for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                            YAKSURI_SEQI_OP_MAX(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
-                            idx += sizeof(int16_t);
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__MIN:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j2 = 0; j2 < count2; j2++) {
-                    for (intptr_t j3 = 0; j3 < count3; j3++) {
-                        for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                            YAKSURI_SEQI_OP_MIN(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
-                            idx += sizeof(int16_t);
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
         case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
@@ -2550,51 +2505,6 @@ int yaksuri_seqi_unpack_resized_contig_hindexed_int16_t(const void *inbuf, void 
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
                             YAKSURI_SEQI_OP_SUM(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
-                            idx += sizeof(int16_t);
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__LXOR:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j2 = 0; j2 < count2; j2++) {
-                    for (intptr_t j3 = 0; j3 < count3; j3++) {
-                        for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                            YAKSURI_SEQI_OP_LXOR(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
-                            idx += sizeof(int16_t);
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__REPLACE:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j2 = 0; j2 < count2; j2++) {
-                    for (intptr_t j3 = 0; j3 < count3; j3++) {
-                        for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                            YAKSURI_SEQI_OP_REPLACE(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
-                            idx += sizeof(int16_t);
-                        }
-                    }
-                }
-            }
-            break;
-        }
-        
-        case YAKSA_OP__BXOR:
-        {
-            for (intptr_t i = 0; i < count; i++) {
-                for (intptr_t j2 = 0; j2 < count2; j2++) {
-                    for (intptr_t j3 = 0; j3 < count3; j3++) {
-                        for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
-                            YAKSURI_SEQI_OP_BXOR(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
                             idx += sizeof(int16_t);
                         }
                     }
@@ -2625,6 +2535,96 @@ int yaksuri_seqi_unpack_resized_contig_hindexed_int16_t(const void *inbuf, void 
                     for (intptr_t j3 = 0; j3 < count3; j3++) {
                         for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
                             YAKSURI_SEQI_OP_LOR(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                            idx += sizeof(int16_t);
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__BXOR:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j2 = 0; j2 < count2; j2++) {
+                    for (intptr_t j3 = 0; j3 < count3; j3++) {
+                        for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                            YAKSURI_SEQI_OP_BXOR(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                            idx += sizeof(int16_t);
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__MIN:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j2 = 0; j2 < count2; j2++) {
+                    for (intptr_t j3 = 0; j3 < count3; j3++) {
+                        for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                            YAKSURI_SEQI_OP_MIN(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                            idx += sizeof(int16_t);
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__LXOR:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j2 = 0; j2 < count2; j2++) {
+                    for (intptr_t j3 = 0; j3 < count3; j3++) {
+                        for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                            YAKSURI_SEQI_OP_LXOR(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                            idx += sizeof(int16_t);
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__PROD:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j2 = 0; j2 < count2; j2++) {
+                    for (intptr_t j3 = 0; j3 < count3; j3++) {
+                        for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                            YAKSURI_SEQI_OP_PROD(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                            idx += sizeof(int16_t);
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__BAND:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j2 = 0; j2 < count2; j2++) {
+                    for (intptr_t j3 = 0; j3 < count3; j3++) {
+                        for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                            YAKSURI_SEQI_OP_BAND(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
+                            idx += sizeof(int16_t);
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case YAKSA_OP__REPLACE:
+        {
+            for (intptr_t i = 0; i < count; i++) {
+                for (intptr_t j2 = 0; j2 < count2; j2++) {
+                    for (intptr_t j3 = 0; j3 < count3; j3++) {
+                        for (intptr_t k3 = 0; k3 < array_of_blocklengths3[j3]; k3++) {
+                            YAKSURI_SEQI_OP_REPLACE(*((const int16_t *) (const void *) (sbuf + idx)), *((int16_t *) (void *) (dbuf + i * extent + j2 * stride2 + array_of_displs3[j3] + k3 * sizeof(int16_t))));
                             idx += sizeof(int16_t);
                         }
                     }

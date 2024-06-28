@@ -11,8 +11,6 @@
 /* Begin Prototypes */
 int MPI_DUP_FN(MPI_Comm oldcomm, int keyval, void *extra_state, void *attribute_val_in,
                void *attribute_val_out, int *flag) MPICH_API_PUBLIC;
-int MPI_Status_c2f(const MPI_Status *c_status, MPI_Fint *f_status) MPICH_API_PUBLIC;
-int MPI_Status_f2c(const MPI_Fint *f_status, MPI_Status *c_status) MPICH_API_PUBLIC;
 int MPI_Status_f082c(const MPI_F08_status *f08_status, MPI_Status *c_status) MPICH_API_PUBLIC;
 int MPI_Status_c2f08(const MPI_Status *c_status, MPI_F08_status *f08_status) MPICH_API_PUBLIC;
 int MPI_Status_f082f(const MPI_F08_status *f08_status, MPI_Fint *f_status) MPICH_API_PUBLIC;
@@ -316,11 +314,13 @@ int MPI_Intercomm_create_from_groups(MPI_Group local_group, int local_leader,
                                      MPI_Errhandler errhandler, MPI_Comm *newintercomm)
                                      MPICH_API_PUBLIC;
 int MPI_Intercomm_merge(MPI_Comm intercomm, int high, MPI_Comm *newintracomm) MPICH_API_PUBLIC;
+int MPIX_Comm_test_threadcomm(MPI_Comm comm, int *flag) MPICH_API_PUBLIC;
 int MPIX_Comm_revoke(MPI_Comm comm) MPICH_API_PUBLIC;
 int MPIX_Comm_shrink(MPI_Comm comm, MPI_Comm *newcomm) MPICH_API_PUBLIC;
 int MPIX_Comm_failure_ack(MPI_Comm comm) MPICH_API_PUBLIC;
 int MPIX_Comm_failure_get_acked(MPI_Comm comm, MPI_Group *failedgrp) MPICH_API_PUBLIC;
 int MPIX_Comm_agree(MPI_Comm comm, int *flag) MPICH_API_PUBLIC;
+int MPIX_Comm_get_failed(MPI_Comm comm, MPI_Group *failedgrp) MPICH_API_PUBLIC;
 int MPI_Get_address(const void *location, MPI_Aint *address) MPICH_API_PUBLIC;
 int MPI_Get_count(const MPI_Status *status, MPI_Datatype datatype, int *count) MPICH_API_PUBLIC;
 int MPI_Get_elements(const MPI_Status *status, MPI_Datatype datatype, int *count) MPICH_API_PUBLIC;
@@ -376,6 +376,8 @@ int MPI_Type_get_true_extent(MPI_Datatype datatype, MPI_Aint *true_lb, MPI_Aint 
     MPICH_API_PUBLIC;
 int MPI_Type_get_true_extent_x(MPI_Datatype datatype, MPI_Count *true_lb, MPI_Count *true_extent)
     MPICH_API_PUBLIC;
+int MPI_Type_get_value_index(MPI_Datatype value_type, MPI_Datatype index_type,
+                             MPI_Datatype *pair_type) MPICH_API_PUBLIC;
 int MPI_Type_indexed(int count, const int array_of_blocklengths[],
                      const int array_of_displacements[], MPI_Datatype oldtype,
                      MPI_Datatype *newtype) MPICH_API_PUBLIC;
@@ -400,6 +402,10 @@ int MPI_Type_hvector(int count, int blocklength, MPI_Aint stride, MPI_Datatype o
                      MPI_Datatype *newtype) MPICH_API_PUBLIC;
 int MPI_Type_struct(int count, int array_of_blocklengths[], MPI_Aint array_of_displacements[],
                     MPI_Datatype array_of_types[], MPI_Datatype *newtype) MPICH_API_PUBLIC;
+int MPIX_Type_iov_len(MPI_Datatype datatype, MPI_Count max_iov_bytes, MPI_Count *iov_len,
+                      MPI_Count *actual_iov_bytes) MPICH_API_PUBLIC;
+int MPIX_Type_iov(MPI_Datatype datatype, MPI_Count iov_offset, MPIX_Iov *iov, MPI_Count max_iov_len,
+                  MPI_Count *actual_iov_len) MPICH_API_PUBLIC;
 int MPI_Add_error_class(int *errorclass) MPICH_API_PUBLIC;
 int MPI_Add_error_code(int errorclass, int *errorcode) MPICH_API_PUBLIC;
 int MPI_Add_error_string(int errorcode, const char *string) MPICH_API_PUBLIC;
@@ -416,6 +422,9 @@ int MPI_File_create_errhandler(MPI_File_errhandler_function *file_errhandler_fn,
                                MPI_Errhandler *errhandler) MPICH_API_PUBLIC;
 int MPI_File_get_errhandler(MPI_File file, MPI_Errhandler *errhandler) MPICH_API_PUBLIC;
 int MPI_File_set_errhandler(MPI_File file, MPI_Errhandler errhandler) MPICH_API_PUBLIC;
+int MPI_Remove_error_class(int errorclass) MPICH_API_PUBLIC;
+int MPI_Remove_error_code(int errorcode) MPICH_API_PUBLIC;
+int MPI_Remove_error_string(int errorcode) MPICH_API_PUBLIC;
 int MPI_Session_call_errhandler(MPI_Session session, int errorcode) MPICH_API_PUBLIC;
 int MPI_Session_create_errhandler(MPI_Session_errhandler_function *session_errhandler_fn,
                                   MPI_Errhandler *errhandler) MPICH_API_PUBLIC;
@@ -426,13 +435,30 @@ int MPI_Win_create_errhandler(MPI_Win_errhandler_function *win_errhandler_fn,
                               MPI_Errhandler *errhandler) MPICH_API_PUBLIC;
 int MPI_Win_get_errhandler(MPI_Win win, MPI_Errhandler *errhandler) MPICH_API_PUBLIC;
 int MPI_Win_set_errhandler(MPI_Win win, MPI_Errhandler errhandler) MPICH_API_PUBLIC;
-int MPIX_Delete_error_class(int errorclass) MPICH_API_PUBLIC;
-int MPIX_Delete_error_code(int errorcode) MPICH_API_PUBLIC;
-int MPIX_Delete_error_string(int errorcode) MPICH_API_PUBLIC;
 int MPI_Errhandler_create(MPI_Comm_errhandler_function *comm_errhandler_fn,
                           MPI_Errhandler *errhandler) MPICH_API_PUBLIC;
 int MPI_Errhandler_get(MPI_Comm comm, MPI_Errhandler *errhandler) MPICH_API_PUBLIC;
 int MPI_Errhandler_set(MPI_Comm comm, MPI_Errhandler errhandler) MPICH_API_PUBLIC;
+MPI_Fint MPI_Comm_c2f(MPI_Comm comm) MPICH_API_PUBLIC;
+MPI_Comm MPI_Comm_f2c(MPI_Fint comm) MPICH_API_PUBLIC;
+MPI_Fint MPI_Errhandler_c2f(MPI_Errhandler errhandler) MPICH_API_PUBLIC;
+MPI_Errhandler MPI_Errhandler_f2c(MPI_Fint errhandler) MPICH_API_PUBLIC;
+MPI_Fint MPI_Group_c2f(MPI_Group group) MPICH_API_PUBLIC;
+MPI_Group MPI_Group_f2c(MPI_Fint group) MPICH_API_PUBLIC;
+MPI_Fint MPI_Info_c2f(MPI_Info info) MPICH_API_PUBLIC;
+MPI_Info MPI_Info_f2c(MPI_Fint info) MPICH_API_PUBLIC;
+MPI_Fint MPI_Message_c2f(MPI_Message message) MPICH_API_PUBLIC;
+MPI_Message MPI_Message_f2c(MPI_Fint message) MPICH_API_PUBLIC;
+MPI_Fint MPI_Op_c2f(MPI_Op op) MPICH_API_PUBLIC;
+MPI_Op MPI_Op_f2c(MPI_Fint op) MPICH_API_PUBLIC;
+MPI_Fint MPI_Request_c2f(MPI_Request request) MPICH_API_PUBLIC;
+MPI_Request MPI_Request_f2c(MPI_Fint request) MPICH_API_PUBLIC;
+MPI_Fint MPI_Session_c2f(MPI_Session session) MPICH_API_PUBLIC;
+MPI_Session MPI_Session_f2c(MPI_Fint session) MPICH_API_PUBLIC;
+MPI_Fint MPI_Type_c2f(MPI_Datatype datatype) MPICH_API_PUBLIC;
+MPI_Datatype MPI_Type_f2c(MPI_Fint datatype) MPICH_API_PUBLIC;
+MPI_Fint MPI_Win_c2f(MPI_Win win) MPICH_API_PUBLIC;
+MPI_Win MPI_Win_f2c(MPI_Fint win) MPICH_API_PUBLIC;
 int MPI_Group_compare(MPI_Group group1, MPI_Group group2, int *result) MPICH_API_PUBLIC;
 int MPI_Group_difference(MPI_Group group1, MPI_Group group2, MPI_Group *newgroup) MPICH_API_PUBLIC;
 int MPI_Group_excl(MPI_Group group, int n, const int ranks[], MPI_Group *newgroup)
@@ -465,6 +491,8 @@ int MPI_Info_get_string(MPI_Info info, const char *key, int *buflen, char *value
 int MPI_Info_get_valuelen(MPI_Info info, const char *key, int *valuelen, int *flag)
     MPICH_API_PUBLIC;
 int MPI_Info_set(MPI_Info info, const char *key, const char *value) MPICH_API_PUBLIC;
+int MPIX_Info_set_hex(MPI_Info info, const char *key, const void *value, int value_size)
+    MPICH_API_PUBLIC;
 int MPI_Abort(MPI_Comm comm, int errorcode) MPICH_API_PUBLIC;
 int MPI_Comm_create_from_group(MPI_Group group, const char *stringtag, MPI_Info info,
                                MPI_Errhandler errhandler, MPI_Comm *newcomm) MPICH_API_PUBLIC;
@@ -502,7 +530,8 @@ int MPI_Op_create(MPI_User_function *user_fn, int commute, MPI_Op *op) MPICH_API
 int MPI_Op_free(MPI_Op *op) MPICH_API_PUBLIC;
 int MPI_Parrived(MPI_Request request, int partition, int *flag) MPICH_API_PUBLIC;
 int MPI_Pready(int partition, MPI_Request request) MPICH_API_PUBLIC;
-int MPI_Pready_list(int length, int array_of_partitions[], MPI_Request request) MPICH_API_PUBLIC;
+int MPI_Pready_list(int length, const int array_of_partitions[], MPI_Request request)
+    MPICH_API_PUBLIC;
 int MPI_Pready_range(int partition_low, int partition_high, MPI_Request request) MPICH_API_PUBLIC;
 int MPI_Precv_init(void *buf, int partitions, MPI_Count count, MPI_Datatype datatype, int dest,
                    int tag, MPI_Comm comm, MPI_Info info, MPI_Request *request)
@@ -517,6 +546,12 @@ int MPI_Bsend_init(const void *buf, int count, MPI_Datatype datatype, int dest, 
                    MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
 int MPI_Buffer_attach(void *buffer, int size) MPICH_API_PUBLIC;
 int MPI_Buffer_detach(void *buffer_addr, int *size) MPICH_API_PUBLIC;
+int MPI_Buffer_flush(void) MPICH_API_PUBLIC;
+int MPI_Buffer_iflush(MPI_Request *request) MPICH_API_PUBLIC;
+int MPI_Comm_attach_buffer(MPI_Comm comm, void *buffer, int size) MPICH_API_PUBLIC;
+int MPI_Comm_detach_buffer(MPI_Comm comm, void *buffer_addr, int *size) MPICH_API_PUBLIC;
+int MPI_Comm_flush_buffer(MPI_Comm comm) MPICH_API_PUBLIC;
+int MPI_Comm_iflush_buffer(MPI_Comm comm, MPI_Request *request) MPICH_API_PUBLIC;
 int MPI_Ibsend(const void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm,
                MPI_Request *request) MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
 int MPI_Improbe(int source, int tag, MPI_Comm comm, int *flag, MPI_Message *message,
@@ -565,6 +600,10 @@ int MPI_Sendrecv(const void *sendbuf, int sendcount, MPI_Datatype sendtype, int 
 int MPI_Sendrecv_replace(void *buf, int count, MPI_Datatype datatype, int dest, int sendtag,
                          int source, int recvtag, MPI_Comm comm, MPI_Status *status)
                          MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int MPI_Session_attach_buffer(MPI_Session session, void *buffer, int size) MPICH_API_PUBLIC;
+int MPI_Session_detach_buffer(MPI_Session session, void *buffer_addr, int *size) MPICH_API_PUBLIC;
+int MPI_Session_flush_buffer(MPI_Session session) MPICH_API_PUBLIC;
+int MPI_Session_iflush_buffer(MPI_Session session, MPI_Request *request) MPICH_API_PUBLIC;
 int MPI_Ssend(const void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm)
     MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
 int MPI_Ssend_init(const void *buf, int count, MPI_Datatype datatype, int dest, int tag,
@@ -577,24 +616,39 @@ int MPI_Grequest_start(MPI_Grequest_query_function *query_fn, MPI_Grequest_free_
                        MPI_Request *request) MPICH_API_PUBLIC;
 int MPI_Request_free(MPI_Request *request) MPICH_API_PUBLIC;
 int MPI_Request_get_status(MPI_Request request, int *flag, MPI_Status *status) MPICH_API_PUBLIC;
+int MPI_Request_get_status_all(int count, MPI_Request array_of_requests[], int *flag,
+                               MPI_Status *array_of_statuses) MPICH_API_PUBLIC;
+int MPI_Request_get_status_any(int count, MPI_Request array_of_requests[], int *indx, int *flag,
+                               MPI_Status *status) MPICH_API_PUBLIC;
+int MPI_Request_get_status_some(int incount, MPI_Request array_of_requests[], int *outcount,
+                                int array_of_indices[], MPI_Status *array_of_statuses)
+                                MPICH_API_PUBLIC;
 int MPI_Start(MPI_Request *request) MPICH_API_PUBLIC;
 int MPI_Startall(int count, MPI_Request array_of_requests[]) MPICH_API_PUBLIC;
+int MPI_Status_c2f(const MPI_Status *c_status, MPI_Fint *f_status) MPICH_API_PUBLIC;
+int MPI_Status_f2c(const MPI_Fint *f_status, MPI_Status *c_status) MPICH_API_PUBLIC;
+int MPI_Status_get_error(MPI_Status *status, int *error) MPICH_API_PUBLIC;
+int MPI_Status_get_source(MPI_Status *status, int *source) MPICH_API_PUBLIC;
+int MPI_Status_get_tag(MPI_Status *status, int *tag) MPICH_API_PUBLIC;
+int MPI_Status_set_error(MPI_Status *status, int error) MPICH_API_PUBLIC;
+int MPI_Status_set_source(MPI_Status *status, int source) MPICH_API_PUBLIC;
+int MPI_Status_set_tag(MPI_Status *status, int tag) MPICH_API_PUBLIC;
 int MPI_Status_set_cancelled(MPI_Status *status, int flag) MPICH_API_PUBLIC;
 int MPI_Test(MPI_Request *request, int *flag, MPI_Status *status) MPICH_API_PUBLIC;
 int MPI_Test_cancelled(const MPI_Status *status, int *flag) MPICH_API_PUBLIC;
 int MPI_Testall(int count, MPI_Request array_of_requests[], int *flag,
-                MPI_Status array_of_statuses[]) MPICH_API_PUBLIC;
+                MPI_Status *array_of_statuses) MPICH_API_PUBLIC;
 int MPI_Testany(int count, MPI_Request array_of_requests[], int *indx, int *flag,
                 MPI_Status *status) MPICH_API_PUBLIC;
 int MPI_Testsome(int incount, MPI_Request array_of_requests[], int *outcount,
-                 int array_of_indices[], MPI_Status array_of_statuses[]) MPICH_API_PUBLIC;
+                 int array_of_indices[], MPI_Status *array_of_statuses) MPICH_API_PUBLIC;
 int MPI_Wait(MPI_Request *request, MPI_Status *status) MPICH_API_PUBLIC;
-int MPI_Waitall(int count, MPI_Request array_of_requests[], MPI_Status array_of_statuses[])
+int MPI_Waitall(int count, MPI_Request array_of_requests[], MPI_Status *array_of_statuses)
     MPICH_API_PUBLIC;
 int MPI_Waitany(int count, MPI_Request array_of_requests[], int *indx, MPI_Status *status)
     MPICH_API_PUBLIC;
 int MPI_Waitsome(int incount, MPI_Request array_of_requests[], int *outcount,
-                 int array_of_indices[], MPI_Status array_of_statuses[]) MPICH_API_PUBLIC;
+                 int array_of_indices[], MPI_Status *array_of_statuses) MPICH_API_PUBLIC;
 int MPI_Accumulate(const void *origin_addr, int origin_count, MPI_Datatype origin_datatype,
                    int target_rank, MPI_Aint target_disp, int target_count,
                    MPI_Datatype target_datatype, MPI_Op op, MPI_Win win)
@@ -686,6 +740,48 @@ int MPI_Publish_name(const char *service_name, MPI_Info info, const char *port_n
     MPICH_API_PUBLIC;
 int MPI_Unpublish_name(const char *service_name, MPI_Info info, const char *port_name)
     MPICH_API_PUBLIC;
+int MPIX_Stream_create(MPI_Info info, MPIX_Stream *stream) MPICH_API_PUBLIC;
+int MPIX_Stream_free(MPIX_Stream *stream) MPICH_API_PUBLIC;
+int MPIX_Stream_comm_create(MPI_Comm comm, MPIX_Stream stream, MPI_Comm *newcomm) MPICH_API_PUBLIC;
+int MPIX_Stream_comm_create_multiplex(MPI_Comm comm, int count, MPIX_Stream array_of_streams[],
+                                      MPI_Comm *newcomm) MPICH_API_PUBLIC;
+int MPIX_Comm_get_stream(MPI_Comm comm, int idx, MPIX_Stream *stream) MPICH_API_PUBLIC;
+int MPIX_Stream_progress(MPIX_Stream stream) MPICH_API_PUBLIC;
+int MPIX_Start_progress_thread(MPIX_Stream stream) MPICH_API_PUBLIC;
+int MPIX_Stop_progress_thread(MPIX_Stream stream) MPICH_API_PUBLIC;
+int MPIX_Stream_send(const void *buf, int count, MPI_Datatype datatype, int dest, int tag,
+                     MPI_Comm comm, int source_stream_index, int dest_stream_index)
+                     MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int MPIX_Stream_isend(const void *buf, int count, MPI_Datatype datatype, int dest, int tag,
+                      MPI_Comm comm, int source_stream_index, int dest_stream_index,
+                      MPI_Request *request) MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int MPIX_Stream_recv(void *buf, int count, MPI_Datatype datatype, int source, int tag,
+                     MPI_Comm comm, int source_stream_index, int dest_stream_index,
+                     MPI_Status *status) MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int MPIX_Stream_irecv(void *buf, int count, MPI_Datatype datatype, int source, int tag,
+                      MPI_Comm comm, int source_stream_index, int dest_stream_index,
+                      MPI_Request *request) MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int MPIX_Send_enqueue(const void *buf, int count, MPI_Datatype datatype, int dest, int tag,
+                      MPI_Comm comm) MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int MPIX_Recv_enqueue(void *buf, int count, MPI_Datatype datatype, int source, int tag,
+                      MPI_Comm comm, MPI_Status *status)
+                      MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int MPIX_Isend_enqueue(const void *buf, int count, MPI_Datatype datatype, int dest, int tag,
+                       MPI_Comm comm, MPI_Request *request)
+                       MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int MPIX_Irecv_enqueue(void *buf, int count, MPI_Datatype datatype, int source, int tag,
+                       MPI_Comm comm, MPI_Request *request)
+                       MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int MPIX_Wait_enqueue(MPI_Request *request, MPI_Status *status) MPICH_API_PUBLIC;
+int MPIX_Waitall_enqueue(int count, MPI_Request array_of_requests[], MPI_Status *array_of_statuses)
+    MPICH_API_PUBLIC;
+int MPIX_Allreduce_enqueue(const void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype,
+                           MPI_Op op, MPI_Comm comm)
+                           MPICH_ATTR_POINTER_WITH_TYPE_TAG(2,4) MPICH_API_PUBLIC;
+int MPIX_Threadcomm_init(MPI_Comm comm, int num_threads, MPI_Comm *newthreadcomm) MPICH_API_PUBLIC;
+int MPIX_Threadcomm_free(MPI_Comm *threadcomm) MPICH_API_PUBLIC;
+int MPIX_Threadcomm_start(MPI_Comm threadcomm) MPICH_API_PUBLIC;
+int MPIX_Threadcomm_finish(MPI_Comm threadcomm) MPICH_API_PUBLIC;
 double MPI_Wtick(void) MPICH_API_PUBLIC;
 double MPI_Wtime(void) MPICH_API_PUBLIC;
 int MPI_Cart_coords(MPI_Comm comm, int rank, int maxdims, int coords[]) MPICH_API_PUBLIC;
@@ -713,6 +809,7 @@ int MPI_Dist_graph_neighbors(MPI_Comm comm, int maxindegree, int sources[], int 
                              MPICH_API_PUBLIC;
 int MPI_Dist_graph_neighbors_count(MPI_Comm comm, int *indegree, int *outdegree, int *weighted)
     MPICH_API_PUBLIC;
+int MPI_Get_hw_resource_info(MPI_Info *hw_info) MPICH_API_PUBLIC;
 int MPI_Graph_create(MPI_Comm comm_old, int nnodes, const int indx[], const int edges[],
                      int reorder, MPI_Comm *comm_graph) MPICH_API_PUBLIC;
 int MPI_Graph_get(MPI_Comm comm, int maxindex, int maxedges, int indx[], int edges[])
@@ -1077,6 +1174,8 @@ int MPI_Pack_external_size_c(const char *datarep, MPI_Count incount, MPI_Datatyp
                              MPI_Count *size) MPICH_API_PUBLIC;
 int MPI_Pack_size_c(MPI_Count incount, MPI_Datatype datatype, MPI_Comm comm, MPI_Count *size)
     MPICH_API_PUBLIC;
+int MPI_Status_set_elements_c(MPI_Status *status, MPI_Datatype datatype, MPI_Count count)
+    MPICH_API_PUBLIC;
 int MPI_Type_contiguous_c(MPI_Count count, MPI_Datatype oldtype, MPI_Datatype *newtype)
     MPICH_API_PUBLIC;
 int MPI_Type_create_darray_c(int size, int rank, int ndims, const MPI_Count array_of_gsizes[],
@@ -1135,6 +1234,8 @@ int MPI_Bsend_init_c(const void *buf, MPI_Count count, MPI_Datatype datatype, in
                      MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
 int MPI_Buffer_attach_c(void *buffer, MPI_Count size) MPICH_API_PUBLIC;
 int MPI_Buffer_detach_c(void *buffer_addr, MPI_Count *size) MPICH_API_PUBLIC;
+int MPI_Comm_attach_buffer_c(MPI_Comm comm, void *buffer, MPI_Count size) MPICH_API_PUBLIC;
+int MPI_Comm_detach_buffer_c(MPI_Comm comm, void *buffer_addr, MPI_Count *size) MPICH_API_PUBLIC;
 int MPI_Ibsend_c(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag,
                  MPI_Comm comm, MPI_Request *request)
                  MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
@@ -1185,6 +1286,10 @@ int MPI_Sendrecv_c(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendty
 int MPI_Sendrecv_replace_c(void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int sendtag,
                            int source, int recvtag, MPI_Comm comm, MPI_Status *status)
                            MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int MPI_Session_attach_buffer_c(MPI_Session session, void *buffer, MPI_Count size)
+    MPICH_API_PUBLIC;
+int MPI_Session_detach_buffer_c(MPI_Session session, void *buffer_addr, MPI_Count *size)
+    MPICH_API_PUBLIC;
 int MPI_Ssend_c(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag,
                 MPI_Comm comm) MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
 int MPI_Ssend_init_c(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag,
@@ -1234,9 +1339,35 @@ int MPI_Win_create_c(void *base, MPI_Aint size, MPI_Aint disp_unit, MPI_Info inf
                      MPI_Win *win) MPICH_API_PUBLIC;
 int MPI_Win_shared_query_c(MPI_Win win, int rank, MPI_Aint *size, MPI_Aint *disp_unit,
                            void *baseptr) MPICH_API_PUBLIC;
+int MPIX_Stream_send_c(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag,
+                       MPI_Comm comm, int source_stream_index, int dest_stream_index)
+                       MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int MPIX_Stream_isend_c(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag,
+                        MPI_Comm comm, int source_stream_index, int dest_stream_index,
+                        MPI_Request *request)
+                        MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int MPIX_Stream_recv_c(void *buf, MPI_Count count, MPI_Datatype datatype, int source, int tag,
+                       MPI_Comm comm, int source_stream_index, int dest_stream_index,
+                       MPI_Status *status) MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int MPIX_Stream_irecv_c(void *buf, MPI_Count count, MPI_Datatype datatype, int source, int tag,
+                        MPI_Comm comm, int source_stream_index, int dest_stream_index,
+                        MPI_Request *request)
+                        MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int MPIX_Send_enqueue_c(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag,
+                        MPI_Comm comm) MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int MPIX_Recv_enqueue_c(void *buf, MPI_Count count, MPI_Datatype datatype, int source, int tag,
+                        MPI_Comm comm, MPI_Status *status)
+                        MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int MPIX_Isend_enqueue_c(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag,
+                         MPI_Comm comm, MPI_Request *request)
+                         MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int MPIX_Irecv_enqueue_c(void *buf, MPI_Count count, MPI_Datatype datatype, int source, int tag,
+                         MPI_Comm comm, MPI_Request *request)
+                         MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int MPIX_Allreduce_enqueue_c(const void *sendbuf, void *recvbuf, MPI_Count count,
+                             MPI_Datatype datatype, MPI_Op op, MPI_Comm comm)
+                             MPICH_ATTR_POINTER_WITH_TYPE_TAG(2,4) MPICH_API_PUBLIC;
 
-int PMPI_Status_c2f(const MPI_Status *c_status, MPI_Fint *f_status) MPICH_API_PUBLIC;
-int PMPI_Status_f2c(const MPI_Fint *f_status, MPI_Status *c_status) MPICH_API_PUBLIC;
 int PMPI_Status_f082c(const MPI_F08_status *f08_status, MPI_Status *c_status) MPICH_API_PUBLIC;
 int PMPI_Status_c2f08(const MPI_Status *c_status, MPI_F08_status *f08_status) MPICH_API_PUBLIC;
 int PMPI_Status_f082f(const MPI_F08_status *f08_status, MPI_Fint *f_status) MPICH_API_PUBLIC;
@@ -1790,11 +1921,13 @@ int PMPI_Intercomm_create_from_groups(MPI_Group local_group, int local_leader,
                                       MPI_Errhandler errhandler, MPI_Comm *newintercomm)
                                       MPICH_API_PUBLIC;
 int PMPI_Intercomm_merge(MPI_Comm intercomm, int high, MPI_Comm *newintracomm) MPICH_API_PUBLIC;
+int PMPIX_Comm_test_threadcomm(MPI_Comm comm, int *flag) MPICH_API_PUBLIC;
 int PMPIX_Comm_revoke(MPI_Comm comm) MPICH_API_PUBLIC;
 int PMPIX_Comm_shrink(MPI_Comm comm, MPI_Comm *newcomm) MPICH_API_PUBLIC;
 int PMPIX_Comm_failure_ack(MPI_Comm comm) MPICH_API_PUBLIC;
 int PMPIX_Comm_failure_get_acked(MPI_Comm comm, MPI_Group *failedgrp) MPICH_API_PUBLIC;
 int PMPIX_Comm_agree(MPI_Comm comm, int *flag) MPICH_API_PUBLIC;
+int PMPIX_Comm_get_failed(MPI_Comm comm, MPI_Group *failedgrp) MPICH_API_PUBLIC;
 int PMPI_Get_address(const void *location, MPI_Aint *address) MPICH_API_PUBLIC;
 int PMPI_Get_count(const MPI_Status *status, MPI_Datatype datatype, int *count) MPICH_API_PUBLIC;
 int PMPI_Get_count_c(const MPI_Status *status, MPI_Datatype datatype, MPI_Count *count)
@@ -1822,6 +1955,8 @@ int PMPI_Pack_size(int incount, MPI_Datatype datatype, MPI_Comm comm, int *size)
 int PMPI_Pack_size_c(MPI_Count incount, MPI_Datatype datatype, MPI_Comm comm, MPI_Count *size)
     MPICH_API_PUBLIC;
 int PMPI_Status_set_elements(MPI_Status *status, MPI_Datatype datatype, int count)
+    MPICH_API_PUBLIC;
+int PMPI_Status_set_elements_c(MPI_Status *status, MPI_Datatype datatype, MPI_Count count)
     MPICH_API_PUBLIC;
 int PMPI_Status_set_elements_x(MPI_Status *status, MPI_Datatype datatype, MPI_Count count)
     MPICH_API_PUBLIC;
@@ -1906,6 +2041,8 @@ int PMPI_Type_get_true_extent_c(MPI_Datatype datatype, MPI_Count *true_lb, MPI_C
     MPICH_API_PUBLIC;
 int PMPI_Type_get_true_extent_x(MPI_Datatype datatype, MPI_Count *true_lb, MPI_Count *true_extent)
     MPICH_API_PUBLIC;
+int PMPI_Type_get_value_index(MPI_Datatype value_type, MPI_Datatype index_type,
+                              MPI_Datatype *pair_type) MPICH_API_PUBLIC;
 int PMPI_Type_indexed(int count, const int array_of_blocklengths[],
                       const int array_of_displacements[], MPI_Datatype oldtype,
                       MPI_Datatype *newtype) MPICH_API_PUBLIC;
@@ -1941,6 +2078,10 @@ int PMPI_Type_hvector(int count, int blocklength, MPI_Aint stride, MPI_Datatype 
                       MPI_Datatype *newtype) MPICH_API_PUBLIC;
 int PMPI_Type_struct(int count, int array_of_blocklengths[], MPI_Aint array_of_displacements[],
                      MPI_Datatype array_of_types[], MPI_Datatype *newtype) MPICH_API_PUBLIC;
+int PMPIX_Type_iov_len(MPI_Datatype datatype, MPI_Count max_iov_bytes, MPI_Count *iov_len,
+                       MPI_Count *actual_iov_bytes) MPICH_API_PUBLIC;
+int PMPIX_Type_iov(MPI_Datatype datatype, MPI_Count iov_offset, MPIX_Iov *iov,
+                   MPI_Count max_iov_len, MPI_Count *actual_iov_len) MPICH_API_PUBLIC;
 int PMPI_Add_error_class(int *errorclass) MPICH_API_PUBLIC;
 int PMPI_Add_error_code(int errorclass, int *errorcode) MPICH_API_PUBLIC;
 int PMPI_Add_error_string(int errorcode, const char *string) MPICH_API_PUBLIC;
@@ -1957,6 +2098,9 @@ int PMPI_File_create_errhandler(MPI_File_errhandler_function *file_errhandler_fn
                                 MPI_Errhandler *errhandler) MPICH_API_PUBLIC;
 int PMPI_File_get_errhandler(MPI_File file, MPI_Errhandler *errhandler) MPICH_API_PUBLIC;
 int PMPI_File_set_errhandler(MPI_File file, MPI_Errhandler errhandler) MPICH_API_PUBLIC;
+int PMPI_Remove_error_class(int errorclass) MPICH_API_PUBLIC;
+int PMPI_Remove_error_code(int errorcode) MPICH_API_PUBLIC;
+int PMPI_Remove_error_string(int errorcode) MPICH_API_PUBLIC;
 int PMPI_Session_call_errhandler(MPI_Session session, int errorcode) MPICH_API_PUBLIC;
 int PMPI_Session_create_errhandler(MPI_Session_errhandler_function *session_errhandler_fn,
                                    MPI_Errhandler *errhandler) MPICH_API_PUBLIC;
@@ -1967,13 +2111,30 @@ int PMPI_Win_create_errhandler(MPI_Win_errhandler_function *win_errhandler_fn,
                                MPI_Errhandler *errhandler) MPICH_API_PUBLIC;
 int PMPI_Win_get_errhandler(MPI_Win win, MPI_Errhandler *errhandler) MPICH_API_PUBLIC;
 int PMPI_Win_set_errhandler(MPI_Win win, MPI_Errhandler errhandler) MPICH_API_PUBLIC;
-int PMPIX_Delete_error_class(int errorclass) MPICH_API_PUBLIC;
-int PMPIX_Delete_error_code(int errorcode) MPICH_API_PUBLIC;
-int PMPIX_Delete_error_string(int errorcode) MPICH_API_PUBLIC;
 int PMPI_Errhandler_create(MPI_Comm_errhandler_function *comm_errhandler_fn,
                            MPI_Errhandler *errhandler) MPICH_API_PUBLIC;
 int PMPI_Errhandler_get(MPI_Comm comm, MPI_Errhandler *errhandler) MPICH_API_PUBLIC;
 int PMPI_Errhandler_set(MPI_Comm comm, MPI_Errhandler errhandler) MPICH_API_PUBLIC;
+MPI_Fint PMPI_Comm_c2f(MPI_Comm comm) MPICH_API_PUBLIC;
+MPI_Comm PMPI_Comm_f2c(MPI_Fint comm) MPICH_API_PUBLIC;
+MPI_Fint PMPI_Errhandler_c2f(MPI_Errhandler errhandler) MPICH_API_PUBLIC;
+MPI_Errhandler PMPI_Errhandler_f2c(MPI_Fint errhandler) MPICH_API_PUBLIC;
+MPI_Fint PMPI_Group_c2f(MPI_Group group) MPICH_API_PUBLIC;
+MPI_Group PMPI_Group_f2c(MPI_Fint group) MPICH_API_PUBLIC;
+MPI_Fint PMPI_Info_c2f(MPI_Info info) MPICH_API_PUBLIC;
+MPI_Info PMPI_Info_f2c(MPI_Fint info) MPICH_API_PUBLIC;
+MPI_Fint PMPI_Message_c2f(MPI_Message message) MPICH_API_PUBLIC;
+MPI_Message PMPI_Message_f2c(MPI_Fint message) MPICH_API_PUBLIC;
+MPI_Fint PMPI_Op_c2f(MPI_Op op) MPICH_API_PUBLIC;
+MPI_Op PMPI_Op_f2c(MPI_Fint op) MPICH_API_PUBLIC;
+MPI_Fint PMPI_Request_c2f(MPI_Request request) MPICH_API_PUBLIC;
+MPI_Request PMPI_Request_f2c(MPI_Fint request) MPICH_API_PUBLIC;
+MPI_Fint PMPI_Session_c2f(MPI_Session session) MPICH_API_PUBLIC;
+MPI_Session PMPI_Session_f2c(MPI_Fint session) MPICH_API_PUBLIC;
+MPI_Fint PMPI_Type_c2f(MPI_Datatype datatype) MPICH_API_PUBLIC;
+MPI_Datatype PMPI_Type_f2c(MPI_Fint datatype) MPICH_API_PUBLIC;
+MPI_Fint PMPI_Win_c2f(MPI_Win win) MPICH_API_PUBLIC;
+MPI_Win PMPI_Win_f2c(MPI_Fint win) MPICH_API_PUBLIC;
 int PMPI_Group_compare(MPI_Group group1, MPI_Group group2, int *result) MPICH_API_PUBLIC;
 int PMPI_Group_difference(MPI_Group group1, MPI_Group group2, MPI_Group *newgroup)
     MPICH_API_PUBLIC;
@@ -2007,6 +2168,8 @@ int PMPI_Info_get_string(MPI_Info info, const char *key, int *buflen, char *valu
 int PMPI_Info_get_valuelen(MPI_Info info, const char *key, int *valuelen, int *flag)
     MPICH_API_PUBLIC;
 int PMPI_Info_set(MPI_Info info, const char *key, const char *value) MPICH_API_PUBLIC;
+int PMPIX_Info_set_hex(MPI_Info info, const char *key, const void *value, int value_size)
+    MPICH_API_PUBLIC;
 int PMPI_Abort(MPI_Comm comm, int errorcode) MPICH_API_PUBLIC;
 int PMPI_Comm_create_from_group(MPI_Group group, const char *stringtag, MPI_Info info,
                                 MPI_Errhandler errhandler, MPI_Comm *newcomm) MPICH_API_PUBLIC;
@@ -2128,7 +2291,8 @@ int PMPI_Op_create_c(MPI_User_function_c *user_fn, int commute, MPI_Op *op) MPIC
 int PMPI_Op_free(MPI_Op *op) MPICH_API_PUBLIC;
 int PMPI_Parrived(MPI_Request request, int partition, int *flag) MPICH_API_PUBLIC;
 int PMPI_Pready(int partition, MPI_Request request) MPICH_API_PUBLIC;
-int PMPI_Pready_list(int length, int array_of_partitions[], MPI_Request request) MPICH_API_PUBLIC;
+int PMPI_Pready_list(int length, const int array_of_partitions[], MPI_Request request)
+    MPICH_API_PUBLIC;
 int PMPI_Pready_range(int partition_low, int partition_high, MPI_Request request) MPICH_API_PUBLIC;
 int PMPI_Precv_init(void *buf, int partitions, MPI_Count count, MPI_Datatype datatype, int dest,
                     int tag, MPI_Comm comm, MPI_Info info, MPI_Request *request)
@@ -2150,6 +2314,14 @@ int PMPI_Buffer_attach(void *buffer, int size) MPICH_API_PUBLIC;
 int PMPI_Buffer_attach_c(void *buffer, MPI_Count size) MPICH_API_PUBLIC;
 int PMPI_Buffer_detach(void *buffer_addr, int *size) MPICH_API_PUBLIC;
 int PMPI_Buffer_detach_c(void *buffer_addr, MPI_Count *size) MPICH_API_PUBLIC;
+int PMPI_Buffer_flush(void) MPICH_API_PUBLIC;
+int PMPI_Buffer_iflush(MPI_Request *request) MPICH_API_PUBLIC;
+int PMPI_Comm_attach_buffer(MPI_Comm comm, void *buffer, int size) MPICH_API_PUBLIC;
+int PMPI_Comm_attach_buffer_c(MPI_Comm comm, void *buffer, MPI_Count size) MPICH_API_PUBLIC;
+int PMPI_Comm_detach_buffer(MPI_Comm comm, void *buffer_addr, int *size) MPICH_API_PUBLIC;
+int PMPI_Comm_detach_buffer_c(MPI_Comm comm, void *buffer_addr, MPI_Count *size) MPICH_API_PUBLIC;
+int PMPI_Comm_flush_buffer(MPI_Comm comm) MPICH_API_PUBLIC;
+int PMPI_Comm_iflush_buffer(MPI_Comm comm, MPI_Request *request) MPICH_API_PUBLIC;
 int PMPI_Ibsend(const void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm,
                 MPI_Request *request) MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
 int PMPI_Ibsend_c(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag,
@@ -2250,6 +2422,14 @@ int PMPI_Sendrecv_replace_c(void *buf, MPI_Count count, MPI_Datatype datatype, i
                             int sendtag, int source, int recvtag, MPI_Comm comm,
                             MPI_Status *status)
                             MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int PMPI_Session_attach_buffer(MPI_Session session, void *buffer, int size) MPICH_API_PUBLIC;
+int PMPI_Session_attach_buffer_c(MPI_Session session, void *buffer, MPI_Count size)
+    MPICH_API_PUBLIC;
+int PMPI_Session_detach_buffer(MPI_Session session, void *buffer_addr, int *size) MPICH_API_PUBLIC;
+int PMPI_Session_detach_buffer_c(MPI_Session session, void *buffer_addr, MPI_Count *size)
+    MPICH_API_PUBLIC;
+int PMPI_Session_flush_buffer(MPI_Session session) MPICH_API_PUBLIC;
+int PMPI_Session_iflush_buffer(MPI_Session session, MPI_Request *request) MPICH_API_PUBLIC;
 int PMPI_Ssend(const void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm)
     MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
 int PMPI_Ssend_c(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag,
@@ -2267,24 +2447,39 @@ int PMPI_Grequest_start(MPI_Grequest_query_function *query_fn, MPI_Grequest_free
                         MPI_Request *request) MPICH_API_PUBLIC;
 int PMPI_Request_free(MPI_Request *request) MPICH_API_PUBLIC;
 int PMPI_Request_get_status(MPI_Request request, int *flag, MPI_Status *status) MPICH_API_PUBLIC;
+int PMPI_Request_get_status_all(int count, MPI_Request array_of_requests[], int *flag,
+                                MPI_Status *array_of_statuses) MPICH_API_PUBLIC;
+int PMPI_Request_get_status_any(int count, MPI_Request array_of_requests[], int *indx, int *flag,
+                                MPI_Status *status) MPICH_API_PUBLIC;
+int PMPI_Request_get_status_some(int incount, MPI_Request array_of_requests[], int *outcount,
+                                 int array_of_indices[], MPI_Status *array_of_statuses)
+                                 MPICH_API_PUBLIC;
 int PMPI_Start(MPI_Request *request) MPICH_API_PUBLIC;
 int PMPI_Startall(int count, MPI_Request array_of_requests[]) MPICH_API_PUBLIC;
+int PMPI_Status_c2f(const MPI_Status *c_status, MPI_Fint *f_status) MPICH_API_PUBLIC;
+int PMPI_Status_f2c(const MPI_Fint *f_status, MPI_Status *c_status) MPICH_API_PUBLIC;
+int PMPI_Status_get_error(MPI_Status *status, int *error) MPICH_API_PUBLIC;
+int PMPI_Status_get_source(MPI_Status *status, int *source) MPICH_API_PUBLIC;
+int PMPI_Status_get_tag(MPI_Status *status, int *tag) MPICH_API_PUBLIC;
+int PMPI_Status_set_error(MPI_Status *status, int error) MPICH_API_PUBLIC;
+int PMPI_Status_set_source(MPI_Status *status, int source) MPICH_API_PUBLIC;
+int PMPI_Status_set_tag(MPI_Status *status, int tag) MPICH_API_PUBLIC;
 int PMPI_Status_set_cancelled(MPI_Status *status, int flag) MPICH_API_PUBLIC;
 int PMPI_Test(MPI_Request *request, int *flag, MPI_Status *status) MPICH_API_PUBLIC;
 int PMPI_Test_cancelled(const MPI_Status *status, int *flag) MPICH_API_PUBLIC;
 int PMPI_Testall(int count, MPI_Request array_of_requests[], int *flag,
-                 MPI_Status array_of_statuses[]) MPICH_API_PUBLIC;
+                 MPI_Status *array_of_statuses) MPICH_API_PUBLIC;
 int PMPI_Testany(int count, MPI_Request array_of_requests[], int *indx, int *flag,
                  MPI_Status *status) MPICH_API_PUBLIC;
 int PMPI_Testsome(int incount, MPI_Request array_of_requests[], int *outcount,
-                  int array_of_indices[], MPI_Status array_of_statuses[]) MPICH_API_PUBLIC;
+                  int array_of_indices[], MPI_Status *array_of_statuses) MPICH_API_PUBLIC;
 int PMPI_Wait(MPI_Request *request, MPI_Status *status) MPICH_API_PUBLIC;
-int PMPI_Waitall(int count, MPI_Request array_of_requests[], MPI_Status array_of_statuses[])
+int PMPI_Waitall(int count, MPI_Request array_of_requests[], MPI_Status *array_of_statuses)
     MPICH_API_PUBLIC;
 int PMPI_Waitany(int count, MPI_Request array_of_requests[], int *indx, MPI_Status *status)
     MPICH_API_PUBLIC;
 int PMPI_Waitsome(int incount, MPI_Request array_of_requests[], int *outcount,
-                  int array_of_indices[], MPI_Status array_of_statuses[]) MPICH_API_PUBLIC;
+                  int array_of_indices[], MPI_Status *array_of_statuses) MPICH_API_PUBLIC;
 int PMPIX_Grequest_start(MPI_Grequest_query_function *query_fn, MPI_Grequest_free_function *free_fn,
                          MPI_Grequest_cancel_function *cancel_fn,
                          MPIX_Grequest_poll_function *poll_fn, MPIX_Grequest_wait_function *wait_fn,
@@ -2434,6 +2629,80 @@ int PMPI_Publish_name(const char *service_name, MPI_Info info, const char *port_
     MPICH_API_PUBLIC;
 int PMPI_Unpublish_name(const char *service_name, MPI_Info info, const char *port_name)
     MPICH_API_PUBLIC;
+int PMPIX_Stream_create(MPI_Info info, MPIX_Stream *stream) MPICH_API_PUBLIC;
+int PMPIX_Stream_free(MPIX_Stream *stream) MPICH_API_PUBLIC;
+int PMPIX_Stream_comm_create(MPI_Comm comm, MPIX_Stream stream, MPI_Comm *newcomm)
+    MPICH_API_PUBLIC;
+int PMPIX_Stream_comm_create_multiplex(MPI_Comm comm, int count, MPIX_Stream array_of_streams[],
+                                       MPI_Comm *newcomm) MPICH_API_PUBLIC;
+int PMPIX_Comm_get_stream(MPI_Comm comm, int idx, MPIX_Stream *stream) MPICH_API_PUBLIC;
+int PMPIX_Stream_progress(MPIX_Stream stream) MPICH_API_PUBLIC;
+int PMPIX_Start_progress_thread(MPIX_Stream stream) MPICH_API_PUBLIC;
+int PMPIX_Stop_progress_thread(MPIX_Stream stream) MPICH_API_PUBLIC;
+int PMPIX_Stream_send(const void *buf, int count, MPI_Datatype datatype, int dest, int tag,
+                      MPI_Comm comm, int source_stream_index, int dest_stream_index)
+                      MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int PMPIX_Stream_send_c(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag,
+                        MPI_Comm comm, int source_stream_index, int dest_stream_index)
+                        MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int PMPIX_Stream_isend(const void *buf, int count, MPI_Datatype datatype, int dest, int tag,
+                       MPI_Comm comm, int source_stream_index, int dest_stream_index,
+                       MPI_Request *request)
+                       MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int PMPIX_Stream_isend_c(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag,
+                         MPI_Comm comm, int source_stream_index, int dest_stream_index,
+                         MPI_Request *request)
+                         MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int PMPIX_Stream_recv(void *buf, int count, MPI_Datatype datatype, int source, int tag,
+                      MPI_Comm comm, int source_stream_index, int dest_stream_index,
+                      MPI_Status *status) MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int PMPIX_Stream_recv_c(void *buf, MPI_Count count, MPI_Datatype datatype, int source, int tag,
+                        MPI_Comm comm, int source_stream_index, int dest_stream_index,
+                        MPI_Status *status) MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int PMPIX_Stream_irecv(void *buf, int count, MPI_Datatype datatype, int source, int tag,
+                       MPI_Comm comm, int source_stream_index, int dest_stream_index,
+                       MPI_Request *request)
+                       MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int PMPIX_Stream_irecv_c(void *buf, MPI_Count count, MPI_Datatype datatype, int source, int tag,
+                         MPI_Comm comm, int source_stream_index, int dest_stream_index,
+                         MPI_Request *request)
+                         MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int PMPIX_Send_enqueue(const void *buf, int count, MPI_Datatype datatype, int dest, int tag,
+                       MPI_Comm comm) MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int PMPIX_Send_enqueue_c(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag,
+                         MPI_Comm comm) MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int PMPIX_Recv_enqueue(void *buf, int count, MPI_Datatype datatype, int source, int tag,
+                       MPI_Comm comm, MPI_Status *status)
+                       MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int PMPIX_Recv_enqueue_c(void *buf, MPI_Count count, MPI_Datatype datatype, int source, int tag,
+                         MPI_Comm comm, MPI_Status *status)
+                         MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int PMPIX_Isend_enqueue(const void *buf, int count, MPI_Datatype datatype, int dest, int tag,
+                        MPI_Comm comm, MPI_Request *request)
+                        MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int PMPIX_Isend_enqueue_c(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest,
+                          int tag, MPI_Comm comm, MPI_Request *request)
+                          MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int PMPIX_Irecv_enqueue(void *buf, int count, MPI_Datatype datatype, int source, int tag,
+                        MPI_Comm comm, MPI_Request *request)
+                        MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int PMPIX_Irecv_enqueue_c(void *buf, MPI_Count count, MPI_Datatype datatype, int source, int tag,
+                          MPI_Comm comm, MPI_Request *request)
+                          MPICH_ATTR_POINTER_WITH_TYPE_TAG(1,3) MPICH_API_PUBLIC;
+int PMPIX_Wait_enqueue(MPI_Request *request, MPI_Status *status) MPICH_API_PUBLIC;
+int PMPIX_Waitall_enqueue(int count, MPI_Request array_of_requests[],
+                          MPI_Status *array_of_statuses) MPICH_API_PUBLIC;
+int PMPIX_Allreduce_enqueue(const void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype,
+                            MPI_Op op, MPI_Comm comm)
+                            MPICH_ATTR_POINTER_WITH_TYPE_TAG(2,4) MPICH_API_PUBLIC;
+int PMPIX_Allreduce_enqueue_c(const void *sendbuf, void *recvbuf, MPI_Count count,
+                              MPI_Datatype datatype, MPI_Op op, MPI_Comm comm)
+                              MPICH_ATTR_POINTER_WITH_TYPE_TAG(2,4) MPICH_API_PUBLIC;
+int PMPIX_Threadcomm_init(MPI_Comm comm, int num_threads, MPI_Comm *newthreadcomm)
+    MPICH_API_PUBLIC;
+int PMPIX_Threadcomm_free(MPI_Comm *threadcomm) MPICH_API_PUBLIC;
+int PMPIX_Threadcomm_start(MPI_Comm threadcomm) MPICH_API_PUBLIC;
+int PMPIX_Threadcomm_finish(MPI_Comm threadcomm) MPICH_API_PUBLIC;
 double PMPI_Wtick(void) MPICH_API_PUBLIC;
 double PMPI_Wtime(void) MPICH_API_PUBLIC;
 int PMPI_Cart_coords(MPI_Comm comm, int rank, int maxdims, int coords[]) MPICH_API_PUBLIC;
@@ -2462,6 +2731,7 @@ int PMPI_Dist_graph_neighbors(MPI_Comm comm, int maxindegree, int sources[], int
                               MPICH_API_PUBLIC;
 int PMPI_Dist_graph_neighbors_count(MPI_Comm comm, int *indegree, int *outdegree, int *weighted)
     MPICH_API_PUBLIC;
+int PMPI_Get_hw_resource_info(MPI_Info *hw_info) MPICH_API_PUBLIC;
 int PMPI_Graph_create(MPI_Comm comm_old, int nnodes, const int indx[], const int edges[],
                       int reorder, MPI_Comm *comm_graph) MPICH_API_PUBLIC;
 int PMPI_Graph_get(MPI_Comm comm, int maxindex, int maxedges, int indx[], int edges[])
@@ -2649,11 +2919,13 @@ enum QMPI_Functions_enum {
     MPI_INTERCOMM_CREATE_T,
     MPI_INTERCOMM_CREATE_FROM_GROUPS_T,
     MPI_INTERCOMM_MERGE_T,
+    MPIX_COMM_TEST_THREADCOMM_T,
     MPIX_COMM_REVOKE_T,
     MPIX_COMM_SHRINK_T,
     MPIX_COMM_FAILURE_ACK_T,
     MPIX_COMM_FAILURE_GET_ACKED_T,
     MPIX_COMM_AGREE_T,
+    MPIX_COMM_GET_FAILED_T,
     MPI_GET_ADDRESS_T,
     MPI_GET_COUNT_T,
     MPI_GET_COUNT_C_T,
@@ -2669,6 +2941,7 @@ enum QMPI_Functions_enum {
     MPI_PACK_SIZE_T,
     MPI_PACK_SIZE_C_T,
     MPI_STATUS_SET_ELEMENTS_T,
+    MPI_STATUS_SET_ELEMENTS_C_T,
     MPI_STATUS_SET_ELEMENTS_X_T,
     MPI_TYPE_COMMIT_T,
     MPI_TYPE_CONTIGUOUS_T,
@@ -2702,6 +2975,7 @@ enum QMPI_Functions_enum {
     MPI_TYPE_GET_TRUE_EXTENT_T,
     MPI_TYPE_GET_TRUE_EXTENT_C_T,
     MPI_TYPE_GET_TRUE_EXTENT_X_T,
+    MPI_TYPE_GET_VALUE_INDEX_T,
     MPI_TYPE_INDEXED_T,
     MPI_TYPE_INDEXED_C_T,
     MPI_TYPE_MATCH_SIZE_T,
@@ -2722,6 +2996,8 @@ enum QMPI_Functions_enum {
     MPI_TYPE_HINDEXED_T,
     MPI_TYPE_HVECTOR_T,
     MPI_TYPE_STRUCT_T,
+    MPIX_TYPE_IOV_LEN_T,
+    MPIX_TYPE_IOV_T,
     MPI_ADD_ERROR_CLASS_T,
     MPI_ADD_ERROR_CODE_T,
     MPI_ADD_ERROR_STRING_T,
@@ -2736,6 +3012,9 @@ enum QMPI_Functions_enum {
     MPI_FILE_CREATE_ERRHANDLER_T,
     MPI_FILE_GET_ERRHANDLER_T,
     MPI_FILE_SET_ERRHANDLER_T,
+    MPI_REMOVE_ERROR_CLASS_T,
+    MPI_REMOVE_ERROR_CODE_T,
+    MPI_REMOVE_ERROR_STRING_T,
     MPI_SESSION_CALL_ERRHANDLER_T,
     MPI_SESSION_CREATE_ERRHANDLER_T,
     MPI_SESSION_GET_ERRHANDLER_T,
@@ -2744,12 +3023,29 @@ enum QMPI_Functions_enum {
     MPI_WIN_CREATE_ERRHANDLER_T,
     MPI_WIN_GET_ERRHANDLER_T,
     MPI_WIN_SET_ERRHANDLER_T,
-    MPIX_DELETE_ERROR_CLASS_T,
-    MPIX_DELETE_ERROR_CODE_T,
-    MPIX_DELETE_ERROR_STRING_T,
     MPI_ERRHANDLER_CREATE_T,
     MPI_ERRHANDLER_GET_T,
     MPI_ERRHANDLER_SET_T,
+    MPI_COMM_C2F_T,
+    MPI_COMM_F2C_T,
+    MPI_ERRHANDLER_C2F_T,
+    MPI_ERRHANDLER_F2C_T,
+    MPI_GROUP_C2F_T,
+    MPI_GROUP_F2C_T,
+    MPI_INFO_C2F_T,
+    MPI_INFO_F2C_T,
+    MPI_MESSAGE_C2F_T,
+    MPI_MESSAGE_F2C_T,
+    MPI_OP_C2F_T,
+    MPI_OP_F2C_T,
+    MPI_REQUEST_C2F_T,
+    MPI_REQUEST_F2C_T,
+    MPI_SESSION_C2F_T,
+    MPI_SESSION_F2C_T,
+    MPI_TYPE_C2F_T,
+    MPI_TYPE_F2C_T,
+    MPI_WIN_C2F_T,
+    MPI_WIN_F2C_T,
     MPI_GROUP_COMPARE_T,
     MPI_GROUP_DIFFERENCE_T,
     MPI_GROUP_EXCL_T,
@@ -2773,6 +3069,7 @@ enum QMPI_Functions_enum {
     MPI_INFO_GET_STRING_T,
     MPI_INFO_GET_VALUELEN_T,
     MPI_INFO_SET_T,
+    MPIX_INFO_SET_HEX_T,
     MPI_ABORT_T,
     MPI_COMM_CREATE_FROM_GROUP_T,
     MPI_FINALIZE_T,
@@ -2868,6 +3165,14 @@ enum QMPI_Functions_enum {
     MPI_BUFFER_ATTACH_C_T,
     MPI_BUFFER_DETACH_T,
     MPI_BUFFER_DETACH_C_T,
+    MPI_BUFFER_FLUSH_T,
+    MPI_BUFFER_IFLUSH_T,
+    MPI_COMM_ATTACH_BUFFER_T,
+    MPI_COMM_ATTACH_BUFFER_C_T,
+    MPI_COMM_DETACH_BUFFER_T,
+    MPI_COMM_DETACH_BUFFER_C_T,
+    MPI_COMM_FLUSH_BUFFER_T,
+    MPI_COMM_IFLUSH_BUFFER_T,
     MPI_IBSEND_T,
     MPI_IBSEND_C_T,
     MPI_IMPROBE_T,
@@ -2906,6 +3211,12 @@ enum QMPI_Functions_enum {
     MPI_SENDRECV_C_T,
     MPI_SENDRECV_REPLACE_T,
     MPI_SENDRECV_REPLACE_C_T,
+    MPI_SESSION_ATTACH_BUFFER_T,
+    MPI_SESSION_ATTACH_BUFFER_C_T,
+    MPI_SESSION_DETACH_BUFFER_T,
+    MPI_SESSION_DETACH_BUFFER_C_T,
+    MPI_SESSION_FLUSH_BUFFER_T,
+    MPI_SESSION_IFLUSH_BUFFER_T,
     MPI_SSEND_T,
     MPI_SSEND_C_T,
     MPI_SSEND_INIT_T,
@@ -2915,8 +3226,19 @@ enum QMPI_Functions_enum {
     MPI_GREQUEST_START_T,
     MPI_REQUEST_FREE_T,
     MPI_REQUEST_GET_STATUS_T,
+    MPI_REQUEST_GET_STATUS_ALL_T,
+    MPI_REQUEST_GET_STATUS_ANY_T,
+    MPI_REQUEST_GET_STATUS_SOME_T,
     MPI_START_T,
     MPI_STARTALL_T,
+    MPI_STATUS_C2F_T,
+    MPI_STATUS_F2C_T,
+    MPI_STATUS_GET_ERROR_T,
+    MPI_STATUS_GET_SOURCE_T,
+    MPI_STATUS_GET_TAG_T,
+    MPI_STATUS_SET_ERROR_T,
+    MPI_STATUS_SET_SOURCE_T,
+    MPI_STATUS_SET_TAG_T,
     MPI_STATUS_SET_CANCELLED_T,
     MPI_TEST_T,
     MPI_TEST_CANCELLED_T,
@@ -2994,6 +3316,38 @@ enum QMPI_Functions_enum {
     MPI_OPEN_PORT_T,
     MPI_PUBLISH_NAME_T,
     MPI_UNPUBLISH_NAME_T,
+    MPIX_STREAM_CREATE_T,
+    MPIX_STREAM_FREE_T,
+    MPIX_STREAM_COMM_CREATE_T,
+    MPIX_STREAM_COMM_CREATE_MULTIPLEX_T,
+    MPIX_COMM_GET_STREAM_T,
+    MPIX_STREAM_PROGRESS_T,
+    MPIX_START_PROGRESS_THREAD_T,
+    MPIX_STOP_PROGRESS_THREAD_T,
+    MPIX_STREAM_SEND_T,
+    MPIX_STREAM_SEND_C_T,
+    MPIX_STREAM_ISEND_T,
+    MPIX_STREAM_ISEND_C_T,
+    MPIX_STREAM_RECV_T,
+    MPIX_STREAM_RECV_C_T,
+    MPIX_STREAM_IRECV_T,
+    MPIX_STREAM_IRECV_C_T,
+    MPIX_SEND_ENQUEUE_T,
+    MPIX_SEND_ENQUEUE_C_T,
+    MPIX_RECV_ENQUEUE_T,
+    MPIX_RECV_ENQUEUE_C_T,
+    MPIX_ISEND_ENQUEUE_T,
+    MPIX_ISEND_ENQUEUE_C_T,
+    MPIX_IRECV_ENQUEUE_T,
+    MPIX_IRECV_ENQUEUE_C_T,
+    MPIX_WAIT_ENQUEUE_T,
+    MPIX_WAITALL_ENQUEUE_T,
+    MPIX_ALLREDUCE_ENQUEUE_T,
+    MPIX_ALLREDUCE_ENQUEUE_C_T,
+    MPIX_THREADCOMM_INIT_T,
+    MPIX_THREADCOMM_FREE_T,
+    MPIX_THREADCOMM_START_T,
+    MPIX_THREADCOMM_FINISH_T,
     MPI_WTICK_T,
     MPI_WTIME_T,
     MPI_CART_COORDS_T,
@@ -3009,6 +3363,7 @@ enum QMPI_Functions_enum {
     MPI_DIST_GRAPH_CREATE_ADJACENT_T,
     MPI_DIST_GRAPH_NEIGHBORS_T,
     MPI_DIST_GRAPH_NEIGHBORS_COUNT_T,
+    MPI_GET_HW_RESOURCE_INFO_T,
     MPI_GRAPH_CREATE_T,
     MPI_GRAPH_GET_T,
     MPI_GRAPH_MAP_T,
@@ -3664,6 +4019,8 @@ int QMPI_Intercomm_create_from_groups(QMPI_Context context, int tool_id, MPI_Gro
                                       MPICH_API_PUBLIC;
 int QMPI_Intercomm_merge(QMPI_Context context, int tool_id, MPI_Comm intercomm, int high,
                          MPI_Comm *newintracomm) MPICH_API_PUBLIC;
+int QMPIX_Comm_test_threadcomm(QMPI_Context context, int tool_id, MPI_Comm comm, int *flag)
+    MPICH_API_PUBLIC;
 int QMPIX_Comm_revoke(QMPI_Context context, int tool_id, MPI_Comm comm) MPICH_API_PUBLIC;
 int QMPIX_Comm_shrink(QMPI_Context context, int tool_id, MPI_Comm comm, MPI_Comm *newcomm)
     MPICH_API_PUBLIC;
@@ -3671,6 +4028,8 @@ int QMPIX_Comm_failure_ack(QMPI_Context context, int tool_id, MPI_Comm comm) MPI
 int QMPIX_Comm_failure_get_acked(QMPI_Context context, int tool_id, MPI_Comm comm,
                                  MPI_Group *failedgrp) MPICH_API_PUBLIC;
 int QMPIX_Comm_agree(QMPI_Context context, int tool_id, MPI_Comm comm, int *flag) MPICH_API_PUBLIC;
+int QMPIX_Comm_get_failed(QMPI_Context context, int tool_id, MPI_Comm comm, MPI_Group *failedgrp)
+    MPICH_API_PUBLIC;
 int QMPI_Get_address(QMPI_Context context, int tool_id, const void *location, MPI_Aint *address)
     MPICH_API_PUBLIC;
 int QMPI_Get_count(QMPI_Context context, int tool_id, const MPI_Status *status,
@@ -3706,6 +4065,8 @@ int QMPI_Pack_size_c(QMPI_Context context, int tool_id, MPI_Count incount, MPI_D
                      MPI_Comm comm, MPI_Count *size) MPICH_API_PUBLIC;
 int QMPI_Status_set_elements(QMPI_Context context, int tool_id, MPI_Status *status,
                              MPI_Datatype datatype, int count) MPICH_API_PUBLIC;
+int QMPI_Status_set_elements_c(QMPI_Context context, int tool_id, MPI_Status *status,
+                               MPI_Datatype datatype, MPI_Count count) MPICH_API_PUBLIC;
 int QMPI_Status_set_elements_x(QMPI_Context context, int tool_id, MPI_Status *status,
                                MPI_Datatype datatype, MPI_Count count) MPICH_API_PUBLIC;
 int QMPI_Type_commit(QMPI_Context context, int tool_id, MPI_Datatype *datatype) MPICH_API_PUBLIC;
@@ -3808,6 +4169,8 @@ int QMPI_Type_get_true_extent_c(QMPI_Context context, int tool_id, MPI_Datatype 
                                 MPI_Count *true_lb, MPI_Count *true_extent) MPICH_API_PUBLIC;
 int QMPI_Type_get_true_extent_x(QMPI_Context context, int tool_id, MPI_Datatype datatype,
                                 MPI_Count *true_lb, MPI_Count *true_extent) MPICH_API_PUBLIC;
+int QMPI_Type_get_value_index(QMPI_Context context, int tool_id, MPI_Datatype value_type,
+                              MPI_Datatype index_type, MPI_Datatype *pair_type) MPICH_API_PUBLIC;
 int QMPI_Type_indexed(QMPI_Context context, int tool_id, int count,
                       const int array_of_blocklengths[], const int array_of_displacements[],
                       MPI_Datatype oldtype, MPI_Datatype *newtype) MPICH_API_PUBLIC;
@@ -3858,6 +4221,12 @@ int QMPI_Type_hvector(QMPI_Context context, int tool_id, int count, int blocklen
 int QMPI_Type_struct(QMPI_Context context, int tool_id, int count, int array_of_blocklengths[],
                      MPI_Aint array_of_displacements[], MPI_Datatype array_of_types[],
                      MPI_Datatype *newtype) MPICH_API_PUBLIC;
+int QMPIX_Type_iov_len(QMPI_Context context, int tool_id, MPI_Datatype datatype,
+                       MPI_Count max_iov_bytes, MPI_Count *iov_len, MPI_Count *actual_iov_bytes)
+                       MPICH_API_PUBLIC;
+int QMPIX_Type_iov(QMPI_Context context, int tool_id, MPI_Datatype datatype, MPI_Count iov_offset,
+                   MPIX_Iov *iov, MPI_Count max_iov_len, MPI_Count *actual_iov_len)
+                   MPICH_API_PUBLIC;
 int QMPI_Add_error_class(QMPI_Context context, int tool_id, int *errorclass) MPICH_API_PUBLIC;
 int QMPI_Add_error_code(QMPI_Context context, int tool_id, int errorclass, int *errorcode)
     MPICH_API_PUBLIC;
@@ -3887,6 +4256,9 @@ int QMPI_File_get_errhandler(QMPI_Context context, int tool_id, MPI_File file,
                              MPI_Errhandler *errhandler) MPICH_API_PUBLIC;
 int QMPI_File_set_errhandler(QMPI_Context context, int tool_id, MPI_File file,
                              MPI_Errhandler errhandler) MPICH_API_PUBLIC;
+int QMPI_Remove_error_class(QMPI_Context context, int tool_id, int errorclass) MPICH_API_PUBLIC;
+int QMPI_Remove_error_code(QMPI_Context context, int tool_id, int errorcode) MPICH_API_PUBLIC;
+int QMPI_Remove_error_string(QMPI_Context context, int tool_id, int errorcode) MPICH_API_PUBLIC;
 int QMPI_Session_call_errhandler(QMPI_Context context, int tool_id, MPI_Session session,
                                  int errorcode) MPICH_API_PUBLIC;
 int QMPI_Session_create_errhandler(QMPI_Context context, int tool_id,
@@ -3905,9 +4277,6 @@ int QMPI_Win_get_errhandler(QMPI_Context context, int tool_id, MPI_Win win,
                             MPI_Errhandler *errhandler) MPICH_API_PUBLIC;
 int QMPI_Win_set_errhandler(QMPI_Context context, int tool_id, MPI_Win win,
                             MPI_Errhandler errhandler) MPICH_API_PUBLIC;
-int QMPIX_Delete_error_class(QMPI_Context context, int tool_id, int errorclass) MPICH_API_PUBLIC;
-int QMPIX_Delete_error_code(QMPI_Context context, int tool_id, int errorcode) MPICH_API_PUBLIC;
-int QMPIX_Delete_error_string(QMPI_Context context, int tool_id, int errorcode) MPICH_API_PUBLIC;
 int QMPI_Errhandler_create(QMPI_Context context, int tool_id,
                            MPI_Comm_errhandler_function *comm_errhandler_fn,
                            MPI_Errhandler *errhandler) MPICH_API_PUBLIC;
@@ -3915,6 +4284,28 @@ int QMPI_Errhandler_get(QMPI_Context context, int tool_id, MPI_Comm comm,
                         MPI_Errhandler *errhandler) MPICH_API_PUBLIC;
 int QMPI_Errhandler_set(QMPI_Context context, int tool_id, MPI_Comm comm,
                         MPI_Errhandler errhandler) MPICH_API_PUBLIC;
+MPI_Fint QMPI_Comm_c2f(QMPI_Context context, int tool_id, MPI_Comm comm) MPICH_API_PUBLIC;
+MPI_Comm QMPI_Comm_f2c(QMPI_Context context, int tool_id, MPI_Fint comm) MPICH_API_PUBLIC;
+MPI_Fint QMPI_Errhandler_c2f(QMPI_Context context, int tool_id, MPI_Errhandler errhandler)
+    MPICH_API_PUBLIC;
+MPI_Errhandler QMPI_Errhandler_f2c(QMPI_Context context, int tool_id, MPI_Fint errhandler)
+    MPICH_API_PUBLIC;
+MPI_Fint QMPI_Group_c2f(QMPI_Context context, int tool_id, MPI_Group group) MPICH_API_PUBLIC;
+MPI_Group QMPI_Group_f2c(QMPI_Context context, int tool_id, MPI_Fint group) MPICH_API_PUBLIC;
+MPI_Fint QMPI_Info_c2f(QMPI_Context context, int tool_id, MPI_Info info) MPICH_API_PUBLIC;
+MPI_Info QMPI_Info_f2c(QMPI_Context context, int tool_id, MPI_Fint info) MPICH_API_PUBLIC;
+MPI_Fint QMPI_Message_c2f(QMPI_Context context, int tool_id, MPI_Message message) MPICH_API_PUBLIC;
+MPI_Message QMPI_Message_f2c(QMPI_Context context, int tool_id, MPI_Fint message) MPICH_API_PUBLIC;
+MPI_Fint QMPI_Op_c2f(QMPI_Context context, int tool_id, MPI_Op op) MPICH_API_PUBLIC;
+MPI_Op QMPI_Op_f2c(QMPI_Context context, int tool_id, MPI_Fint op) MPICH_API_PUBLIC;
+MPI_Fint QMPI_Request_c2f(QMPI_Context context, int tool_id, MPI_Request request) MPICH_API_PUBLIC;
+MPI_Request QMPI_Request_f2c(QMPI_Context context, int tool_id, MPI_Fint request) MPICH_API_PUBLIC;
+MPI_Fint QMPI_Session_c2f(QMPI_Context context, int tool_id, MPI_Session session) MPICH_API_PUBLIC;
+MPI_Session QMPI_Session_f2c(QMPI_Context context, int tool_id, MPI_Fint session) MPICH_API_PUBLIC;
+MPI_Fint QMPI_Type_c2f(QMPI_Context context, int tool_id, MPI_Datatype datatype) MPICH_API_PUBLIC;
+MPI_Datatype QMPI_Type_f2c(QMPI_Context context, int tool_id, MPI_Fint datatype) MPICH_API_PUBLIC;
+MPI_Fint QMPI_Win_c2f(QMPI_Context context, int tool_id, MPI_Win win) MPICH_API_PUBLIC;
+MPI_Win QMPI_Win_f2c(QMPI_Context context, int tool_id, MPI_Fint win) MPICH_API_PUBLIC;
 int QMPI_Group_compare(QMPI_Context context, int tool_id, MPI_Group group1, MPI_Group group2,
                        int *result) MPICH_API_PUBLIC;
 int QMPI_Group_difference(QMPI_Context context, int tool_id, MPI_Group group1, MPI_Group group2,
@@ -3959,6 +4350,8 @@ int QMPI_Info_get_valuelen(QMPI_Context context, int tool_id, MPI_Info info, con
                            int *valuelen, int *flag) MPICH_API_PUBLIC;
 int QMPI_Info_set(QMPI_Context context, int tool_id, MPI_Info info, const char *key,
                   const char *value) MPICH_API_PUBLIC;
+int QMPIX_Info_set_hex(QMPI_Context context, int tool_id, MPI_Info info, const char *key,
+                       const void *value, int value_size) MPICH_API_PUBLIC;
 int QMPI_Abort(QMPI_Context context, int tool_id, MPI_Comm comm, int errorcode) MPICH_API_PUBLIC;
 int QMPI_Comm_create_from_group(QMPI_Context context, int tool_id, MPI_Group group,
                                 const char *stringtag, MPI_Info info, MPI_Errhandler errhandler,
@@ -4131,7 +4524,7 @@ int QMPI_Parrived(QMPI_Context context, int tool_id, MPI_Request request, int pa
     MPICH_API_PUBLIC;
 int QMPI_Pready(QMPI_Context context, int tool_id, int partition, MPI_Request request)
     MPICH_API_PUBLIC;
-int QMPI_Pready_list(QMPI_Context context, int tool_id, int length, int array_of_partitions[],
+int QMPI_Pready_list(QMPI_Context context, int tool_id, int length, const int array_of_partitions[],
                      MPI_Request request) MPICH_API_PUBLIC;
 int QMPI_Pready_range(QMPI_Context context, int tool_id, int partition_low, int partition_high,
                       MPI_Request request) MPICH_API_PUBLIC;
@@ -4160,6 +4553,19 @@ int QMPI_Buffer_attach_c(QMPI_Context context, int tool_id, void *buffer, MPI_Co
 int QMPI_Buffer_detach(QMPI_Context context, int tool_id, void *buffer_addr, int *size)
     MPICH_API_PUBLIC;
 int QMPI_Buffer_detach_c(QMPI_Context context, int tool_id, void *buffer_addr, MPI_Count *size)
+    MPICH_API_PUBLIC;
+int QMPI_Buffer_flush(QMPI_Context context, int tool_id) MPICH_API_PUBLIC;
+int QMPI_Buffer_iflush(QMPI_Context context, int tool_id, MPI_Request *request) MPICH_API_PUBLIC;
+int QMPI_Comm_attach_buffer(QMPI_Context context, int tool_id, MPI_Comm comm, void *buffer,
+                            int size) MPICH_API_PUBLIC;
+int QMPI_Comm_attach_buffer_c(QMPI_Context context, int tool_id, MPI_Comm comm, void *buffer,
+                              MPI_Count size) MPICH_API_PUBLIC;
+int QMPI_Comm_detach_buffer(QMPI_Context context, int tool_id, MPI_Comm comm, void *buffer_addr,
+                            int *size) MPICH_API_PUBLIC;
+int QMPI_Comm_detach_buffer_c(QMPI_Context context, int tool_id, MPI_Comm comm, void *buffer_addr,
+                              MPI_Count *size) MPICH_API_PUBLIC;
+int QMPI_Comm_flush_buffer(QMPI_Context context, int tool_id, MPI_Comm comm) MPICH_API_PUBLIC;
+int QMPI_Comm_iflush_buffer(QMPI_Context context, int tool_id, MPI_Comm comm, MPI_Request *request)
     MPICH_API_PUBLIC;
 int QMPI_Ibsend(QMPI_Context context, int tool_id, const void *buf, int count,
                 MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request)
@@ -4283,6 +4689,18 @@ int QMPI_Sendrecv_replace_c(QMPI_Context context, int tool_id, void *buf, MPI_Co
                             MPI_Datatype datatype, int dest, int sendtag, int source, int recvtag,
                             MPI_Comm comm, MPI_Status *status)
                             MPICH_ATTR_POINTER_WITH_TYPE_TAG(3,5) MPICH_API_PUBLIC;
+int QMPI_Session_attach_buffer(QMPI_Context context, int tool_id, MPI_Session session, void *buffer,
+                               int size) MPICH_API_PUBLIC;
+int QMPI_Session_attach_buffer_c(QMPI_Context context, int tool_id, MPI_Session session,
+                                 void *buffer, MPI_Count size) MPICH_API_PUBLIC;
+int QMPI_Session_detach_buffer(QMPI_Context context, int tool_id, MPI_Session session,
+                               void *buffer_addr, int *size) MPICH_API_PUBLIC;
+int QMPI_Session_detach_buffer_c(QMPI_Context context, int tool_id, MPI_Session session,
+                                 void *buffer_addr, MPI_Count *size) MPICH_API_PUBLIC;
+int QMPI_Session_flush_buffer(QMPI_Context context, int tool_id, MPI_Session session)
+    MPICH_API_PUBLIC;
+int QMPI_Session_iflush_buffer(QMPI_Context context, int tool_id, MPI_Session session,
+                               MPI_Request *request) MPICH_API_PUBLIC;
 int QMPI_Ssend(QMPI_Context context, int tool_id, const void *buf, int count, MPI_Datatype datatype,
                int dest, int tag, MPI_Comm comm)
                MPICH_ATTR_POINTER_WITH_TYPE_TAG(3,5) MPICH_API_PUBLIC;
@@ -4305,8 +4723,34 @@ int QMPI_Grequest_start(QMPI_Context context, int tool_id, MPI_Grequest_query_fu
 int QMPI_Request_free(QMPI_Context context, int tool_id, MPI_Request *request) MPICH_API_PUBLIC;
 int QMPI_Request_get_status(QMPI_Context context, int tool_id, MPI_Request request, int *flag,
                             MPI_Status *status) MPICH_API_PUBLIC;
+int QMPI_Request_get_status_all(QMPI_Context context, int tool_id, int count,
+                                MPI_Request array_of_requests[], int *flag,
+                                MPI_Status *array_of_statuses) MPICH_API_PUBLIC;
+int QMPI_Request_get_status_any(QMPI_Context context, int tool_id, int count,
+                                MPI_Request array_of_requests[], int *indx, int *flag,
+                                MPI_Status *status) MPICH_API_PUBLIC;
+int QMPI_Request_get_status_some(QMPI_Context context, int tool_id, int incount,
+                                 MPI_Request array_of_requests[], int *outcount,
+                                 int array_of_indices[], MPI_Status *array_of_statuses)
+                                 MPICH_API_PUBLIC;
 int QMPI_Start(QMPI_Context context, int tool_id, MPI_Request *request) MPICH_API_PUBLIC;
 int QMPI_Startall(QMPI_Context context, int tool_id, int count, MPI_Request array_of_requests[])
+    MPICH_API_PUBLIC;
+int QMPI_Status_c2f(QMPI_Context context, int tool_id, const MPI_Status *c_status,
+                    MPI_Fint *f_status) MPICH_API_PUBLIC;
+int QMPI_Status_f2c(QMPI_Context context, int tool_id, const MPI_Fint *f_status,
+                    MPI_Status *c_status) MPICH_API_PUBLIC;
+int QMPI_Status_get_error(QMPI_Context context, int tool_id, MPI_Status *status, int *error)
+    MPICH_API_PUBLIC;
+int QMPI_Status_get_source(QMPI_Context context, int tool_id, MPI_Status *status, int *source)
+    MPICH_API_PUBLIC;
+int QMPI_Status_get_tag(QMPI_Context context, int tool_id, MPI_Status *status, int *tag)
+    MPICH_API_PUBLIC;
+int QMPI_Status_set_error(QMPI_Context context, int tool_id, MPI_Status *status, int error)
+    MPICH_API_PUBLIC;
+int QMPI_Status_set_source(QMPI_Context context, int tool_id, MPI_Status *status, int source)
+    MPICH_API_PUBLIC;
+int QMPI_Status_set_tag(QMPI_Context context, int tool_id, MPI_Status *status, int tag)
     MPICH_API_PUBLIC;
 int QMPI_Status_set_cancelled(QMPI_Context context, int tool_id, MPI_Status *status, int flag)
     MPICH_API_PUBLIC;
@@ -4315,20 +4759,20 @@ int QMPI_Test(QMPI_Context context, int tool_id, MPI_Request *request, int *flag
 int QMPI_Test_cancelled(QMPI_Context context, int tool_id, const MPI_Status *status, int *flag)
     MPICH_API_PUBLIC;
 int QMPI_Testall(QMPI_Context context, int tool_id, int count, MPI_Request array_of_requests[],
-                 int *flag, MPI_Status array_of_statuses[]) MPICH_API_PUBLIC;
+                 int *flag, MPI_Status *array_of_statuses) MPICH_API_PUBLIC;
 int QMPI_Testany(QMPI_Context context, int tool_id, int count, MPI_Request array_of_requests[],
                  int *indx, int *flag, MPI_Status *status) MPICH_API_PUBLIC;
 int QMPI_Testsome(QMPI_Context context, int tool_id, int incount, MPI_Request array_of_requests[],
-                  int *outcount, int array_of_indices[], MPI_Status array_of_statuses[])
+                  int *outcount, int array_of_indices[], MPI_Status *array_of_statuses)
                   MPICH_API_PUBLIC;
 int QMPI_Wait(QMPI_Context context, int tool_id, MPI_Request *request, MPI_Status *status)
     MPICH_API_PUBLIC;
 int QMPI_Waitall(QMPI_Context context, int tool_id, int count, MPI_Request array_of_requests[],
-                 MPI_Status array_of_statuses[]) MPICH_API_PUBLIC;
+                 MPI_Status *array_of_statuses) MPICH_API_PUBLIC;
 int QMPI_Waitany(QMPI_Context context, int tool_id, int count, MPI_Request array_of_requests[],
                  int *indx, MPI_Status *status) MPICH_API_PUBLIC;
 int QMPI_Waitsome(QMPI_Context context, int tool_id, int incount, MPI_Request array_of_requests[],
-                  int *outcount, int array_of_indices[], MPI_Status array_of_statuses[])
+                  int *outcount, int array_of_indices[], MPI_Status *array_of_statuses)
                   MPICH_API_PUBLIC;
 int QMPIX_Grequest_start(QMPI_Context context, int tool_id, MPI_Grequest_query_function *query_fn,
                          MPI_Grequest_free_function *free_fn,
@@ -4509,6 +4953,101 @@ int QMPI_Publish_name(QMPI_Context context, int tool_id, const char *service_nam
                       const char *port_name) MPICH_API_PUBLIC;
 int QMPI_Unpublish_name(QMPI_Context context, int tool_id, const char *service_name, MPI_Info info,
                         const char *port_name) MPICH_API_PUBLIC;
+int QMPIX_Stream_create(QMPI_Context context, int tool_id, MPI_Info info, MPIX_Stream *stream)
+    MPICH_API_PUBLIC;
+int QMPIX_Stream_free(QMPI_Context context, int tool_id, MPIX_Stream *stream) MPICH_API_PUBLIC;
+int QMPIX_Stream_comm_create(QMPI_Context context, int tool_id, MPI_Comm comm, MPIX_Stream stream,
+                             MPI_Comm *newcomm) MPICH_API_PUBLIC;
+int QMPIX_Stream_comm_create_multiplex(QMPI_Context context, int tool_id, MPI_Comm comm, int count,
+                                       MPIX_Stream array_of_streams[], MPI_Comm *newcomm)
+                                       MPICH_API_PUBLIC;
+int QMPIX_Comm_get_stream(QMPI_Context context, int tool_id, MPI_Comm comm, int idx,
+                          MPIX_Stream *stream) MPICH_API_PUBLIC;
+int QMPIX_Stream_progress(QMPI_Context context, int tool_id, MPIX_Stream stream) MPICH_API_PUBLIC;
+int QMPIX_Start_progress_thread(QMPI_Context context, int tool_id, MPIX_Stream stream)
+    MPICH_API_PUBLIC;
+int QMPIX_Stop_progress_thread(QMPI_Context context, int tool_id, MPIX_Stream stream)
+    MPICH_API_PUBLIC;
+int QMPIX_Stream_send(QMPI_Context context, int tool_id, const void *buf, int count,
+                      MPI_Datatype datatype, int dest, int tag, MPI_Comm comm,
+                      int source_stream_index, int dest_stream_index)
+                      MPICH_ATTR_POINTER_WITH_TYPE_TAG(3,5) MPICH_API_PUBLIC;
+int QMPIX_Stream_send_c(QMPI_Context context, int tool_id, const void *buf, MPI_Count count,
+                        MPI_Datatype datatype, int dest, int tag, MPI_Comm comm,
+                        int source_stream_index, int dest_stream_index)
+                        MPICH_ATTR_POINTER_WITH_TYPE_TAG(3,5) MPICH_API_PUBLIC;
+int QMPIX_Stream_isend(QMPI_Context context, int tool_id, const void *buf, int count,
+                       MPI_Datatype datatype, int dest, int tag, MPI_Comm comm,
+                       int source_stream_index, int dest_stream_index, MPI_Request *request)
+                       MPICH_ATTR_POINTER_WITH_TYPE_TAG(3,5) MPICH_API_PUBLIC;
+int QMPIX_Stream_isend_c(QMPI_Context context, int tool_id, const void *buf, MPI_Count count,
+                         MPI_Datatype datatype, int dest, int tag, MPI_Comm comm,
+                         int source_stream_index, int dest_stream_index, MPI_Request *request)
+                         MPICH_ATTR_POINTER_WITH_TYPE_TAG(3,5) MPICH_API_PUBLIC;
+int QMPIX_Stream_recv(QMPI_Context context, int tool_id, void *buf, int count,
+                      MPI_Datatype datatype, int source, int tag, MPI_Comm comm,
+                      int source_stream_index, int dest_stream_index, MPI_Status *status)
+                      MPICH_ATTR_POINTER_WITH_TYPE_TAG(3,5) MPICH_API_PUBLIC;
+int QMPIX_Stream_recv_c(QMPI_Context context, int tool_id, void *buf, MPI_Count count,
+                        MPI_Datatype datatype, int source, int tag, MPI_Comm comm,
+                        int source_stream_index, int dest_stream_index, MPI_Status *status)
+                        MPICH_ATTR_POINTER_WITH_TYPE_TAG(3,5) MPICH_API_PUBLIC;
+int QMPIX_Stream_irecv(QMPI_Context context, int tool_id, void *buf, int count,
+                       MPI_Datatype datatype, int source, int tag, MPI_Comm comm,
+                       int source_stream_index, int dest_stream_index, MPI_Request *request)
+                       MPICH_ATTR_POINTER_WITH_TYPE_TAG(3,5) MPICH_API_PUBLIC;
+int QMPIX_Stream_irecv_c(QMPI_Context context, int tool_id, void *buf, MPI_Count count,
+                         MPI_Datatype datatype, int source, int tag, MPI_Comm comm,
+                         int source_stream_index, int dest_stream_index, MPI_Request *request)
+                         MPICH_ATTR_POINTER_WITH_TYPE_TAG(3,5) MPICH_API_PUBLIC;
+int QMPIX_Send_enqueue(QMPI_Context context, int tool_id, const void *buf, int count,
+                       MPI_Datatype datatype, int dest, int tag, MPI_Comm comm)
+                       MPICH_ATTR_POINTER_WITH_TYPE_TAG(3,5) MPICH_API_PUBLIC;
+int QMPIX_Send_enqueue_c(QMPI_Context context, int tool_id, const void *buf, MPI_Count count,
+                         MPI_Datatype datatype, int dest, int tag, MPI_Comm comm)
+                         MPICH_ATTR_POINTER_WITH_TYPE_TAG(3,5) MPICH_API_PUBLIC;
+int QMPIX_Recv_enqueue(QMPI_Context context, int tool_id, void *buf, int count,
+                       MPI_Datatype datatype, int source, int tag, MPI_Comm comm,
+                       MPI_Status *status) MPICH_ATTR_POINTER_WITH_TYPE_TAG(3,5) MPICH_API_PUBLIC;
+int QMPIX_Recv_enqueue_c(QMPI_Context context, int tool_id, void *buf, MPI_Count count,
+                         MPI_Datatype datatype, int source, int tag, MPI_Comm comm,
+                         MPI_Status *status)
+                         MPICH_ATTR_POINTER_WITH_TYPE_TAG(3,5) MPICH_API_PUBLIC;
+int QMPIX_Isend_enqueue(QMPI_Context context, int tool_id, const void *buf, int count,
+                        MPI_Datatype datatype, int dest, int tag, MPI_Comm comm,
+                        MPI_Request *request)
+                        MPICH_ATTR_POINTER_WITH_TYPE_TAG(3,5) MPICH_API_PUBLIC;
+int QMPIX_Isend_enqueue_c(QMPI_Context context, int tool_id, const void *buf, MPI_Count count,
+                          MPI_Datatype datatype, int dest, int tag, MPI_Comm comm,
+                          MPI_Request *request)
+                          MPICH_ATTR_POINTER_WITH_TYPE_TAG(3,5) MPICH_API_PUBLIC;
+int QMPIX_Irecv_enqueue(QMPI_Context context, int tool_id, void *buf, int count,
+                        MPI_Datatype datatype, int source, int tag, MPI_Comm comm,
+                        MPI_Request *request)
+                        MPICH_ATTR_POINTER_WITH_TYPE_TAG(3,5) MPICH_API_PUBLIC;
+int QMPIX_Irecv_enqueue_c(QMPI_Context context, int tool_id, void *buf, MPI_Count count,
+                          MPI_Datatype datatype, int source, int tag, MPI_Comm comm,
+                          MPI_Request *request)
+                          MPICH_ATTR_POINTER_WITH_TYPE_TAG(3,5) MPICH_API_PUBLIC;
+int QMPIX_Wait_enqueue(QMPI_Context context, int tool_id, MPI_Request *request, MPI_Status *status)
+    MPICH_API_PUBLIC;
+int QMPIX_Waitall_enqueue(QMPI_Context context, int tool_id, int count,
+                          MPI_Request array_of_requests[], MPI_Status *array_of_statuses)
+                          MPICH_API_PUBLIC;
+int QMPIX_Allreduce_enqueue(QMPI_Context context, int tool_id, const void *sendbuf, void *recvbuf,
+                            int count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm)
+                            MPICH_ATTR_POINTER_WITH_TYPE_TAG(4,6) MPICH_API_PUBLIC;
+int QMPIX_Allreduce_enqueue_c(QMPI_Context context, int tool_id, const void *sendbuf, void *recvbuf,
+                              MPI_Count count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm)
+                              MPICH_ATTR_POINTER_WITH_TYPE_TAG(4,6) MPICH_API_PUBLIC;
+int QMPIX_Threadcomm_init(QMPI_Context context, int tool_id, MPI_Comm comm, int num_threads,
+                          MPI_Comm *newthreadcomm) MPICH_API_PUBLIC;
+int QMPIX_Threadcomm_free(QMPI_Context context, int tool_id, MPI_Comm *threadcomm)
+    MPICH_API_PUBLIC;
+int QMPIX_Threadcomm_start(QMPI_Context context, int tool_id, MPI_Comm threadcomm)
+    MPICH_API_PUBLIC;
+int QMPIX_Threadcomm_finish(QMPI_Context context, int tool_id, MPI_Comm threadcomm)
+    MPICH_API_PUBLIC;
 double QMPI_Wtick(QMPI_Context context, int tool_id) MPICH_API_PUBLIC;
 double QMPI_Wtime(QMPI_Context context, int tool_id) MPICH_API_PUBLIC;
 int QMPI_Cart_coords(QMPI_Context context, int tool_id, MPI_Comm comm, int rank, int maxdims,
@@ -4544,6 +5083,8 @@ int QMPI_Dist_graph_neighbors(QMPI_Context context, int tool_id, MPI_Comm comm, 
                               int destinations[], int destweights[]) MPICH_API_PUBLIC;
 int QMPI_Dist_graph_neighbors_count(QMPI_Context context, int tool_id, MPI_Comm comm, int *indegree,
                                     int *outdegree, int *weighted) MPICH_API_PUBLIC;
+int QMPI_Get_hw_resource_info(QMPI_Context context, int tool_id, MPI_Info *hw_info)
+    MPICH_API_PUBLIC;
 int QMPI_Graph_create(QMPI_Context context, int tool_id, MPI_Comm comm_old, int nnodes,
                       const int indx[], const int edges[], int reorder, MPI_Comm *comm_graph)
                       MPICH_API_PUBLIC;
@@ -5058,6 +5599,8 @@ typedef int (QMPI_Intercomm_create_from_groups_t) (QMPI_Context context, int too
              MPI_Comm *newintercomm);
 typedef int (QMPI_Intercomm_merge_t) (QMPI_Context context, int tool_id, MPI_Comm intercomm,
              int high, MPI_Comm *newintracomm);
+typedef int (QMPIX_Comm_test_threadcomm_t) (QMPI_Context context, int tool_id, MPI_Comm comm,
+             int *flag);
 typedef int (QMPIX_Comm_revoke_t) (QMPI_Context context, int tool_id, MPI_Comm comm);
 typedef int (QMPIX_Comm_shrink_t) (QMPI_Context context, int tool_id, MPI_Comm comm,
              MPI_Comm *newcomm);
@@ -5065,6 +5608,8 @@ typedef int (QMPIX_Comm_failure_ack_t) (QMPI_Context context, int tool_id, MPI_C
 typedef int (QMPIX_Comm_failure_get_acked_t) (QMPI_Context context, int tool_id, MPI_Comm comm,
              MPI_Group *failedgrp);
 typedef int (QMPIX_Comm_agree_t) (QMPI_Context context, int tool_id, MPI_Comm comm, int *flag);
+typedef int (QMPIX_Comm_get_failed_t) (QMPI_Context context, int tool_id, MPI_Comm comm,
+             MPI_Group *failedgrp);
 typedef int (QMPI_Get_address_t) (QMPI_Context context, int tool_id, const void *location,
              MPI_Aint *address);
 typedef int (QMPI_Get_count_t) (QMPI_Context context, int tool_id, const MPI_Status *status,
@@ -5098,6 +5643,8 @@ typedef int (QMPI_Pack_size_c_t) (QMPI_Context context, int tool_id, MPI_Count i
              MPI_Datatype datatype, MPI_Comm comm, MPI_Count *size);
 typedef int (QMPI_Status_set_elements_t) (QMPI_Context context, int tool_id, MPI_Status *status,
              MPI_Datatype datatype, int count);
+typedef int (QMPI_Status_set_elements_c_t) (QMPI_Context context, int tool_id, MPI_Status *status,
+             MPI_Datatype datatype, MPI_Count count);
 typedef int (QMPI_Status_set_elements_x_t) (QMPI_Context context, int tool_id, MPI_Status *status,
              MPI_Datatype datatype, MPI_Count count);
 typedef int (QMPI_Type_commit_t) (QMPI_Context context, int tool_id, MPI_Datatype *datatype);
@@ -5181,6 +5728,8 @@ typedef int (QMPI_Type_get_true_extent_c_t) (QMPI_Context context, int tool_id,
              MPI_Datatype datatype, MPI_Count *true_lb, MPI_Count *true_extent);
 typedef int (QMPI_Type_get_true_extent_x_t) (QMPI_Context context, int tool_id,
              MPI_Datatype datatype, MPI_Count *true_lb, MPI_Count *true_extent);
+typedef int (QMPI_Type_get_value_index_t) (QMPI_Context context, int tool_id,
+             MPI_Datatype value_type, MPI_Datatype index_type, MPI_Datatype *pair_type);
 typedef int (QMPI_Type_indexed_t) (QMPI_Context context, int tool_id, int count,
              const int array_of_blocklengths[], const int array_of_displacements[],
              MPI_Datatype oldtype, MPI_Datatype *newtype);
@@ -5228,6 +5777,11 @@ typedef int (QMPI_Type_hvector_t) (QMPI_Context context, int tool_id, int count,
 typedef int (QMPI_Type_struct_t) (QMPI_Context context, int tool_id, int count,
              int array_of_blocklengths[], MPI_Aint array_of_displacements[],
              MPI_Datatype array_of_types[], MPI_Datatype *newtype);
+typedef int (QMPIX_Type_iov_len_t) (QMPI_Context context, int tool_id, MPI_Datatype datatype,
+             MPI_Count max_iov_bytes, MPI_Count *iov_len, MPI_Count *actual_iov_bytes);
+typedef int (QMPIX_Type_iov_t) (QMPI_Context context, int tool_id, MPI_Datatype datatype,
+             MPI_Count iov_offset, MPIX_Iov *iov, MPI_Count max_iov_len,
+             MPI_Count *actual_iov_len);
 typedef int (QMPI_Add_error_class_t) (QMPI_Context context, int tool_id, int *errorclass);
 typedef int (QMPI_Add_error_code_t) (QMPI_Context context, int tool_id, int errorclass,
              int *errorcode);
@@ -5255,6 +5809,9 @@ typedef int (QMPI_File_get_errhandler_t) (QMPI_Context context, int tool_id, MPI
              MPI_Errhandler *errhandler);
 typedef int (QMPI_File_set_errhandler_t) (QMPI_Context context, int tool_id, MPI_File file,
              MPI_Errhandler errhandler);
+typedef int (QMPI_Remove_error_class_t) (QMPI_Context context, int tool_id, int errorclass);
+typedef int (QMPI_Remove_error_code_t) (QMPI_Context context, int tool_id, int errorcode);
+typedef int (QMPI_Remove_error_string_t) (QMPI_Context context, int tool_id, int errorcode);
 typedef int (QMPI_Session_call_errhandler_t) (QMPI_Context context, int tool_id,
              MPI_Session session, int errorcode);
 typedef int (QMPI_Session_create_errhandler_t) (QMPI_Context context, int tool_id,
@@ -5271,15 +5828,34 @@ typedef int (QMPI_Win_get_errhandler_t) (QMPI_Context context, int tool_id, MPI_
              MPI_Errhandler *errhandler);
 typedef int (QMPI_Win_set_errhandler_t) (QMPI_Context context, int tool_id, MPI_Win win,
              MPI_Errhandler errhandler);
-typedef int (QMPIX_Delete_error_class_t) (QMPI_Context context, int tool_id, int errorclass);
-typedef int (QMPIX_Delete_error_code_t) (QMPI_Context context, int tool_id, int errorcode);
-typedef int (QMPIX_Delete_error_string_t) (QMPI_Context context, int tool_id, int errorcode);
 typedef int (QMPI_Errhandler_create_t) (QMPI_Context context, int tool_id,
              MPI_Comm_errhandler_function *comm_errhandler_fn, MPI_Errhandler *errhandler);
 typedef int (QMPI_Errhandler_get_t) (QMPI_Context context, int tool_id, MPI_Comm comm,
              MPI_Errhandler *errhandler);
 typedef int (QMPI_Errhandler_set_t) (QMPI_Context context, int tool_id, MPI_Comm comm,
              MPI_Errhandler errhandler);
+typedef MPI_Fint (QMPI_Comm_c2f_t) (QMPI_Context context, int tool_id, MPI_Comm comm);
+typedef MPI_Comm (QMPI_Comm_f2c_t) (QMPI_Context context, int tool_id, MPI_Fint comm);
+typedef MPI_Fint (QMPI_Errhandler_c2f_t) (QMPI_Context context, int tool_id,
+                  MPI_Errhandler errhandler);
+typedef MPI_Errhandler (QMPI_Errhandler_f2c_t) (QMPI_Context context, int tool_id,
+                        MPI_Fint errhandler);
+typedef MPI_Fint (QMPI_Group_c2f_t) (QMPI_Context context, int tool_id, MPI_Group group);
+typedef MPI_Group (QMPI_Group_f2c_t) (QMPI_Context context, int tool_id, MPI_Fint group);
+typedef MPI_Fint (QMPI_Info_c2f_t) (QMPI_Context context, int tool_id, MPI_Info info);
+typedef MPI_Info (QMPI_Info_f2c_t) (QMPI_Context context, int tool_id, MPI_Fint info);
+typedef MPI_Fint (QMPI_Message_c2f_t) (QMPI_Context context, int tool_id, MPI_Message message);
+typedef MPI_Message (QMPI_Message_f2c_t) (QMPI_Context context, int tool_id, MPI_Fint message);
+typedef MPI_Fint (QMPI_Op_c2f_t) (QMPI_Context context, int tool_id, MPI_Op op);
+typedef MPI_Op (QMPI_Op_f2c_t) (QMPI_Context context, int tool_id, MPI_Fint op);
+typedef MPI_Fint (QMPI_Request_c2f_t) (QMPI_Context context, int tool_id, MPI_Request request);
+typedef MPI_Request (QMPI_Request_f2c_t) (QMPI_Context context, int tool_id, MPI_Fint request);
+typedef MPI_Fint (QMPI_Session_c2f_t) (QMPI_Context context, int tool_id, MPI_Session session);
+typedef MPI_Session (QMPI_Session_f2c_t) (QMPI_Context context, int tool_id, MPI_Fint session);
+typedef MPI_Fint (QMPI_Type_c2f_t) (QMPI_Context context, int tool_id, MPI_Datatype datatype);
+typedef MPI_Datatype (QMPI_Type_f2c_t) (QMPI_Context context, int tool_id, MPI_Fint datatype);
+typedef MPI_Fint (QMPI_Win_c2f_t) (QMPI_Context context, int tool_id, MPI_Win win);
+typedef MPI_Win (QMPI_Win_f2c_t) (QMPI_Context context, int tool_id, MPI_Fint win);
 typedef int (QMPI_Group_compare_t) (QMPI_Context context, int tool_id, MPI_Group group1,
              MPI_Group group2, int *result);
 typedef int (QMPI_Group_difference_t) (QMPI_Context context, int tool_id, MPI_Group group1,
@@ -5320,6 +5896,8 @@ typedef int (QMPI_Info_get_valuelen_t) (QMPI_Context context, int tool_id, MPI_I
              const char *key, int *valuelen, int *flag);
 typedef int (QMPI_Info_set_t) (QMPI_Context context, int tool_id, MPI_Info info, const char *key,
              const char *value);
+typedef int (QMPIX_Info_set_hex_t) (QMPI_Context context, int tool_id, MPI_Info info,
+             const char *key, const void *value, int value_size);
 typedef int (QMPI_Abort_t) (QMPI_Context context, int tool_id, MPI_Comm comm, int errorcode);
 typedef int (QMPI_Comm_create_from_group_t) (QMPI_Context context, int tool_id, MPI_Group group,
              const char *stringtag, MPI_Info info, MPI_Errhandler errhandler, MPI_Comm *newcomm);
@@ -5479,7 +6057,7 @@ typedef int (QMPI_Parrived_t) (QMPI_Context context, int tool_id, MPI_Request re
 typedef int (QMPI_Pready_t) (QMPI_Context context, int tool_id, int partition,
              MPI_Request request);
 typedef int (QMPI_Pready_list_t) (QMPI_Context context, int tool_id, int length,
-             int array_of_partitions[], MPI_Request request);
+             const int array_of_partitions[], MPI_Request request);
 typedef int (QMPI_Pready_range_t) (QMPI_Context context, int tool_id, int partition_low,
              int partition_high, MPI_Request request);
 typedef int (QMPI_Precv_init_t) (QMPI_Context context, int tool_id, void *buf, int partitions,
@@ -5504,6 +6082,19 @@ typedef int (QMPI_Buffer_detach_t) (QMPI_Context context, int tool_id, void *buf
              int *size);
 typedef int (QMPI_Buffer_detach_c_t) (QMPI_Context context, int tool_id, void *buffer_addr,
              MPI_Count *size);
+typedef int (QMPI_Buffer_flush_t) (QMPI_Context context, int tool_id);
+typedef int (QMPI_Buffer_iflush_t) (QMPI_Context context, int tool_id, MPI_Request *request);
+typedef int (QMPI_Comm_attach_buffer_t) (QMPI_Context context, int tool_id, MPI_Comm comm,
+             void *buffer, int size);
+typedef int (QMPI_Comm_attach_buffer_c_t) (QMPI_Context context, int tool_id, MPI_Comm comm,
+             void *buffer, MPI_Count size);
+typedef int (QMPI_Comm_detach_buffer_t) (QMPI_Context context, int tool_id, MPI_Comm comm,
+             void *buffer_addr, int *size);
+typedef int (QMPI_Comm_detach_buffer_c_t) (QMPI_Context context, int tool_id, MPI_Comm comm,
+             void *buffer_addr, MPI_Count *size);
+typedef int (QMPI_Comm_flush_buffer_t) (QMPI_Context context, int tool_id, MPI_Comm comm);
+typedef int (QMPI_Comm_iflush_buffer_t) (QMPI_Context context, int tool_id, MPI_Comm comm,
+             MPI_Request *request);
 typedef int (QMPI_Ibsend_t) (QMPI_Context context, int tool_id, const void *buf, int count,
              MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
 typedef int (QMPI_Ibsend_c_t) (QMPI_Context context, int tool_id, const void *buf, MPI_Count count,
@@ -5594,6 +6185,17 @@ typedef int (QMPI_Sendrecv_replace_t) (QMPI_Context context, int tool_id, void *
 typedef int (QMPI_Sendrecv_replace_c_t) (QMPI_Context context, int tool_id, void *buf,
              MPI_Count count, MPI_Datatype datatype, int dest, int sendtag, int source, int recvtag,
              MPI_Comm comm, MPI_Status *status);
+typedef int (QMPI_Session_attach_buffer_t) (QMPI_Context context, int tool_id, MPI_Session session,
+             void *buffer, int size);
+typedef int (QMPI_Session_attach_buffer_c_t) (QMPI_Context context, int tool_id,
+             MPI_Session session, void *buffer, MPI_Count size);
+typedef int (QMPI_Session_detach_buffer_t) (QMPI_Context context, int tool_id, MPI_Session session,
+             void *buffer_addr, int *size);
+typedef int (QMPI_Session_detach_buffer_c_t) (QMPI_Context context, int tool_id,
+             MPI_Session session, void *buffer_addr, MPI_Count *size);
+typedef int (QMPI_Session_flush_buffer_t) (QMPI_Context context, int tool_id, MPI_Session session);
+typedef int (QMPI_Session_iflush_buffer_t) (QMPI_Context context, int tool_id, MPI_Session session,
+             MPI_Request *request);
 typedef int (QMPI_Ssend_t) (QMPI_Context context, int tool_id, const void *buf, int count,
              MPI_Datatype datatype, int dest, int tag, MPI_Comm comm);
 typedef int (QMPI_Ssend_c_t) (QMPI_Context context, int tool_id, const void *buf, MPI_Count count,
@@ -5611,9 +6213,32 @@ typedef int (QMPI_Grequest_start_t) (QMPI_Context context, int tool_id,
 typedef int (QMPI_Request_free_t) (QMPI_Context context, int tool_id, MPI_Request *request);
 typedef int (QMPI_Request_get_status_t) (QMPI_Context context, int tool_id, MPI_Request request,
              int *flag, MPI_Status *status);
+typedef int (QMPI_Request_get_status_all_t) (QMPI_Context context, int tool_id, int count,
+             MPI_Request array_of_requests[], int *flag, MPI_Status *array_of_statuses);
+typedef int (QMPI_Request_get_status_any_t) (QMPI_Context context, int tool_id, int count,
+             MPI_Request array_of_requests[], int *indx, int *flag, MPI_Status *status);
+typedef int (QMPI_Request_get_status_some_t) (QMPI_Context context, int tool_id, int incount,
+             MPI_Request array_of_requests[], int *outcount, int array_of_indices[],
+             MPI_Status *array_of_statuses);
 typedef int (QMPI_Start_t) (QMPI_Context context, int tool_id, MPI_Request *request);
 typedef int (QMPI_Startall_t) (QMPI_Context context, int tool_id, int count,
              MPI_Request array_of_requests[]);
+typedef int (QMPI_Status_c2f_t) (QMPI_Context context, int tool_id, const MPI_Status *c_status,
+             MPI_Fint *f_status);
+typedef int (QMPI_Status_f2c_t) (QMPI_Context context, int tool_id, const MPI_Fint *f_status,
+             MPI_Status *c_status);
+typedef int (QMPI_Status_get_error_t) (QMPI_Context context, int tool_id, MPI_Status *status,
+             int *error);
+typedef int (QMPI_Status_get_source_t) (QMPI_Context context, int tool_id, MPI_Status *status,
+             int *source);
+typedef int (QMPI_Status_get_tag_t) (QMPI_Context context, int tool_id, MPI_Status *status,
+             int *tag);
+typedef int (QMPI_Status_set_error_t) (QMPI_Context context, int tool_id, MPI_Status *status,
+             int error);
+typedef int (QMPI_Status_set_source_t) (QMPI_Context context, int tool_id, MPI_Status *status,
+             int source);
+typedef int (QMPI_Status_set_tag_t) (QMPI_Context context, int tool_id, MPI_Status *status,
+             int tag);
 typedef int (QMPI_Status_set_cancelled_t) (QMPI_Context context, int tool_id, MPI_Status *status,
              int flag);
 typedef int (QMPI_Test_t) (QMPI_Context context, int tool_id, MPI_Request *request, int *flag,
@@ -5621,21 +6246,21 @@ typedef int (QMPI_Test_t) (QMPI_Context context, int tool_id, MPI_Request *reque
 typedef int (QMPI_Test_cancelled_t) (QMPI_Context context, int tool_id, const MPI_Status *status,
              int *flag);
 typedef int (QMPI_Testall_t) (QMPI_Context context, int tool_id, int count,
-             MPI_Request array_of_requests[], int *flag, MPI_Status array_of_statuses[]);
+             MPI_Request array_of_requests[], int *flag, MPI_Status *array_of_statuses);
 typedef int (QMPI_Testany_t) (QMPI_Context context, int tool_id, int count,
              MPI_Request array_of_requests[], int *indx, int *flag, MPI_Status *status);
 typedef int (QMPI_Testsome_t) (QMPI_Context context, int tool_id, int incount,
              MPI_Request array_of_requests[], int *outcount, int array_of_indices[],
-             MPI_Status array_of_statuses[]);
+             MPI_Status *array_of_statuses);
 typedef int (QMPI_Wait_t) (QMPI_Context context, int tool_id, MPI_Request *request,
              MPI_Status *status);
 typedef int (QMPI_Waitall_t) (QMPI_Context context, int tool_id, int count,
-             MPI_Request array_of_requests[], MPI_Status array_of_statuses[]);
+             MPI_Request array_of_requests[], MPI_Status *array_of_statuses);
 typedef int (QMPI_Waitany_t) (QMPI_Context context, int tool_id, int count,
              MPI_Request array_of_requests[], int *indx, MPI_Status *status);
 typedef int (QMPI_Waitsome_t) (QMPI_Context context, int tool_id, int incount,
              MPI_Request array_of_requests[], int *outcount, int array_of_indices[],
-             MPI_Status array_of_statuses[]);
+             MPI_Status *array_of_statuses);
 typedef int (QMPIX_Grequest_start_t) (QMPI_Context context, int tool_id,
              MPI_Grequest_query_function *query_fn, MPI_Grequest_free_function *free_fn,
              MPI_Grequest_cancel_function *cancel_fn, MPIX_Grequest_poll_function *poll_fn,
@@ -5787,6 +6412,74 @@ typedef int (QMPI_Publish_name_t) (QMPI_Context context, int tool_id, const char
              MPI_Info info, const char *port_name);
 typedef int (QMPI_Unpublish_name_t) (QMPI_Context context, int tool_id, const char *service_name,
              MPI_Info info, const char *port_name);
+typedef int (QMPIX_Stream_create_t) (QMPI_Context context, int tool_id, MPI_Info info,
+             MPIX_Stream *stream);
+typedef int (QMPIX_Stream_free_t) (QMPI_Context context, int tool_id, MPIX_Stream *stream);
+typedef int (QMPIX_Stream_comm_create_t) (QMPI_Context context, int tool_id, MPI_Comm comm,
+             MPIX_Stream stream, MPI_Comm *newcomm);
+typedef int (QMPIX_Stream_comm_create_multiplex_t) (QMPI_Context context, int tool_id,
+             MPI_Comm comm, int count, MPIX_Stream array_of_streams[], MPI_Comm *newcomm);
+typedef int (QMPIX_Comm_get_stream_t) (QMPI_Context context, int tool_id, MPI_Comm comm, int idx,
+             MPIX_Stream *stream);
+typedef int (QMPIX_Stream_progress_t) (QMPI_Context context, int tool_id, MPIX_Stream stream);
+typedef int (QMPIX_Start_progress_thread_t) (QMPI_Context context, int tool_id,
+             MPIX_Stream stream);
+typedef int (QMPIX_Stop_progress_thread_t) (QMPI_Context context, int tool_id, MPIX_Stream stream);
+typedef int (QMPIX_Stream_send_t) (QMPI_Context context, int tool_id, const void *buf, int count,
+             MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, int source_stream_index,
+             int dest_stream_index);
+typedef int (QMPIX_Stream_send_c_t) (QMPI_Context context, int tool_id, const void *buf,
+             MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm,
+             int source_stream_index, int dest_stream_index);
+typedef int (QMPIX_Stream_isend_t) (QMPI_Context context, int tool_id, const void *buf, int count,
+             MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, int source_stream_index,
+             int dest_stream_index, MPI_Request *request);
+typedef int (QMPIX_Stream_isend_c_t) (QMPI_Context context, int tool_id, const void *buf,
+             MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm,
+             int source_stream_index, int dest_stream_index, MPI_Request *request);
+typedef int (QMPIX_Stream_recv_t) (QMPI_Context context, int tool_id, void *buf, int count,
+             MPI_Datatype datatype, int source, int tag, MPI_Comm comm, int source_stream_index,
+             int dest_stream_index, MPI_Status *status);
+typedef int (QMPIX_Stream_recv_c_t) (QMPI_Context context, int tool_id, void *buf, MPI_Count count,
+             MPI_Datatype datatype, int source, int tag, MPI_Comm comm, int source_stream_index,
+             int dest_stream_index, MPI_Status *status);
+typedef int (QMPIX_Stream_irecv_t) (QMPI_Context context, int tool_id, void *buf, int count,
+             MPI_Datatype datatype, int source, int tag, MPI_Comm comm, int source_stream_index,
+             int dest_stream_index, MPI_Request *request);
+typedef int (QMPIX_Stream_irecv_c_t) (QMPI_Context context, int tool_id, void *buf, MPI_Count count,
+             MPI_Datatype datatype, int source, int tag, MPI_Comm comm, int source_stream_index,
+             int dest_stream_index, MPI_Request *request);
+typedef int (QMPIX_Send_enqueue_t) (QMPI_Context context, int tool_id, const void *buf, int count,
+             MPI_Datatype datatype, int dest, int tag, MPI_Comm comm);
+typedef int (QMPIX_Send_enqueue_c_t) (QMPI_Context context, int tool_id, const void *buf,
+             MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm);
+typedef int (QMPIX_Recv_enqueue_t) (QMPI_Context context, int tool_id, void *buf, int count,
+             MPI_Datatype datatype, int source, int tag, MPI_Comm comm, MPI_Status *status);
+typedef int (QMPIX_Recv_enqueue_c_t) (QMPI_Context context, int tool_id, void *buf, MPI_Count count,
+             MPI_Datatype datatype, int source, int tag, MPI_Comm comm, MPI_Status *status);
+typedef int (QMPIX_Isend_enqueue_t) (QMPI_Context context, int tool_id, const void *buf, int count,
+             MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
+typedef int (QMPIX_Isend_enqueue_c_t) (QMPI_Context context, int tool_id, const void *buf,
+             MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm,
+             MPI_Request *request);
+typedef int (QMPIX_Irecv_enqueue_t) (QMPI_Context context, int tool_id, void *buf, int count,
+             MPI_Datatype datatype, int source, int tag, MPI_Comm comm, MPI_Request *request);
+typedef int (QMPIX_Irecv_enqueue_c_t) (QMPI_Context context, int tool_id, void *buf,
+             MPI_Count count, MPI_Datatype datatype, int source, int tag, MPI_Comm comm,
+             MPI_Request *request);
+typedef int (QMPIX_Wait_enqueue_t) (QMPI_Context context, int tool_id, MPI_Request *request,
+             MPI_Status *status);
+typedef int (QMPIX_Waitall_enqueue_t) (QMPI_Context context, int tool_id, int count,
+             MPI_Request array_of_requests[], MPI_Status *array_of_statuses);
+typedef int (QMPIX_Allreduce_enqueue_t) (QMPI_Context context, int tool_id, const void *sendbuf,
+             void *recvbuf, int count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm);
+typedef int (QMPIX_Allreduce_enqueue_c_t) (QMPI_Context context, int tool_id, const void *sendbuf,
+             void *recvbuf, MPI_Count count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm);
+typedef int (QMPIX_Threadcomm_init_t) (QMPI_Context context, int tool_id, MPI_Comm comm,
+             int num_threads, MPI_Comm *newthreadcomm);
+typedef int (QMPIX_Threadcomm_free_t) (QMPI_Context context, int tool_id, MPI_Comm *threadcomm);
+typedef int (QMPIX_Threadcomm_start_t) (QMPI_Context context, int tool_id, MPI_Comm threadcomm);
+typedef int (QMPIX_Threadcomm_finish_t) (QMPI_Context context, int tool_id, MPI_Comm threadcomm);
 typedef double (QMPI_Wtick_t) (QMPI_Context context, int tool_id);
 typedef double (QMPI_Wtime_t) (QMPI_Context context, int tool_id);
 typedef int (QMPI_Cart_coords_t) (QMPI_Context context, int tool_id, MPI_Comm comm, int rank,
@@ -5818,6 +6511,7 @@ typedef int (QMPI_Dist_graph_neighbors_t) (QMPI_Context context, int tool_id, MP
              int destinations[], int destweights[]);
 typedef int (QMPI_Dist_graph_neighbors_count_t) (QMPI_Context context, int tool_id, MPI_Comm comm,
              int *indegree, int *outdegree, int *weighted);
+typedef int (QMPI_Get_hw_resource_info_t) (QMPI_Context context, int tool_id, MPI_Info *hw_info);
 typedef int (QMPI_Graph_create_t) (QMPI_Context context, int tool_id, MPI_Comm comm_old, int nnodes,
              const int indx[], const int edges[], int reorder, MPI_Comm *comm_graph);
 typedef int (QMPI_Graph_get_t) (QMPI_Context context, int tool_id, MPI_Comm comm, int maxindex,

@@ -49,20 +49,18 @@ int MPIR_TSP_Ineighbor_alltoall_sched_allcomm_linear(const void *sendbuf, MPI_Ai
         mpi_errno =
             MPIR_TSP_sched_isend(sb, sendcount, sendtype, dsts[k], tag, comm_ptr, sched, 0, NULL,
                                  &vtx_id);
-        MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag);
+        MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
     }
 
-    /* receive needs to happen in the opposite order of sends.  This
-     * is to cover the case of Cartesian graphs where the same process
-     * might be both the left and right neighbor.  In this case, we
-     * need to make sure the first message (which is from the right
-     * neighbor) is received in the last buffer. */
+    /* need reverse the order to ensure matching when the graph is from MPI_Cart_create and
+     * the n-th dimension is periodic and the size is 1 or 2.
+     * ref. ineighbor_alltoall_allcomm_sched_linear.c */
     for (l = indegree - 1; l >= 0; l--) {
         char *rb = ((char *) recvbuf) + l * recvcount * recvtype_extent;
         mpi_errno =
             MPIR_TSP_sched_irecv(rb, recvcount, recvtype, srcs[l], tag, comm_ptr, sched, 0, NULL,
                                  &vtx_id);
-        MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag);
+        MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
     }
 
   fn_exit:

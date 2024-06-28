@@ -13,6 +13,7 @@
 int MPIDI_STUBSHM_init_local(int *tag_bits);
 int MPIDI_STUBSHM_init_world(void);
 int MPIDI_STUBSHM_mpi_finalize_hook(void);
+int MPIDI_STUBSHM_post_init(void);
 int MPIDI_STUBSHM_comm_set_hints(MPIR_Comm * comm_ptr, MPIR_Info * info);
 int MPIDI_STUBSHM_mpi_comm_commit_pre_hook(MPIR_Comm * comm);
 int MPIDI_STUBSHM_mpi_comm_commit_post_hook(MPIR_Comm * comm);

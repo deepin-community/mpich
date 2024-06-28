@@ -1,5 +1,5 @@
 /**
- * Copyright (C) Mellanox Technologies Ltd. 2020.  ALL RIGHTS RESERVED.
+ * Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2020. ALL RIGHTS RESERVED.
  *
  * See file LICENSE for terms.
  */
@@ -13,40 +13,16 @@
 #include <uct/api/v2/uct_v2.h>
 
 
-/* Format string to display a protocol time */
-#define UCP_PROTO_TIME_FMT(_time_var) " " #_time_var ": %.2f ns"
-#define UCP_PROTO_TIME_ARG(_time_val) ((_time_val) * 1e9)
-
-/* Format string to display a protocol performance function time */
-#define UCP_PROTO_PERF_FUNC_TIME_FMT "%.2f+%.3f*N"
-#define UCP_PROTO_PERF_FUNC_TIME_ARG(_perf_func) \
-    ((_perf_func)->c * 1e9), ((_perf_func)->m * 1e9 * UCS_KBYTE)
-
-/* Format string to display a protocol performance function bandwidth */
-#define UCP_PROTO_PERF_FUNC_BW_FMT "%.2f"
-#define UCP_PROTO_PERF_FUNC_BW_ARG(_perf_func) \
-    (1.0 / ((_perf_func)->m * UCS_MBYTE))
-
-/* Format string to display a protocol performance function */
-#define UCP_PROTO_PERF_FUNC_FMT(_perf_var) " " #_perf_var ": " \
-    UCP_PROTO_PERF_FUNC_TIME_FMT " ns/KB, " \
-    UCP_PROTO_PERF_FUNC_BW_FMT " MB/s"
-#define UCP_PROTO_PERF_FUNC_ARG(_perf_func) \
-    UCP_PROTO_PERF_FUNC_TIME_ARG(_perf_func), \
-    UCP_PROTO_PERF_FUNC_BW_ARG(_perf_func)
-
-/* Format string to display a protocol performance estimations
- * of different types. See ucp_proto_perf_type_t */
-#define UCP_PROTO_PERF_FUNC_TYPES_FMT \
-    UCP_PROTO_PERF_FUNC_FMT(sigle) \
-    UCP_PROTO_PERF_FUNC_FMT(multi)
-#define UCP_PROTO_PERF_FUNC_TYPES_ARG(_perf_func) \
-    UCP_PROTO_PERF_FUNC_ARG((&(_perf_func)[UCP_PROTO_PERF_TYPE_SINGLE])), \
-    UCP_PROTO_PERF_FUNC_ARG((&(_perf_func)[UCP_PROTO_PERF_TYPE_MULTI]))
-
-
 /* Constant for "undefined"/"not-applicable" structure offset */
 #define UCP_PROTO_COMMON_OFFSET_INVALID PTRDIFF_MAX
+
+
+/* Common protocol description strings */
+#define UCP_PROTO_SHORT_DESC      "short"
+#define UCP_PROTO_COPY_IN_DESC    "copy-in"
+#define UCP_PROTO_COPY_OUT_DESC   "copy-out"
+#define UCP_PROTO_ZCOPY_DESC      "zero-copy"
+#define UCP_PROTO_MULTI_FRAG_DESC "multi-frag"
 
 
 typedef enum {
@@ -75,6 +51,13 @@ typedef enum {
 
     /* Supports non-zero minimal fragment size */
     UCP_PROTO_COMMON_INIT_FLAG_MIN_FRAG      = UCS_BIT(7),
+
+    /* Adjust maximum fragment size taking into account segment size to prevent
+     * sending more than the remote side supports */
+    UCP_PROTO_COMMON_INIT_FLAG_CAP_SEG_SIZE  = UCS_BIT(8),
+
+    /* Supports error handling */
+    UCP_PROTO_COMMON_INIT_FLAG_ERR_HANDLING  = UCS_BIT(9)
 } ucp_proto_common_init_flags_t;
 
 
@@ -102,6 +85,9 @@ typedef struct {
     /* Maximal payload size */
     size_t                  max_length;
 
+    /* Minimal number of iov */
+    size_t                  min_iov;
+
     /* Offset in uct_iface_attr_t structure of the field which specifies the
      * minimal fragment size for the UCT operation used by this protocol */
     ptrdiff_t               min_frag_offs;
@@ -112,7 +98,7 @@ typedef struct {
 
     /* Offset in uct_iface_attr_t structure of the field which specifies the
      * maximal number of iov elements for the UCT operation used by this
-    * protocol */
+     * protocol */
     ptrdiff_t               max_iov_offs;
 
     /* Header size on the first lane */
@@ -128,6 +114,9 @@ typedef struct {
 
     /* Protocol instance flags, see @ref ucp_proto_common_init_flags_t */
     unsigned                flags;
+
+    /* Map of unsuitable lanes */
+    ucp_lane_map_t          exclude_map;
 } ucp_proto_common_init_params_t;
 
 
@@ -164,7 +153,7 @@ typedef struct {
 /* Private data per lane */
 typedef struct {
     ucp_lane_index_t        lane;       /* Lane index in the endpoint */
-    ucp_rsc_index_t         memh_index; /* Index of UCT memory handle (for zero copy) */
+    ucp_rsc_index_t         md_index;   /* Index of UCT memory handle (for zero copy) */
     ucp_md_index_t          rkey_index; /* Remote key index (for remote access) */
     uint8_t                 max_iov;    /* Maximal number of IOVs on this lane */
 } ucp_proto_common_lane_priv_t;
@@ -190,12 +179,29 @@ typedef void (*ucp_proto_init_cb_t)(ucp_request_t *req);
 typedef ucs_status_t (*ucp_proto_complete_cb_t)(ucp_request_t *req);
 
 
+/**
+ * Check if protocol can be used according to error handling requirements.
+ *
+ * @param [in] init_params      Protocol initialization parameters.
+ *
+ * @return Nonzero if protocol can be used.
+ */
+int ucp_proto_common_init_check_err_handling(
+        const ucp_proto_common_init_params_t *init_params);
+
+
+ucp_rsc_index_t
+ucp_proto_common_get_rsc_index(const ucp_proto_init_params_t *params,
+                               ucp_lane_index_t lane);
+
 void ucp_proto_common_lane_priv_init(const ucp_proto_common_init_params_t *params,
                                      ucp_md_map_t md_map, ucp_lane_index_t lane,
                                      ucp_proto_common_lane_priv_t *lane_priv);
 
 
-void ucp_proto_common_lane_priv_str(const ucp_proto_common_lane_priv_t *lpriv,
+void ucp_proto_common_lane_priv_str(const ucp_proto_query_params_t *params,
+                                    const ucp_proto_common_lane_priv_t *lpriv,
+                                    int show_rsc, int show_path,
                                     ucs_string_buffer_t *strb);
 
 
@@ -223,17 +229,16 @@ size_t ucp_proto_common_get_iface_attr_field(const uct_iface_attr_t *iface_attr,
                                              size_t dfl_value);
 
 
-ucs_status_t
-ucp_proto_common_lane_perf_attr(const ucp_proto_init_params_t *params,
-                                ucp_lane_index_t lane, uct_ep_operation_t op,
-                                uint64_t uct_field_mask,
-                                uct_perf_attr_t* perf_attr);
-
+void ucp_proto_common_lane_perf_node(ucp_context_h context,
+                                     ucp_rsc_index_t rsc_index,
+                                     const uct_perf_attr_t *perf_attr,
+                                     ucp_proto_perf_node_t **perf_node_p);
 
 ucs_status_t
 ucp_proto_common_get_lane_perf(const ucp_proto_common_init_params_t *params,
                                ucp_lane_index_t lane,
-                               ucp_proto_common_tl_perf_t *perf);
+                               ucp_proto_common_tl_perf_t *perf,
+                               ucp_proto_perf_node_t **perf_node_p);
 
 
 /* @return number of lanes found */
@@ -254,33 +259,10 @@ ucp_lane_index_t
 ucp_proto_common_find_am_bcopy_hdr_lane(const ucp_proto_init_params_t *params);
 
 
-/**
- * Add a "pipelined performance" range, which represents the send time of
- * multiples fragments of 'frag_size' bytes.
- * 'frag_range' is the time to send a single fragment.
- */
-void ucp_proto_common_add_ppln_range(const ucp_proto_init_params_t *init_params,
-                                     const ucp_proto_perf_range_t *frag_range,
-                                     size_t max_length);
-
-
-void ucp_proto_common_init_base_caps(
-        const ucp_proto_common_init_params_t *params, size_t min_length);
-
-
-void ucp_proto_common_add_perf_range(
-        const ucp_proto_common_init_params_t *params, size_t max_length,
-        const ucs_linear_func_t *send_time, ucs_linear_func_t recv_overhead,
-        const ucs_linear_func_t *xfer_time, ucs_linear_func_t bias);
-
-
-ucs_status_t
-ucp_proto_common_init_caps(const ucp_proto_common_init_params_t *params,
-                           const ucp_proto_common_tl_perf_t *perf,
-                           ucp_md_map_t reg_md_map);
-
-
 void ucp_proto_request_zcopy_completion(uct_completion_t *self);
+
+
+int ucp_proto_is_short_supported(const ucp_proto_select_param_t *select_param);
 
 
 void ucp_proto_trace_selected(ucp_request_t *req, size_t msg_length);
@@ -302,17 +284,31 @@ void ucp_proto_common_zcopy_adjust_min_frag_always(ucp_request_t *req,
 
 void ucp_proto_request_abort(ucp_request_t *req, ucs_status_t status);
 
+ucs_status_t ucp_proto_request_init(ucp_request_t *req);
 
-ucs_linear_func_t
-ucp_proto_common_memreg_time(const ucp_proto_common_init_params_t *params,
-                             ucp_md_map_t reg_md_map);
+void ucp_proto_request_check_reset_state(const ucp_request_t *req);
 
+void ucp_proto_request_restart(ucp_request_t *req);
 
-ucs_status_t
-ucp_proto_common_buffer_copy_time(ucp_worker_h worker, const char *title,
-                                  ucs_memory_type_t local_mem_type,
-                                  ucs_memory_type_t remote_mem_type,
-                                  uct_ep_operation_t memtype_op,
-                                  ucs_linear_func_t *copy_time);
+void ucp_proto_request_bcopy_abort(ucp_request_t *req, ucs_status_t status);
+
+void ucp_proto_request_bcopy_id_abort(ucp_request_t *req, ucs_status_t status);
+
+ucs_status_t ucp_proto_request_bcopy_reset(ucp_request_t *req);
+
+ucs_status_t ucp_proto_request_bcopy_id_reset(ucp_request_t *req);
+
+void ucp_proto_request_zcopy_abort(ucp_request_t *req, ucs_status_t status);
+
+ucs_status_t ucp_proto_request_zcopy_reset(ucp_request_t *req);
+
+ucs_status_t ucp_proto_request_zcopy_id_reset(ucp_request_t *req);
+
+void ucp_proto_abort_fatal_not_implemented(ucp_request_t *req,
+                                           ucs_status_t status);
+
+void ucp_proto_reset_fatal_not_implemented(ucp_request_t *req);
+
+void ucp_proto_fatal_invalid_stage(ucp_request_t *req, const char *func_name);
 
 #endif

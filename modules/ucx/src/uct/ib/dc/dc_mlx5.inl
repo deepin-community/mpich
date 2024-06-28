@@ -1,5 +1,5 @@
 /**
-* Copyright (C) Mellanox Technologies Ltd. 2020.  ALL RIGHTS RESERVED.
+* Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2020. ALL RIGHTS RESERVED.
 *
 * See file LICENSE for terms.
 */
@@ -41,17 +41,31 @@ uct_dc_mlx5_get_arbiter_params(uct_dc_mlx5_iface_t *iface, uct_dc_mlx5_ep_t *ep,
 }
 
 static UCS_F_ALWAYS_INLINE void
+uct_dc_mlx5_ep_schedule(uct_dc_mlx5_iface_t *iface, uct_dc_mlx5_ep_t *ep)
+{
+    if (ep->dci == UCT_DC_MLX5_EP_NO_DCI) {
+        /* no dci:
+         * Do not grab dci here. Instead put the group on dci allocation
+         * arbiter. This way we can assure fairness between all eps waiting for
+         * dci allocation. Relevant for dcs and dcs_quota policies.
+         */
+        uct_dc_mlx5_iface_schedule_dci_alloc(iface, ep);
+    } else {
+        uct_dc_mlx5_iface_dci_sched_tx(iface, ep);
+    }
+}
+
+static UCS_F_ALWAYS_INLINE void
 uct_dc_mlx5_ep_pending_common(uct_dc_mlx5_iface_t *iface, uct_dc_mlx5_ep_t *ep,
                               uct_pending_req_t *r, unsigned flags,
                               int push_to_head, int schedule)
 {
-    int no_dci = (ep->dci == UCT_DC_MLX5_EP_NO_DCI);
     ucs_arbiter_group_t *group;
 
     UCS_STATIC_ASSERT(sizeof(uct_dc_mlx5_pending_req_priv) <=
                       UCT_PENDING_REQ_PRIV_LEN);
 
-    if (uct_dc_mlx5_iface_is_dci_rand(iface)) {
+    if (uct_dc_mlx5_iface_is_dci_shared(iface)) {
         uct_dc_mlx5_pending_req_priv(r)->ep = ep;
         group = uct_dc_mlx5_ep_rand_arb_group(iface, ep);
     } else {
@@ -69,14 +83,5 @@ uct_dc_mlx5_ep_pending_common(uct_dc_mlx5_iface_t *iface, uct_dc_mlx5_ep_t *ep,
         return;
     }
 
-    if (no_dci) {
-        /* no dci:
-         *  Do not grab dci here. Instead put the group on dci allocation arbiter.
-         *  This way we can assure fairness between all eps waiting for
-         *  dci allocation. Relevant for dcs and dcs_quota policies.
-         */
-        uct_dc_mlx5_iface_schedule_dci_alloc(iface, ep);
-    } else {
-        uct_dc_mlx5_iface_dci_sched_tx(iface, ep);
-    }
+    uct_dc_mlx5_ep_schedule(iface, ep);
 }

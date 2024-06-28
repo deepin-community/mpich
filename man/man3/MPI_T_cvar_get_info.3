@@ -1,12 +1,17 @@
-.TH MPI_T_cvar_get_info 3 "2/22/2022" " " "MPI"
+.TH MPI_T_cvar_get_info 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_T_cvar_get_info \-  Get the information about a control variable 
 .SH SYNOPSIS
 .nf
-int MPI_T_cvar_get_info(int cvar_index, char *name, int *name_len, int *verbosity,
-MPI_Datatype *datatype, MPI_T_enum *enumtype, char *desc, int *desc_len,
+.fi
+.nf
+int MPI_T_cvar_get_info(int cvar_index, char *name, int *name_len,
+int *verbosity, MPI_Datatype *datatype,
+MPI_T_enum *enumtype, char *desc, int *desc_len,
 int *bind, int *scope)
 .fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -106,7 +111,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_T_ERR_INVALID_INDEX 

@@ -49,12 +49,15 @@ int MPII_Finalize(MPIR_Session * session_ptr);
 void MPII_thread_mutex_create(void);
 void MPII_thread_mutex_destroy(void);
 
+const char *MPII_threadlevel_name(int threadlevel);
+
 int MPII_init_local_proc_attrs(int *p_thread_required);
 int MPII_init_tag_ub(void);
+int MPII_init_builtin_infos(void);
+int MPII_finalize_builtin_infos(void);
 
 void MPII_init_windows(void);
 void MPII_init_binding_cxx(void);
-void MPII_init_binding_f08(void);
 void MPII_pre_init_dbg_logging(int *argc, char ***argv);
 void MPII_init_dbg_logging(void);
 
@@ -63,6 +66,9 @@ int MPII_finalize_async(void);
 
 void MPII_Call_finalize_callbacks(int min_prio, int max_prio);
 void MPII_dump_debug_summary(void);
+
+int MPII_init_gpu(void);
+int MPII_finalize_gpu(void);
 
 /* MPI_Init[_thread]/MPI_Finalize only can be used in "world" model where it only
  * can be initialized and finalized once, while we can have multiple sessions.
@@ -119,7 +125,7 @@ static inline void MPII_pre_init_memory_tracing(void)
 static inline void MPII_post_init_memory_tracing(void)
 {
 #ifdef USE_MEMORY_TRACING
-    MPL_trconfig(MPIR_Process.rank, MPIR_ThreadInfo.thread_provided == MPI_THREAD_MULTIPLE);
+    MPL_trconfig(MPIR_Process.rank, &MPIR_ThreadInfo.isThreaded);
 #endif
 }
 

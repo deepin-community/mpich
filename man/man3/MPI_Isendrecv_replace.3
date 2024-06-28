@@ -1,11 +1,22 @@
-.TH MPI_Isendrecv_replace 3 "2/22/2022" " " "MPI"
+.TH MPI_Isendrecv_replace 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Isendrecv_replace \-  Starts a nonblocking send and receive with a single buffer 
 .SH SYNOPSIS
 .nf
-int MPI_Isendrecv_replace(void *buf, int count, MPI_Datatype datatype, int dest, int sendtag,
-int source, int recvtag, MPI_Comm comm, MPI_Request *request)
 .fi
+.nf
+int MPI_Isendrecv_replace(void *buf, int count, MPI_Datatype datatype, int dest,
+int sendtag, int source, int recvtag, MPI_Comm comm,
+MPI_Request *request)
+.fi
+
+.nf
+int MPI_Isendrecv_replace_c(void *buf, MPI_Count count, MPI_Datatype datatype,
+int dest, int sendtag, int source, int recvtag,
+MPI_Comm comm, MPI_Request *request)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -123,7 +134,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

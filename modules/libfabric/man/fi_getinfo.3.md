@@ -50,8 +50,16 @@ struct fi_info *fi_dupinfo(const struct fi_info *info);
 
 # DESCRIPTION
 
+The fi_getinfo() call is used to discover what communication features are
+available in the system, as well as how they might best be used by an
+application.  The call is loosely modeled on getaddrinfo().  fi_getinfo()
+permits an application to exchange information between an application and
+the libfabric providers regarding its required set of communication.
+It provides the ability to access complex network details, balanced between
+being expressive but also simple to use.
+
 fi_getinfo returns information about available fabric services for reaching
-specified node or service, subject to any provided hints.  Callers
+a specified node or service, subject to any provided hints.  Callers
 may specify NULL for node, service, and hints in order to retrieve
 information about what providers are available and their optimal usage
 models.  If no matching fabric information is available, info will
@@ -263,6 +271,12 @@ additional optimizations.
   FI_WRITE, FI_REMOTE_READ, and FI_REMOTE_WRITE flags to restrict the
   types of atomic operations supported by an endpoint.
 
+*FI_AV_USER_ID*
+: Requests that the provider support the association of a user specified
+  identifier with each address vector (AV) address.  User identifiers are
+  returned with completion data in place of the AV address.  See [`fi_av`(3)]
+  (fi_av.3.html) for more details.
+
 *FI_COLLECTIVE*
 : Requests support for collective operations.  Endpoints that support
   this capability support the collective operations defined in
@@ -412,7 +426,7 @@ additional optimizations.
 *FI_TRIGGER*
 : Indicates that the endpoint should support triggered operations.
   Endpoints support this capability must meet the usage model as
-  described by fi_trigger.3.
+  described by [`fi_trigger`(3)](fi_trigger.3.html).
 
 *FI_VARIABLE_MSG*
 
@@ -428,6 +442,12 @@ additional optimizations.
 : Indicates that the user requires an endpoint capable of initiating
   writes against remote memory regions.  This flag requires that FI_RMA
   and/or FI_ATOMIC be set.
+
+*FI_XPU*
+: Specifies that the endpoint should support transfers that may be initiated
+  from heterogenous computation devices, such as GPUs.  This flag requires
+  that FI_TRIGGER be set.  For additional details on XPU triggers see
+  [`fi_trigger`(3)](fi_trigger.3.html).
 
 Capabilities may be grouped into three general categories: primary,
 secondary, and primary modifiers.  Primary capabilities must explicitly
@@ -445,7 +465,8 @@ may optionally report non-selected secondary capabilities if doing so
 would not compromise performance or security.
 
 Primary capabilities: FI_MSG, FI_RMA, FI_TAGGED, FI_ATOMIC, FI_MULTICAST,
-FI_NAMED_RX_CTX, FI_DIRECTED_RECV, FI_VARIABLE_MSG, FI_HMEM, FI_COLLECTIVE
+FI_NAMED_RX_CTX, FI_DIRECTED_RECV, FI_VARIABLE_MSG, FI_HMEM, FI_COLLECTIVE,
+FI_XPU
 
 Primary modifiers: FI_READ, FI_WRITE, FI_RECV, FI_SEND,
 FI_REMOTE_READ, FI_REMOTE_WRITE
@@ -724,6 +745,9 @@ via fi_freeinfo().
 *FI_ENOMEM*
 : Indicates that there was insufficient memory to complete the operation.
 
+*F_ENOSYS*
+: Indicates that requested version is newer than the library being used.
+
 # NOTES
 
 If hints are provided, the operation will be controlled by the values
@@ -752,3 +776,4 @@ Multiple threads may call
 [`fi_endpoint`(3)](fi_endpoint.3.html),
 [`fi_domain`(3)](fi_domain.3.html),
 [`fi_nic`(3)](fi_nic.3.html)
+[`fi_trigger`(3)](fi_trigger.3.html)

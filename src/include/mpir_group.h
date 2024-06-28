@@ -68,6 +68,7 @@ struct MPIR_Group {
 #ifdef MPID_DEV_GROUP_DECL
      MPID_DEV_GROUP_DECL
 #endif
+     MPIR_Session * session_ptr;        /* Pointer to session to which this group belongs */
 };
 
 /* NOTE-G1: is_local_dense_monotonic will be true iff the group meets the
@@ -84,7 +85,6 @@ struct MPIR_Group {
 
 extern MPIR_Object_alloc_t MPIR_Group_mem;
 /* Preallocated group objects */
-#define MPIR_GROUP_N_BUILTIN 1
 extern MPIR_Group MPIR_Group_builtin[MPIR_GROUP_N_BUILTIN];
 extern MPIR_Group MPIR_Group_direct[];
 
@@ -105,6 +105,7 @@ int MPIR_Group_create(int, MPIR_Group **);
 int MPIR_Group_release(MPIR_Group * group_ptr);
 
 int MPIR_Group_check_subset(MPIR_Group * group_ptr, MPIR_Comm * comm_ptr);
+void MPIR_Group_set_session_ptr(MPIR_Group * group_ptr, MPIR_Session * session_out);
 int MPIR_Group_init(void);
 
 /* internal functions */

@@ -30,19 +30,18 @@ int MPIR_Bcast_intra_scatter_recursive_doubling_allgather(void *buffer,
                                                           MPI_Datatype datatype,
                                                           int root,
                                                           MPIR_Comm * comm_ptr,
-                                                          MPIR_Errflag_t * errflag)
+                                                          MPIR_Errflag_t errflag)
 {
     MPI_Status status;
     int rank, comm_size, dst;
     int relative_rank, mask;
     int mpi_errno = MPI_SUCCESS;
     int mpi_errno_ret = MPI_SUCCESS;
-    int scatter_size;
     MPI_Aint curr_size, recv_size = 0;
     int j, k, i, tmp_mask, is_contig;
-    MPI_Aint type_size, nbytes = 0;
-    int relative_dst, dst_tree_root, my_tree_root, send_offset;
-    int recv_offset, tree_root, nprocs_completed, offset;
+    MPI_Aint type_size, nbytes;
+    int relative_dst, dst_tree_root, my_tree_root;
+    int tree_root, nprocs_completed;
     MPIR_CHKLMEM_DECL(1);
     MPI_Aint true_extent, true_lb;
     void *tmp_buf;
@@ -77,19 +76,12 @@ int MPIR_Bcast_intra_scatter_recursive_doubling_allgather(void *buffer,
         }
     }
 
-
+    MPI_Aint scatter_size;
     scatter_size = (nbytes + comm_size - 1) / comm_size;        /* ceiling division */
 
     mpi_errno = MPII_Scatter_for_bcast(buffer, count, datatype, root, comm_ptr,
                                        nbytes, tmp_buf, is_contig, errflag);
-    if (mpi_errno) {
-        /* for communication errors, just record the error but continue */
-        *errflag =
-            MPIX_ERR_PROC_FAILED ==
-            MPIR_ERR_GET_CLASS(mpi_errno) ? MPIR_ERR_PROC_FAILED : MPIR_ERR_OTHER;
-        MPIR_ERR_SET(mpi_errno, *errflag, "**fail");
-        MPIR_ERR_ADD(mpi_errno_ret, mpi_errno);
-    }
+    MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
 
     /* curr_size is the amount of data that this process now has stored in
      * buffer at byte offset (relative_rank*scatter_size) */
@@ -119,6 +111,7 @@ int MPIR_Bcast_intra_scatter_recursive_doubling_allgather(void *buffer,
         my_tree_root = relative_rank >> i;
         my_tree_root <<= i;
 
+        MPI_Aint send_offset, recv_offset;
         send_offset = my_tree_root * scatter_size;
         recv_offset = dst_tree_root * scatter_size;
 
@@ -128,16 +121,9 @@ int MPIR_Bcast_intra_scatter_recursive_doubling_allgather(void *buffer,
                                       ((char *) tmp_buf + recv_offset),
                                       (nbytes - recv_offset < 0 ? 0 : nbytes - recv_offset),
                                       MPI_BYTE, dst, MPIR_BCAST_TAG, comm_ptr, &status, errflag);
+            MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
             if (mpi_errno) {
-                /* --BEGIN ERROR HANDLING-- */
-                /* for communication errors, just record the error but continue */
-                *errflag =
-                    MPIX_ERR_PROC_FAILED ==
-                    MPIR_ERR_GET_CLASS(mpi_errno) ? MPIR_ERR_PROC_FAILED : MPIR_ERR_OTHER;
-                MPIR_ERR_SET(mpi_errno, *errflag, "**fail");
-                MPIR_ERR_ADD(mpi_errno_ret, mpi_errno);
                 recv_size = 0;
-                /* --END ERROR HANDLING-- */
             } else
                 MPIR_Get_count_impl(&status, MPI_BYTE, &recv_size);
             curr_size += recv_size;
@@ -173,6 +159,7 @@ int MPIR_Bcast_intra_scatter_recursive_doubling_allgather(void *buffer,
             }
             k--;
 
+            MPI_Aint offset;
             offset = scatter_size * (my_tree_root + mask);
             tmp_mask = mask >> 1;
 
@@ -202,14 +189,7 @@ int MPIR_Bcast_intra_scatter_recursive_doubling_allgather(void *buffer,
                     /* recv_size was set in the previous
                      * receive. that's the amount of data to be
                      * sent now. */
-                    if (mpi_errno) {
-                        /* for communication errors, just record the error but continue */
-                        *errflag =
-                            MPIX_ERR_PROC_FAILED ==
-                            MPIR_ERR_GET_CLASS(mpi_errno) ? MPIR_ERR_PROC_FAILED : MPIR_ERR_OTHER;
-                        MPIR_ERR_SET(mpi_errno, *errflag, "**fail");
-                        MPIR_ERR_ADD(mpi_errno_ret, mpi_errno);
-                    }
+                    MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
                 }
                 /* recv only if this proc. doesn't have data and sender
                  * has data */
@@ -220,20 +200,12 @@ int MPIR_Bcast_intra_scatter_recursive_doubling_allgather(void *buffer,
                      * relative_rank, dst); */
                     mpi_errno = MPIC_Recv(((char *) tmp_buf + offset),
                                           nbytes - offset < 0 ? 0 : nbytes - offset,
-                                          MPI_BYTE, dst, MPIR_BCAST_TAG,
-                                          comm_ptr, &status, errflag);
+                                          MPI_BYTE, dst, MPIR_BCAST_TAG, comm_ptr, &status);
                     /* nprocs_completed is also equal to the no. of processes
                      * whose data we don't have */
+                    MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
                     if (mpi_errno) {
-                        /* --BEGIN ERROR HANDLING-- */
-                        /* for communication errors, just record the error but continue */
-                        *errflag =
-                            MPIX_ERR_PROC_FAILED ==
-                            MPIR_ERR_GET_CLASS(mpi_errno) ? MPIR_ERR_PROC_FAILED : MPIR_ERR_OTHER;
-                        MPIR_ERR_SET(mpi_errno, *errflag, "**fail");
-                        MPIR_ERR_ADD(mpi_errno_ret, mpi_errno);
                         recv_size = 0;
-                        /* --END ERROR HANDLING-- */
                     } else
                         MPIR_Get_count_impl(&status, MPI_BYTE, &recv_size);
                     curr_size += recv_size;
@@ -252,14 +224,7 @@ int MPIR_Bcast_intra_scatter_recursive_doubling_allgather(void *buffer,
 
 #ifdef HAVE_ERROR_CHECKING
     /* check that we received as much as we expected */
-    if (curr_size != nbytes) {
-        if (*errflag == MPIR_ERR_NONE)
-            *errflag = MPIR_ERR_OTHER;
-        MPIR_ERR_SET2(mpi_errno, MPI_ERR_OTHER,
-                      "**collective_size_mismatch",
-                      "**collective_size_mismatch %d %d", curr_size, nbytes);
-        MPIR_ERR_ADD(mpi_errno_ret, mpi_errno);
-    }
+    MPIR_ERR_COLL_CHECK_SIZE(curr_size, nbytes, errflag, mpi_errno_ret);
 #endif
 
     if (!is_contig) {
@@ -271,13 +236,8 @@ int MPIR_Bcast_intra_scatter_recursive_doubling_allgather(void *buffer,
 
   fn_exit:
     MPIR_CHKLMEM_FREEALL();
-    /* --BEGIN ERROR HANDLING-- */
-    if (mpi_errno_ret)
-        mpi_errno = mpi_errno_ret;
-    else if (*errflag != MPIR_ERR_NONE)
-        MPIR_ERR_SET(mpi_errno, *errflag, "**coll_fail");
-    /* --END ERROR HANDLING-- */
-    return mpi_errno;
+    return mpi_errno_ret;
   fn_fail:
+    mpi_errno_ret = mpi_errno;
     goto fn_exit;
 }

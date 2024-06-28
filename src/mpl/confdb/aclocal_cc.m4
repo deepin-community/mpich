@@ -315,25 +315,18 @@ if test "$pac_cv_prog_c_weak_symbols" != "no" ; then
         ;;
     esac
 fi
-AC_CACHE_CHECK([whether __attribute__ ((weak)) allowed], pac_cv_attr_weak,[
-    AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[int foo(int) __attribute__ ((weak));]],[[int a;]])],
-        pac_cv_attr_weak=yes,pac_cv_attr_weak=no)
-])
-# Note that being able to compile with weak_import doesn't mean that
-# it works.
-AC_CACHE_CHECK([whether __attribute__ ((weak_import)) allowed], pac_cv_attr_weak_import,[
-    AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[int foo(int) __attribute__ ((weak_import));]],[[int a;]])],
-        pac_cv_attr_weak_import=yes,pac_cv_attr_weak_import=no)
-])
-# Check if the alias option for weak attributes is allowed
-AC_CACHE_CHECK([whether __attribute__((weak,alias(...))) allowed], pac_cv_attr_weak_alias,[
-    PAC_PUSH_FLAG([CFLAGS])
-    # force an error exit if the weak attribute isn't understood
-    CFLAGS=-Werror
-    AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[int __foo(int a){return 0;} int foo(int) __attribute__((weak,alias("__foo")));]],[[int a;]])],
-        pac_cv_attr_weak_alias=yes,pac_cv_attr_weak_alias=no)
-    # Restore original CFLAGS
-    PAC_POP_FLAG([CFLAGS])
+AC_CACHE_CHECK([whether __attribute__ ((weak,alias(...))) allowed], pac_cv_attr_weak_alias,[
+    PAC_COMPLINK_IFELSE(
+	[AC_LANG_SOURCE([[
+	    int PFoo(int) __attribute__ ((weak,alias("Foo")));
+	    int Foo(int a) { return a; }
+	]])],
+	[AC_LANG_PROGRAM([[
+		int PFoo(int);
+	]],[[
+		return PFoo(1);
+	]])],
+	pac_cv_attr_weak_alias=yes,pac_cv_attr_weak_alias=no)
 ])
 
 if test "$pac_cv_attr_weak_alias" = "yes" ; then
@@ -471,12 +464,7 @@ dnl had trouble with gcc 2.95.3 accepting -std=c89 but then trying to
 dnl compile program with a invalid set of options 
 dnl (-D __STRICT_ANSI__-trigraphs)
 AC_DEFUN([PAC_CC_STRICT],[
-PAC_CC_VENDOR()
-export enable_strict_done
-if test "$enable_strict_done" != "yes" ; then
-    # make sure we don't add the below flags multiple times
-    enable_strict_done=yes
-
+    PAC_CC_VENDOR()
     # Some comments on strict warning options.
     # These were added to improve portability
     #   -Wstack-usage=262144 -- 32 bit FreeBSD did not like the mprobe test
@@ -564,21 +552,6 @@ if test "$enable_strict_done" != "yes" ; then
         -Wstack-usage=262144
         -fno-var-tracking
     "
-
-    case "$pac_cv_cc_vendor" in
-        gnu)
-            pac_common_strict_flags="${pac_common_strict_flags}
-                -Wno-unused-label
-            "
-            ;;
-        icx)
-            pac_common_strict_flags="${pac_common_strict_flags}
-                -Wno-unused-label
-            "
-            ;;
-        *)
-            ;;
-    esac
 
     if test -z "$1"; then
         flags=no
@@ -697,7 +670,6 @@ if test "$enable_strict_done" != "yes" ; then
         PAC_POP_FLAG([CFLAGS])
     done
     pac_cc_strict_flags=$accepted_flags
-fi
 ])
 
 dnl/*D
@@ -1525,6 +1497,36 @@ AC_LINK_IFELSE([AC_LANG_PROGRAM([],[[
 if test x$have_builtin_expect = xyes ; then
     AC_DEFINE([HAVE_BUILTIN_EXPECT], [1], [Define to 1 if the compiler supports __builtin_expect.])
 fi
+])
+
+dnl
+dnl Will AC_DEFINE([HAVE_BUILTIN_CLZ]) if the compiler supports __builtin_clz.
+dnl
+AC_DEFUN([PAC_C_BUILTIN_CLZ],[
+    AC_MSG_CHECKING([if C compiler supports __builtin_clz])
+    AC_LINK_IFELSE([AC_LANG_PROGRAM([],[[
+        return __builtin_clz(0)
+    ]])], [
+        AC_DEFINE([HAVE_BUILTIN_CLZ], [1], [Define to 1 if the compiler supports __builtin_clz.])
+        AC_MSG_RESULT([yes])
+    ], [
+        AC_MSG_RESULT([no])
+    ])
+])
+
+dnl
+dnl Will AC_DEFINE([HAVE_BUILTIN_POPCOUNT]) if the compiler supports __builtin_clz.
+dnl
+AC_DEFUN([PAC_C_BUILTIN_POPCOUNT],[
+    AC_MSG_CHECKING([if C compiler supports __builtin_popcount])
+    AC_LINK_IFELSE([AC_LANG_PROGRAM([],[[
+        return __builtin_popcount(0)
+    ]])], [
+        AC_DEFINE([HAVE_BUILTIN_POPCOUNT], [1], [Define to 1 if the compiler supports __builtin_popcount.])
+        AC_MSG_RESULT([yes])
+    ], [
+        AC_MSG_RESULT([no])
+    ])
 ])
 
 dnl

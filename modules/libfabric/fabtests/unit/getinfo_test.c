@@ -780,6 +780,15 @@ static int getinfo_unit_test(char *node, char *service, uint64_t flags,
 			break;
 	}
 out:
+	/* If init was called, then there is a chance that the hints were
+	 * modified so that the application now owns some of the memory.
+	 * At the moment, only invalid_dom does this and the domain name
+	 * is the only application owned memory. Free the application owned
+	 * memory so that fi_freeinfo only frees memory that it owns. */
+	if (init) {
+		free(test_hints->domain_attr->name);
+		test_hints->domain_attr->name = NULL;
+	}
 	fi_freeinfo(test_hints);
 	fi_freeinfo(info);
 	return ret;
@@ -929,9 +938,9 @@ getinfo_test(caps, 4, "Test for capability bit regression",
 	     NULL, NULL, 0, hints, NULL, test_caps_regression, NULL, 0)
 
 
-static void usage(void)
+static void usage(char *name)
 {
-	ft_unit_usage("getinfo_test", "Unit tests for fi_getinfo");
+	ft_unit_usage(name, "Unit tests for fi_getinfo");
 	FT_PRINT_OPTS_USAGE("-e <ep_type>",
 			    "Endpoint type: msg|rdm|dgram (default:rdm)");
 	ft_addr_usage();
@@ -1032,10 +1041,8 @@ int main(int argc, char **argv)
 			ft_parseinfo(op, optarg, hints, &opts);
 			break;
 		case 'h':
-			usage();
-			return EXIT_SUCCESS;
 		case '?':
-			usage();
+			usage(argv[0]);
 			return EXIT_FAILURE;
 		}
 	}

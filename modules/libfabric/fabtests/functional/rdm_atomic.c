@@ -35,6 +35,7 @@
 #include <rdma/fi_atomic.h>
 
 #include "shared.h"
+#include <hmem.h>
 
 static enum fi_op op_type = FI_MIN;
 static void *result;
@@ -112,6 +113,10 @@ static enum fi_datatype get_fi_datatype(char *op)
 		return FI_INT64;
 	else if (!strcmp(op, "uint64"))
 		return FI_UINT64;
+	else if (!strcmp(op, "int128"))
+		return FI_INT128;
+	else if (!strcmp(op, "uint128"))
+		return FI_UINT128;
 	else if (!strcmp(op, "float"))
 		return FI_FLOAT;
 	else if (!strcmp(op, "double"))
@@ -126,7 +131,7 @@ static enum fi_datatype get_fi_datatype(char *op)
 		return FI_LONG_DOUBLE_COMPLEX;
 	else {
 		fprintf(stderr, "Not a valid atomic operation\n");
-		return FI_DATATYPE_LAST;
+		return OFI_DATATYPE_CNT;
 	}
 }
 
@@ -140,8 +145,8 @@ static void print_opts_usage(char *name)
 	FT_PRINT_OPTS_USAGE("", "cswap_ge|cswap_gt|mswap (default: all)");
 	/* Atomic datatype */
 	FT_PRINT_OPTS_USAGE("-z <datatype>", "atomic datatype: int8|uint8|int16|uint16|");
-	FT_PRINT_OPTS_USAGE("", "int32|uint32|int64|uint64|float|double|"
-				"float_complex|double_complex|");
+	FT_PRINT_OPTS_USAGE("", "int32|uint32|int64|uint64|int128|uint128|"
+			    "float|double|float_complex|double_complex|");
 	FT_PRINT_OPTS_USAGE("", "long_double|long_double_complex (default: all)");
 }
 
@@ -177,7 +182,7 @@ static inline int handle_atomic_ ## type ## _op(int run_all_datatypes,		\
 	int ret = FI_SUCCESS;							\
 										\
 	if (run_all_datatypes) {						\
-		for (datatype = 0; datatype < FI_DATATYPE_LAST; datatype++) {	\
+		for (datatype = 0; datatype < OFI_DATATYPE_CNT; datatype++) {	\
 			ret = check_ ## type ## _atomic_op(ep, op_type,		\
 							   datatype, count);	\
 			if (ret == -FI_ENOSYS || ret == -FI_EOPNOTSUPP) {	\
@@ -356,18 +361,18 @@ static void free_res(void)
 	FT_CLOSE_FID(mr_result);
 	FT_CLOSE_FID(mr_compare);
 	if (result) {
-		free(result);
+		ft_hmem_free(opts.iface, result);
 		result = NULL;
 	}
 	if (compare) {
-		free(compare);
+		ft_hmem_free(opts.iface, compare);
 		compare = NULL;
 	}
 }
 
 static uint64_t get_mr_key()
 {
-	static uint64_t user_key = FT_MR_KEY;
+	static uint64_t user_key = FT_MR_KEY + 1;
 
 	return ((fi->domain_attr->mr_mode == FI_MR_BASIC) ||
 		(fi->domain_attr->mr_mode & FI_MR_PROV_KEY)) ?
@@ -379,81 +384,35 @@ static int alloc_ep_res(struct fi_info *fi)
 	int ret;
 	int mr_local = !!(fi->domain_attr->mr_mode & FI_MR_LOCAL);
 
-	ret = ft_alloc_active_res(fi);
-	if (ret)
-		return ret;
-
-	result = malloc(buf_size);
-	if (!result) {
-		perror("malloc");
-		return -1;
-	}
-
-	compare = malloc(buf_size);
-	if (!compare) {
-		perror("malloc");
-		return -1;
-	}
-
-	// registers local data buffer buff that used for send/recv
-	// and local/remote RMA.
-	ret = fi_mr_reg(domain, buf, buf_size,
-			((mr_local ?
-			  FI_SEND | FI_RECV | FI_READ | FI_WRITE : 0) |
-			 FI_REMOTE_READ | FI_REMOTE_WRITE), 0,
-			get_mr_key(), 0, &mr, NULL);
+	ret = ft_hmem_alloc(opts.iface, opts.device, &result, buf_size);
 	if (ret) {
-		FT_PRINTERR("fi_mr_reg", ret);
-		return ret;
+		perror("hmem allocation error");
+		return -1;
 	}
-	// Set global descriptor for FI_MR_LOCAL.
-	if (mr_local)
-		mr_desc = fi_mr_desc(mr);
+
+	ret = ft_hmem_alloc(opts.iface, opts.device, &compare, buf_size);
+	if (ret) {
+		perror("hmem allocation error");
+		return -1;
+	}
 
 	// registers local data buffer that stores results
-	ret = fi_mr_reg(domain, result, buf_size,
-			(mr_local ? FI_READ : 0) | FI_REMOTE_WRITE, 0,
-			get_mr_key(), 0, &mr_result, NULL);
+	ret = ft_reg_mr(fi, result, buf_size,
+			(mr_local ? FI_READ : 0) | FI_REMOTE_WRITE,
+			 get_mr_key(), opts.iface, opts.device, &mr_result, NULL);
 	if (ret) {
 		FT_PRINTERR("fi_mr_reg", -ret);
 		return ret;
 	}
 
 	// registers local data buffer that contains comparison data
-	ret = fi_mr_reg(domain, compare, buf_size,
-			(mr_local ? FI_WRITE : 0)  | FI_REMOTE_READ, 0,
-			get_mr_key(), 0, &mr_compare, NULL);
+	ret = ft_reg_mr(fi, compare, buf_size,
+			(mr_local ? FI_WRITE : 0) | FI_REMOTE_READ,
+			 get_mr_key(), opts.iface, opts.device, &mr_compare, NULL);
 	if (ret) {
 		FT_PRINTERR("fi_mr_reg", ret);
 		return ret;
 	}
-
-	return 0;
-}
-
-static int init_fabric(void)
-{
-	int ret;
-
-	ret  = ft_init_oob();
-	if (ret)
-		return ret;
-
-	ret = ft_getinfo(hints, &fi);
-	if (ret)
-		return ret;
-
-	ret = ft_open_fabric_res();
-	if (ret)
-		return ret;
-
-	ret = alloc_ep_res(fi);
-	if (ret)
-		return ret;
-
-	ret = ft_enable_ep_recv();
-	if (ret)
-		return ret;
 
 	return 0;
 }
@@ -462,13 +421,13 @@ static int run(void)
 {
 	int ret;
 
-	ret = init_fabric();
+	ret = ft_init_fabric();
 	if (ret)
 		return ret;
 
-	ret = ft_init_av();
+	ret = alloc_ep_res(fi);
 	if (ret)
-		goto out;
+		return ret;
 
 	ret = ft_exchange_keys(&remote);
 	if (ret)
@@ -489,13 +448,13 @@ int main(int argc, char **argv)
 	int op, ret;
 
 	opts = INIT_OPTS;
-	opts.options |= FT_OPT_SKIP_REG_MR;
 
 	hints = fi_allocinfo();
 	if (!hints)
 		return EXIT_FAILURE;
 
-	while ((op = getopt(argc, argv, "ho:Uz:" CS_OPTS INFO_OPTS)) != -1) {
+	while ((op = getopt_long(argc, argv, "ho:Uz:" CS_OPTS INFO_OPTS,
+				 long_opts, &lopt_idx)) != -1) {
 		switch (op) {
 		case 'o':
 			if (!strncasecmp("all", optarg, 3)) {
@@ -518,19 +477,22 @@ int main(int argc, char **argv)
 			} else {
 				run_all_datatypes = 0;
 				datatype = get_fi_datatype(optarg);
-				if (datatype == FI_DATATYPE_LAST) {
+				if (datatype == OFI_DATATYPE_CNT) {
 					print_opts_usage(argv[0]);
 					return EXIT_FAILURE;
 				}
 			}
 			break;
 		default:
+			if (!ft_parse_long_opts(op, optarg))
+				continue;
 			ft_parseinfo(op, optarg, hints, &opts);
 			ft_parsecsopts(op, optarg, &opts);
 			break;
 		case '?':
 		case 'h':
 			print_opts_usage(argv[0]);
+			ft_longopts_usage();
 			return EXIT_FAILURE;
 		}
 	}

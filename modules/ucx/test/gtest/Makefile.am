@@ -1,10 +1,11 @@
 #
-# Copyright (C) Mellanox Technologies Ltd. 2001-2014.  ALL RIGHTS RESERVED.
+# Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2001-2014. ALL RIGHTS RESERVED.
 # Copyright (C) UT-Battelle, LLC. 2015. ALL RIGHTS RESERVED.
 # Copyright (C) The University of Tennessee and the University of Tennessee Research Foundation. 2016. ALL RIGHTS RESERVED.
 # Copyright (C) Los Alamos National Security, LLC. 2018 ALL RIGHTS RESERVED.
 # Copyright (C) Advanced Micro Devices, Inc. 2019. ALL RIGHTS RESERVED.
 # Copyright (C) ARM Ltd. 2020.  ALL RIGHTS RESERVED.
+# Copyright (C) NextSilicon Ltd. 2021.  ALL RIGHTS RESERVED.
 #
 # See file LICENSE for terms.
 #
@@ -70,7 +71,7 @@ gtest_CPPFLAGS = \
 	$(GTEST_CPPFLAGS) \
 	$(OPENMP_CFLAGS)
 
-gtest_LDFLAGS  = $(GTEST_LDFLAGS) -no-install -Wl,-dynamic-list-data
+gtest_LDFLAGS  = $(GTEST_LDFLAGS) -no-install $(LDFLAGS_DYNAMIC_LIST_DATA)
 gtest_CFLAGS   = $(BASE_CFLAGS)
 gtest_CXXFLAGS = \
 	$(BASE_CXXFLAGS) $(GTEST_CXXFLAGS) -std=c++11 \
@@ -118,6 +119,7 @@ gtest_SOURCES = \
 	ucs/test_event_set.cc \
 	ucs/test_stats_filter.cc \
 	uct/test_peer_failure.cc \
+	uct/test_sockaddr.cc \
 	uct/test_tag.cc \
 	uct/tcp/test_tcp.cc \
 	\
@@ -173,6 +175,7 @@ gtest_SOURCES = \
 	ucs/test_pgtable.cc \
 	ucs/test_profile.cc \
 	ucs/test_rcache.cc \
+	ucs/test_khash.cc \
 	ucs/test_memtype_cache.cc \
 	ucs/test_stats.cc \
 	ucs/test_strided_alloc.cc \
@@ -222,9 +225,9 @@ if HAVE_TL_DC
 gtest_SOURCES += \
 	uct/ib/test_dc.cc
 endif
-if HAVE_RDMACM
+if HAVE_MLX5_DV
 gtest_SOURCES += \
-	uct/ib/test_sockaddr.cc
+	uct/ib/test_cqe_zipping.cc
 endif
 endif # HAVE_IB
 
@@ -260,7 +263,6 @@ noinst_HEADERS = \
 	common/test.h \
 	common/test_helpers.h \
 	common/test_perf.h \
-	common/tap.h \
 	\
 	uct/ib/test_rc.h \
 	uct/ib/ud_base.h \

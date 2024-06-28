@@ -1,10 +1,14 @@
-.TH MPI_Type_match_size 3 "2/22/2022" " " "MPI"
+.TH MPI_Type_match_size 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Type_match_size \-  Find an MPI datatype matching a specified size 
 .SH SYNOPSIS
 .nf
+.fi
+.nf
 int MPI_Type_match_size(int typeclass, int size, MPI_Datatype *datatype)
 .fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -104,7 +108,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

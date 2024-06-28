@@ -23,7 +23,7 @@ int MPIR_Allgather_intra_recursive_doubling(const void *sendbuf,
                                             void *recvbuf,
                                             MPI_Aint recvcount,
                                             MPI_Datatype recvtype,
-                                            MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
+                                            MPIR_Comm * comm_ptr, MPIR_Errflag_t errflag)
 {
     int comm_size, rank;
     int mpi_errno = MPI_SUCCESS;
@@ -33,8 +33,7 @@ int MPIR_Allgather_intra_recursive_doubling(const void *sendbuf,
     MPI_Aint curr_cnt, last_recv_cnt = 0;
     int dst;
     MPI_Status status;
-    int mask, dst_tree_root, my_tree_root,
-        send_offset, recv_offset, nprocs_completed, k, offset, tmp_mask, tree_root;
+    int mask, dst_tree_root, my_tree_root, nprocs_completed, k, tmp_mask, tree_root;
 
     comm_size = comm_ptr->local_size;
     rank = comm_ptr->rank;
@@ -72,7 +71,7 @@ int MPIR_Allgather_intra_recursive_doubling(const void *sendbuf,
         my_tree_root = rank >> i;
         my_tree_root <<= i;
 
-        /* FIXME: saving an MPI_Aint into an int */
+        MPI_Aint send_offset, recv_offset;
         send_offset = my_tree_root * recvcount * recvtype_extent;
         recv_offset = dst_tree_root * recvcount * recvtype_extent;
 
@@ -84,13 +83,8 @@ int MPIR_Allgather_intra_recursive_doubling(const void *sendbuf,
                                       (comm_size - dst_tree_root) * recvcount,
                                       recvtype, dst,
                                       MPIR_ALLGATHER_TAG, comm_ptr, &status, errflag);
+            MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
             if (mpi_errno) {
-                /* for communication errors, just record the error but continue */
-                *errflag =
-                    MPIX_ERR_PROC_FAILED ==
-                    MPIR_ERR_GET_CLASS(mpi_errno) ? MPIR_ERR_PROC_FAILED : MPIR_ERR_OTHER;
-                MPIR_ERR_SET(mpi_errno, *errflag, "**fail");
-                MPIR_ERR_ADD(mpi_errno_ret, mpi_errno);
                 last_recv_cnt = 0;
             } else {
                 MPIR_Get_count_impl(&status, recvtype, &last_recv_cnt);
@@ -129,7 +123,7 @@ int MPIR_Allgather_intra_recursive_doubling(const void *sendbuf,
             }
             k--;
 
-            /* FIXME: saving an MPI_Aint into an int */
+            MPI_Aint offset;
             offset = recvcount * (my_tree_root + mask) * recvtype_extent;
             tmp_mask = mask >> 1;
 
@@ -147,17 +141,7 @@ int MPIR_Allgather_intra_recursive_doubling(const void *sendbuf,
                     mpi_errno = MPIC_Send(((char *) recvbuf + offset),
                                           last_recv_cnt,
                                           recvtype, dst, MPIR_ALLGATHER_TAG, comm_ptr, errflag);
-                    /* last_recv_cnt was set in the previous
-                     * receive. that's the amount of data to be
-                     * sent now. */
-                    if (mpi_errno) {
-                        /* for communication errors, just record the error but continue */
-                        *errflag =
-                            MPIX_ERR_PROC_FAILED ==
-                            MPIR_ERR_GET_CLASS(mpi_errno) ? MPIR_ERR_PROC_FAILED : MPIR_ERR_OTHER;
-                        MPIR_ERR_SET(mpi_errno, *errflag, "**fail");
-                        MPIR_ERR_ADD(mpi_errno_ret, mpi_errno);
-                    }
+                    MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
                 }
                 /* recv only if this proc. doesn't have data and sender
                  * has data */
@@ -166,17 +150,11 @@ int MPIR_Allgather_intra_recursive_doubling(const void *sendbuf,
                          (rank >= tree_root + nprocs_completed)) {
                     mpi_errno = MPIC_Recv(((char *) recvbuf + offset),
                                           (comm_size - (my_tree_root + mask)) * recvcount,
-                                          recvtype, dst,
-                                          MPIR_ALLGATHER_TAG, comm_ptr, &status, errflag);
+                                          recvtype, dst, MPIR_ALLGATHER_TAG, comm_ptr, &status);
+                    MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
                     /* nprocs_completed is also equal to the
                      * no. of processes whose data we don't have */
                     if (mpi_errno) {
-                        /* for communication errors, just record the error but continue */
-                        *errflag =
-                            MPIX_ERR_PROC_FAILED ==
-                            MPIR_ERR_GET_CLASS(mpi_errno) ? MPIR_ERR_PROC_FAILED : MPIR_ERR_OTHER;
-                        MPIR_ERR_SET(mpi_errno, *errflag, "**fail");
-                        MPIR_ERR_ADD(mpi_errno_ret, mpi_errno);
                         last_recv_cnt = 0;
                     } else {
                         MPIR_Get_count_impl(&status, recvtype, &last_recv_cnt);
@@ -194,13 +172,8 @@ int MPIR_Allgather_intra_recursive_doubling(const void *sendbuf,
     }
 
   fn_exit:
-    if (mpi_errno_ret)
-        mpi_errno = mpi_errno_ret;
-    else if (*errflag != MPIR_ERR_NONE)
-        MPIR_ERR_SET(mpi_errno, *errflag, "**coll_fail");
-
-    return mpi_errno;
-
+    return mpi_errno_ret;
   fn_fail:
+    mpi_errno_ret = mpi_errno;
     goto fn_exit;
 }

@@ -1,12 +1,25 @@
-.TH MPI_Type_create_struct 3 "2/22/2022" " " "MPI"
+.TH MPI_Type_create_struct 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Type_create_struct \-  Create an MPI datatype from a general set of datatypes, displacements, and block sizes 
 .SH SYNOPSIS
 .nf
+.fi
+.nf
 int MPI_Type_create_struct(int count, const int array_of_blocklengths[],
 const MPI_Aint array_of_displacements[],
-const MPI_Datatype array_of_types[], MPI_Datatype *newtype)
+const MPI_Datatype array_of_types[],
+MPI_Datatype *newtype)
 .fi
+
+.nf
+int MPI_Type_create_struct_c(MPI_Count count,
+const MPI_Count array_of_blocklengths[],
+const MPI_Count array_of_displacements[],
+const MPI_Datatype array_of_types[],
+MPI_Datatype *newtype)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -102,7 +115,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

@@ -1,5 +1,5 @@
 #
-# Copyright (C) Mellanox Technologies Ltd. 2001-2014.  ALL RIGHTS RESERVED.
+# Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2001-2014. ALL RIGHTS RESERVED.
 # Copyright (C) UT-Battelle, LLC. 2015. ALL RIGHTS RESERVED.
 # Copyright (C) ARM, Ltd. 2016. ALL RIGHTS RESERVED.
 # See file LICENSE for terms.
@@ -28,6 +28,22 @@ AS_IF([test "x$enable_profiling" = xyes],
 AM_CONDITIONAL([HAVE_PROFILING],[test "x$HAVE_PROFILING" = "xyes"])
 
 
+AC_DEFUN([CHECK_BFD_LIB],
+[
+   AS_IF([test "x$bfd_happy" = "xno"], [
+       unset ac_cv_lib_bfd_bfd_openr
+       LIBS="$LIBS $1"
+       BFD_CHECK_DEPLIBS="$BFD_CHECK_DEPLIBS $1"
+       BFD_CHECK_LIBS="$BFD_CHECK_LIBS $1"
+       AC_CHECK_LIB(bfd, bfd_openr,
+           [
+            bfd_happy="yes"
+           ],
+           [],
+           [$BFD_CHECK_DEPLIBS])
+   ])
+])
+
 #
 # Detailed backtrace with debug information.
 # This option requires binutils-devel package.
@@ -54,24 +70,22 @@ AS_IF([test "x$with_bfd" != xno],
        save_LIBS="$LIBS"
 
        # Check BFD properties with all flags pointing to the custom location
-       CFLAGS="$CFLAGS $BFD_CHECK_CFLAGS"
        CPPFLAGS="$CPPFLAGS $BFD_CHECK_CPPFLAGS"
-       LDFLAGS="$LDFLAGS $BFD_CHECK_LDFLAGS"
        LIBS="$LIBS $BFD_CHECK_LIBS"
+       BFD_CHECK_DEPLIBS="-lz -ldl"
 
-       bfd_happy="yes"
-       AC_CHECK_LIB(bfd, bfd_openr, [],
-                    [
-                     # If cannot link with bfd, try adding known dependency libs
-                     # unset the cached check result to force re-check
-                     unset ac_cv_lib_bfd_bfd_openr
-                     BFD_CHECK_DEPLIBS="-liberty -lz -ldl"
-                     AC_CHECK_LIB(bfd, bfd_openr,
-                                  [BFD_CHECK_LIBS="$BFD_CHECK_LIBS $BFD_CHECK_DEPLIBS"
-                                   LIBS="$LIBS $BFD_CHECK_DEPLIBS"],
-                                  [bfd_happy="no"],
-                                  [$BFD_CHECK_DEPLIBS])
-                    ])
+       # Link the test applications as a shared library, to fail if libbfd is
+       # not a PIC object.
+       # Do not allow undefined symbols, to ensure all references are resolved.
+       # TODO Allow static link with static libbfd
+       CFLAGS="$CFLAGS $BFD_CHECK_CFLAGS -fPIC"
+       LDFLAGS="$LDFLAGS $BFD_CHECK_LDFLAGS -shared -Wl,--no-undefined"
+
+       bfd_happy="no"
+       CHECK_BFD_LIB([""])
+       CHECK_BFD_LIB([-liberty])
+       CHECK_BFD_LIB([-lsframe])
+
        AC_CHECK_HEADER([bfd.h], [], [bfd_happy="no"])
        AC_CHECK_TYPES([struct dl_phdr_info], [], [bfd_happy=no],
                       [[#define _GNU_SOURCE 1
@@ -116,6 +130,7 @@ AS_IF([test "x$with_bfd" != xno],
               AC_SUBST([BFD_CPPFLAGS], [$BFD_CHECK_CPPFLAGS])
               AC_SUBST([BFD_LIBS], [$BFD_CHECK_LIBS])
               AC_SUBST([BFD_LDFLAGS], [$BFD_CHECK_LDFLAGS])
+              AC_SUBST([BFD_DEPS], [$BFD_CHECK_DEPLIBS])
              ],
              [
                AS_IF([test "x$with_bfd" != "xyes" -a "x$with_bfd" != "xguess"],
@@ -130,20 +145,6 @@ AS_IF([test "x$with_bfd" != xno],
       [bfd_happy="no"
        AC_MSG_WARN([BFD support was explicitly disabled])]
 )
-
-
-#
-# Disable overriding sigaction
-#
-AC_ARG_ENABLE([sigaction-override],
-    AS_HELP_STRING([--disable-sigaction-override],
-                   [Disable sigaction,signal function overriding, default: NO]),
-    [],
-    [enable_sigaction_override=yes])
-
-AS_IF([test "x$enable_sigaction_override" = xyes],
-      AC_DEFINE([ENABLE_SIGACTION_OVERRIDE], [1], [Enable sigaction,signal function overriding])
-    )
 
 
 #
@@ -234,7 +235,7 @@ CHECK_CROSS_COMP([AC_LANG_SOURCE([static int rc = 1;
 # Manual configuration of cacheline size
 #
 AC_ARG_WITH([cache-line-size],
-        [AC_HELP_STRING([--with-cache-line-size=SIZE],
+        [AS_HELP_STRING([--with-cache-line-size=SIZE],
             [Build UCX with cache line size defined by user. This parameter
              overwrites default cache line sizes defines in
              UCX (x86-64: 64, Power: 128, ARMv8: 64/128). The supported values are: 64, 128])],
@@ -302,4 +303,6 @@ AC_CHECK_FUNCS([__clear_cache], [], [])
 AC_CHECK_FUNCS([__aarch64_sync_cache_range], [], [])
 
 
-AC_CONFIG_FILES([src/ucs/Makefile])
+AC_CONFIG_FILES([src/ucs/Makefile
+                 src/ucs/signal/Makefile
+                 src/ucs/ucx-ucs.pc])

@@ -1,10 +1,14 @@
-.TH MPI_Attr_put 3 "2/22/2022" " " "MPI"
+.TH MPI_Attr_put 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Attr_put \-  Stores attribute value associated with a key 
 .SH SYNOPSIS
 .nf
+.fi
+.nf
 int MPI_Attr_put(MPI_Comm comm, int keyval, void *attribute_val)
 .fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -96,7 +100,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_OTHER 

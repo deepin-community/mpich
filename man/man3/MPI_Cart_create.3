@@ -1,11 +1,15 @@
-.TH MPI_Cart_create 3 "2/22/2022" " " "MPI"
+.TH MPI_Cart_create 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Cart_create \-  Makes a new communicator to which topology information has been attached 
 .SH SYNOPSIS
 .nf
-int MPI_Cart_create(MPI_Comm comm_old, int ndims, const int dims[], const int periods[],
-int reorder, MPI_Comm *comm_cart)
 .fi
+.nf
+int MPI_Cart_create(MPI_Comm comm_old, int ndims, const int dims[],
+const int periods[], int reorder, MPI_Comm *comm_cart)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -30,7 +34,7 @@ int reorder, MPI_Comm *comm_cart)
 .PD 0
 .TP
 .B reorder 
-- ranking may be reordered (true) or not (false) (logical)
+- ranking may be reordered (true) or not (false)
 .PD 1
 
 .SH OUTPUT PARAMETERS
@@ -111,7 +115,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

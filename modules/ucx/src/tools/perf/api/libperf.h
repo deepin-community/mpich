@@ -1,5 +1,5 @@
 /**
-* Copyright (C) Mellanox Technologies Ltd. 2001-2014.  ALL RIGHTS RESERVED.
+* Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2001-2014. ALL RIGHTS RESERVED.
 * Copyright (C) UT-Battelle, LLC. 2015. ALL RIGHTS RESERVED.
 * Copyright (C) The University of Tennessee and The University
 *               of Tennessee Research Foundation. 2015. ALL RIGHTS RESERVED.
@@ -87,7 +87,9 @@ enum ucx_perf_test_flags {
     UCX_PERF_TEST_FLAG_FLUSH_EP         = UCS_BIT(9), /* Issue flush on endpoint instead of worker */
     UCX_PERF_TEST_FLAG_WAKEUP           = UCS_BIT(10), /* Create context with wakeup feature enabled */
     UCX_PERF_TEST_FLAG_ERR_HANDLING     = UCS_BIT(11), /* Create UCP eps with error handling support */
-    UCX_PERF_TEST_FLAG_LOOPBACK         = UCS_BIT(12)  /* Use loopback connection */
+    UCX_PERF_TEST_FLAG_LOOPBACK         = UCS_BIT(12), /* Use loopback connection */
+    UCX_PERF_TEST_FLAG_PREREG           = UCS_BIT(13), /* Pass pre-registered memory handle */
+    UCX_PERF_TEST_FLAG_AM_RECV_COPY     = UCS_BIT(14)  /* Do additional memcopy during AM receive */
 };
 
 
@@ -193,6 +195,7 @@ typedef struct ucx_perf_params {
     size_t                 alignment;       /* Message buffer alignment */
     unsigned               max_outstanding; /* Maximal number of outstanding sends */
     ucx_perf_counter_t     warmup_iter;     /* Number of warm-up iterations */
+    double                 warmup_time;     /* Approximately how long to warm-up */
     ucx_perf_counter_t     max_iter;        /* Iterations limit, 0 - unlimited */
     double                 max_time;        /* Time limit (seconds), 0 - unlimited */
     double                 report_interval; /* Interval at which to call the report callback */

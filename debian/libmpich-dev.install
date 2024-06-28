@@ -1,12 +1,9 @@
-usr/include/*/mpich/mpi*
-usr/lib/*/libmpich.a
-usr/lib/*/libmpich.so
-usr/lib/*/libmpichcxx.a
-usr/lib/*/libmpichcxx.so
-usr/lib/*/libmpichfort.a
-usr/lib/*/libmpichfort.so
-usr/lib/*/libmpl.so
-usr/lib/*/libopa.so
-usr/lib/*/pkgconfig/mpich*.pc
-# install mod files
-/usr/include/*/mpich/*mod
+# usr/lib/*/mpich/include/mpi*
+usr/lib/*/mpich/lib/libmpich.a
+usr/lib/*/mpich/lib/libmpichcxx.a
+usr/lib/*/mpich/lib/libmpichfort.a
+usr/lib/*/mpich/lib/pkgconfig/mpich*.pc
+# install header files
+usr/lib/*/mpich/include/*h
+# Install mod files in include until all pkgs handle FMODDIR change
+usr/lib/*/mpich/include/*.mod

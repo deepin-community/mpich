@@ -1,12 +1,25 @@
-.TH MPI_Gatherv_init 3 "2/22/2022" " " "MPI"
+.TH MPI_Gatherv_init 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Gatherv_init \-  Create a persistent request for gatherv. 
 .SH SYNOPSIS
 .nf
-int MPI_Gatherv_init(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf,
-const int recvcounts[], const int displs[], MPI_Datatype recvtype, int root,
-MPI_Comm comm, MPI_Info info, MPI_Request *request)
 .fi
+.nf
+int MPI_Gatherv_init(const void *sendbuf, int sendcount, MPI_Datatype sendtype,
+void *recvbuf, const int recvcounts[], const int displs[],
+MPI_Datatype recvtype, int root, MPI_Comm comm,
+MPI_Info info, MPI_Request *request)
+.fi
+
+.nf
+int MPI_Gatherv_init_c(const void *sendbuf, MPI_Count sendcount,
+MPI_Datatype sendtype, void *recvbuf,
+const MPI_Count recvcounts[], const MPI_Aint displs[],
+MPI_Datatype recvtype, int root, MPI_Comm comm,
+MPI_Info info, MPI_Request *request)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -132,7 +145,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

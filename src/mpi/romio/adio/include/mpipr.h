@@ -29,10 +29,6 @@
 #define MPI_Alltoallw PMPI_Alltoallw
 #undef MPI_Attr_delete
 #define MPI_Attr_delete PMPI_Attr_delete
-#undef MPI_Attr_get
-#define MPI_Attr_get PMPI_Attr_get
-#undef MPI_Attr_put
-#define MPI_Attr_put PMPI_Attr_put
 #undef MPI_Barrier
 #define MPI_Barrier PMPI_Barrier
 #undef MPI_Bcast
@@ -75,6 +71,8 @@
 #define MPI_Comm_dup PMPI_Comm_dup
 #undef MPI_Comm_free
 #define MPI_Comm_free PMPI_Comm_free
+#undef MPI_Comm_get_attr
+#define MPI_Comm_get_attr PMPI_Comm_get_attr
 #undef MPI_Comm_group
 #define MPI_Comm_group PMPI_Comm_group
 #undef MPI_Comm_rank
@@ -83,6 +81,8 @@
 #define MPI_Comm_remote_group PMPI_Comm_remote_group
 #undef MPI_Comm_remote_size
 #define MPI_Comm_remote_size PMPI_Comm_remote_size
+#undef MPI_Comm_set_attr
+#define MPI_Comm_set_attr PMPI_Comm_set_attr
 #undef MPI_Comm_size
 #define MPI_Comm_size PMPI_Comm_size
 #undef MPI_Comm_split
@@ -269,10 +269,10 @@
 #define MPI_Topo_test PMPI_Topo_test
 #undef MPI_Type_commit
 #define MPI_Type_commit PMPI_Type_commit
+#undef MPI_Type_dup
+#define MPI_Type_dup PMPI_Type_dup
 #undef MPI_Type_contiguous
 #define MPI_Type_contiguous PMPI_Type_contiguous
-#undef MPI_Type_count
-#define MPI_Type_count PMPI_Type_count
 /* #define MPI_Type_create_darray PMPI_Type_create_darray */
 #undef MPI_Type_create_indexed_block
 #define MPI_Type_create_indexed_block PMPI_Type_create_indexed_block
@@ -291,6 +291,10 @@
 #define MPI_Type_get_contents PMPI_Type_get_contents
 #undef MPI_Type_get_envelope
 #define MPI_Type_get_envelope PMPI_Type_get_envelope
+#undef MPI_Type_get_contents_c
+#define MPI_Type_get_contents_c PMPI_Type_get_contents_c
+#undef MPI_Type_get_envelope_c
+#define MPI_Type_get_envelope_c PMPI_Type_get_envelope_c
 #undef MPI_Type_get_true_extent
 #define MPI_Type_get_true_extent PMPI_Type_get_true_extent
 #undef MPI_Type_indexed

@@ -1,12 +1,23 @@
-.TH MPI_Put 3 "2/22/2022" " " "MPI"
+.TH MPI_Put 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Put \-  Put data into a memory window on a remote process 
 .SH SYNOPSIS
 .nf
-int MPI_Put(const void *origin_addr, int origin_count, MPI_Datatype origin_datatype,
-int target_rank, MPI_Aint target_disp, int target_count, MPI_Datatype target_datatype,
-MPI_Win win)
 .fi
+.nf
+int MPI_Put(const void *origin_addr, int origin_count,
+MPI_Datatype origin_datatype, int target_rank, MPI_Aint target_disp,
+int target_count, MPI_Datatype target_datatype, MPI_Win win)
+.fi
+
+.nf
+int MPI_Put_c(const void *origin_addr, MPI_Count origin_count,
+MPI_Datatype origin_datatype, int target_rank,
+MPI_Aint target_disp, MPI_Count target_count,
+MPI_Datatype target_datatype, MPI_Win win)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -115,7 +126,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_BUFFER 

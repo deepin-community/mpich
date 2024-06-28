@@ -1070,7 +1070,6 @@ if test "$pac_ccompile_ok" = "yes" ; then
 fi
 ])
 
-
 AC_DEFUN([PAC_FC_2008_SUPPORT],[
 AC_MSG_CHECKING([for Fortran 2008 support])
 
@@ -1092,6 +1091,7 @@ int foo_c(CFI_cdesc_t * a_desc, CFI_cdesc_t * b_desc)
 
 void test_assumed_rank_async_impl_c(CFI_cdesc_t * a_desc)
 {
+	CFI_is_contiguous(a_desc);
 	return;
 }
 ]])],[mv conftest.$OBJEXT conftest1.$OBJEXT],[f08_works=no])
@@ -1208,5 +1208,81 @@ AC_DEFUN([PAC_FC_CHECK_REAL128],[
         end
     ])],[pac_fc_has_real128=yes],[pac_fc_has_real128=no])
     AC_MSG_RESULT([$pac_fc_has_real128])
+    AC_LANG_POP(Fortran)
+])
+
+dnl
+dnl PAC_FC_CHECK_IGNORE_TKR check directives to ignore type-kind-rank checks
+dnl set pac_fc_ignore_tkr to a type if supported, otherwise, no.
+dnl
+AC_DEFUN([PAC_FC_CHECK_IGNORE_TKR],[
+    AC_LANG_PUSH(Fortran)
+    AC_MSG_CHECKING([directives for Fortran compiler to ignore TKR check])
+    pac_fc_ignore_tkr=no
+    for a in gcc dec pragma dir ibm assumed; do
+        case $a in
+            gcc)
+                # gfortran since 4.9
+                decl='!GCC$ ATTRIBUTES NO_ARG_CHECK :: buf'
+                ;;
+            dec)
+                # ifort
+                decl='!DEC$ ATTRIBUTES NO_ARG_CHECK :: buf'
+                ;;
+            pragma)
+                # sunfort
+                decl='!$PRAGMA IGNORE_TKR buf'
+                ;;
+            dir)
+                # flang
+                decl='!DIR$ IGNORE_TKR buf'
+                ;;
+            ibm)
+                # ibm
+                decl='!IBM* IGNORE_TKR buf'
+                ;;
+            assumed)
+                decl='TYPE(*), DIMENSION(..) :: buf'
+                ;;
+        esac
+
+        AC_COMPILE_IFELSE([AC_LANG_SOURCE([
+            program main
+                IMPLICIT NONE
+                INTERFACE
+                  SUBROUTINE FUNC_A(buf)
+                    REAL buf
+                    $decl
+                  END SUBROUTINE
+                END INTERFACE
+
+                INTEGER A(10)
+                CALL FUNC_A(A)
+            end
+        ])],[pac_fc_ignore_tkr=$a],[])
+        if test $pac_fc_ignore_tkr != no ; then
+            break
+        fi
+    done
+    AC_MSG_RESULT([$pac_fc_ignore_tkr])
+    AC_LANG_POP(Fortran)
+])
+
+dnl
+dnl PAC_FC_ISO_C_BINDING check whether ISO_C_BINDING is supported.
+dnl set pac_fc_iso_c_binding to yes if it's supported, otherwise, no.
+dnl
+AC_DEFUN([PAC_FC_ISO_C_BINDING],[
+    AC_LANG_PUSH(Fortran)
+    AC_MSG_CHECKING([Whether Fortran compiler supports ISO_C_BINDING])
+    AC_COMPILE_IFELSE([AC_LANG_SOURCE([
+        program main
+            USE, INTRINSIC :: ISO_C_BINDING, ONLY : C_PTR, C_LOC
+            type(c_ptr) :: ptr
+            integer, target :: a
+            ptr = c_loc(a)
+        end
+    ])],[pac_fc_iso_c_binding=yes],[pac_fc_iso_c_binding=no])
+    AC_MSG_RESULT([$pac_fc_iso_c_binding])
     AC_LANG_POP(Fortran)
 ])

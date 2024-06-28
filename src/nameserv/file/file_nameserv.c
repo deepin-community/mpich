@@ -8,10 +8,10 @@
  * using a file written to a shared file system to communication the
  * data.
  */
+#include "mpiimpl.h"
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include "mpiimpl.h"
 #include "namepub.h"
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -169,7 +169,7 @@ int MPID_NS_Publish(MPID_NS_Handle handle, const MPIR_Info * info_ptr,
             case ENOMEM:
                 reason "Insufficient kernel memory available";
             default:
-                MPL_snprintf(rstr, sizeof(rstr), "errno = %d", errno);
+                snprintf(rstr, sizeof(rstr), "errno = %d", errno);
         }
 #endif
         err = MPIR_Err_create_code(MPI_SUCCESS, MPIR_ERR_RECOVERABLE, __func__, __LINE__,

@@ -1,11 +1,15 @@
-.TH MPI_Testall 3 "2/22/2022" " " "MPI"
+.TH MPI_Testall 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Testall \-  Tests for the completion of all previously initiated requests 
 .SH SYNOPSIS
 .nf
-int MPI_Testall(int count, MPI_Request array_of_requests[], int *flag,
-MPI_Status array_of_statuses[])
 .fi
+.nf
+int MPI_Testall(int count, MPI_Request array_of_requests[], int *flag,
+MPI_Status *array_of_statuses)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -172,7 +176,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

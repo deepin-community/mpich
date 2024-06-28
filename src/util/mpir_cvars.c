@@ -4,7 +4,7 @@
  */
 /* automatically generated
  *   by:   ./maint/extractcvars
- *   at:   Thu Apr  7 17:35:11 2022 UTC
+ *   at:   Fri Feb  9 18:29:49 2024 UTC
  *
  * DO NOT EDIT!!!
  */
@@ -14,7 +14,11 @@
 /* Actual storage for cvars */
 int MPIR_CVAR_BARRIER_INTRA_ALGORITHM;
 int MPIR_CVAR_BARRIER_INTER_ALGORITHM;
+int MPIR_CVAR_BARRIER_DISSEM_KVAL;
+int MPIR_CVAR_BARRIER_RECEXCH_KVAL;
+int MPIR_CVAR_BARRIER_RECEXCH_SINGLE_PHASE_RECV;
 int MPIR_CVAR_IBARRIER_RECEXCH_KVAL;
+int MPIR_CVAR_IBARRIER_DISSEM_KVAL;
 int MPIR_CVAR_IBARRIER_INTRA_ALGORITHM;
 int MPIR_CVAR_IBARRIER_INTER_ALGORITHM;
 int MPIR_CVAR_BCAST_MIN_PROCS;
@@ -22,6 +26,16 @@ int MPIR_CVAR_BCAST_SHORT_MSG_SIZE;
 int MPIR_CVAR_BCAST_LONG_MSG_SIZE;
 int MPIR_CVAR_MAX_SMP_BCAST_MSG_SIZE;
 int MPIR_CVAR_BCAST_INTRA_ALGORITHM;
+int MPIR_CVAR_BCAST_TREE_KVAL;
+const char * MPIR_CVAR_BCAST_TREE_TYPE;
+int MPIR_CVAR_BCAST_TOPO_REORDER_ENABLE;
+int MPIR_CVAR_BCAST_TOPO_OVERHEAD;
+int MPIR_CVAR_BCAST_TOPO_DIFF_GROUPS;
+int MPIR_CVAR_BCAST_TOPO_DIFF_SWITCHES;
+int MPIR_CVAR_BCAST_TOPO_SAME_SWITCHES;
+int MPIR_CVAR_BCAST_IS_NON_BLOCKING;
+int MPIR_CVAR_BCAST_TREE_PIPELINE_CHUNK_SIZE;
+int MPIR_CVAR_BCAST_RECV_PRE_POST;
 int MPIR_CVAR_BCAST_INTER_ALGORITHM;
 int MPIR_CVAR_IBCAST_TREE_KVAL;
 const char * MPIR_CVAR_IBCAST_TREE_TYPE;
@@ -54,6 +68,9 @@ int MPIR_CVAR_ISCATTERV_INTER_ALGORITHM;
 int MPIR_CVAR_ALLGATHER_SHORT_MSG_SIZE;
 int MPIR_CVAR_ALLGATHER_LONG_MSG_SIZE;
 int MPIR_CVAR_ALLGATHER_INTRA_ALGORITHM;
+int MPIR_CVAR_ALLGATHER_BRUCKS_KVAL;
+int MPIR_CVAR_ALLGATHER_RECEXCH_KVAL;
+int MPIR_CVAR_ALLGATHER_RECEXCH_SINGLE_PHASE_RECV;
 int MPIR_CVAR_ALLGATHER_INTER_ALGORITHM;
 int MPIR_CVAR_IALLGATHER_RECEXCH_KVAL;
 int MPIR_CVAR_IALLGATHER_BRUCKS_KVAL;
@@ -70,6 +87,7 @@ int MPIR_CVAR_ALLTOALL_SHORT_MSG_SIZE;
 int MPIR_CVAR_ALLTOALL_MEDIUM_MSG_SIZE;
 int MPIR_CVAR_ALLTOALL_THROTTLE;
 int MPIR_CVAR_ALLTOALL_INTRA_ALGORITHM;
+int MPIR_CVAR_ALLTOALL_BRUCKS_KVAL;
 int MPIR_CVAR_ALLTOALL_INTER_ALGORITHM;
 int MPIR_CVAR_IALLTOALL_INTRA_ALGORITHM;
 int MPIR_CVAR_IALLTOALL_INTER_ALGORITHM;
@@ -89,6 +107,11 @@ int MPIR_CVAR_REDUCE_INTRA_ALGORITHM;
 int MPIR_CVAR_REDUCE_INTER_ALGORITHM;
 int MPIR_CVAR_IREDUCE_TREE_KVAL;
 const char * MPIR_CVAR_IREDUCE_TREE_TYPE;
+int MPIR_CVAR_IREDUCE_TOPO_REORDER_ENABLE;
+int MPIR_CVAR_IREDUCE_TOPO_OVERHEAD;
+int MPIR_CVAR_IREDUCE_TOPO_DIFF_GROUPS;
+int MPIR_CVAR_IREDUCE_TOPO_DIFF_SWITCHES;
+int MPIR_CVAR_IREDUCE_TOPO_SAME_SWITCHES;
 int MPIR_CVAR_IREDUCE_TREE_PIPELINE_CHUNK_SIZE;
 int MPIR_CVAR_IREDUCE_RING_CHUNK_SIZE;
 int MPIR_CVAR_IREDUCE_TREE_BUFFER_PER_CHILD;
@@ -97,6 +120,17 @@ int MPIR_CVAR_IREDUCE_INTER_ALGORITHM;
 int MPIR_CVAR_ALLREDUCE_SHORT_MSG_SIZE;
 int MPIR_CVAR_MAX_SMP_ALLREDUCE_MSG_SIZE;
 int MPIR_CVAR_ALLREDUCE_INTRA_ALGORITHM;
+const char * MPIR_CVAR_ALLREDUCE_TREE_TYPE;
+int MPIR_CVAR_ALLREDUCE_TREE_KVAL;
+int MPIR_CVAR_ALLREDUCE_TOPO_REORDER_ENABLE;
+int MPIR_CVAR_ALLREDUCE_TOPO_OVERHEAD;
+int MPIR_CVAR_ALLREDUCE_TOPO_DIFF_GROUPS;
+int MPIR_CVAR_ALLREDUCE_TOPO_DIFF_SWITCHES;
+int MPIR_CVAR_ALLREDUCE_TOPO_SAME_SWITCHES;
+int MPIR_CVAR_ALLREDUCE_TREE_PIPELINE_CHUNK_SIZE;
+int MPIR_CVAR_ALLREDUCE_TREE_BUFFER_PER_CHILD;
+int MPIR_CVAR_ALLREDUCE_RECEXCH_KVAL;
+int MPIR_CVAR_ALLREDUCE_RECEXCH_SINGLE_PHASE_RECV;
 int MPIR_CVAR_ALLREDUCE_INTER_ALGORITHM;
 int MPIR_CVAR_IALLREDUCE_TREE_KVAL;
 const char * MPIR_CVAR_IALLREDUCE_TREE_TYPE;
@@ -215,6 +249,10 @@ int MPIR_CVAR_IALLTOALL_SCATTERED_BATCH_SIZE;
 int MPIR_CVAR_DEVICE_COLLECTIVES;
 int MPIR_CVAR_COLLECTIVE_FALLBACK;
 const char * MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE;
+int MPIR_CVAR_HIERARCHY_DUMP;
+const char * MPIR_CVAR_COORDINATES_FILE;
+int MPIR_CVAR_COLL_TREE_DUMP;
+int MPIR_CVAR_COORDINATES_DUMP;
 int MPIR_CVAR_PROGRESS_MAX_COLLS;
 int MPIR_CVAR_COMM_SPLIT_USE_QSORT;
 int MPIR_CVAR_CTXID_EAGER_SIZE;
@@ -236,6 +274,14 @@ int MPIR_CVAR_MEMDUMP;
 int MPIR_CVAR_DEBUG_SUMMARY;
 const char * MPIR_CVAR_DEFAULT_THREAD_LEVEL;
 int MPIR_CVAR_DEBUG_HOLD;
+int MPIR_CVAR_GPU_USE_IMMEDIATE_COMMAND_LIST;
+int MPIR_CVAR_GPU_ROUND_ROBIN_COMMAND_QUEUES;
+int MPIR_CVAR_NO_COLLECTIVE_FINALIZE;
+int MPIR_CVAR_FINALIZE_WAIT;
+int MPIR_CVAR_REQUEST_ERR_FATAL;
+int MPIR_CVAR_REQUEST_POLL_FREQ;
+int MPIR_CVAR_REQUEST_BATCH_SIZE;
+int MPIR_CVAR_DEBUG_PROGRESS_TIMEOUT;
 int MPIR_CVAR_DIMS_VERBOSE;
 const char * MPIR_CVAR_QMPI_TOOL_LIST;
 const char * MPIR_CVAR_NAMESERV_FILE_PUBDIR;
@@ -245,12 +291,12 @@ int MPIR_CVAR_NOLOCAL;
 int MPIR_CVAR_ODD_EVEN_CLIQUES;
 int MPIR_CVAR_NUM_CLIQUES;
 int MPIR_CVAR_CLIQUES_BY_BLOCK;
+int MPIR_CVAR_PMI_VERSION;
 int MPIR_CVAR_COLL_ALIAS_CHECK;
 int MPIR_CVAR_ENABLE_GPU;
-int MPIR_CVAR_REQUEST_POLL_FREQ;
-int MPIR_CVAR_REQUEST_BATCH_SIZE;
+int MPIR_CVAR_GPU_HAS_WAIT_KERNEL;
+int MPIR_CVAR_ENABLE_GPU_REGISTER;
 int MPIR_CVAR_POLLS_BEFORE_YIELD;
-const char * MPIR_CVAR_OFI_USE_PROVIDER;
 const char * MPIR_CVAR_CH3_INTERFACE_HOSTNAME;
 MPIR_T_cvar_range_value_t MPIR_CVAR_CH3_PORT_RANGE;
 const char * MPIR_CVAR_NEMESIS_TCP_NETWORK_IFACE;
@@ -276,13 +322,18 @@ int MPIR_CVAR_CH3_RMA_OP_GLOBAL_POOL_SIZE;
 int MPIR_CVAR_CH3_RMA_TARGET_WIN_POOL_SIZE;
 int MPIR_CVAR_CH3_RMA_TARGET_GLOBAL_POOL_SIZE;
 int MPIR_CVAR_CH3_RMA_TARGET_LOCK_ENTRY_WIN_POOL_SIZE;
+const char * MPIR_CVAR_OFI_USE_PROVIDER;
+int MPIR_CVAR_SINGLE_HOST_ENABLED;
 int MPIR_CVAR_CH4_OFI_AM_LONG_FORCE_PIPELINE;
+int MPIR_CVAR_BCAST_OFI_INTRA_ALGORITHM;
 int MPIR_CVAR_OFI_SKIP_IPV6;
+int MPIR_CVAR_CH4_OFI_ENABLE_DATA;
 int MPIR_CVAR_CH4_OFI_ENABLE_AV_TABLE;
 int MPIR_CVAR_CH4_OFI_ENABLE_SCALABLE_ENDPOINTS;
 int MPIR_CVAR_CH4_OFI_ENABLE_SHARED_CONTEXTS;
 int MPIR_CVAR_CH4_OFI_ENABLE_MR_VIRT_ADDRESS;
 int MPIR_CVAR_CH4_OFI_ENABLE_MR_ALLOCATED;
+int MPIR_CVAR_CH4_OFI_ENABLE_MR_REGISTER_NULL;
 int MPIR_CVAR_CH4_OFI_ENABLE_MR_PROV_KEY;
 int MPIR_CVAR_CH4_OFI_ENABLE_TAGGED;
 int MPIR_CVAR_CH4_OFI_ENABLE_AM;
@@ -292,34 +343,58 @@ int MPIR_CVAR_CH4_OFI_FETCH_ATOMIC_IOVECS;
 int MPIR_CVAR_CH4_OFI_ENABLE_DATA_AUTO_PROGRESS;
 int MPIR_CVAR_CH4_OFI_ENABLE_CONTROL_AUTO_PROGRESS;
 int MPIR_CVAR_CH4_OFI_ENABLE_PT2PT_NOPACK;
+int MPIR_CVAR_CH4_OFI_ENABLE_HMEM;
+int MPIR_CVAR_CH4_OFI_ENABLE_MR_HMEM;
+int MPIR_CVAR_CH4_OFI_GPU_RDMA_THRESHOLD;
 int MPIR_CVAR_CH4_OFI_CONTEXT_ID_BITS;
 int MPIR_CVAR_CH4_OFI_RANK_BITS;
 int MPIR_CVAR_CH4_OFI_TAG_BITS;
 int MPIR_CVAR_CH4_OFI_MAJOR_VERSION;
 int MPIR_CVAR_CH4_OFI_MINOR_VERSION;
-int MPIR_CVAR_CH4_OFI_MAX_VNIS;
 int MPIR_CVAR_CH4_OFI_MAX_RMA_SEP_CTX;
 int MPIR_CVAR_CH4_OFI_MAX_EAGAIN_RETRY;
 int MPIR_CVAR_CH4_OFI_NUM_AM_BUFFERS;
+int MPIR_CVAR_CH4_OFI_NUM_OPTIMIZED_MEMORY_REGIONS;
 int MPIR_CVAR_CH4_OFI_RMA_PROGRESS_INTERVAL;
 int MPIR_CVAR_CH4_OFI_RMA_IOVEC_MAX;
-int MPIR_CVAR_CH4_OFI_NUM_PACK_BUFFERS_PER_CHUNK;
-int MPIR_CVAR_CH4_OFI_MAX_NUM_PACK_BUFFERS;
 int MPIR_CVAR_CH4_OFI_EAGER_MAX_MSG_SIZE;
 int MPIR_CVAR_CH4_OFI_MAX_NICS;
 int MPIR_CVAR_CH4_OFI_ENABLE_MULTI_NIC_STRIPING;
 int MPIR_CVAR_CH4_OFI_MULTI_NIC_STRIPING_THRESHOLD;
 int MPIR_CVAR_CH4_OFI_ENABLE_MULTI_NIC_HASHING;
+int MPIR_CVAR_CH4_OFI_MULTIRECV_BUFFER_SIZE;
 int MPIR_CVAR_OFI_USE_MIN_NICS;
-int MPIR_CVAR_CH4_UCX_MAX_VNIS;
+int MPIR_CVAR_CH4_OFI_ENABLE_TRIGGERED;
+int MPIR_CVAR_CH4_OFI_GPU_SEND_ENGINE_TYPE;
+int MPIR_CVAR_CH4_OFI_GPU_RECEIVE_ENGINE_TYPE;
+int MPIR_CVAR_CH4_OFI_ENABLE_GPU_PIPELINE;
+int MPIR_CVAR_CH4_OFI_GPU_PIPELINE_THRESHOLD;
+int MPIR_CVAR_CH4_OFI_GPU_PIPELINE_BUFFER_SZ;
+int MPIR_CVAR_CH4_OFI_GPU_PIPELINE_NUM_BUFFERS_PER_CHUNK;
+int MPIR_CVAR_CH4_OFI_GPU_PIPELINE_MAX_NUM_BUFFERS;
+int MPIR_CVAR_CH4_OFI_GPU_PIPELINE_D2H_ENGINE_TYPE;
+int MPIR_CVAR_CH4_OFI_GPU_PIPELINE_H2D_ENGINE_TYPE;
+int MPIR_CVAR_CH4_OFI_DISABLE_INJECT_WRITE;
+int MPIR_CVAR_UCX_DT_RECV;
 int MPIR_CVAR_CH4_IPC_GPU_HANDLE_CACHE;
 int MPIR_CVAR_CH4_IPC_GPU_P2P_THRESHOLD;
+int MPIR_CVAR_CH4_IPC_GPU_FAST_COPY_MAX_SIZE;
+int MPIR_CVAR_CH4_IPC_ZE_SHAREABLE_HANDLE;
+int MPIR_CVAR_CH4_IPC_GPU_ENGINE_TYPE;
+int MPIR_CVAR_CH4_IPC_GPU_READ_WRITE_PROTOCOL;
+int MPIR_CVAR_CH4_IPC_MAP_REPEAT_ADDR;
 int MPIR_CVAR_CH4_XPMEM_ENABLE;
 int MPIR_CVAR_CH4_IPC_XPMEM_P2P_THRESHOLD;
 int MPIR_CVAR_BCAST_POSIX_INTRA_ALGORITHM;
+int MPIR_CVAR_IBCAST_POSIX_INTRA_ALGORITHM;
 int MPIR_CVAR_REDUCE_POSIX_INTRA_ALGORITHM;
+int MPIR_CVAR_IREDUCE_POSIX_INTRA_ALGORITHM;
 int MPIR_CVAR_ALLREDUCE_POSIX_INTRA_ALGORITHM;
 int MPIR_CVAR_BARRIER_POSIX_INTRA_ALGORITHM;
+int MPIR_CVAR_ALLTOALL_POSIX_INTRA_ALGORITHM;
+int MPIR_CVAR_POSIX_POLL_FREQUENCY;
+int MPIR_CVAR_BCAST_IPC_READ_MSG_SIZE_THRESHOLD;
+int MPIR_CVAR_ALLTOALL_IPC_READ_MSG_SIZE_THRESHOLD;
 int MPIR_CVAR_POSIX_NUM_COLLS_THRESHOLD;
 const char * MPIR_CVAR_CH4_SHM_POSIX_EAGER;
 const char * MPIR_CVAR_CH4_POSIX_COLL_SELECTION_TUNING_JSON_FILE;
@@ -335,122 +410,135 @@ const char * MPIR_CVAR_BCAST_INTRANODE_TREE_TYPE;
 int MPIR_CVAR_REDUCE_INTRANODE_TREE_KVAL;
 const char * MPIR_CVAR_REDUCE_INTRANODE_TREE_TYPE;
 int MPIR_CVAR_ENABLE_INTRANODE_TOPOLOGY_AWARE_TREES;
+int MPIR_CVAR_BARRIER_COMPOSITION;
+int MPIR_CVAR_BCAST_COMPOSITION;
+int MPIR_CVAR_ALLREDUCE_COMPOSITION;
+int MPIR_CVAR_ALLGATHER_COMPOSITION;
+int MPIR_CVAR_ALLTOALL_COMPOSITION;
+int MPIR_CVAR_REDUCE_COMPOSITION;
+int MPIR_CVAR_ALLTOALL_SHM_PER_RANK;
+int MPIR_CVAR_ALLGATHER_SHM_PER_RANK;
+int MPIR_CVAR_NUM_MULTI_LEADS;
+int MPIR_CVAR_ALLREDUCE_SHM_PER_LEADER;
+int MPIR_CVAR_ALLREDUCE_CACHE_PER_LEADER;
+int MPIR_CVAR_ALLREDUCE_LOCAL_COPY_OFFSETS;
 const char * MPIR_CVAR_CH4_NETMOD;
 const char * MPIR_CVAR_CH4_SHM;
 int MPIR_CVAR_CH4_ROOTS_ONLY_PMI;
 int MPIR_CVAR_CH4_RUNTIME_CONF_DEBUG;
 const char * MPIR_CVAR_CH4_MT_MODEL;
 int MPIR_CVAR_CH4_NUM_VCIS;
+int MPIR_CVAR_CH4_RESERVE_VCIS;
 const char * MPIR_CVAR_CH4_COLL_SELECTION_TUNING_JSON_FILE;
 int MPIR_CVAR_CH4_IOV_DENSITY_MIN;
+int MPIR_CVAR_CH4_PACK_BUFFER_SIZE;
+int MPIR_CVAR_CH4_NUM_PACK_BUFFERS_PER_CHUNK;
+int MPIR_CVAR_CH4_MAX_NUM_PACK_BUFFERS;
+int MPIR_CVAR_CH4_GPU_COLL_SWAP_BUFFER_SZ;
+int MPIR_CVAR_CH4_GPU_COLL_NUM_BUFFERS_PER_CHUNK;
+int MPIR_CVAR_CH4_GPU_COLL_MAX_NUM_BUFFERS;
 int MPIR_CVAR_CH4_GLOBAL_PROGRESS;
 int MPIR_CVAR_CH4_COMM_CONNECT_TIMEOUT;
-int MPIR_CVAR_CH4_AM_PACK_BUFFER_SIZE;
-int MPIR_CVAR_CH4_NUM_AM_PACK_BUFFERS_PER_CHUNK;
-int MPIR_CVAR_CH4_MAX_AM_UNEXPECTED_PACK_BUFFERS_SIZE_BYTE;
+int MPIR_CVAR_CH4_ENABLE_STREAM_WORKQ;
 int MPIR_CVAR_CH4_RMA_MEM_EFFICIENT;
 int MPIR_CVAR_CH4_RMA_ENABLE_DYNAMIC_AM_PROGRESS;
 int MPIR_CVAR_CH4_RMA_AM_PROGRESS_INTERVAL;
 int MPIR_CVAR_CH4_RMA_AM_PROGRESS_LOW_FREQ_INTERVAL;
+int MPIR_CVAR_GENQ_SHMEM_POOL_FREE_QUEUE_SENDER_SIDE;
 int MPIR_CVAR_ENABLE_HCOLL;
 int MPIR_CVAR_COLL_SCHED_DUMP;
 int MPIR_CVAR_SHM_RANDOM_ADDR_RETRY;
 int MPIR_CVAR_SHM_SYMHEAP_RETRY;
+int MPIR_CVAR_ENABLE_HEAVY_YIELD;
 
 int MPIR_T_cvar_init(void)
 {
     int mpi_errno = MPI_SUCCESS;
     int rc, got_rc;
     const char *tmp_str;
-    static int initialized = FALSE;
     MPIR_T_cvar_value_t defaultval;
 
     int debug = 0;
+    rc = MPL_env2bool("MPICH_DEBUG_CVARS", &debug);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_DEBUG_CVARS");
+    rc = MPL_env2bool("MPIR_PARAM_DEBUG_CVARS", &debug);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_DEBUG_CVARS");
     rc = MPL_env2bool("MPIR_CVAR_DEBUG_CVARS", &debug);
     MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_DEBUG_CVARS");
 
-    /* FIXME any MT issues here? */
-    if (initialized)
-        return MPI_SUCCESS;
-    initialized = TRUE;
-
-    /* declared in /tmp/DXpzZMf46K/mpich-4.0.2/maint/../src/mpi/coll/src/coll_impl.c */
+    /* declared in src/mpi/coll/src/coll_impl.c */
     MPIR_T_cat_add_desc("COLLECTIVE",
         "A category for collective communication variables.");
 
-    /* declared in /tmp/DXpzZMf46K/mpich-4.0.2/maint/../src/mpi/comm/comm_impl.c */
+    /* declared in src/mpi/comm/comm_impl.c */
     MPIR_T_cat_add_desc("COMMUNICATOR",
         "cvars that control communicator construction and operation");
 
-    /* declared in /tmp/DXpzZMf46K/mpich-4.0.2/maint/../src/mpi/datatype/typerep/dataloop/segment.c */
+    /* declared in src/mpi/datatype/typerep/dataloop/segment.c */
     MPIR_T_cat_add_desc("DATALOOP",
         "Dataloop-related CVARs");
 
-    /* declared in /tmp/DXpzZMf46K/mpich-4.0.2/maint/../src/mpi/errhan/errutil.c */
+    /* declared in src/mpi/errhan/errutil.c */
     MPIR_T_cat_add_desc("ERROR_HANDLING",
         "cvars that control error handling behavior (stack traces, aborts, etc)");
 
-    /* declared in /tmp/DXpzZMf46K/mpich-4.0.2/maint/../src/mpi/init/mpi_init.h */
+    /* declared in src/mpi/init/mpi_init.h */
     MPIR_T_cat_add_desc("DEVELOPER",
         "useful for developers working on MPICH itself");
 
-    /* declared in /tmp/DXpzZMf46K/mpich-4.0.2/maint/../src/mpi/init/mpir_init.c */
+    /* declared in src/mpi/init/mpir_init.c */
     MPIR_T_cat_add_desc("THREADS",
         "multi-threading cvars");
 
-    /* declared in /tmp/DXpzZMf46K/mpich-4.0.2/maint/../src/mpi/init/mpir_init.c */
+    /* declared in src/mpi/init/mpir_init.c */
     MPIR_T_cat_add_desc("DEBUGGER",
         "cvars relevant to the \"MPIR\" debugger interface");
 
-    /* declared in /tmp/DXpzZMf46K/mpich-4.0.2/maint/../src/mpi/topo/dims_create.c */
-    MPIR_T_cat_add_desc("DIMS",
-        "Dims_create cvars");
-
-    /* declared in /tmp/DXpzZMf46K/mpich-4.0.2/maint/../src/mpi_t/qmpi_register.c */
-    MPIR_T_cat_add_desc("TOOLS",
-        "cvars that control tools connected to MPICH");
-
-    /* declared in /tmp/DXpzZMf46K/mpich-4.0.2/maint/../src/nameserv/file/file_nameserv.c */
-    MPIR_T_cat_add_desc("PROCESS_MANAGER",
-        "cvars that control the client-side process manager code");
-
-    /* declared in /tmp/DXpzZMf46K/mpich-4.0.2/maint/../src/util/mpir_handlemem.c */
-    MPIR_T_cat_add_desc("MEMORY",
-        "affects memory allocation and usage, including MPI object handles");
-
-    /* declared in /tmp/DXpzZMf46K/mpich-4.0.2/maint/../src/util/mpir_pmi.c */
-    MPIR_T_cat_add_desc("NODEMAP",
-        "cvars that control behavior of nodemap");
-
-    /* declared in /tmp/DXpzZMf46K/mpich-4.0.2/maint/../src/include/mpir_gpu.h */
-    MPIR_T_cat_add_desc("GPU",
-        "GPU related cvars");
-
-    /* declared in /tmp/DXpzZMf46K/mpich-4.0.2/maint/../src/include/mpir_request.h */
+    /* declared in src/mpi/request/request_impl.c */
     MPIR_T_cat_add_desc("REQUEST",
         "A category for requests management variables");
 
-    /* declared in /tmp/DXpzZMf46K/mpich-4.0.2/maint/../src/mpid/ch3/channels/nemesis/src/mpid_nem_init.c */
+    /* declared in src/mpi/topo/dims_create.c */
+    MPIR_T_cat_add_desc("DIMS",
+        "Dims_create cvars");
+
+    /* declared in src/mpi_t/qmpi_register.c */
+    MPIR_T_cat_add_desc("TOOLS",
+        "cvars that control tools connected to MPICH");
+
+    /* declared in src/nameserv/file/file_nameserv.c */
+    MPIR_T_cat_add_desc("PROCESS_MANAGER",
+        "cvars that control the client-side process manager code");
+
+    /* declared in src/util/mpir_handlemem.c */
+    MPIR_T_cat_add_desc("MEMORY",
+        "affects memory allocation and usage, including MPI object handles");
+
+    /* declared in src/util/mpir_nodemap.c */
+    MPIR_T_cat_add_desc("NODEMAP",
+        "cvars that control behavior of nodemap");
+
+    /* declared in src/include/mpir_gpu.h */
+    MPIR_T_cat_add_desc("GPU",
+        "GPU related cvars");
+
+    /* declared in src/mpid/ch3/channels/nemesis/src/mpid_nem_init.c */
     MPIR_T_cat_add_desc("NEMESIS",
         "cvars that control behavior of the ch3:nemesis channel");
 
-    /* declared in /tmp/DXpzZMf46K/mpich-4.0.2/maint/../src/mpid/ch3/channels/nemesis/src/mpid_nem_lmt.c */
+    /* declared in src/mpid/ch3/channels/nemesis/src/mpid_nem_lmt.c */
     MPIR_T_cat_add_desc("FT",
         "cvars that control behavior of fault tolerance");
 
-    /* declared in /tmp/DXpzZMf46K/mpich-4.0.2/maint/../src/mpid/ch3/src/mpidi_rma.c */
+    /* declared in src/mpid/ch3/src/mpidi_rma.c */
     MPIR_T_cat_add_desc("CH3",
         "cvars that control behavior of ch3");
 
-    /* declared in /tmp/DXpzZMf46K/mpich-4.0.2/maint/../src/mpid/ch4/netmod/ofi/ofi_init.c */
+    /* declared in src/mpid/ch4/netmod/ofi/ofi_init.c */
     MPIR_T_cat_add_desc("CH4_OFI",
         "A category for CH4 OFI netmod variables");
 
-    /* declared in /tmp/DXpzZMf46K/mpich-4.0.2/maint/../src/mpid/ch4/netmod/ucx/ucx_init.c */
-    MPIR_T_cat_add_desc("CH4_UCX",
-        "A category for CH4 UCX netmod variables");
-
-    /* declared in /tmp/DXpzZMf46K/mpich-4.0.2/maint/../src/mpid/ch4/src/ch4_init.c */
+    /* declared in src/mpid/ch4/src/ch4_init.c */
     MPIR_T_cat_add_desc("CH4",
         "cvars that control behavior of the CH4 device");
 
@@ -464,11 +552,12 @@ int MPIR_T_cvar_init(void)
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select barrier algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-nb            - Force nonblocking algorithm\
-smp           - Force smp algorithm\
-dissemination - Force dissemination algorithm");
+        "Variable to select barrier algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"nb            - Force nonblocking algorithm\n"
+"smp           - Force smp algorithm\n"
+"k_dissemination - Force high radix dissemination algorithm\n"
+"recexch       - Force recursive exchange algorithm");
     MPIR_CVAR_BARRIER_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -491,8 +580,10 @@ dissemination - Force dissemination algorithm");
             MPIR_CVAR_BARRIER_INTRA_ALGORITHM = MPIR_CVAR_BARRIER_INTRA_ALGORITHM_nb;
         else if (0 == strcmp(tmp_str, "smp"))
             MPIR_CVAR_BARRIER_INTRA_ALGORITHM = MPIR_CVAR_BARRIER_INTRA_ALGORITHM_smp;
-        else if (0 == strcmp(tmp_str, "dissemination"))
-            MPIR_CVAR_BARRIER_INTRA_ALGORITHM = MPIR_CVAR_BARRIER_INTRA_ALGORITHM_dissemination;
+        else if (0 == strcmp(tmp_str, "k_dissemination"))
+            MPIR_CVAR_BARRIER_INTRA_ALGORITHM = MPIR_CVAR_BARRIER_INTRA_ALGORITHM_k_dissemination;
+        else if (0 == strcmp(tmp_str, "recexch"))
+            MPIR_CVAR_BARRIER_INTRA_ALGORITHM = MPIR_CVAR_BARRIER_INTRA_ALGORITHM_recexch;
         else {
             mpi_errno = MPIR_Err_create_code(MPI_SUCCESS, MPIR_ERR_RECOVERABLE, __func__, __LINE__,MPI_ERR_OTHER, "**cvar_val", "**cvar_val %s %s", "MPIR_CVAR_BARRIER_INTRA_ALGORITHM", tmp_str);
             goto fn_fail;
@@ -509,10 +600,10 @@ dissemination - Force dissemination algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select barrier algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-bcast - Force bcast algorithm\
-nb    - Force nonblocking algorithm");
+        "Variable to select barrier algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"bcast - Force bcast algorithm\n"
+"nb    - Force nonblocking algorithm");
     MPIR_CVAR_BARRIER_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -544,6 +635,84 @@ nb    - Force nonblocking algorithm");
     defaultval.d = 2;
     MPIR_T_CVAR_REGISTER_STATIC(
         MPI_INT,
+        MPIR_CVAR_BARRIER_DISSEM_KVAL, /* name */
+        &MPIR_CVAR_BARRIER_DISSEM_KVAL, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "k value for dissemination exchange based barrier algorithm");
+    MPIR_CVAR_BARRIER_DISSEM_KVAL = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_BARRIER_DISSEM_KVAL", &(MPIR_CVAR_BARRIER_DISSEM_KVAL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_BARRIER_DISSEM_KVAL");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_BARRIER_DISSEM_KVAL", &(MPIR_CVAR_BARRIER_DISSEM_KVAL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_BARRIER_DISSEM_KVAL");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_BARRIER_DISSEM_KVAL", &(MPIR_CVAR_BARRIER_DISSEM_KVAL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_BARRIER_DISSEM_KVAL");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_BARRIER_DISSEM_KVAL = %d\n", MPIR_CVAR_BARRIER_DISSEM_KVAL);
+    }
+
+    defaultval.d = 2;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_BARRIER_RECEXCH_KVAL, /* name */
+        &MPIR_CVAR_BARRIER_RECEXCH_KVAL, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "k value for recursive exchange based allreduce based barrier");
+    MPIR_CVAR_BARRIER_RECEXCH_KVAL = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_BARRIER_RECEXCH_KVAL", &(MPIR_CVAR_BARRIER_RECEXCH_KVAL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_BARRIER_RECEXCH_KVAL");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_BARRIER_RECEXCH_KVAL", &(MPIR_CVAR_BARRIER_RECEXCH_KVAL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_BARRIER_RECEXCH_KVAL");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_BARRIER_RECEXCH_KVAL", &(MPIR_CVAR_BARRIER_RECEXCH_KVAL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_BARRIER_RECEXCH_KVAL");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_BARRIER_RECEXCH_KVAL = %d\n", MPIR_CVAR_BARRIER_RECEXCH_KVAL);
+    }
+
+    defaultval.d = 0;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_BARRIER_RECEXCH_SINGLE_PHASE_RECV, /* name */
+        &MPIR_CVAR_BARRIER_RECEXCH_SINGLE_PHASE_RECV, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "This CVAR controls whether the recv is posted for one phase or two phases in recexch algos. By default, we post the recvs for 2 phases.");
+    MPIR_CVAR_BARRIER_RECEXCH_SINGLE_PHASE_RECV = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2bool("MPICH_BARRIER_RECEXCH_SINGLE_PHASE_RECV", &(MPIR_CVAR_BARRIER_RECEXCH_SINGLE_PHASE_RECV));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_BARRIER_RECEXCH_SINGLE_PHASE_RECV");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_PARAM_BARRIER_RECEXCH_SINGLE_PHASE_RECV", &(MPIR_CVAR_BARRIER_RECEXCH_SINGLE_PHASE_RECV));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_BARRIER_RECEXCH_SINGLE_PHASE_RECV");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_CVAR_BARRIER_RECEXCH_SINGLE_PHASE_RECV", &(MPIR_CVAR_BARRIER_RECEXCH_SINGLE_PHASE_RECV));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_BARRIER_RECEXCH_SINGLE_PHASE_RECV");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_BARRIER_RECEXCH_SINGLE_PHASE_RECV = %d\n", MPIR_CVAR_BARRIER_RECEXCH_SINGLE_PHASE_RECV);
+    }
+
+    defaultval.d = 2;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
         MPIR_CVAR_IBARRIER_RECEXCH_KVAL, /* name */
         &MPIR_CVAR_IBARRIER_RECEXCH_KVAL, /* address */
         1, /* count */
@@ -567,6 +736,32 @@ nb    - Force nonblocking algorithm");
         printf("CVAR: MPIR_CVAR_IBARRIER_RECEXCH_KVAL = %d\n", MPIR_CVAR_IBARRIER_RECEXCH_KVAL);
     }
 
+    defaultval.d = 2;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_IBARRIER_DISSEM_KVAL, /* name */
+        &MPIR_CVAR_IBARRIER_DISSEM_KVAL, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "k value for dissemination exchange based ibarrier");
+    MPIR_CVAR_IBARRIER_DISSEM_KVAL = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_IBARRIER_DISSEM_KVAL", &(MPIR_CVAR_IBARRIER_DISSEM_KVAL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_IBARRIER_DISSEM_KVAL");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_IBARRIER_DISSEM_KVAL", &(MPIR_CVAR_IBARRIER_DISSEM_KVAL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_IBARRIER_DISSEM_KVAL");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_IBARRIER_DISSEM_KVAL", &(MPIR_CVAR_IBARRIER_DISSEM_KVAL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_IBARRIER_DISSEM_KVAL");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_IBARRIER_DISSEM_KVAL = %d\n", MPIR_CVAR_IBARRIER_DISSEM_KVAL);
+    }
+
     defaultval.d = MPIR_CVAR_IBARRIER_INTRA_ALGORITHM_auto;
     MPIR_T_CVAR_REGISTER_STATIC(
         MPI_INT,
@@ -577,10 +772,12 @@ nb    - Force nonblocking algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select ibarrier algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_recursive_doubling - Force recursive doubling algorithm");
+        "Variable to select ibarrier algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_recursive_doubling - Force recursive doubling algorithm\n"
+"tsp_recexch - Force generic transport based recursive exchange algorithm\n"
+"tsp_k_dissemination - Force generic transport based high-radix dissemination algorithm");
     MPIR_CVAR_IBARRIER_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -603,6 +800,10 @@ sched_recursive_doubling - Force recursive doubling algorithm");
             MPIR_CVAR_IBARRIER_INTRA_ALGORITHM = MPIR_CVAR_IBARRIER_INTRA_ALGORITHM_sched_auto;
         else if (0 == strcmp(tmp_str, "sched_recursive_doubling"))
             MPIR_CVAR_IBARRIER_INTRA_ALGORITHM = MPIR_CVAR_IBARRIER_INTRA_ALGORITHM_sched_recursive_doubling;
+        else if (0 == strcmp(tmp_str, "tsp_recexch"))
+            MPIR_CVAR_IBARRIER_INTRA_ALGORITHM = MPIR_CVAR_IBARRIER_INTRA_ALGORITHM_tsp_recexch;
+        else if (0 == strcmp(tmp_str, "tsp_k_dissemination"))
+            MPIR_CVAR_IBARRIER_INTRA_ALGORITHM = MPIR_CVAR_IBARRIER_INTRA_ALGORITHM_tsp_k_dissemination;
         else {
             mpi_errno = MPIR_Err_create_code(MPI_SUCCESS, MPIR_ERR_RECOVERABLE, __func__, __LINE__,MPI_ERR_OTHER, "**cvar_val", "**cvar_val %s %s", "MPIR_CVAR_IBARRIER_INTRA_ALGORITHM", tmp_str);
             goto fn_fail;
@@ -619,10 +820,10 @@ sched_recursive_doubling - Force recursive doubling algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select ibarrier algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_bcast - Force bcast algorithm");
+        "Variable to select ibarrier algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_bcast - Force bcast algorithm");
     MPIR_CVAR_IBARRIER_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -765,13 +966,15 @@ sched_bcast - Force bcast algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select bcast algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-binomial                                - Force Binomial Tree\
-nb                                      - Force nonblocking algorithm\
-smp                                     - Force smp algorithm\
-scatter_recursive_doubling_allgather    - Force Scatter Recursive-Doubling Allgather\
-scatter_ring_allgather                  - Force Scatter Ring");
+        "Variable to select bcast algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"binomial                                - Force Binomial Tree\n"
+"nb                                      - Force nonblocking algorithm\n"
+"smp                                     - Force smp algorithm\n"
+"scatter_recursive_doubling_allgather    - Force Scatter Recursive-Doubling Allgather\n"
+"scatter_ring_allgather                  - Force Scatter Ring\n"
+"pipelined_tree                          - Force tree-based pipelined algorithm\n"
+"tree                                    - Force tree-based algorithm");
     MPIR_CVAR_BCAST_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -800,10 +1003,300 @@ scatter_ring_allgather                  - Force Scatter Ring");
             MPIR_CVAR_BCAST_INTRA_ALGORITHM = MPIR_CVAR_BCAST_INTRA_ALGORITHM_scatter_recursive_doubling_allgather;
         else if (0 == strcmp(tmp_str, "scatter_ring_allgather"))
             MPIR_CVAR_BCAST_INTRA_ALGORITHM = MPIR_CVAR_BCAST_INTRA_ALGORITHM_scatter_ring_allgather;
+        else if (0 == strcmp(tmp_str, "pipelined_tree"))
+            MPIR_CVAR_BCAST_INTRA_ALGORITHM = MPIR_CVAR_BCAST_INTRA_ALGORITHM_pipelined_tree;
+        else if (0 == strcmp(tmp_str, "tree"))
+            MPIR_CVAR_BCAST_INTRA_ALGORITHM = MPIR_CVAR_BCAST_INTRA_ALGORITHM_tree;
         else {
             mpi_errno = MPIR_Err_create_code(MPI_SUCCESS, MPIR_ERR_RECOVERABLE, __func__, __LINE__,MPI_ERR_OTHER, "**cvar_val", "**cvar_val %s %s", "MPIR_CVAR_BCAST_INTRA_ALGORITHM", tmp_str);
             goto fn_fail;
         }
+    }
+
+    defaultval.d = 2;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_BCAST_TREE_KVAL, /* name */
+        &MPIR_CVAR_BCAST_TREE_KVAL, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "k value for tree (kary, knomial, etc.) based bcast");
+    MPIR_CVAR_BCAST_TREE_KVAL = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_BCAST_TREE_KVAL", &(MPIR_CVAR_BCAST_TREE_KVAL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_BCAST_TREE_KVAL");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_BCAST_TREE_KVAL", &(MPIR_CVAR_BCAST_TREE_KVAL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_BCAST_TREE_KVAL");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_BCAST_TREE_KVAL", &(MPIR_CVAR_BCAST_TREE_KVAL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_BCAST_TREE_KVAL");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_BCAST_TREE_KVAL = %d\n", MPIR_CVAR_BCAST_TREE_KVAL);
+    }
+
+    defaultval.str = (const char *) "kary";
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_CHAR,
+        MPIR_CVAR_BCAST_TREE_TYPE, /* name */
+        &MPIR_CVAR_BCAST_TREE_TYPE, /* address */
+        MPIR_CVAR_MAX_STRLEN, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "Tree type for tree based bcast kary      - kary tree type knomial_1 - knomial_1 tree type knomial_2 - knomial_2 tree type topology_aware - topology_aware tree type topology_aware_k - topology_aware tree type with branching factor k topology_wave - topology_wave tree type");
+    tmp_str = defaultval.str;
+    got_rc = 0;
+    rc = MPL_env2str("MPICH_BCAST_TREE_TYPE", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_BCAST_TREE_TYPE");
+    got_rc += rc;
+    rc = MPL_env2str("MPIR_PARAM_BCAST_TREE_TYPE", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_BCAST_TREE_TYPE");
+    got_rc += rc;
+    rc = MPL_env2str("MPIR_CVAR_BCAST_TREE_TYPE", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_BCAST_TREE_TYPE");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_BCAST_TREE_TYPE = %s\n", tmp_str);
+    }
+    if (tmp_str != NULL) {
+        MPIR_CVAR_BCAST_TREE_TYPE = MPL_strdup(tmp_str);
+        MPIR_CVAR_assert(MPIR_CVAR_BCAST_TREE_TYPE);
+        if (MPIR_CVAR_BCAST_TREE_TYPE == NULL) {
+            MPIR_CHKMEM_SETERR(mpi_errno, strlen(tmp_str), "dup of string for MPIR_CVAR_BCAST_TREE_TYPE");
+            goto fn_fail;
+        }
+    }
+    else {
+        MPIR_CVAR_BCAST_TREE_TYPE = NULL;
+    }
+
+    defaultval.d = 1;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_BCAST_TOPO_REORDER_ENABLE, /* name */
+        &MPIR_CVAR_BCAST_TOPO_REORDER_ENABLE, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "This cvar controls if the leaders are reordered based on the number of ranks in each group.");
+    MPIR_CVAR_BCAST_TOPO_REORDER_ENABLE = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2bool("MPICH_BCAST_TOPO_REORDER_ENABLE", &(MPIR_CVAR_BCAST_TOPO_REORDER_ENABLE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_BCAST_TOPO_REORDER_ENABLE");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_PARAM_BCAST_TOPO_REORDER_ENABLE", &(MPIR_CVAR_BCAST_TOPO_REORDER_ENABLE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_BCAST_TOPO_REORDER_ENABLE");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_CVAR_BCAST_TOPO_REORDER_ENABLE", &(MPIR_CVAR_BCAST_TOPO_REORDER_ENABLE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_BCAST_TOPO_REORDER_ENABLE");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_BCAST_TOPO_REORDER_ENABLE = %d\n", MPIR_CVAR_BCAST_TOPO_REORDER_ENABLE);
+    }
+
+    defaultval.d = 200;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_BCAST_TOPO_OVERHEAD, /* name */
+        &MPIR_CVAR_BCAST_TOPO_OVERHEAD, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "This cvar controls the size of the overhead.");
+    MPIR_CVAR_BCAST_TOPO_OVERHEAD = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_BCAST_TOPO_OVERHEAD", &(MPIR_CVAR_BCAST_TOPO_OVERHEAD));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_BCAST_TOPO_OVERHEAD");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_BCAST_TOPO_OVERHEAD", &(MPIR_CVAR_BCAST_TOPO_OVERHEAD));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_BCAST_TOPO_OVERHEAD");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_BCAST_TOPO_OVERHEAD", &(MPIR_CVAR_BCAST_TOPO_OVERHEAD));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_BCAST_TOPO_OVERHEAD");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_BCAST_TOPO_OVERHEAD = %d\n", MPIR_CVAR_BCAST_TOPO_OVERHEAD);
+    }
+
+    defaultval.d = 2800;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_BCAST_TOPO_DIFF_GROUPS, /* name */
+        &MPIR_CVAR_BCAST_TOPO_DIFF_GROUPS, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "This cvar controls the latency between different groups.");
+    MPIR_CVAR_BCAST_TOPO_DIFF_GROUPS = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_BCAST_TOPO_DIFF_GROUPS", &(MPIR_CVAR_BCAST_TOPO_DIFF_GROUPS));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_BCAST_TOPO_DIFF_GROUPS");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_BCAST_TOPO_DIFF_GROUPS", &(MPIR_CVAR_BCAST_TOPO_DIFF_GROUPS));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_BCAST_TOPO_DIFF_GROUPS");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_BCAST_TOPO_DIFF_GROUPS", &(MPIR_CVAR_BCAST_TOPO_DIFF_GROUPS));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_BCAST_TOPO_DIFF_GROUPS");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_BCAST_TOPO_DIFF_GROUPS = %d\n", MPIR_CVAR_BCAST_TOPO_DIFF_GROUPS);
+    }
+
+    defaultval.d = 1900;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_BCAST_TOPO_DIFF_SWITCHES, /* name */
+        &MPIR_CVAR_BCAST_TOPO_DIFF_SWITCHES, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "This cvar controls the latency between different switches in the same groups.");
+    MPIR_CVAR_BCAST_TOPO_DIFF_SWITCHES = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_BCAST_TOPO_DIFF_SWITCHES", &(MPIR_CVAR_BCAST_TOPO_DIFF_SWITCHES));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_BCAST_TOPO_DIFF_SWITCHES");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_BCAST_TOPO_DIFF_SWITCHES", &(MPIR_CVAR_BCAST_TOPO_DIFF_SWITCHES));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_BCAST_TOPO_DIFF_SWITCHES");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_BCAST_TOPO_DIFF_SWITCHES", &(MPIR_CVAR_BCAST_TOPO_DIFF_SWITCHES));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_BCAST_TOPO_DIFF_SWITCHES");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_BCAST_TOPO_DIFF_SWITCHES = %d\n", MPIR_CVAR_BCAST_TOPO_DIFF_SWITCHES);
+    }
+
+    defaultval.d = 1600;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_BCAST_TOPO_SAME_SWITCHES, /* name */
+        &MPIR_CVAR_BCAST_TOPO_SAME_SWITCHES, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "This cvar controls the latency in the same switch.");
+    MPIR_CVAR_BCAST_TOPO_SAME_SWITCHES = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_BCAST_TOPO_SAME_SWITCHES", &(MPIR_CVAR_BCAST_TOPO_SAME_SWITCHES));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_BCAST_TOPO_SAME_SWITCHES");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_BCAST_TOPO_SAME_SWITCHES", &(MPIR_CVAR_BCAST_TOPO_SAME_SWITCHES));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_BCAST_TOPO_SAME_SWITCHES");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_BCAST_TOPO_SAME_SWITCHES", &(MPIR_CVAR_BCAST_TOPO_SAME_SWITCHES));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_BCAST_TOPO_SAME_SWITCHES");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_BCAST_TOPO_SAME_SWITCHES = %d\n", MPIR_CVAR_BCAST_TOPO_SAME_SWITCHES);
+    }
+
+#if defined MPID_BCAST_IS_NON_BLOCKING
+    defaultval.d = MPID_BCAST_IS_NON_BLOCKING;
+#else
+    defaultval.d = 1;
+#endif /* MPID_BCAST_IS_NON_BLOCKING */
+
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_BCAST_IS_NON_BLOCKING, /* name */
+        &MPIR_CVAR_BCAST_IS_NON_BLOCKING, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "If set to true, MPI_Bcast will use non-blocking send.");
+    MPIR_CVAR_BCAST_IS_NON_BLOCKING = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2bool("MPICH_BCAST_IS_NON_BLOCKING", &(MPIR_CVAR_BCAST_IS_NON_BLOCKING));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_BCAST_IS_NON_BLOCKING");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_PARAM_BCAST_IS_NON_BLOCKING", &(MPIR_CVAR_BCAST_IS_NON_BLOCKING));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_BCAST_IS_NON_BLOCKING");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_CVAR_BCAST_IS_NON_BLOCKING", &(MPIR_CVAR_BCAST_IS_NON_BLOCKING));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_BCAST_IS_NON_BLOCKING");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_BCAST_IS_NON_BLOCKING = %d\n", MPIR_CVAR_BCAST_IS_NON_BLOCKING);
+    }
+
+#if defined MPID_BCAST_TREE_PIPELINE_CHUNK_SIZE
+    defaultval.d = MPID_BCAST_TREE_PIPELINE_CHUNK_SIZE;
+#else
+    defaultval.d = 8192;
+#endif /* MPID_BCAST_TREE_PIPELINE_CHUNK_SIZE */
+
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_BCAST_TREE_PIPELINE_CHUNK_SIZE, /* name */
+        &MPIR_CVAR_BCAST_TREE_PIPELINE_CHUNK_SIZE, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "Indicates the chunk size for pipelined bcast.");
+    MPIR_CVAR_BCAST_TREE_PIPELINE_CHUNK_SIZE = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_BCAST_TREE_PIPELINE_CHUNK_SIZE", &(MPIR_CVAR_BCAST_TREE_PIPELINE_CHUNK_SIZE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_BCAST_TREE_PIPELINE_CHUNK_SIZE");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_BCAST_TREE_PIPELINE_CHUNK_SIZE", &(MPIR_CVAR_BCAST_TREE_PIPELINE_CHUNK_SIZE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_BCAST_TREE_PIPELINE_CHUNK_SIZE");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_BCAST_TREE_PIPELINE_CHUNK_SIZE", &(MPIR_CVAR_BCAST_TREE_PIPELINE_CHUNK_SIZE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_BCAST_TREE_PIPELINE_CHUNK_SIZE");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_BCAST_TREE_PIPELINE_CHUNK_SIZE = %d\n", MPIR_CVAR_BCAST_TREE_PIPELINE_CHUNK_SIZE);
+    }
+
+#if defined MPID_BCAST_RECV_PRE_POST
+    defaultval.d = MPID_BCAST_RECV_PRE_POST;
+#else
+    defaultval.d = 0;
+#endif /* MPID_BCAST_RECV_PRE_POST */
+
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_BCAST_RECV_PRE_POST, /* name */
+        &MPIR_CVAR_BCAST_RECV_PRE_POST, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "If set to true, MPI_Bcast will pre-post all the receives.");
+    MPIR_CVAR_BCAST_RECV_PRE_POST = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2bool("MPICH_BCAST_RECV_PRE_POST", &(MPIR_CVAR_BCAST_RECV_PRE_POST));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_BCAST_RECV_PRE_POST");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_PARAM_BCAST_RECV_PRE_POST", &(MPIR_CVAR_BCAST_RECV_PRE_POST));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_BCAST_RECV_PRE_POST");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_CVAR_BCAST_RECV_PRE_POST", &(MPIR_CVAR_BCAST_RECV_PRE_POST));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_BCAST_RECV_PRE_POST");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_BCAST_RECV_PRE_POST = %d\n", MPIR_CVAR_BCAST_RECV_PRE_POST);
     }
 
     defaultval.d = MPIR_CVAR_BCAST_INTER_ALGORITHM_auto;
@@ -816,10 +1309,10 @@ scatter_ring_allgather                  - Force Scatter Ring");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select bcast algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-nb                      - Force nonblocking algorithm\
-remote_send_local_bcast - Force remote-send-local-bcast algorithm");
+        "Variable to select bcast algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"nb                      - Force nonblocking algorithm\n"
+"remote_send_local_bcast - Force remote-send-local-bcast algorithm");
     MPIR_CVAR_BCAST_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -973,16 +1466,17 @@ remote_send_local_bcast - Force remote-send-local-bcast algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select ibcast algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_binomial                             - Force Binomial algorithm\
-sched_smp                                  - Force smp algorithm\
-sched_scatter_recursive_doubling_allgather - Force Scatter Recursive Doubling Allgather algorithm\
-sched_scatter_ring_allgather               - Force Scatter Ring Allgather algorithm\
-tsp_tree                               - Force Generic Transport Tree algorithm\
-tsp_scatterv_recexch_allgatherv        - Force Generic Transport Scatterv followed by Recursive Exchange Allgatherv algorithm\
-tsp_ring                               - Force Generic Transport Ring algorithm");
+        "Variable to select ibcast algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_binomial                             - Force Binomial algorithm\n"
+"sched_smp                                  - Force smp algorithm\n"
+"sched_scatter_recursive_doubling_allgather - Force Scatter Recursive Doubling Allgather algorithm\n"
+"sched_scatter_ring_allgather               - Force Scatter Ring Allgather algorithm\n"
+"tsp_tree                               - Force Generic Transport Tree algorithm\n"
+"tsp_scatterv_recexch_allgatherv        - Force Generic Transport Scatterv followed by Recursive Exchange Allgatherv algorithm\n"
+"tsp_scatterv_ring_allgatherv           - Force Generic Transport Scatterv followed by Ring Allgatherv algorithm\n"
+"tsp_ring                               - Force Generic Transport Ring algorithm");
     MPIR_CVAR_IBCAST_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -1015,6 +1509,8 @@ tsp_ring                               - Force Generic Transport Ring algorithm"
             MPIR_CVAR_IBCAST_INTRA_ALGORITHM = MPIR_CVAR_IBCAST_INTRA_ALGORITHM_tsp_tree;
         else if (0 == strcmp(tmp_str, "tsp_scatterv_recexch_allgatherv"))
             MPIR_CVAR_IBCAST_INTRA_ALGORITHM = MPIR_CVAR_IBCAST_INTRA_ALGORITHM_tsp_scatterv_recexch_allgatherv;
+        else if (0 == strcmp(tmp_str, "tsp_scatterv_ring_allgatherv"))
+            MPIR_CVAR_IBCAST_INTRA_ALGORITHM = MPIR_CVAR_IBCAST_INTRA_ALGORITHM_tsp_scatterv_ring_allgatherv;
         else if (0 == strcmp(tmp_str, "tsp_ring"))
             MPIR_CVAR_IBCAST_INTRA_ALGORITHM = MPIR_CVAR_IBCAST_INTRA_ALGORITHM_tsp_ring;
         else {
@@ -1085,10 +1581,10 @@ tsp_ring                               - Force Generic Transport Ring algorithm"
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select ibcast algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_flat - Force flat algorithm");
+        "Variable to select ibcast algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_flat - Force flat algorithm");
     MPIR_CVAR_IBCAST_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -1153,10 +1649,10 @@ sched_flat - Force flat algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select gather algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-binomial - Force binomial algorithm\
-nb       - Force nonblocking algorithm");
+        "Variable to select gather algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"binomial - Force binomial algorithm\n"
+"nb       - Force nonblocking algorithm");
     MPIR_CVAR_GATHER_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -1195,11 +1691,11 @@ nb       - Force nonblocking algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select gather algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-linear                   - Force linear algorithm\
-local_gather_remote_send - Force local-gather-remote-send algorithm\
-nb                       - Force nonblocking algorithm");
+        "Variable to select gather algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"linear                   - Force linear algorithm\n"
+"local_gather_remote_send - Force local-gather-remote-send algorithm\n"
+"nb                       - Force nonblocking algorithm");
     MPIR_CVAR_GATHER_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -1240,11 +1736,11 @@ nb                       - Force nonblocking algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select igather algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_binomial     - Force binomial algorithm\
-tsp_tree       - Force genetric transport based tree algorithm");
+        "Variable to select igather algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_binomial     - Force binomial algorithm\n"
+"tsp_tree       - Force genetric transport based tree algorithm");
     MPIR_CVAR_IGATHER_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -1311,11 +1807,11 @@ tsp_tree       - Force genetric transport based tree algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select igather algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_long  - Force long inter algorithm\
-sched_short - Force short inter algorithm");
+        "Variable to select igather algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_long  - Force long inter algorithm\n"
+"sched_short - Force short inter algorithm");
     MPIR_CVAR_IGATHER_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -1356,10 +1852,10 @@ sched_short - Force short inter algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select gatherv algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-linear - Force linear algorithm\
-nb     - Force nonblocking algorithm");
+        "Variable to select gatherv algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"linear - Force linear algorithm\n"
+"nb     - Force nonblocking algorithm");
     MPIR_CVAR_GATHERV_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -1398,10 +1894,10 @@ nb     - Force nonblocking algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select gatherv algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-linear - Force linear algorithm\
-nb     - Force nonblocking algorithm");
+        "Variable to select gatherv algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"linear - Force linear algorithm\n"
+"nb     - Force nonblocking algorithm");
     MPIR_CVAR_GATHERV_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -1440,11 +1936,11 @@ nb     - Force nonblocking algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select igatherv algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_linear         - Force linear algorithm\
-tsp_linear       - Force generic transport based linear algorithm");
+        "Variable to select igatherv algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_linear         - Force linear algorithm\n"
+"tsp_linear       - Force generic transport based linear algorithm");
     MPIR_CVAR_IGATHERV_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -1485,11 +1981,11 @@ tsp_linear       - Force generic transport based linear algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select igatherv algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_linear - Force linear algorithm\
-tsp_linear - Force generic transport based linear algorithm");
+        "Variable to select igatherv algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_linear - Force linear algorithm\n"
+"tsp_linear - Force generic transport based linear algorithm");
     MPIR_CVAR_IGATHERV_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -1556,10 +2052,10 @@ tsp_linear - Force generic transport based linear algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select scatter algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-binomial - Force binomial algorithm\
-nb       - Force nonblocking algorithm");
+        "Variable to select scatter algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"binomial - Force binomial algorithm\n"
+"nb       - Force nonblocking algorithm");
     MPIR_CVAR_SCATTER_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -1598,11 +2094,11 @@ nb       - Force nonblocking algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select scatter algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-linear                    - Force linear algorithm\
-nb                        - Force nonblocking algorithm\
-remote_send_local_scatter - Force remote-send-local-scatter algorithm");
+        "Variable to select scatter algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"linear                    - Force linear algorithm\n"
+"nb                        - Force nonblocking algorithm\n"
+"remote_send_local_scatter - Force remote-send-local-scatter algorithm");
     MPIR_CVAR_SCATTER_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -1643,11 +2139,11 @@ remote_send_local_scatter - Force remote-send-local-scatter algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select iscatter algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_binomial     - Force binomial algorithm\
-tsp_tree       - Force genetric transport based tree algorithm");
+        "Variable to select iscatter algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_binomial     - Force binomial algorithm\n"
+"tsp_tree       - Force genetric transport based tree algorithm");
     MPIR_CVAR_ISCATTER_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -1714,11 +2210,11 @@ tsp_tree       - Force genetric transport based tree algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select iscatter algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_linear                    - Force linear algorithm\
-sched_remote_send_local_scatter - Force remote-send-local-scatter algorithm");
+        "Variable to select iscatter algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_linear                    - Force linear algorithm\n"
+"sched_remote_send_local_scatter - Force remote-send-local-scatter algorithm");
     MPIR_CVAR_ISCATTER_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -1759,10 +2255,10 @@ sched_remote_send_local_scatter - Force remote-send-local-scatter algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select scatterv algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-linear - Force linear algorithm\
-nb     - Force nonblocking algorithm");
+        "Variable to select scatterv algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"linear - Force linear algorithm\n"
+"nb     - Force nonblocking algorithm");
     MPIR_CVAR_SCATTERV_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -1801,10 +2297,10 @@ nb     - Force nonblocking algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select scatterv algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-linear - Force linear algorithm\
-nb     - Force nonblocking algorithm");
+        "Variable to select scatterv algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"linear - Force linear algorithm\n"
+"nb     - Force nonblocking algorithm");
     MPIR_CVAR_SCATTERV_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -1843,11 +2339,11 @@ nb     - Force nonblocking algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select iscatterv algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_linear    - Force linear algorithm\
-tsp_linear  - Force generic transport based linear algorithm");
+        "Variable to select iscatterv algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_linear    - Force linear algorithm\n"
+"tsp_linear  - Force generic transport based linear algorithm");
     MPIR_CVAR_ISCATTERV_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -1888,11 +2384,11 @@ tsp_linear  - Force generic transport based linear algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select iscatterv algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_linear - Force linear algorithm\
-tsp_linear - Force generic transport based linear algorithm");
+        "Variable to select iscatterv algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_linear - Force linear algorithm\n"
+"tsp_linear - Force generic transport based linear algorithm");
     MPIR_CVAR_ISCATTERV_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -1985,12 +2481,15 @@ tsp_linear - Force generic transport based linear algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select allgather algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-brucks             - Force brucks algorithm\
-nb                 - Force nonblocking algorithm\
-recursive_doubling - Force recursive doubling algorithm\
-ring               - Force ring algorithm");
+        "Variable to select allgather algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"brucks             - Force brucks algorithm\n"
+"k_brucks           - Force brucks algorithm\n"
+"nb                 - Force nonblocking algorithm\n"
+"recursive_doubling - Force recursive doubling algorithm\n"
+"ring               - Force ring algorithm\n"
+"recexch_doubling   - Force recexch distance doubling algorithm\n"
+"recexch_halving    - Force recexch distance halving algorithm");
     MPIR_CVAR_ALLGATHER_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -2011,16 +2510,100 @@ ring               - Force ring algorithm");
             MPIR_CVAR_ALLGATHER_INTRA_ALGORITHM = MPIR_CVAR_ALLGATHER_INTRA_ALGORITHM_auto;
         else if (0 == strcmp(tmp_str, "brucks"))
             MPIR_CVAR_ALLGATHER_INTRA_ALGORITHM = MPIR_CVAR_ALLGATHER_INTRA_ALGORITHM_brucks;
+        else if (0 == strcmp(tmp_str, "k_brucks"))
+            MPIR_CVAR_ALLGATHER_INTRA_ALGORITHM = MPIR_CVAR_ALLGATHER_INTRA_ALGORITHM_k_brucks;
         else if (0 == strcmp(tmp_str, "nb"))
             MPIR_CVAR_ALLGATHER_INTRA_ALGORITHM = MPIR_CVAR_ALLGATHER_INTRA_ALGORITHM_nb;
         else if (0 == strcmp(tmp_str, "recursive_doubling"))
             MPIR_CVAR_ALLGATHER_INTRA_ALGORITHM = MPIR_CVAR_ALLGATHER_INTRA_ALGORITHM_recursive_doubling;
         else if (0 == strcmp(tmp_str, "ring"))
             MPIR_CVAR_ALLGATHER_INTRA_ALGORITHM = MPIR_CVAR_ALLGATHER_INTRA_ALGORITHM_ring;
+        else if (0 == strcmp(tmp_str, "recexch_doubling"))
+            MPIR_CVAR_ALLGATHER_INTRA_ALGORITHM = MPIR_CVAR_ALLGATHER_INTRA_ALGORITHM_recexch_doubling;
+        else if (0 == strcmp(tmp_str, "recexch_halving"))
+            MPIR_CVAR_ALLGATHER_INTRA_ALGORITHM = MPIR_CVAR_ALLGATHER_INTRA_ALGORITHM_recexch_halving;
         else {
             mpi_errno = MPIR_Err_create_code(MPI_SUCCESS, MPIR_ERR_RECOVERABLE, __func__, __LINE__,MPI_ERR_OTHER, "**cvar_val", "**cvar_val %s %s", "MPIR_CVAR_ALLGATHER_INTRA_ALGORITHM", tmp_str);
             goto fn_fail;
         }
+    }
+
+    defaultval.d = 2;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_ALLGATHER_BRUCKS_KVAL, /* name */
+        &MPIR_CVAR_ALLGATHER_BRUCKS_KVAL, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "radix (k) value for generic transport brucks based allgather");
+    MPIR_CVAR_ALLGATHER_BRUCKS_KVAL = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_ALLGATHER_BRUCKS_KVAL", &(MPIR_CVAR_ALLGATHER_BRUCKS_KVAL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_ALLGATHER_BRUCKS_KVAL");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_ALLGATHER_BRUCKS_KVAL", &(MPIR_CVAR_ALLGATHER_BRUCKS_KVAL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_ALLGATHER_BRUCKS_KVAL");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_ALLGATHER_BRUCKS_KVAL", &(MPIR_CVAR_ALLGATHER_BRUCKS_KVAL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_ALLGATHER_BRUCKS_KVAL");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_ALLGATHER_BRUCKS_KVAL = %d\n", MPIR_CVAR_ALLGATHER_BRUCKS_KVAL);
+    }
+
+    defaultval.d = 2;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_ALLGATHER_RECEXCH_KVAL, /* name */
+        &MPIR_CVAR_ALLGATHER_RECEXCH_KVAL, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "k value for recursive exchange based allgather");
+    MPIR_CVAR_ALLGATHER_RECEXCH_KVAL = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_ALLGATHER_RECEXCH_KVAL", &(MPIR_CVAR_ALLGATHER_RECEXCH_KVAL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_ALLGATHER_RECEXCH_KVAL");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_ALLGATHER_RECEXCH_KVAL", &(MPIR_CVAR_ALLGATHER_RECEXCH_KVAL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_ALLGATHER_RECEXCH_KVAL");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_ALLGATHER_RECEXCH_KVAL", &(MPIR_CVAR_ALLGATHER_RECEXCH_KVAL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_ALLGATHER_RECEXCH_KVAL");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_ALLGATHER_RECEXCH_KVAL = %d\n", MPIR_CVAR_ALLGATHER_RECEXCH_KVAL);
+    }
+
+    defaultval.d = 0;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_ALLGATHER_RECEXCH_SINGLE_PHASE_RECV, /* name */
+        &MPIR_CVAR_ALLGATHER_RECEXCH_SINGLE_PHASE_RECV, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "This CVAR controls whether the recv is posted for one phase or two phases in recexch algos. By default, we post the recvs for 2 phases.");
+    MPIR_CVAR_ALLGATHER_RECEXCH_SINGLE_PHASE_RECV = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2bool("MPICH_ALLGATHER_RECEXCH_SINGLE_PHASE_RECV", &(MPIR_CVAR_ALLGATHER_RECEXCH_SINGLE_PHASE_RECV));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_ALLGATHER_RECEXCH_SINGLE_PHASE_RECV");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_PARAM_ALLGATHER_RECEXCH_SINGLE_PHASE_RECV", &(MPIR_CVAR_ALLGATHER_RECEXCH_SINGLE_PHASE_RECV));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_ALLGATHER_RECEXCH_SINGLE_PHASE_RECV");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_CVAR_ALLGATHER_RECEXCH_SINGLE_PHASE_RECV", &(MPIR_CVAR_ALLGATHER_RECEXCH_SINGLE_PHASE_RECV));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_ALLGATHER_RECEXCH_SINGLE_PHASE_RECV");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_ALLGATHER_RECEXCH_SINGLE_PHASE_RECV = %d\n", MPIR_CVAR_ALLGATHER_RECEXCH_SINGLE_PHASE_RECV);
     }
 
     defaultval.d = MPIR_CVAR_ALLGATHER_INTER_ALGORITHM_auto;
@@ -2033,10 +2616,10 @@ ring               - Force ring algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select allgather algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-local_gather_remote_bcast - Force local-gather-remote-bcast algorithm\
-nb                        - Force nonblocking algorithm");
+        "Variable to select allgather algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"local_gather_remote_bcast - Force local-gather-remote-bcast algorithm\n"
+"nb                        - Force nonblocking algorithm");
     MPIR_CVAR_ALLGATHER_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -2127,16 +2710,16 @@ nb                        - Force nonblocking algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select iallgather algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_ring               - Force ring algorithm\
-sched_brucks             - Force brucks algorithm\
-sched_recursive_doubling - Force recursive doubling algorithm\
-tsp_ring       - Force generic transport ring algorithm\
-tsp_brucks     - Force generic transport based brucks algorithm\
-tsp_recexch_doubling - Force generic transport recursive exchange with neighbours doubling in distance in each phase\
-tsp_recexch_halving  - Force generic transport recursive exchange with neighbours halving in distance in each phase");
+        "Variable to select iallgather algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_ring               - Force ring algorithm\n"
+"sched_brucks             - Force brucks algorithm\n"
+"sched_recursive_doubling - Force recursive doubling algorithm\n"
+"tsp_ring       - Force generic transport ring algorithm\n"
+"tsp_brucks     - Force generic transport based brucks algorithm\n"
+"tsp_recexch_doubling - Force generic transport recursive exchange with neighbours doubling in distance in each phase\n"
+"tsp_recexch_halving  - Force generic transport recursive exchange with neighbours halving in distance in each phase");
     MPIR_CVAR_IALLGATHER_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -2187,10 +2770,10 @@ tsp_recexch_halving  - Force generic transport recursive exchange with neighbour
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select iallgather algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_local_gather_remote_bcast - Force local-gather-remote-bcast algorithm");
+        "Variable to select iallgather algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_local_gather_remote_bcast - Force local-gather-remote-bcast algorithm");
     MPIR_CVAR_IALLGATHER_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -2255,12 +2838,12 @@ sched_local_gather_remote_bcast - Force local-gather-remote-bcast algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select allgatherv algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-brucks             - Force brucks algorithm\
-nb                 - Force nonblocking algorithm\
-recursive_doubling - Force recursive doubling algorithm\
-ring               - Force ring algorithm");
+        "Variable to select allgatherv algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"brucks             - Force brucks algorithm\n"
+"nb                 - Force nonblocking algorithm\n"
+"recursive_doubling - Force recursive doubling algorithm\n"
+"ring               - Force ring algorithm");
     MPIR_CVAR_ALLGATHERV_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -2303,10 +2886,10 @@ ring               - Force ring algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select allgatherv algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-nb                        - Force nonblocking algorithm\
-remote_gather_local_bcast - Force remote-gather-local-bcast algorithm");
+        "Variable to select allgatherv algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"nb                        - Force nonblocking algorithm\n"
+"remote_gather_local_bcast - Force remote-gather-local-bcast algorithm");
     MPIR_CVAR_ALLGATHERV_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -2397,16 +2980,16 @@ remote_gather_local_bcast - Force remote-gather-local-bcast algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select iallgatherv algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_brucks             - Force brucks algorithm\
-sched_recursive_doubling - Force recursive doubling algorithm\
-sched_ring               - Force ring algorithm\
-tsp_recexch_doubling - Force generic transport recursive exchange with neighbours doubling in distance in each phase\
-tsp_recexch_halving  - Force generic transport recursive exchange with neighbours halving in distance in each phase\
-tsp_ring             - Force generic transport ring algorithm\
-tsp_brucks           - Force generic transport based brucks algorithm");
+        "Variable to select iallgatherv algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_brucks             - Force brucks algorithm\n"
+"sched_recursive_doubling - Force recursive doubling algorithm\n"
+"sched_ring               - Force ring algorithm\n"
+"tsp_recexch_doubling - Force generic transport recursive exchange with neighbours doubling in distance in each phase\n"
+"tsp_recexch_halving  - Force generic transport recursive exchange with neighbours halving in distance in each phase\n"
+"tsp_ring             - Force generic transport ring algorithm\n"
+"tsp_brucks           - Force generic transport based brucks algorithm");
     MPIR_CVAR_IALLGATHERV_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -2457,10 +3040,10 @@ tsp_brucks           - Force generic transport based brucks algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select iallgatherv algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_remote_gather_local_bcast - Force remote-gather-local-bcast algorithm");
+        "Variable to select iallgatherv algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_remote_gather_local_bcast - Force remote-gather-local-bcast algorithm");
     MPIR_CVAR_IALLGATHERV_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -2577,13 +3160,14 @@ sched_remote_gather_local_bcast - Force remote-gather-local-bcast algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select alltoall algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-brucks                    - Force brucks algorithm\
-nb                        - Force nonblocking algorithm\
-pairwise                  - Force pairwise algorithm\
-pairwise_sendrecv_replace - Force pairwise sendrecv replace algorithm\
-scattered                 - Force scattered algorithm");
+        "Variable to select alltoall algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"brucks                    - Force brucks algorithm\n"
+"k_brucks                  - Force Force radix k brucks algorithm\n"
+"nb                        - Force nonblocking algorithm\n"
+"pairwise                  - Force pairwise algorithm\n"
+"pairwise_sendrecv_replace - Force pairwise sendrecv replace algorithm\n"
+"scattered                 - Force scattered algorithm");
     MPIR_CVAR_ALLTOALL_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -2604,6 +3188,8 @@ scattered                 - Force scattered algorithm");
             MPIR_CVAR_ALLTOALL_INTRA_ALGORITHM = MPIR_CVAR_ALLTOALL_INTRA_ALGORITHM_auto;
         else if (0 == strcmp(tmp_str, "brucks"))
             MPIR_CVAR_ALLTOALL_INTRA_ALGORITHM = MPIR_CVAR_ALLTOALL_INTRA_ALGORITHM_brucks;
+        else if (0 == strcmp(tmp_str, "k_brucks"))
+            MPIR_CVAR_ALLTOALL_INTRA_ALGORITHM = MPIR_CVAR_ALLTOALL_INTRA_ALGORITHM_k_brucks;
         else if (0 == strcmp(tmp_str, "nb"))
             MPIR_CVAR_ALLTOALL_INTRA_ALGORITHM = MPIR_CVAR_ALLTOALL_INTRA_ALGORITHM_nb;
         else if (0 == strcmp(tmp_str, "pairwise"))
@@ -2618,6 +3204,32 @@ scattered                 - Force scattered algorithm");
         }
     }
 
+    defaultval.d = 2;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_ALLTOALL_BRUCKS_KVAL, /* name */
+        &MPIR_CVAR_ALLTOALL_BRUCKS_KVAL, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "radix (k) value for generic transport brucks based alltoall");
+    MPIR_CVAR_ALLTOALL_BRUCKS_KVAL = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_ALLTOALL_BRUCKS_KVAL", &(MPIR_CVAR_ALLTOALL_BRUCKS_KVAL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_ALLTOALL_BRUCKS_KVAL");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_ALLTOALL_BRUCKS_KVAL", &(MPIR_CVAR_ALLTOALL_BRUCKS_KVAL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_ALLTOALL_BRUCKS_KVAL");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_ALLTOALL_BRUCKS_KVAL", &(MPIR_CVAR_ALLTOALL_BRUCKS_KVAL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_ALLTOALL_BRUCKS_KVAL");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_ALLTOALL_BRUCKS_KVAL = %d\n", MPIR_CVAR_ALLTOALL_BRUCKS_KVAL);
+    }
+
     defaultval.d = MPIR_CVAR_ALLTOALL_INTER_ALGORITHM_auto;
     MPIR_T_CVAR_REGISTER_STATIC(
         MPI_INT,
@@ -2628,10 +3240,10 @@ scattered                 - Force scattered algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select alltoall algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-nb                - Force nonblocking algorithm\
-pairwise_exchange - Force pairwise exchange algorithm");
+        "Variable to select alltoall algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"nb                - Force nonblocking algorithm\n"
+"pairwise_exchange - Force pairwise exchange algorithm");
     MPIR_CVAR_ALLTOALL_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -2670,16 +3282,16 @@ pairwise_exchange - Force pairwise exchange algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select ialltoall algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_brucks            - Force brucks algorithm\
-sched_inplace           - Force inplace algorithm\
-sched_pairwise          - Force pairwise algorithm\
-sched_permuted_sendrecv - Force permuted sendrecv algorithm\
-tsp_ring            - Force generic transport based ring algorithm\
-tsp_brucks          - Force generic transport based brucks algorithm\
-tsp_scattered       - Force generic transport based scattered algorithm");
+        "Variable to select ialltoall algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_brucks            - Force brucks algorithm\n"
+"sched_inplace           - Force inplace algorithm\n"
+"sched_pairwise          - Force pairwise algorithm\n"
+"sched_permuted_sendrecv - Force permuted sendrecv algorithm\n"
+"tsp_ring            - Force generic transport based ring algorithm\n"
+"tsp_brucks          - Force generic transport based brucks algorithm\n"
+"tsp_scattered       - Force generic transport based scattered algorithm");
     MPIR_CVAR_IALLTOALL_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -2730,10 +3342,10 @@ tsp_scattered       - Force generic transport based scattered algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select ialltoall algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_pairwise_exchange - Force pairwise exchange algorithm");
+        "Variable to select ialltoall algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_pairwise_exchange - Force pairwise exchange algorithm");
     MPIR_CVAR_IALLTOALL_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -2772,11 +3384,11 @@ sched_pairwise_exchange - Force pairwise exchange algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select alltoallv algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-nb                        - Force nonblocking algorithm\
-pairwise_sendrecv_replace - Force pairwise_sendrecv_replace algorithm\
-scattered                 - Force scattered algorithm");
+        "Variable to select alltoallv algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"nb                        - Force nonblocking algorithm\n"
+"pairwise_sendrecv_replace - Force pairwise_sendrecv_replace algorithm\n"
+"scattered                 - Force scattered algorithm");
     MPIR_CVAR_ALLTOALLV_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -2817,10 +3429,10 @@ scattered                 - Force scattered algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select alltoallv algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-pairwise_exchange - Force pairwise exchange algorithm\
-nb                - Force nonblocking algorithm");
+        "Variable to select alltoallv algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"pairwise_exchange - Force pairwise exchange algorithm\n"
+"nb                - Force nonblocking algorithm");
     MPIR_CVAR_ALLTOALLV_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -2859,14 +3471,14 @@ nb                - Force nonblocking algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select ialltoallv algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_blocked           - Force blocked algorithm\
-sched_inplace           - Force inplace algorithm\
-tsp_scattered       - Force generic transport based scattered algorithm\
-tsp_blocked         - Force generic transport blocked algorithm\
-tsp_inplace         - Force generic transport inplace algorithm");
+        "Variable to select ialltoallv algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_blocked           - Force blocked algorithm\n"
+"sched_inplace           - Force inplace algorithm\n"
+"tsp_scattered       - Force generic transport based scattered algorithm\n"
+"tsp_blocked         - Force generic transport blocked algorithm\n"
+"tsp_inplace         - Force generic transport inplace algorithm");
     MPIR_CVAR_IALLTOALLV_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -2913,10 +3525,10 @@ tsp_inplace         - Force generic transport inplace algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select ialltoallv algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_pairwise_exchange - Force pairwise exchange algorithm");
+        "Variable to select ialltoallv algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_pairwise_exchange - Force pairwise exchange algorithm");
     MPIR_CVAR_IALLTOALLV_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -3007,11 +3619,11 @@ sched_pairwise_exchange - Force pairwise exchange algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select alltoallw algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-nb                        - Force nonblocking algorithm\
-pairwise_sendrecv_replace - Force pairwise sendrecv replace algorithm\
-scattered                 - Force scattered algorithm");
+        "Variable to select alltoallw algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"nb                        - Force nonblocking algorithm\n"
+"pairwise_sendrecv_replace - Force pairwise sendrecv replace algorithm\n"
+"scattered                 - Force scattered algorithm");
     MPIR_CVAR_ALLTOALLW_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -3052,10 +3664,10 @@ scattered                 - Force scattered algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select alltoallw algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-nb                - Force nonblocking algorithm\
-pairwise_exchange - Force pairwise exchange algorithm");
+        "Variable to select alltoallw algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"nb                - Force nonblocking algorithm\n"
+"pairwise_exchange - Force pairwise exchange algorithm");
     MPIR_CVAR_ALLTOALLW_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -3094,13 +3706,13 @@ pairwise_exchange - Force pairwise exchange algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select ialltoallw algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_blocked           - Force blocked algorithm\
-sched_inplace           - Force inplace algorithm\
-tsp_blocked   - Force generic transport based blocked algorithm\
-tsp_inplace   - Force generic transport based inplace algorithm");
+        "Variable to select ialltoallw algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_blocked           - Force blocked algorithm\n"
+"sched_inplace           - Force inplace algorithm\n"
+"tsp_blocked   - Force generic transport based blocked algorithm\n"
+"tsp_inplace   - Force generic transport based inplace algorithm");
     MPIR_CVAR_IALLTOALLW_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -3145,10 +3757,10 @@ tsp_inplace   - Force generic transport based inplace algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select ialltoallw algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_pairwise_exchange - Force pairwise exchange algorithm");
+        "Variable to select ialltoallw algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_pairwise_exchange - Force pairwise exchange algorithm");
     MPIR_CVAR_IALLTOALLW_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -3239,12 +3851,12 @@ sched_pairwise_exchange - Force pairwise exchange algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select reduce algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-binomial              - Force binomial algorithm\
-nb                    - Force nonblocking algorithm\
-smp                   - Force smp algorithm\
-reduce_scatter_gather - Force reduce scatter gather algorithm");
+        "Variable to select reduce algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"binomial              - Force binomial algorithm\n"
+"nb                    - Force nonblocking algorithm\n"
+"smp                   - Force smp algorithm\n"
+"reduce_scatter_gather - Force reduce scatter gather algorithm");
     MPIR_CVAR_REDUCE_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -3287,10 +3899,10 @@ reduce_scatter_gather - Force reduce scatter gather algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select reduce algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-local_reduce_remote_send - Force local-reduce-remote-send algorithm\
-nb                       - Force nonblocking algorithm");
+        "Variable to select reduce algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"local_reduce_remote_send - Force local-reduce-remote-send algorithm\n"
+"nb                       - Force nonblocking algorithm");
     MPIR_CVAR_REDUCE_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -3355,7 +3967,7 @@ nb                       - Force nonblocking algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Tree type for tree based ireduce kary      - kary tree knomial_1 - knomial_1 tree knomial_2 - knomial_2 tree");
+        "Tree type for tree based ireduce kary      - kary tree knomial_1 - knomial_1 tree knomial_2 - knomial_2 tree topology_aware - topology_aware tree type topology_aware_k - topology_aware tree type with branching factor k topology_wave - topology_wave tree type");
     tmp_str = defaultval.str;
     got_rc = 0;
     rc = MPL_env2str("MPICH_IREDUCE_TREE_TYPE", &tmp_str);
@@ -3380,6 +3992,136 @@ nb                       - Force nonblocking algorithm");
     }
     else {
         MPIR_CVAR_IREDUCE_TREE_TYPE = NULL;
+    }
+
+    defaultval.d = 1;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_IREDUCE_TOPO_REORDER_ENABLE, /* name */
+        &MPIR_CVAR_IREDUCE_TOPO_REORDER_ENABLE, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "This cvar controls if the leaders are reordered based on the number of ranks in each group.");
+    MPIR_CVAR_IREDUCE_TOPO_REORDER_ENABLE = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2bool("MPICH_IREDUCE_TOPO_REORDER_ENABLE", &(MPIR_CVAR_IREDUCE_TOPO_REORDER_ENABLE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_IREDUCE_TOPO_REORDER_ENABLE");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_PARAM_IREDUCE_TOPO_REORDER_ENABLE", &(MPIR_CVAR_IREDUCE_TOPO_REORDER_ENABLE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_IREDUCE_TOPO_REORDER_ENABLE");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_CVAR_IREDUCE_TOPO_REORDER_ENABLE", &(MPIR_CVAR_IREDUCE_TOPO_REORDER_ENABLE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_IREDUCE_TOPO_REORDER_ENABLE");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_IREDUCE_TOPO_REORDER_ENABLE = %d\n", MPIR_CVAR_IREDUCE_TOPO_REORDER_ENABLE);
+    }
+
+    defaultval.d = 200;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_IREDUCE_TOPO_OVERHEAD, /* name */
+        &MPIR_CVAR_IREDUCE_TOPO_OVERHEAD, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "This cvar controls the size of the overhead.");
+    MPIR_CVAR_IREDUCE_TOPO_OVERHEAD = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_IREDUCE_TOPO_OVERHEAD", &(MPIR_CVAR_IREDUCE_TOPO_OVERHEAD));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_IREDUCE_TOPO_OVERHEAD");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_IREDUCE_TOPO_OVERHEAD", &(MPIR_CVAR_IREDUCE_TOPO_OVERHEAD));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_IREDUCE_TOPO_OVERHEAD");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_IREDUCE_TOPO_OVERHEAD", &(MPIR_CVAR_IREDUCE_TOPO_OVERHEAD));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_IREDUCE_TOPO_OVERHEAD");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_IREDUCE_TOPO_OVERHEAD = %d\n", MPIR_CVAR_IREDUCE_TOPO_OVERHEAD);
+    }
+
+    defaultval.d = 2800;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_IREDUCE_TOPO_DIFF_GROUPS, /* name */
+        &MPIR_CVAR_IREDUCE_TOPO_DIFF_GROUPS, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "This cvar controls the latency between different groups.");
+    MPIR_CVAR_IREDUCE_TOPO_DIFF_GROUPS = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_IREDUCE_TOPO_DIFF_GROUPS", &(MPIR_CVAR_IREDUCE_TOPO_DIFF_GROUPS));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_IREDUCE_TOPO_DIFF_GROUPS");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_IREDUCE_TOPO_DIFF_GROUPS", &(MPIR_CVAR_IREDUCE_TOPO_DIFF_GROUPS));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_IREDUCE_TOPO_DIFF_GROUPS");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_IREDUCE_TOPO_DIFF_GROUPS", &(MPIR_CVAR_IREDUCE_TOPO_DIFF_GROUPS));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_IREDUCE_TOPO_DIFF_GROUPS");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_IREDUCE_TOPO_DIFF_GROUPS = %d\n", MPIR_CVAR_IREDUCE_TOPO_DIFF_GROUPS);
+    }
+
+    defaultval.d = 1900;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_IREDUCE_TOPO_DIFF_SWITCHES, /* name */
+        &MPIR_CVAR_IREDUCE_TOPO_DIFF_SWITCHES, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "This cvar controls the latency between different switches in the same groups.");
+    MPIR_CVAR_IREDUCE_TOPO_DIFF_SWITCHES = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_IREDUCE_TOPO_DIFF_SWITCHES", &(MPIR_CVAR_IREDUCE_TOPO_DIFF_SWITCHES));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_IREDUCE_TOPO_DIFF_SWITCHES");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_IREDUCE_TOPO_DIFF_SWITCHES", &(MPIR_CVAR_IREDUCE_TOPO_DIFF_SWITCHES));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_IREDUCE_TOPO_DIFF_SWITCHES");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_IREDUCE_TOPO_DIFF_SWITCHES", &(MPIR_CVAR_IREDUCE_TOPO_DIFF_SWITCHES));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_IREDUCE_TOPO_DIFF_SWITCHES");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_IREDUCE_TOPO_DIFF_SWITCHES = %d\n", MPIR_CVAR_IREDUCE_TOPO_DIFF_SWITCHES);
+    }
+
+    defaultval.d = 1600;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_IREDUCE_TOPO_SAME_SWITCHES, /* name */
+        &MPIR_CVAR_IREDUCE_TOPO_SAME_SWITCHES, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "This cvar controls the latency in the same switch.");
+    MPIR_CVAR_IREDUCE_TOPO_SAME_SWITCHES = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_IREDUCE_TOPO_SAME_SWITCHES", &(MPIR_CVAR_IREDUCE_TOPO_SAME_SWITCHES));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_IREDUCE_TOPO_SAME_SWITCHES");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_IREDUCE_TOPO_SAME_SWITCHES", &(MPIR_CVAR_IREDUCE_TOPO_SAME_SWITCHES));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_IREDUCE_TOPO_SAME_SWITCHES");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_IREDUCE_TOPO_SAME_SWITCHES", &(MPIR_CVAR_IREDUCE_TOPO_SAME_SWITCHES));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_IREDUCE_TOPO_SAME_SWITCHES");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_IREDUCE_TOPO_SAME_SWITCHES = %d\n", MPIR_CVAR_IREDUCE_TOPO_SAME_SWITCHES);
     }
 
     defaultval.d = -1;
@@ -3470,14 +4212,14 @@ nb                       - Force nonblocking algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select ireduce algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_smp                   - Force smp algorithm\
-sched_binomial              - Force binomial algorithm\
-sched_reduce_scatter_gather - Force reduce scatter gather algorithm\
-tsp_tree                - Force Generic Transport Tree\
-tsp_ring                - Force Generic Transport Ring");
+        "Variable to select ireduce algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_smp                   - Force smp algorithm\n"
+"sched_binomial              - Force binomial algorithm\n"
+"sched_reduce_scatter_gather - Force reduce scatter gather algorithm\n"
+"tsp_tree                - Force Generic Transport Tree\n"
+"tsp_ring                - Force Generic Transport Ring");
     MPIR_CVAR_IREDUCE_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -3524,10 +4266,10 @@ tsp_ring                - Force Generic Transport Ring");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select ireduce algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_local_reduce_remote_send - Force local-reduce-remote-send algorithm");
+        "Variable to select ireduce algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_local_reduce_remote_send - Force local-reduce-remote-send algorithm");
     MPIR_CVAR_IREDUCE_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -3618,12 +4360,16 @@ sched_local_reduce_remote_send - Force local-reduce-remote-send algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select allreduce algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-nb                       - Force nonblocking algorithm\
-smp                      - Force smp algorithm\
-recursive_doubling       - Force recursive doubling algorithm\
-reduce_scatter_allgather - Force reduce scatter allgather algorithm");
+        "Variable to select allreduce algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"nb                       - Force nonblocking algorithm\n"
+"smp                      - Force smp algorithm\n"
+"recursive_doubling       - Force recursive doubling algorithm\n"
+"reduce_scatter_allgather - Force reduce scatter allgather algorithm\n"
+"tree                     - Force pipelined tree algorithm\n"
+"recexch                  - Force generic transport recursive exchange algorithm\n"
+"ring                     - Force ring algorithm\n"
+"k_reduce_scatter_allgather - Force reduce scatter allgather algorithm");
     MPIR_CVAR_ALLREDUCE_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -3650,10 +4396,330 @@ reduce_scatter_allgather - Force reduce scatter allgather algorithm");
             MPIR_CVAR_ALLREDUCE_INTRA_ALGORITHM = MPIR_CVAR_ALLREDUCE_INTRA_ALGORITHM_recursive_doubling;
         else if (0 == strcmp(tmp_str, "reduce_scatter_allgather"))
             MPIR_CVAR_ALLREDUCE_INTRA_ALGORITHM = MPIR_CVAR_ALLREDUCE_INTRA_ALGORITHM_reduce_scatter_allgather;
+        else if (0 == strcmp(tmp_str, "tree"))
+            MPIR_CVAR_ALLREDUCE_INTRA_ALGORITHM = MPIR_CVAR_ALLREDUCE_INTRA_ALGORITHM_tree;
+        else if (0 == strcmp(tmp_str, "recexch"))
+            MPIR_CVAR_ALLREDUCE_INTRA_ALGORITHM = MPIR_CVAR_ALLREDUCE_INTRA_ALGORITHM_recexch;
+        else if (0 == strcmp(tmp_str, "ring"))
+            MPIR_CVAR_ALLREDUCE_INTRA_ALGORITHM = MPIR_CVAR_ALLREDUCE_INTRA_ALGORITHM_ring;
+        else if (0 == strcmp(tmp_str, "k_reduce_scatter_allgather"))
+            MPIR_CVAR_ALLREDUCE_INTRA_ALGORITHM = MPIR_CVAR_ALLREDUCE_INTRA_ALGORITHM_k_reduce_scatter_allgather;
         else {
             mpi_errno = MPIR_Err_create_code(MPI_SUCCESS, MPIR_ERR_RECOVERABLE, __func__, __LINE__,MPI_ERR_OTHER, "**cvar_val", "**cvar_val %s %s", "MPIR_CVAR_ALLREDUCE_INTRA_ALGORITHM", tmp_str);
             goto fn_fail;
         }
+    }
+
+#if defined MPID_ALLREDUCE_TREE_TYPE
+    defaultval.str = MPID_ALLREDUCE_TREE_TYPE;
+#else
+    defaultval.str = (const char *) "knomial_1";
+#endif /* MPID_ALLREDUCE_TREE_TYPE */
+
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_CHAR,
+        MPIR_CVAR_ALLREDUCE_TREE_TYPE, /* name */
+        &MPIR_CVAR_ALLREDUCE_TREE_TYPE, /* address */
+        MPIR_CVAR_MAX_STRLEN, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "Tree type for tree based allreduce knomial_1 is default as it supports both commutative and non-commutative reduce operations kary      - kary tree type knomial_1 - knomial_1 tree type (tree grows starting from the left of the root) knomial_2 - knomial_2 tree type (tree grows starting from the right of the root) topology_aware - topology_aware tree type topology_aware_k - topology_aware tree type with branching factor k topology_wave - topology_wave tree type");
+    tmp_str = defaultval.str;
+    got_rc = 0;
+    rc = MPL_env2str("MPICH_ALLREDUCE_TREE_TYPE", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_ALLREDUCE_TREE_TYPE");
+    got_rc += rc;
+    rc = MPL_env2str("MPIR_PARAM_ALLREDUCE_TREE_TYPE", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_ALLREDUCE_TREE_TYPE");
+    got_rc += rc;
+    rc = MPL_env2str("MPIR_CVAR_ALLREDUCE_TREE_TYPE", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_ALLREDUCE_TREE_TYPE");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_ALLREDUCE_TREE_TYPE = %s\n", tmp_str);
+    }
+    if (tmp_str != NULL) {
+        MPIR_CVAR_ALLREDUCE_TREE_TYPE = MPL_strdup(tmp_str);
+        MPIR_CVAR_assert(MPIR_CVAR_ALLREDUCE_TREE_TYPE);
+        if (MPIR_CVAR_ALLREDUCE_TREE_TYPE == NULL) {
+            MPIR_CHKMEM_SETERR(mpi_errno, strlen(tmp_str), "dup of string for MPIR_CVAR_ALLREDUCE_TREE_TYPE");
+            goto fn_fail;
+        }
+    }
+    else {
+        MPIR_CVAR_ALLREDUCE_TREE_TYPE = NULL;
+    }
+
+#if defined MPID_ALLREDUCE_TREE_KVAL
+    defaultval.d = MPID_ALLREDUCE_TREE_KVAL;
+#else
+    defaultval.d = 2;
+#endif /* MPID_ALLREDUCE_TREE_KVAL */
+
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_ALLREDUCE_TREE_KVAL, /* name */
+        &MPIR_CVAR_ALLREDUCE_TREE_KVAL, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "Indicates the branching factor for kary or knomial trees.");
+    MPIR_CVAR_ALLREDUCE_TREE_KVAL = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_ALLREDUCE_TREE_KVAL", &(MPIR_CVAR_ALLREDUCE_TREE_KVAL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_ALLREDUCE_TREE_KVAL");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_ALLREDUCE_TREE_KVAL", &(MPIR_CVAR_ALLREDUCE_TREE_KVAL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_ALLREDUCE_TREE_KVAL");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_ALLREDUCE_TREE_KVAL", &(MPIR_CVAR_ALLREDUCE_TREE_KVAL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_ALLREDUCE_TREE_KVAL");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_ALLREDUCE_TREE_KVAL = %d\n", MPIR_CVAR_ALLREDUCE_TREE_KVAL);
+    }
+
+    defaultval.d = 1;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_ALLREDUCE_TOPO_REORDER_ENABLE, /* name */
+        &MPIR_CVAR_ALLREDUCE_TOPO_REORDER_ENABLE, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "This cvar controls if the leaders are reordered based on the number of ranks in each group.");
+    MPIR_CVAR_ALLREDUCE_TOPO_REORDER_ENABLE = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2bool("MPICH_ALLREDUCE_TOPO_REORDER_ENABLE", &(MPIR_CVAR_ALLREDUCE_TOPO_REORDER_ENABLE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_ALLREDUCE_TOPO_REORDER_ENABLE");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_PARAM_ALLREDUCE_TOPO_REORDER_ENABLE", &(MPIR_CVAR_ALLREDUCE_TOPO_REORDER_ENABLE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_ALLREDUCE_TOPO_REORDER_ENABLE");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_CVAR_ALLREDUCE_TOPO_REORDER_ENABLE", &(MPIR_CVAR_ALLREDUCE_TOPO_REORDER_ENABLE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_ALLREDUCE_TOPO_REORDER_ENABLE");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_ALLREDUCE_TOPO_REORDER_ENABLE = %d\n", MPIR_CVAR_ALLREDUCE_TOPO_REORDER_ENABLE);
+    }
+
+    defaultval.d = 200;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_ALLREDUCE_TOPO_OVERHEAD, /* name */
+        &MPIR_CVAR_ALLREDUCE_TOPO_OVERHEAD, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "This cvar controls the size of the overhead.");
+    MPIR_CVAR_ALLREDUCE_TOPO_OVERHEAD = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_ALLREDUCE_TOPO_OVERHEAD", &(MPIR_CVAR_ALLREDUCE_TOPO_OVERHEAD));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_ALLREDUCE_TOPO_OVERHEAD");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_ALLREDUCE_TOPO_OVERHEAD", &(MPIR_CVAR_ALLREDUCE_TOPO_OVERHEAD));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_ALLREDUCE_TOPO_OVERHEAD");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_ALLREDUCE_TOPO_OVERHEAD", &(MPIR_CVAR_ALLREDUCE_TOPO_OVERHEAD));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_ALLREDUCE_TOPO_OVERHEAD");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_ALLREDUCE_TOPO_OVERHEAD = %d\n", MPIR_CVAR_ALLREDUCE_TOPO_OVERHEAD);
+    }
+
+    defaultval.d = 2800;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_ALLREDUCE_TOPO_DIFF_GROUPS, /* name */
+        &MPIR_CVAR_ALLREDUCE_TOPO_DIFF_GROUPS, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "This cvar controls the latency between different groups.");
+    MPIR_CVAR_ALLREDUCE_TOPO_DIFF_GROUPS = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_ALLREDUCE_TOPO_DIFF_GROUPS", &(MPIR_CVAR_ALLREDUCE_TOPO_DIFF_GROUPS));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_ALLREDUCE_TOPO_DIFF_GROUPS");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_ALLREDUCE_TOPO_DIFF_GROUPS", &(MPIR_CVAR_ALLREDUCE_TOPO_DIFF_GROUPS));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_ALLREDUCE_TOPO_DIFF_GROUPS");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_ALLREDUCE_TOPO_DIFF_GROUPS", &(MPIR_CVAR_ALLREDUCE_TOPO_DIFF_GROUPS));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_ALLREDUCE_TOPO_DIFF_GROUPS");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_ALLREDUCE_TOPO_DIFF_GROUPS = %d\n", MPIR_CVAR_ALLREDUCE_TOPO_DIFF_GROUPS);
+    }
+
+    defaultval.d = 1900;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_ALLREDUCE_TOPO_DIFF_SWITCHES, /* name */
+        &MPIR_CVAR_ALLREDUCE_TOPO_DIFF_SWITCHES, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "This cvar controls the latency between different switches in the same groups.");
+    MPIR_CVAR_ALLREDUCE_TOPO_DIFF_SWITCHES = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_ALLREDUCE_TOPO_DIFF_SWITCHES", &(MPIR_CVAR_ALLREDUCE_TOPO_DIFF_SWITCHES));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_ALLREDUCE_TOPO_DIFF_SWITCHES");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_ALLREDUCE_TOPO_DIFF_SWITCHES", &(MPIR_CVAR_ALLREDUCE_TOPO_DIFF_SWITCHES));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_ALLREDUCE_TOPO_DIFF_SWITCHES");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_ALLREDUCE_TOPO_DIFF_SWITCHES", &(MPIR_CVAR_ALLREDUCE_TOPO_DIFF_SWITCHES));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_ALLREDUCE_TOPO_DIFF_SWITCHES");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_ALLREDUCE_TOPO_DIFF_SWITCHES = %d\n", MPIR_CVAR_ALLREDUCE_TOPO_DIFF_SWITCHES);
+    }
+
+    defaultval.d = 1600;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_ALLREDUCE_TOPO_SAME_SWITCHES, /* name */
+        &MPIR_CVAR_ALLREDUCE_TOPO_SAME_SWITCHES, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "This cvar controls the latency in the same switch.");
+    MPIR_CVAR_ALLREDUCE_TOPO_SAME_SWITCHES = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_ALLREDUCE_TOPO_SAME_SWITCHES", &(MPIR_CVAR_ALLREDUCE_TOPO_SAME_SWITCHES));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_ALLREDUCE_TOPO_SAME_SWITCHES");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_ALLREDUCE_TOPO_SAME_SWITCHES", &(MPIR_CVAR_ALLREDUCE_TOPO_SAME_SWITCHES));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_ALLREDUCE_TOPO_SAME_SWITCHES");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_ALLREDUCE_TOPO_SAME_SWITCHES", &(MPIR_CVAR_ALLREDUCE_TOPO_SAME_SWITCHES));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_ALLREDUCE_TOPO_SAME_SWITCHES");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_ALLREDUCE_TOPO_SAME_SWITCHES = %d\n", MPIR_CVAR_ALLREDUCE_TOPO_SAME_SWITCHES);
+    }
+
+    defaultval.d = 0;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_ALLREDUCE_TREE_PIPELINE_CHUNK_SIZE, /* name */
+        &MPIR_CVAR_ALLREDUCE_TREE_PIPELINE_CHUNK_SIZE, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "Maximum chunk size (in bytes) for pipelining in tree based allreduce. Default value is 0, that is, no pipelining by default");
+    MPIR_CVAR_ALLREDUCE_TREE_PIPELINE_CHUNK_SIZE = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_ALLREDUCE_TREE_PIPELINE_CHUNK_SIZE", &(MPIR_CVAR_ALLREDUCE_TREE_PIPELINE_CHUNK_SIZE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_ALLREDUCE_TREE_PIPELINE_CHUNK_SIZE");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_ALLREDUCE_TREE_PIPELINE_CHUNK_SIZE", &(MPIR_CVAR_ALLREDUCE_TREE_PIPELINE_CHUNK_SIZE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_ALLREDUCE_TREE_PIPELINE_CHUNK_SIZE");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_ALLREDUCE_TREE_PIPELINE_CHUNK_SIZE", &(MPIR_CVAR_ALLREDUCE_TREE_PIPELINE_CHUNK_SIZE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_ALLREDUCE_TREE_PIPELINE_CHUNK_SIZE");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_ALLREDUCE_TREE_PIPELINE_CHUNK_SIZE = %d\n", MPIR_CVAR_ALLREDUCE_TREE_PIPELINE_CHUNK_SIZE);
+    }
+
+#if defined MPID_ALLREDUCE_TREE_BUFFER_PER_CHILD
+    defaultval.d = MPID_ALLREDUCE_TREE_BUFFER_PER_CHILD;
+#else
+    defaultval.d = 0;
+#endif /* MPID_ALLREDUCE_TREE_BUFFER_PER_CHILD */
+
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_ALLREDUCE_TREE_BUFFER_PER_CHILD, /* name */
+        &MPIR_CVAR_ALLREDUCE_TREE_BUFFER_PER_CHILD, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "If set to true, a rank in tree_kary and tree_knomial algorithms will allocate a dedicated buffer for every child it receives data from. This would mean more memory consumption but it would allow preposting of the receives and hence reduce the number of unexpected messages. If set to false, there is only one buffer that is used to receive the data from all the children. The receives are therefore serialized, that is, only one receive can be posted at a time.");
+    MPIR_CVAR_ALLREDUCE_TREE_BUFFER_PER_CHILD = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2bool("MPICH_ALLREDUCE_TREE_BUFFER_PER_CHILD", &(MPIR_CVAR_ALLREDUCE_TREE_BUFFER_PER_CHILD));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_ALLREDUCE_TREE_BUFFER_PER_CHILD");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_PARAM_ALLREDUCE_TREE_BUFFER_PER_CHILD", &(MPIR_CVAR_ALLREDUCE_TREE_BUFFER_PER_CHILD));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_ALLREDUCE_TREE_BUFFER_PER_CHILD");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_CVAR_ALLREDUCE_TREE_BUFFER_PER_CHILD", &(MPIR_CVAR_ALLREDUCE_TREE_BUFFER_PER_CHILD));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_ALLREDUCE_TREE_BUFFER_PER_CHILD");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_ALLREDUCE_TREE_BUFFER_PER_CHILD = %d\n", MPIR_CVAR_ALLREDUCE_TREE_BUFFER_PER_CHILD);
+    }
+
+    defaultval.d = 2;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_ALLREDUCE_RECEXCH_KVAL, /* name */
+        &MPIR_CVAR_ALLREDUCE_RECEXCH_KVAL, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "k value for recursive exchange based allreduce");
+    MPIR_CVAR_ALLREDUCE_RECEXCH_KVAL = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_ALLREDUCE_RECEXCH_KVAL", &(MPIR_CVAR_ALLREDUCE_RECEXCH_KVAL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_ALLREDUCE_RECEXCH_KVAL");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_ALLREDUCE_RECEXCH_KVAL", &(MPIR_CVAR_ALLREDUCE_RECEXCH_KVAL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_ALLREDUCE_RECEXCH_KVAL");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_ALLREDUCE_RECEXCH_KVAL", &(MPIR_CVAR_ALLREDUCE_RECEXCH_KVAL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_ALLREDUCE_RECEXCH_KVAL");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_ALLREDUCE_RECEXCH_KVAL = %d\n", MPIR_CVAR_ALLREDUCE_RECEXCH_KVAL);
+    }
+
+    defaultval.d = 0;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_ALLREDUCE_RECEXCH_SINGLE_PHASE_RECV, /* name */
+        &MPIR_CVAR_ALLREDUCE_RECEXCH_SINGLE_PHASE_RECV, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "This CVAR controls whether the recv is posted for one phase or two phases in recexch algos. By default, we post the recvs for 2 phases.");
+    MPIR_CVAR_ALLREDUCE_RECEXCH_SINGLE_PHASE_RECV = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2bool("MPICH_ALLREDUCE_RECEXCH_SINGLE_PHASE_RECV", &(MPIR_CVAR_ALLREDUCE_RECEXCH_SINGLE_PHASE_RECV));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_ALLREDUCE_RECEXCH_SINGLE_PHASE_RECV");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_PARAM_ALLREDUCE_RECEXCH_SINGLE_PHASE_RECV", &(MPIR_CVAR_ALLREDUCE_RECEXCH_SINGLE_PHASE_RECV));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_ALLREDUCE_RECEXCH_SINGLE_PHASE_RECV");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_CVAR_ALLREDUCE_RECEXCH_SINGLE_PHASE_RECV", &(MPIR_CVAR_ALLREDUCE_RECEXCH_SINGLE_PHASE_RECV));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_ALLREDUCE_RECEXCH_SINGLE_PHASE_RECV");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_ALLREDUCE_RECEXCH_SINGLE_PHASE_RECV = %d\n", MPIR_CVAR_ALLREDUCE_RECEXCH_SINGLE_PHASE_RECV);
     }
 
     defaultval.d = MPIR_CVAR_ALLREDUCE_INTER_ALGORITHM_auto;
@@ -3666,10 +4732,10 @@ reduce_scatter_allgather - Force reduce scatter allgather algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select allreduce algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-nb                    - Force nonblocking algorithm\
-reduce_exchange_bcast - Force reduce-exchange-bcast algorithm");
+        "Variable to select allreduce algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"nb                    - Force nonblocking algorithm\n"
+"reduce_exchange_bcast - Force reduce-exchange-bcast algorithm");
     MPIR_CVAR_ALLREDUCE_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -3849,18 +4915,18 @@ reduce_exchange_bcast - Force reduce-exchange-bcast algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select iallreduce algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_naive                      - Force naive algorithm\
-sched_smp                        - Force smp algorithm\
-sched_recursive_doubling         - Force recursive doubling algorithm\
-sched_reduce_scatter_allgather   - Force reduce scatter allgather algorithm\
-tsp_recexch_single_buffer    - Force generic transport recursive exchange with single buffer for receives\
-tsp_recexch_multiple_buffer  - Force generic transport recursive exchange with multiple buffers for receives\
-tsp_tree                     - Force generic transport tree algorithm\
-tsp_ring                     - Force generic transport ring algorithm\
-tsp_recexch_reduce_scatter_recexch_allgatherv  - Force generic transport recursive exchange with reduce scatter and allgatherv");
+        "Variable to select iallreduce algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_naive                      - Force naive algorithm\n"
+"sched_smp                        - Force smp algorithm\n"
+"sched_recursive_doubling         - Force recursive doubling algorithm\n"
+"sched_reduce_scatter_allgather   - Force reduce scatter allgather algorithm\n"
+"tsp_recexch_single_buffer    - Force generic transport recursive exchange with single buffer for receives\n"
+"tsp_recexch_multiple_buffer  - Force generic transport recursive exchange with multiple buffers for receives\n"
+"tsp_tree                     - Force generic transport tree algorithm\n"
+"tsp_ring                     - Force generic transport ring algorithm\n"
+"tsp_recexch_reduce_scatter_recexch_allgatherv  - Force generic transport recursive exchange with reduce scatter and allgatherv");
     MPIR_CVAR_IALLREDUCE_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -3915,10 +4981,10 @@ tsp_recexch_reduce_scatter_recexch_allgatherv  - Force generic transport recursi
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select iallreduce algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_remote_reduce_local_bcast - Force remote-reduce-local-bcast algorithm");
+        "Variable to select iallreduce algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_remote_reduce_local_bcast - Force remote-reduce-local-bcast algorithm");
     MPIR_CVAR_IALLREDUCE_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -3983,13 +5049,13 @@ sched_remote_reduce_local_bcast - Force remote-reduce-local-bcast algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select reduce_scatter algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-nb                 - Force nonblocking algorithm\
-noncommutative     - Force noncommutative algorithm\
-pairwise           - Force pairwise algorithm\
-recursive_doubling - Force recursive doubling algorithm\
-recursive_halving  - Force recursive halving algorithm");
+        "Variable to select reduce_scatter algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"nb                 - Force nonblocking algorithm\n"
+"noncommutative     - Force noncommutative algorithm\n"
+"pairwise           - Force pairwise algorithm\n"
+"recursive_doubling - Force recursive doubling algorithm\n"
+"recursive_halving  - Force recursive halving algorithm");
     MPIR_CVAR_REDUCE_SCATTER_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -4034,10 +5100,10 @@ recursive_halving  - Force recursive halving algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select reduce_scatter algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-nb                          - Force nonblocking algorithm\
-remote_reduce_local_scatter - Force remote-reduce-local-scatter algorithm");
+        "Variable to select reduce_scatter algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"nb                          - Force nonblocking algorithm\n"
+"remote_reduce_local_scatter - Force remote-reduce-local-scatter algorithm");
     MPIR_CVAR_REDUCE_SCATTER_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -4102,14 +5168,14 @@ remote_reduce_local_scatter - Force remote-reduce-local-scatter algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select ireduce_scatter algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_noncommutative     - Force noncommutative algorithm\
-sched_recursive_doubling - Force recursive doubling algorithm\
-sched_pairwise           - Force pairwise algorithm\
-sched_recursive_halving  - Force recursive halving algorithm\
-tsp_recexch          - Force generic transport recursive exchange algorithm");
+        "Variable to select ireduce_scatter algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_noncommutative     - Force noncommutative algorithm\n"
+"sched_recursive_doubling - Force recursive doubling algorithm\n"
+"sched_pairwise           - Force pairwise algorithm\n"
+"sched_recursive_halving  - Force recursive halving algorithm\n"
+"tsp_recexch          - Force generic transport recursive exchange algorithm");
     MPIR_CVAR_IREDUCE_SCATTER_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -4156,10 +5222,10 @@ tsp_recexch          - Force generic transport recursive exchange algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select ireduce_scatter algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_remote_reduce_local_scatterv - Force remote-reduce-local-scatterv algorithm");
+        "Variable to select ireduce_scatter algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_remote_reduce_local_scatterv - Force remote-reduce-local-scatterv algorithm");
     MPIR_CVAR_IREDUCE_SCATTER_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -4198,13 +5264,13 @@ sched_remote_reduce_local_scatterv - Force remote-reduce-local-scatterv algorith
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select reduce_scatter_block algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-noncommutative     - Force noncommutative algorithm\
-recursive_doubling - Force recursive doubling algorithm\
-pairwise           - Force pairwise algorithm\
-recursive_halving  - Force recursive halving algorithm\
-nb                 - Force nonblocking algorithm");
+        "Variable to select reduce_scatter_block algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"noncommutative     - Force noncommutative algorithm\n"
+"recursive_doubling - Force recursive doubling algorithm\n"
+"pairwise           - Force pairwise algorithm\n"
+"recursive_halving  - Force recursive halving algorithm\n"
+"nb                 - Force nonblocking algorithm");
     MPIR_CVAR_REDUCE_SCATTER_BLOCK_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -4249,10 +5315,10 @@ nb                 - Force nonblocking algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select reduce_scatter_block algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-nb                          - Force nonblocking algorithm\
-remote_reduce_local_scatter - Force remote-reduce-local-scatter algorithm");
+        "Variable to select reduce_scatter_block algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"nb                          - Force nonblocking algorithm\n"
+"remote_reduce_local_scatter - Force remote-reduce-local-scatter algorithm");
     MPIR_CVAR_REDUCE_SCATTER_BLOCK_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -4317,14 +5383,14 @@ remote_reduce_local_scatter - Force remote-reduce-local-scatter algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select ireduce_scatter_block algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_noncommutative     - Force noncommutative algorithm\
-sched_recursive_doubling - Force recursive doubling algorithm\
-sched_pairwise           - Force pairwise algorithm\
-sched_recursive_halving  - Force recursive halving algorithm\
-tsp_recexch          - Force generic transport recursive exchange algorithm");
+        "Variable to select ireduce_scatter_block algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_noncommutative     - Force noncommutative algorithm\n"
+"sched_recursive_doubling - Force recursive doubling algorithm\n"
+"sched_pairwise           - Force pairwise algorithm\n"
+"sched_recursive_halving  - Force recursive halving algorithm\n"
+"tsp_recexch          - Force generic transport recursive exchange algorithm");
     MPIR_CVAR_IREDUCE_SCATTER_BLOCK_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -4371,10 +5437,10 @@ tsp_recexch          - Force generic transport recursive exchange algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select ireduce_scatter_block algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_remote_reduce_local_scatterv - Force remote-reduce-local-scatterv algorithm");
+        "Variable to select ireduce_scatter_block algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_remote_reduce_local_scatterv - Force remote-reduce-local-scatterv algorithm");
     MPIR_CVAR_IREDUCE_SCATTER_BLOCK_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -4413,11 +5479,11 @@ sched_remote_reduce_local_scatterv - Force remote-reduce-local-scatterv algorith
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select allgather algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-nb                 - Force nonblocking algorithm\
-smp                - Force smp algorithm\
-recursive_doubling - Force recursive doubling algorithm");
+        "Variable to select allgather algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"nb                 - Force nonblocking algorithm\n"
+"smp                - Force smp algorithm\n"
+"recursive_doubling - Force recursive doubling algorithm");
     MPIR_CVAR_SCAN_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -4458,12 +5524,12 @@ recursive_doubling - Force recursive doubling algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select allgather algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_smp                  - Force smp algorithm\
-sched_recursive_doubling   - Force recursive doubling algorithm\
-tsp_recursive_doubling - Force generic transport recursive doubling algorithm");
+        "Variable to select allgather algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_smp                  - Force smp algorithm\n"
+"sched_recursive_doubling   - Force recursive doubling algorithm\n"
+"tsp_recursive_doubling - Force generic transport recursive doubling algorithm");
     MPIR_CVAR_ISCAN_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -4506,10 +5572,10 @@ tsp_recursive_doubling - Force generic transport recursive doubling algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select allgather algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-nb                 - Force nonblocking algorithm\
-recursive_doubling - Force recursive doubling algorithm");
+        "Variable to select allgather algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"nb                 - Force nonblocking algorithm\n"
+"recursive_doubling - Force recursive doubling algorithm");
     MPIR_CVAR_EXSCAN_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -4548,10 +5614,10 @@ recursive_doubling - Force recursive doubling algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select iexscan algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_recursive_doubling - Force recursive doubling algorithm");
+        "Variable to select iexscan algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_recursive_doubling - Force recursive doubling algorithm");
     MPIR_CVAR_IEXSCAN_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -4590,9 +5656,9 @@ sched_recursive_doubling - Force recursive doubling algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select ineighbor_allgather algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-nb   - Force nonblocking algorithm");
+        "Variable to select ineighbor_allgather algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"nb   - Force nonblocking algorithm");
     MPIR_CVAR_NEIGHBOR_ALLGATHER_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -4629,9 +5695,9 @@ nb   - Force nonblocking algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select ineighbor_allgather algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-nb   - Force nonblocking algorithm");
+        "Variable to select ineighbor_allgather algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"nb   - Force nonblocking algorithm");
     MPIR_CVAR_NEIGHBOR_ALLGATHER_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -4668,11 +5734,11 @@ nb   - Force nonblocking algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select ineighbor_allgather algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_linear    - Force linear algorithm\
-tsp_linear  - Force generic transport based linear algorithm");
+        "Variable to select ineighbor_allgather algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_linear    - Force linear algorithm\n"
+"tsp_linear  - Force generic transport based linear algorithm");
     MPIR_CVAR_INEIGHBOR_ALLGATHER_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -4713,11 +5779,11 @@ tsp_linear  - Force generic transport based linear algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select ineighbor_allgather algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_linear    - Force linear algorithm\
-tsp_linear  - Force generic transport based linear algorithm");
+        "Variable to select ineighbor_allgather algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_linear    - Force linear algorithm\n"
+"tsp_linear  - Force generic transport based linear algorithm");
     MPIR_CVAR_INEIGHBOR_ALLGATHER_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -4758,9 +5824,9 @@ tsp_linear  - Force generic transport based linear algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select neighbor_allgatherv algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-nb   - Force nb algorithm");
+        "Variable to select neighbor_allgatherv algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"nb   - Force nb algorithm");
     MPIR_CVAR_NEIGHBOR_ALLGATHERV_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -4797,9 +5863,9 @@ nb   - Force nb algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select neighbor_allgatherv algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-nb   - Force nb algorithm");
+        "Variable to select neighbor_allgatherv algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"nb   - Force nb algorithm");
     MPIR_CVAR_NEIGHBOR_ALLGATHERV_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -4836,11 +5902,11 @@ nb   - Force nb algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select ineighbor_allgatherv algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_linear          - Force linear algorithm\
-tsp_linear        - Force generic transport based linear algorithm");
+        "Variable to select ineighbor_allgatherv algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_linear          - Force linear algorithm\n"
+"tsp_linear        - Force generic transport based linear algorithm");
     MPIR_CVAR_INEIGHBOR_ALLGATHERV_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -4881,11 +5947,11 @@ tsp_linear        - Force generic transport based linear algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select ineighbor_allgatherv algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_linear          - Force linear algorithm\
-tsp_linear        - Force generic transport based linear algorithm");
+        "Variable to select ineighbor_allgatherv algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_linear          - Force linear algorithm\n"
+"tsp_linear        - Force generic transport based linear algorithm");
     MPIR_CVAR_INEIGHBOR_ALLGATHERV_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -4926,9 +5992,9 @@ tsp_linear        - Force generic transport based linear algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select neighbor_alltoall algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-nb   - Force nb algorithm");
+        "Variable to select neighbor_alltoall algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"nb   - Force nb algorithm");
     MPIR_CVAR_NEIGHBOR_ALLTOALL_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -4965,9 +6031,9 @@ nb   - Force nb algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select neighbor_alltoall algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-nb   - Force nb algorithm");
+        "Variable to select neighbor_alltoall algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"nb   - Force nb algorithm");
     MPIR_CVAR_NEIGHBOR_ALLTOALL_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -5004,11 +6070,11 @@ nb   - Force nb algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select ineighbor_alltoall algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_linear          - Force linear algorithm\
-tsp_linear        - Force generic transport based linear algorithm");
+        "Variable to select ineighbor_alltoall algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_linear          - Force linear algorithm\n"
+"tsp_linear        - Force generic transport based linear algorithm");
     MPIR_CVAR_INEIGHBOR_ALLTOALL_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -5049,11 +6115,11 @@ tsp_linear        - Force generic transport based linear algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select ineighbor_alltoall algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_linear          - Force linear algorithm\
-tsp_linear        - Force generic transport based linear algorithm");
+        "Variable to select ineighbor_alltoall algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_linear          - Force linear algorithm\n"
+"tsp_linear        - Force generic transport based linear algorithm");
     MPIR_CVAR_INEIGHBOR_ALLTOALL_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -5094,9 +6160,9 @@ tsp_linear        - Force generic transport based linear algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select neighbor_alltoallv algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-nb   - Force nb algorithm");
+        "Variable to select neighbor_alltoallv algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"nb   - Force nb algorithm");
     MPIR_CVAR_NEIGHBOR_ALLTOALLV_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -5133,9 +6199,9 @@ nb   - Force nb algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select neighbor_alltoallv algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-nb   - Force nb algorithm");
+        "Variable to select neighbor_alltoallv algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"nb   - Force nb algorithm");
     MPIR_CVAR_NEIGHBOR_ALLTOALLV_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -5172,11 +6238,11 @@ nb   - Force nb algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select ineighbor_alltoallv algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_linear          - Force linear algorithm\
-tsp_linear  - Force generic transport based linear algorithm");
+        "Variable to select ineighbor_alltoallv algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_linear          - Force linear algorithm\n"
+"tsp_linear  - Force generic transport based linear algorithm");
     MPIR_CVAR_INEIGHBOR_ALLTOALLV_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -5217,11 +6283,11 @@ tsp_linear  - Force generic transport based linear algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select ineighbor_alltoallv algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_linear          - Force linear algorithm\
-tsp_linear  - Force generic transport based linear algorithm");
+        "Variable to select ineighbor_alltoallv algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_linear          - Force linear algorithm\n"
+"tsp_linear  - Force generic transport based linear algorithm");
     MPIR_CVAR_INEIGHBOR_ALLTOALLV_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -5262,9 +6328,9 @@ tsp_linear  - Force generic transport based linear algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select neighbor_alltoallw algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-nb   - Force nb algorithm");
+        "Variable to select neighbor_alltoallw algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"nb   - Force nb algorithm");
     MPIR_CVAR_NEIGHBOR_ALLTOALLW_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -5301,9 +6367,9 @@ nb   - Force nb algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select neighbor_alltoallw algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-nb   - Force nb algorithm");
+        "Variable to select neighbor_alltoallw algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"nb   - Force nb algorithm");
     MPIR_CVAR_NEIGHBOR_ALLTOALLW_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -5340,11 +6406,11 @@ nb   - Force nb algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select ineighbor_alltoallw algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_linear          - Force linear algorithm\
-tsp_linear        - Force generic transport based linear algorithm");
+        "Variable to select ineighbor_alltoallw algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_linear          - Force linear algorithm\n"
+"tsp_linear        - Force generic transport based linear algorithm");
     MPIR_CVAR_INEIGHBOR_ALLTOALLW_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -5385,11 +6451,11 @@ tsp_linear        - Force generic transport based linear algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select ineighbor_alltoallw algorithm\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\
-sched_auto - Internal algorithm selection for sched-based algorithms\
-sched_linear          - Force linear algorithm\
-tsp_linear        - Force generic transport based linear algorithm");
+        "Variable to select ineighbor_alltoallw algorithm\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"sched_auto - Internal algorithm selection for sched-based algorithms\n"
+"sched_linear          - Force linear algorithm\n"
+"tsp_linear        - Force generic transport based linear algorithm");
     MPIR_CVAR_INEIGHBOR_ALLTOALLW_INTER_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -7302,11 +8368,11 @@ tsp_linear        - Force generic transport based linear algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select whether the device can override the\
-MPIR-level collective algorithms.\
-all     - Always prefer the device collectives\
-none    - Never pick the device collectives\
-percoll - Use the per-collective CVARs to decide");
+        "Variable to select whether the device can override the\n"
+"MPIR-level collective algorithms.\n"
+"all     - Always prefer the device collectives\n"
+"none    - Never pick the device collectives\n"
+"percoll - Use the per-collective CVARs to decide");
     MPIR_CVAR_DEVICE_COLLECTIVES = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -7345,12 +8411,12 @@ percoll - Use the per-collective CVARs to decide");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to control what the MPI library should do if the\
-user-specified collective algorithm does not work for the\
-arguments passed in by the user.\
-error   - throw an error\
-print   - print an error message and fallback to the internally selected algorithm\
-silent  - silently fallback to the internally selected algorithm");
+        "Variable to control what the MPI library should do if the\n"
+"user-specified collective algorithm does not work for the\n"
+"arguments passed in by the user.\n"
+"error   - throw an error\n"
+"print   - print an error message and fallback to the internally selected algorithm\n"
+"silent  - silently fallback to the internally selected algorithm");
     MPIR_CVAR_COLLECTIVE_FALLBACK = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -7414,6 +8480,136 @@ silent  - silently fallback to the internally selected algorithm");
     }
     else {
         MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE = NULL;
+    }
+
+    defaultval.d = 0;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_HIERARCHY_DUMP, /* name */
+        &MPIR_CVAR_HIERARCHY_DUMP, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "If set to true, each rank will dump the hierarchy data structure to a file named \"hierarchy[rank]\" in the current folder. If set to false, the hierarchy data structure will not be dumped.");
+    MPIR_CVAR_HIERARCHY_DUMP = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2bool("MPICH_HIERARCHY_DUMP", &(MPIR_CVAR_HIERARCHY_DUMP));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_HIERARCHY_DUMP");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_PARAM_HIERARCHY_DUMP", &(MPIR_CVAR_HIERARCHY_DUMP));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_HIERARCHY_DUMP");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_CVAR_HIERARCHY_DUMP", &(MPIR_CVAR_HIERARCHY_DUMP));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_HIERARCHY_DUMP");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_HIERARCHY_DUMP = %d\n", MPIR_CVAR_HIERARCHY_DUMP);
+    }
+
+#if defined MPID_COORDINATES_FILE
+    defaultval.str = MPID_COORDINATES_FILE;
+#else
+    defaultval.str = (const char *) "";
+#endif /* MPID_COORDINATES_FILE */
+
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_CHAR,
+        MPIR_CVAR_COORDINATES_FILE, /* name */
+        &MPIR_CVAR_COORDINATES_FILE, /* address */
+        MPIR_CVAR_MAX_STRLEN, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "Defines the location of the input coordinates file.");
+    tmp_str = defaultval.str;
+    got_rc = 0;
+    rc = MPL_env2str("MPICH_COORDINATES_FILE", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_COORDINATES_FILE");
+    got_rc += rc;
+    rc = MPL_env2str("MPIR_PARAM_COORDINATES_FILE", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_COORDINATES_FILE");
+    got_rc += rc;
+    rc = MPL_env2str("MPIR_CVAR_COORDINATES_FILE", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_COORDINATES_FILE");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_COORDINATES_FILE = %s\n", tmp_str);
+    }
+    if (tmp_str != NULL) {
+        MPIR_CVAR_COORDINATES_FILE = MPL_strdup(tmp_str);
+        MPIR_CVAR_assert(MPIR_CVAR_COORDINATES_FILE);
+        if (MPIR_CVAR_COORDINATES_FILE == NULL) {
+            MPIR_CHKMEM_SETERR(mpi_errno, strlen(tmp_str), "dup of string for MPIR_CVAR_COORDINATES_FILE");
+            goto fn_fail;
+        }
+    }
+    else {
+        MPIR_CVAR_COORDINATES_FILE = NULL;
+    }
+
+#if defined MPID_COLL_TREE_DUMP
+    defaultval.d = MPID_COLL_TREE_DUMP;
+#else
+    defaultval.d = 0;
+#endif /* MPID_COLL_TREE_DUMP */
+
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_COLL_TREE_DUMP, /* name */
+        &MPIR_CVAR_COLL_TREE_DUMP, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "If set to true, each rank will dump the tree to a file named \"colltree[rank].json\" in the current folder. If set to false, the tree will not be dumped.");
+    MPIR_CVAR_COLL_TREE_DUMP = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2bool("MPICH_COLL_TREE_DUMP", &(MPIR_CVAR_COLL_TREE_DUMP));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_COLL_TREE_DUMP");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_PARAM_COLL_TREE_DUMP", &(MPIR_CVAR_COLL_TREE_DUMP));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_COLL_TREE_DUMP");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_CVAR_COLL_TREE_DUMP", &(MPIR_CVAR_COLL_TREE_DUMP));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_COLL_TREE_DUMP");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_COLL_TREE_DUMP = %d\n", MPIR_CVAR_COLL_TREE_DUMP);
+    }
+
+#if defined MPID_COORDINATES_DUMP
+    defaultval.d = MPID_COORDINATES_DUMP;
+#else
+    defaultval.d = 0;
+#endif /* MPID_COORDINATES_DUMP */
+
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_COORDINATES_DUMP, /* name */
+        &MPIR_CVAR_COORDINATES_DUMP, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "If set to true, rank 0 will dump the network coordinates to a file named \"coords\" in the current folder. If set to false, the network coordinates will not be dumped.");
+    MPIR_CVAR_COORDINATES_DUMP = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2bool("MPICH_COORDINATES_DUMP", &(MPIR_CVAR_COORDINATES_DUMP));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_COORDINATES_DUMP");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_PARAM_COORDINATES_DUMP", &(MPIR_CVAR_COORDINATES_DUMP));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_COORDINATES_DUMP");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_CVAR_COORDINATES_DUMP", &(MPIR_CVAR_COORDINATES_DUMP));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_COORDINATES_DUMP");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_COORDINATES_DUMP = %d\n", MPIR_CVAR_COORDINATES_DUMP);
     }
 
     defaultval.d = 0;
@@ -8019,6 +9215,214 @@ silent  - silently fallback to the internally selected algorithm");
     defaultval.d = 0;
     MPIR_T_CVAR_REGISTER_STATIC(
         MPI_INT,
+        MPIR_CVAR_GPU_USE_IMMEDIATE_COMMAND_LIST, /* name */
+        &MPIR_CVAR_GPU_USE_IMMEDIATE_COMMAND_LIST, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "GPU", /* category */
+        "If true, mpl/ze will use immediate command list for copying");
+    MPIR_CVAR_GPU_USE_IMMEDIATE_COMMAND_LIST = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2bool("MPICH_GPU_USE_IMMEDIATE_COMMAND_LIST", &(MPIR_CVAR_GPU_USE_IMMEDIATE_COMMAND_LIST));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_GPU_USE_IMMEDIATE_COMMAND_LIST");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_PARAM_GPU_USE_IMMEDIATE_COMMAND_LIST", &(MPIR_CVAR_GPU_USE_IMMEDIATE_COMMAND_LIST));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_GPU_USE_IMMEDIATE_COMMAND_LIST");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_CVAR_GPU_USE_IMMEDIATE_COMMAND_LIST", &(MPIR_CVAR_GPU_USE_IMMEDIATE_COMMAND_LIST));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_GPU_USE_IMMEDIATE_COMMAND_LIST");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_GPU_USE_IMMEDIATE_COMMAND_LIST = %d\n", MPIR_CVAR_GPU_USE_IMMEDIATE_COMMAND_LIST);
+    }
+
+    defaultval.d = 0;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_GPU_ROUND_ROBIN_COMMAND_QUEUES, /* name */
+        &MPIR_CVAR_GPU_ROUND_ROBIN_COMMAND_QUEUES, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "GPU", /* category */
+        "If true, mpl/ze will use command queues in a round-robin fashion. If false, only command queues of index 0 will be used.");
+    MPIR_CVAR_GPU_ROUND_ROBIN_COMMAND_QUEUES = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2bool("MPICH_GPU_ROUND_ROBIN_COMMAND_QUEUES", &(MPIR_CVAR_GPU_ROUND_ROBIN_COMMAND_QUEUES));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_GPU_ROUND_ROBIN_COMMAND_QUEUES");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_PARAM_GPU_ROUND_ROBIN_COMMAND_QUEUES", &(MPIR_CVAR_GPU_ROUND_ROBIN_COMMAND_QUEUES));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_GPU_ROUND_ROBIN_COMMAND_QUEUES");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_CVAR_GPU_ROUND_ROBIN_COMMAND_QUEUES", &(MPIR_CVAR_GPU_ROUND_ROBIN_COMMAND_QUEUES));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_GPU_ROUND_ROBIN_COMMAND_QUEUES");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_GPU_ROUND_ROBIN_COMMAND_QUEUES = %d\n", MPIR_CVAR_GPU_ROUND_ROBIN_COMMAND_QUEUES);
+    }
+
+    defaultval.d = 0;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_NO_COLLECTIVE_FINALIZE, /* name */
+        &MPIR_CVAR_NO_COLLECTIVE_FINALIZE, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "If true, prevent MPI_Finalize to invoke collective behavior such as barrier or communicating to other processes. Consequently, it may result in leaking memory or losing messages due to pre-mature exiting. The default is false, which may invoke collective behaviors at finalize.");
+    MPIR_CVAR_NO_COLLECTIVE_FINALIZE = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2bool("MPICH_NO_COLLECTIVE_FINALIZE", &(MPIR_CVAR_NO_COLLECTIVE_FINALIZE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_NO_COLLECTIVE_FINALIZE");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_PARAM_NO_COLLECTIVE_FINALIZE", &(MPIR_CVAR_NO_COLLECTIVE_FINALIZE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_NO_COLLECTIVE_FINALIZE");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_CVAR_NO_COLLECTIVE_FINALIZE", &(MPIR_CVAR_NO_COLLECTIVE_FINALIZE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_NO_COLLECTIVE_FINALIZE");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_NO_COLLECTIVE_FINALIZE = %d\n", MPIR_CVAR_NO_COLLECTIVE_FINALIZE);
+    }
+
+    defaultval.d = 0;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_FINALIZE_WAIT, /* name */
+        &MPIR_CVAR_FINALIZE_WAIT, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "If true, poll progress at MPI_Finalize until reference count on MPI_COMM_WORLD and MPI_COMM_SELF reaches zero. This may be necessary to prevent remote processes hanging if it has pending communication protocols, e.g. a rendezvous send.");
+    MPIR_CVAR_FINALIZE_WAIT = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2bool("MPICH_FINALIZE_WAIT", &(MPIR_CVAR_FINALIZE_WAIT));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_FINALIZE_WAIT");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_PARAM_FINALIZE_WAIT", &(MPIR_CVAR_FINALIZE_WAIT));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_FINALIZE_WAIT");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_CVAR_FINALIZE_WAIT", &(MPIR_CVAR_FINALIZE_WAIT));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_FINALIZE_WAIT");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_FINALIZE_WAIT = %d\n", MPIR_CVAR_FINALIZE_WAIT);
+    }
+
+    defaultval.d = 0;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_REQUEST_ERR_FATAL, /* name */
+        &MPIR_CVAR_REQUEST_ERR_FATAL, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_LOCAL,
+        defaultval,
+        "REQUEST", /* category */
+        "By default, MPI_Waitall, MPI_Testall, MPI_Waitsome, and MPI_Testsome return MPI_ERR_IN_STATUS when one of the request fails. If MPIR_CVAR_REQUEST_ERR_FATAL is set to true, these routines will return the error code of the request immediately. The default MPI_ERRS_ARE_FATAL error handler will dump a error stack in this case, which maybe more convenient for debugging. This cvar will also make nonblocking shched return error right away as it issues operations.");
+    MPIR_CVAR_REQUEST_ERR_FATAL = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2bool("MPICH_REQUEST_ERR_FATAL", &(MPIR_CVAR_REQUEST_ERR_FATAL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_REQUEST_ERR_FATAL");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_PARAM_REQUEST_ERR_FATAL", &(MPIR_CVAR_REQUEST_ERR_FATAL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_REQUEST_ERR_FATAL");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_CVAR_REQUEST_ERR_FATAL", &(MPIR_CVAR_REQUEST_ERR_FATAL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_REQUEST_ERR_FATAL");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_REQUEST_ERR_FATAL = %d\n", MPIR_CVAR_REQUEST_ERR_FATAL);
+    }
+
+    defaultval.d = 8;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_REQUEST_POLL_FREQ, /* name */
+        &MPIR_CVAR_REQUEST_POLL_FREQ, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_LOCAL,
+        defaultval,
+        "REQUEST", /* category */
+        "How frequent to poll during MPI_{Waitany,Waitsome} in terms of number of processed requests before polling.");
+    MPIR_CVAR_REQUEST_POLL_FREQ = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_REQUEST_POLL_FREQ", &(MPIR_CVAR_REQUEST_POLL_FREQ));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_REQUEST_POLL_FREQ");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_REQUEST_POLL_FREQ", &(MPIR_CVAR_REQUEST_POLL_FREQ));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_REQUEST_POLL_FREQ");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_REQUEST_POLL_FREQ", &(MPIR_CVAR_REQUEST_POLL_FREQ));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_REQUEST_POLL_FREQ");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_REQUEST_POLL_FREQ = %d\n", MPIR_CVAR_REQUEST_POLL_FREQ);
+    }
+
+    defaultval.d = 64;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_REQUEST_BATCH_SIZE, /* name */
+        &MPIR_CVAR_REQUEST_BATCH_SIZE, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_LOCAL,
+        defaultval,
+        "REQUEST", /* category */
+        "The number of requests to make completion as a batch in MPI_Waitall and MPI_Testall implementation. A large number is likely to cause more cache misses.");
+    MPIR_CVAR_REQUEST_BATCH_SIZE = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_REQUEST_BATCH_SIZE", &(MPIR_CVAR_REQUEST_BATCH_SIZE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_REQUEST_BATCH_SIZE");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_REQUEST_BATCH_SIZE", &(MPIR_CVAR_REQUEST_BATCH_SIZE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_REQUEST_BATCH_SIZE");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_REQUEST_BATCH_SIZE", &(MPIR_CVAR_REQUEST_BATCH_SIZE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_REQUEST_BATCH_SIZE");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_REQUEST_BATCH_SIZE = %d\n", MPIR_CVAR_REQUEST_BATCH_SIZE);
+    }
+
+    defaultval.d = 0;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_DEBUG_PROGRESS_TIMEOUT, /* name */
+        &MPIR_CVAR_DEBUG_PROGRESS_TIMEOUT, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_LOCAL,
+        defaultval,
+        "CH4", /* category */
+        "Sets the timeout in seconds to dump outstanding requests when progress wait is not making progress for some time.");
+    MPIR_CVAR_DEBUG_PROGRESS_TIMEOUT = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_DEBUG_PROGRESS_TIMEOUT", &(MPIR_CVAR_DEBUG_PROGRESS_TIMEOUT));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_DEBUG_PROGRESS_TIMEOUT");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_DEBUG_PROGRESS_TIMEOUT", &(MPIR_CVAR_DEBUG_PROGRESS_TIMEOUT));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_DEBUG_PROGRESS_TIMEOUT");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_DEBUG_PROGRESS_TIMEOUT", &(MPIR_CVAR_DEBUG_PROGRESS_TIMEOUT));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_DEBUG_PROGRESS_TIMEOUT");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_DEBUG_PROGRESS_TIMEOUT = %d\n", MPIR_CVAR_DEBUG_PROGRESS_TIMEOUT);
+    }
+
+    defaultval.d = 0;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
         MPIR_CVAR_DIMS_VERBOSE, /* name */
         &MPIR_CVAR_DIMS_VERBOSE, /* address */
         1, /* count */
@@ -8310,6 +9714,48 @@ silent  - silently fallback to the internally selected algorithm");
         printf("CVAR: MPIR_CVAR_CLIQUES_BY_BLOCK = %d\n", MPIR_CVAR_CLIQUES_BY_BLOCK);
     }
 
+    defaultval.d = MPIR_CVAR_PMI_VERSION_1;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_PMI_VERSION, /* name */
+        &MPIR_CVAR_PMI_VERSION, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "NODEMAP", /* category */
+        "Variable to select runtime PMI version.\n"
+"1        - PMI (default)\n"
+"2        - PMI2\n"
+"x        - PMIx");
+    MPIR_CVAR_PMI_VERSION = defaultval.d;
+    tmp_str=NULL;
+    got_rc = 0;
+    rc = MPL_env2str("MPICH_PMI_VERSION", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_PMI_VERSION");
+    got_rc += rc;
+    rc = MPL_env2str("MPIR_PARAM_PMI_VERSION", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_PMI_VERSION");
+    got_rc += rc;
+    rc = MPL_env2str("MPIR_CVAR_PMI_VERSION", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_PMI_VERSION");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_PMI_VERSION = %s\n", tmp_str);
+    }
+    if (tmp_str != NULL) {
+        if (0 == strcmp(tmp_str, "1"))
+            MPIR_CVAR_PMI_VERSION = MPIR_CVAR_PMI_VERSION_1;
+        else if (0 == strcmp(tmp_str, "2"))
+            MPIR_CVAR_PMI_VERSION = MPIR_CVAR_PMI_VERSION_2;
+        else if (0 == strcmp(tmp_str, "x"))
+            MPIR_CVAR_PMI_VERSION = MPIR_CVAR_PMI_VERSION_x;
+        else {
+            mpi_errno = MPIR_Err_create_code(MPI_SUCCESS, MPIR_ERR_RECOVERABLE, __func__, __LINE__,MPI_ERR_OTHER, "**cvar_val", "**cvar_val %s %s", "MPIR_CVAR_PMI_VERSION", tmp_str);
+            goto fn_fail;
+        }
+    }
+
     defaultval.d = 1;
     MPIR_T_CVAR_REGISTER_STATIC(
         MPI_INT,
@@ -8362,56 +9808,56 @@ silent  - silently fallback to the internally selected algorithm");
         printf("CVAR: MPIR_CVAR_ENABLE_GPU = %d\n", MPIR_CVAR_ENABLE_GPU);
     }
 
-    defaultval.d = 8;
+    defaultval.d = 0;
     MPIR_T_CVAR_REGISTER_STATIC(
         MPI_INT,
-        MPIR_CVAR_REQUEST_POLL_FREQ, /* name */
-        &MPIR_CVAR_REQUEST_POLL_FREQ, /* address */
+        MPIR_CVAR_GPU_HAS_WAIT_KERNEL, /* name */
+        &MPIR_CVAR_GPU_HAS_WAIT_KERNEL, /* address */
         1, /* count */
         MPI_T_VERBOSITY_USER_BASIC,
-        MPI_T_SCOPE_LOCAL,
+        MPI_T_SCOPE_ALL_EQ,
         defaultval,
-        "REQUEST", /* category */
-        "How frequent to poll during completion calls (wait/test) in terms of number of processed requests before polling.");
-    MPIR_CVAR_REQUEST_POLL_FREQ = defaultval.d;
+        "GPU", /* category */
+        "If set to 1, avoid allocate allocating GPU registered host buffers for temporary buffers. When stream workq and GPU wait kernels are in use, access APIs for GPU registered memory may cause deadlock.");
+    MPIR_CVAR_GPU_HAS_WAIT_KERNEL = defaultval.d;
     got_rc = 0;
-    rc = MPL_env2int("MPICH_REQUEST_POLL_FREQ", &(MPIR_CVAR_REQUEST_POLL_FREQ));
-    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_REQUEST_POLL_FREQ");
+    rc = MPL_env2int("MPICH_GPU_HAS_WAIT_KERNEL", &(MPIR_CVAR_GPU_HAS_WAIT_KERNEL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_GPU_HAS_WAIT_KERNEL");
     got_rc += rc;
-    rc = MPL_env2int("MPIR_PARAM_REQUEST_POLL_FREQ", &(MPIR_CVAR_REQUEST_POLL_FREQ));
-    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_REQUEST_POLL_FREQ");
+    rc = MPL_env2int("MPIR_PARAM_GPU_HAS_WAIT_KERNEL", &(MPIR_CVAR_GPU_HAS_WAIT_KERNEL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_GPU_HAS_WAIT_KERNEL");
     got_rc += rc;
-    rc = MPL_env2int("MPIR_CVAR_REQUEST_POLL_FREQ", &(MPIR_CVAR_REQUEST_POLL_FREQ));
-    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_REQUEST_POLL_FREQ");
+    rc = MPL_env2int("MPIR_CVAR_GPU_HAS_WAIT_KERNEL", &(MPIR_CVAR_GPU_HAS_WAIT_KERNEL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_GPU_HAS_WAIT_KERNEL");
     got_rc += rc;
     if (got_rc && debug) {
-        printf("CVAR: MPIR_CVAR_REQUEST_POLL_FREQ = %d\n", MPIR_CVAR_REQUEST_POLL_FREQ);
+        printf("CVAR: MPIR_CVAR_GPU_HAS_WAIT_KERNEL = %d\n", MPIR_CVAR_GPU_HAS_WAIT_KERNEL);
     }
 
-    defaultval.d = 64;
+    defaultval.d = 1;
     MPIR_T_CVAR_REGISTER_STATIC(
         MPI_INT,
-        MPIR_CVAR_REQUEST_BATCH_SIZE, /* name */
-        &MPIR_CVAR_REQUEST_BATCH_SIZE, /* address */
+        MPIR_CVAR_ENABLE_GPU_REGISTER, /* name */
+        &MPIR_CVAR_ENABLE_GPU_REGISTER, /* address */
         1, /* count */
         MPI_T_VERBOSITY_USER_BASIC,
-        MPI_T_SCOPE_LOCAL,
+        MPI_T_SCOPE_ALL_EQ,
         defaultval,
-        "REQUEST", /* category */
-        "The number of requests to make completion as a batch in MPI_Waitall and MPI_Testall implementation. A large number is likely to cause more cache misses.");
-    MPIR_CVAR_REQUEST_BATCH_SIZE = defaultval.d;
+        "GPU", /* category */
+        "Control whether to actually register buffers with the GPU runtime in MPIR_gpu_register_host. This could lower the latency of certain GPU communication at the cost of some amount of GPU memory consumed by the MPI library. By default, registration is enabled.");
+    MPIR_CVAR_ENABLE_GPU_REGISTER = defaultval.d;
     got_rc = 0;
-    rc = MPL_env2int("MPICH_REQUEST_BATCH_SIZE", &(MPIR_CVAR_REQUEST_BATCH_SIZE));
-    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_REQUEST_BATCH_SIZE");
+    rc = MPL_env2bool("MPICH_ENABLE_GPU_REGISTER", &(MPIR_CVAR_ENABLE_GPU_REGISTER));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_ENABLE_GPU_REGISTER");
     got_rc += rc;
-    rc = MPL_env2int("MPIR_PARAM_REQUEST_BATCH_SIZE", &(MPIR_CVAR_REQUEST_BATCH_SIZE));
-    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_REQUEST_BATCH_SIZE");
+    rc = MPL_env2bool("MPIR_PARAM_ENABLE_GPU_REGISTER", &(MPIR_CVAR_ENABLE_GPU_REGISTER));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_ENABLE_GPU_REGISTER");
     got_rc += rc;
-    rc = MPL_env2int("MPIR_CVAR_REQUEST_BATCH_SIZE", &(MPIR_CVAR_REQUEST_BATCH_SIZE));
-    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_REQUEST_BATCH_SIZE");
+    rc = MPL_env2bool("MPIR_CVAR_ENABLE_GPU_REGISTER", &(MPIR_CVAR_ENABLE_GPU_REGISTER));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_ENABLE_GPU_REGISTER");
     got_rc += rc;
     if (got_rc && debug) {
-        printf("CVAR: MPIR_CVAR_REQUEST_BATCH_SIZE = %d\n", MPIR_CVAR_REQUEST_BATCH_SIZE);
+        printf("CVAR: MPIR_CVAR_ENABLE_GPU_REGISTER = %d\n", MPIR_CVAR_ENABLE_GPU_REGISTER);
     }
 
     defaultval.d = 1000;
@@ -8438,43 +9884,6 @@ silent  - silently fallback to the internally selected algorithm");
     got_rc += rc;
     if (got_rc && debug) {
         printf("CVAR: MPIR_CVAR_POLLS_BEFORE_YIELD = %d\n", MPIR_CVAR_POLLS_BEFORE_YIELD);
-    }
-
-    defaultval.str = (const char *) NULL;
-    MPIR_T_CVAR_REGISTER_STATIC(
-        MPI_CHAR,
-        MPIR_CVAR_OFI_USE_PROVIDER, /* name */
-        &MPIR_CVAR_OFI_USE_PROVIDER, /* address */
-        MPIR_CVAR_MAX_STRLEN, /* count */
-        MPI_T_VERBOSITY_MPIDEV_DETAIL,
-        MPI_T_SCOPE_LOCAL,
-        defaultval,
-        "DEVELOPER", /* category */
-        "If non-null, choose an OFI provider by name. If using with the CH4 device and using an older libfabric installation than the recommended version to accompany this MPICH version, unexpected results may occur.");
-    tmp_str = defaultval.str;
-    got_rc = 0;
-    rc = MPL_env2str("MPICH_OFI_USE_PROVIDER", &tmp_str);
-    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_OFI_USE_PROVIDER");
-    got_rc += rc;
-    rc = MPL_env2str("MPIR_PARAM_OFI_USE_PROVIDER", &tmp_str);
-    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_OFI_USE_PROVIDER");
-    got_rc += rc;
-    rc = MPL_env2str("MPIR_CVAR_OFI_USE_PROVIDER", &tmp_str);
-    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_OFI_USE_PROVIDER");
-    got_rc += rc;
-    if (got_rc && debug) {
-        printf("CVAR: MPIR_CVAR_OFI_USE_PROVIDER = %s\n", tmp_str);
-    }
-    if (tmp_str != NULL) {
-        MPIR_CVAR_OFI_USE_PROVIDER = MPL_strdup(tmp_str);
-        MPIR_CVAR_assert(MPIR_CVAR_OFI_USE_PROVIDER);
-        if (MPIR_CVAR_OFI_USE_PROVIDER == NULL) {
-            MPIR_CHKMEM_SETERR(mpi_errno, strlen(tmp_str), "dup of string for MPIR_CVAR_OFI_USE_PROVIDER");
-            goto fn_fail;
-        }
-    }
-    else {
-        MPIR_CVAR_OFI_USE_PROVIDER = NULL;
     }
 
     defaultval.str = (const char *) NULL;
@@ -9196,6 +10605,69 @@ silent  - silently fallback to the internally selected algorithm");
         printf("CVAR: MPIR_CVAR_CH3_RMA_TARGET_LOCK_ENTRY_WIN_POOL_SIZE = %d\n", MPIR_CVAR_CH3_RMA_TARGET_LOCK_ENTRY_WIN_POOL_SIZE);
     }
 
+    defaultval.str = (const char *) NULL;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_CHAR,
+        MPIR_CVAR_OFI_USE_PROVIDER, /* name */
+        &MPIR_CVAR_OFI_USE_PROVIDER, /* address */
+        MPIR_CVAR_MAX_STRLEN, /* count */
+        MPI_T_VERBOSITY_MPIDEV_DETAIL,
+        MPI_T_SCOPE_LOCAL,
+        defaultval,
+        "DEVELOPER", /* category */
+        "This variable is no longer supported. Use FI_PROVIDER instead to select libfabric providers.");
+    tmp_str = defaultval.str;
+    got_rc = 0;
+    rc = MPL_env2str("MPICH_OFI_USE_PROVIDER", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_OFI_USE_PROVIDER");
+    got_rc += rc;
+    rc = MPL_env2str("MPIR_PARAM_OFI_USE_PROVIDER", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_OFI_USE_PROVIDER");
+    got_rc += rc;
+    rc = MPL_env2str("MPIR_CVAR_OFI_USE_PROVIDER", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_OFI_USE_PROVIDER");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_OFI_USE_PROVIDER = %s\n", tmp_str);
+    }
+    if (tmp_str != NULL) {
+        MPIR_CVAR_OFI_USE_PROVIDER = MPL_strdup(tmp_str);
+        MPIR_CVAR_assert(MPIR_CVAR_OFI_USE_PROVIDER);
+        if (MPIR_CVAR_OFI_USE_PROVIDER == NULL) {
+            MPIR_CHKMEM_SETERR(mpi_errno, strlen(tmp_str), "dup of string for MPIR_CVAR_OFI_USE_PROVIDER");
+            goto fn_fail;
+        }
+    }
+    else {
+        MPIR_CVAR_OFI_USE_PROVIDER = NULL;
+    }
+
+    defaultval.d = 1;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_SINGLE_HOST_ENABLED, /* name */
+        &MPIR_CVAR_SINGLE_HOST_ENABLED, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_MPIDEV_DETAIL,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "DEVELOPER", /* category */
+        "Set this variable to true to indicate that processes are launched on a single host. The current implication is to avoid the cxi provider to prevent the use of scarce hardware resources.");
+    MPIR_CVAR_SINGLE_HOST_ENABLED = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2bool("MPICH_SINGLE_HOST_ENABLED", &(MPIR_CVAR_SINGLE_HOST_ENABLED));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_SINGLE_HOST_ENABLED");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_PARAM_SINGLE_HOST_ENABLED", &(MPIR_CVAR_SINGLE_HOST_ENABLED));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_SINGLE_HOST_ENABLED");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_CVAR_SINGLE_HOST_ENABLED", &(MPIR_CVAR_SINGLE_HOST_ENABLED));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_SINGLE_HOST_ENABLED");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_SINGLE_HOST_ENABLED = %d\n", MPIR_CVAR_SINGLE_HOST_ENABLED);
+    }
+
     defaultval.d = 0;
     MPIR_T_CVAR_REGISTER_STATIC(
         MPI_INT,
@@ -9222,7 +10694,52 @@ silent  - silently fallback to the internally selected algorithm");
         printf("CVAR: MPIR_CVAR_CH4_OFI_AM_LONG_FORCE_PIPELINE = %d\n", MPIR_CVAR_CH4_OFI_AM_LONG_FORCE_PIPELINE);
     }
 
-    defaultval.d = 1;
+    defaultval.d = MPIR_CVAR_BCAST_OFI_INTRA_ALGORITHM_auto;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_BCAST_OFI_INTRA_ALGORITHM, /* name */
+        &MPIR_CVAR_BCAST_OFI_INTRA_ALGORITHM, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "Variable to select algorithm for intra-node bcast\n"
+"mpir                        - Fallback to MPIR collectives\n"
+"trigger_tree_tagged         - Force triggered ops based Tagged Tree\n"
+"trigger_tree_rma            - Force triggered ops based RMA Tree\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_CH4_OFI_COLL_SELECTION_TUNING_JSON_FILE)");
+    MPIR_CVAR_BCAST_OFI_INTRA_ALGORITHM = defaultval.d;
+    tmp_str=NULL;
+    got_rc = 0;
+    rc = MPL_env2str("MPICH_BCAST_OFI_INTRA_ALGORITHM", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_BCAST_OFI_INTRA_ALGORITHM");
+    got_rc += rc;
+    rc = MPL_env2str("MPIR_PARAM_BCAST_OFI_INTRA_ALGORITHM", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_BCAST_OFI_INTRA_ALGORITHM");
+    got_rc += rc;
+    rc = MPL_env2str("MPIR_CVAR_BCAST_OFI_INTRA_ALGORITHM", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_BCAST_OFI_INTRA_ALGORITHM");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_BCAST_OFI_INTRA_ALGORITHM = %s\n", tmp_str);
+    }
+    if (tmp_str != NULL) {
+        if (0 == strcmp(tmp_str, "mpir"))
+            MPIR_CVAR_BCAST_OFI_INTRA_ALGORITHM = MPIR_CVAR_BCAST_OFI_INTRA_ALGORITHM_mpir;
+        else if (0 == strcmp(tmp_str, "trigger_tree_tagged"))
+            MPIR_CVAR_BCAST_OFI_INTRA_ALGORITHM = MPIR_CVAR_BCAST_OFI_INTRA_ALGORITHM_trigger_tree_tagged;
+        else if (0 == strcmp(tmp_str, "trigger_tree_rma"))
+            MPIR_CVAR_BCAST_OFI_INTRA_ALGORITHM = MPIR_CVAR_BCAST_OFI_INTRA_ALGORITHM_trigger_tree_rma;
+        else if (0 == strcmp(tmp_str, "auto"))
+            MPIR_CVAR_BCAST_OFI_INTRA_ALGORITHM = MPIR_CVAR_BCAST_OFI_INTRA_ALGORITHM_auto;
+        else {
+            mpi_errno = MPIR_Err_create_code(MPI_SUCCESS, MPIR_ERR_RECOVERABLE, __func__, __LINE__,MPI_ERR_OTHER, "**cvar_val", "**cvar_val %s %s", "MPIR_CVAR_BCAST_OFI_INTRA_ALGORITHM", tmp_str);
+            goto fn_fail;
+        }
+    }
+
+    defaultval.d = 0;
     MPIR_T_CVAR_REGISTER_STATIC(
         MPI_INT,
         MPIR_CVAR_OFI_SKIP_IPV6, /* name */
@@ -9246,6 +10763,37 @@ silent  - silently fallback to the internally selected algorithm");
     got_rc += rc;
     if (got_rc && debug) {
         printf("CVAR: MPIR_CVAR_OFI_SKIP_IPV6 = %d\n", MPIR_CVAR_OFI_SKIP_IPV6);
+    }
+
+#if defined MPID_CH4_OFI_ENABLE_DATA
+    defaultval.d = MPID_CH4_OFI_ENABLE_DATA;
+#else
+    defaultval.d = -1;
+#endif /* MPID_CH4_OFI_ENABLE_DATA */
+
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_CH4_OFI_ENABLE_DATA, /* name */
+        &MPIR_CVAR_CH4_OFI_ENABLE_DATA, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_LOCAL,
+        defaultval,
+        "CH4_OFI", /* category */
+        "Enable immediate data fields in OFI to transmit source rank outside of the match bits");
+    MPIR_CVAR_CH4_OFI_ENABLE_DATA = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_CH4_OFI_ENABLE_DATA", &(MPIR_CVAR_CH4_OFI_ENABLE_DATA));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_OFI_ENABLE_DATA");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_CH4_OFI_ENABLE_DATA", &(MPIR_CVAR_CH4_OFI_ENABLE_DATA));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_OFI_ENABLE_DATA");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_CH4_OFI_ENABLE_DATA", &(MPIR_CVAR_CH4_OFI_ENABLE_DATA));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_OFI_ENABLE_DATA");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_CH4_OFI_ENABLE_DATA = %d\n", MPIR_CVAR_CH4_OFI_ENABLE_DATA);
     }
 
     defaultval.d = -1;
@@ -9376,6 +10924,32 @@ silent  - silently fallback to the internally selected algorithm");
     got_rc += rc;
     if (got_rc && debug) {
         printf("CVAR: MPIR_CVAR_CH4_OFI_ENABLE_MR_ALLOCATED = %d\n", MPIR_CVAR_CH4_OFI_ENABLE_MR_ALLOCATED);
+    }
+
+    defaultval.d = -1;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_CH4_OFI_ENABLE_MR_REGISTER_NULL, /* name */
+        &MPIR_CVAR_CH4_OFI_ENABLE_MR_REGISTER_NULL, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_LOCAL,
+        defaultval,
+        "CH4_OFI", /* category */
+        "If true, memory registration call supports registering with NULL addresses.");
+    MPIR_CVAR_CH4_OFI_ENABLE_MR_REGISTER_NULL = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_CH4_OFI_ENABLE_MR_REGISTER_NULL", &(MPIR_CVAR_CH4_OFI_ENABLE_MR_REGISTER_NULL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_OFI_ENABLE_MR_REGISTER_NULL");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_CH4_OFI_ENABLE_MR_REGISTER_NULL", &(MPIR_CVAR_CH4_OFI_ENABLE_MR_REGISTER_NULL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_OFI_ENABLE_MR_REGISTER_NULL");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_CH4_OFI_ENABLE_MR_REGISTER_NULL", &(MPIR_CVAR_CH4_OFI_ENABLE_MR_REGISTER_NULL));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_OFI_ENABLE_MR_REGISTER_NULL");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_CH4_OFI_ENABLE_MR_REGISTER_NULL = %d\n", MPIR_CVAR_CH4_OFI_ENABLE_MR_REGISTER_NULL);
     }
 
     defaultval.d = -1;
@@ -9612,6 +11186,89 @@ silent  - silently fallback to the internally selected algorithm");
         printf("CVAR: MPIR_CVAR_CH4_OFI_ENABLE_PT2PT_NOPACK = %d\n", MPIR_CVAR_CH4_OFI_ENABLE_PT2PT_NOPACK);
     }
 
+#if defined MPID_CH4_OFI_ENABLE_HMEM
+    defaultval.d = MPID_CH4_OFI_ENABLE_HMEM;
+#else
+    defaultval.d = 0;
+#endif /* MPID_CH4_OFI_ENABLE_HMEM */
+
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_CH4_OFI_ENABLE_HMEM, /* name */
+        &MPIR_CVAR_CH4_OFI_ENABLE_HMEM, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_LOCAL,
+        defaultval,
+        "CH4_OFI", /* category */
+        "If true, uses GPU direct RDMA support in the provider.");
+    MPIR_CVAR_CH4_OFI_ENABLE_HMEM = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_CH4_OFI_ENABLE_HMEM", &(MPIR_CVAR_CH4_OFI_ENABLE_HMEM));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_OFI_ENABLE_HMEM");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_CH4_OFI_ENABLE_HMEM", &(MPIR_CVAR_CH4_OFI_ENABLE_HMEM));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_OFI_ENABLE_HMEM");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_CH4_OFI_ENABLE_HMEM", &(MPIR_CVAR_CH4_OFI_ENABLE_HMEM));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_OFI_ENABLE_HMEM");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_CH4_OFI_ENABLE_HMEM = %d\n", MPIR_CVAR_CH4_OFI_ENABLE_HMEM);
+    }
+
+    defaultval.d = -1;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_CH4_OFI_ENABLE_MR_HMEM, /* name */
+        &MPIR_CVAR_CH4_OFI_ENABLE_MR_HMEM, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_LOCAL,
+        defaultval,
+        "CH4_OFI", /* category */
+        "If true, need to register the buffer to use GPU direct RDMA.");
+    MPIR_CVAR_CH4_OFI_ENABLE_MR_HMEM = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_CH4_OFI_ENABLE_MR_HMEM", &(MPIR_CVAR_CH4_OFI_ENABLE_MR_HMEM));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_OFI_ENABLE_MR_HMEM");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_CH4_OFI_ENABLE_MR_HMEM", &(MPIR_CVAR_CH4_OFI_ENABLE_MR_HMEM));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_OFI_ENABLE_MR_HMEM");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_CH4_OFI_ENABLE_MR_HMEM", &(MPIR_CVAR_CH4_OFI_ENABLE_MR_HMEM));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_OFI_ENABLE_MR_HMEM");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_CH4_OFI_ENABLE_MR_HMEM = %d\n", MPIR_CVAR_CH4_OFI_ENABLE_MR_HMEM);
+    }
+
+    defaultval.d = 0;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_CH4_OFI_GPU_RDMA_THRESHOLD, /* name */
+        &MPIR_CVAR_CH4_OFI_GPU_RDMA_THRESHOLD, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_LOCAL,
+        defaultval,
+        "CH4_OFI", /* category */
+        "The threshold to start using GPU direct RDMA.");
+    MPIR_CVAR_CH4_OFI_GPU_RDMA_THRESHOLD = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_CH4_OFI_GPU_RDMA_THRESHOLD", &(MPIR_CVAR_CH4_OFI_GPU_RDMA_THRESHOLD));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_OFI_GPU_RDMA_THRESHOLD");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_CH4_OFI_GPU_RDMA_THRESHOLD", &(MPIR_CVAR_CH4_OFI_GPU_RDMA_THRESHOLD));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_OFI_GPU_RDMA_THRESHOLD");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_CH4_OFI_GPU_RDMA_THRESHOLD", &(MPIR_CVAR_CH4_OFI_GPU_RDMA_THRESHOLD));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_OFI_GPU_RDMA_THRESHOLD");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_CH4_OFI_GPU_RDMA_THRESHOLD = %d\n", MPIR_CVAR_CH4_OFI_GPU_RDMA_THRESHOLD);
+    }
+
     defaultval.d = -1;
     MPIR_T_CVAR_REGISTER_STATIC(
         MPI_INT,
@@ -9745,32 +11402,6 @@ silent  - silently fallback to the internally selected algorithm");
     defaultval.d = 0;
     MPIR_T_CVAR_REGISTER_STATIC(
         MPI_INT,
-        MPIR_CVAR_CH4_OFI_MAX_VNIS, /* name */
-        &MPIR_CVAR_CH4_OFI_MAX_VNIS, /* address */
-        1, /* count */
-        MPI_T_VERBOSITY_USER_BASIC,
-        MPI_T_SCOPE_LOCAL,
-        defaultval,
-        "CH4_OFI", /* category */
-        "If set to positive, this CVAR specifies the maximum number of CH4 VNIs that OFI netmod exposes. If set to 0 (the default) or bigger than MPIR_CVAR_CH4_NUM_VCIS, the number of exposed VNIs is set to MPIR_CVAR_CH4_NUM_VCIS.");
-    MPIR_CVAR_CH4_OFI_MAX_VNIS = defaultval.d;
-    got_rc = 0;
-    rc = MPL_env2int("MPICH_CH4_OFI_MAX_VNIS", &(MPIR_CVAR_CH4_OFI_MAX_VNIS));
-    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_OFI_MAX_VNIS");
-    got_rc += rc;
-    rc = MPL_env2int("MPIR_PARAM_CH4_OFI_MAX_VNIS", &(MPIR_CVAR_CH4_OFI_MAX_VNIS));
-    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_OFI_MAX_VNIS");
-    got_rc += rc;
-    rc = MPL_env2int("MPIR_CVAR_CH4_OFI_MAX_VNIS", &(MPIR_CVAR_CH4_OFI_MAX_VNIS));
-    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_OFI_MAX_VNIS");
-    got_rc += rc;
-    if (got_rc && debug) {
-        printf("CVAR: MPIR_CVAR_CH4_OFI_MAX_VNIS = %d\n", MPIR_CVAR_CH4_OFI_MAX_VNIS);
-    }
-
-    defaultval.d = 0;
-    MPIR_T_CVAR_REGISTER_STATIC(
-        MPI_INT,
         MPIR_CVAR_CH4_OFI_MAX_RMA_SEP_CTX, /* name */
         &MPIR_CVAR_CH4_OFI_MAX_RMA_SEP_CTX, /* address */
         1, /* count */
@@ -9846,6 +11477,32 @@ silent  - silently fallback to the internally selected algorithm");
         printf("CVAR: MPIR_CVAR_CH4_OFI_NUM_AM_BUFFERS = %d\n", MPIR_CVAR_CH4_OFI_NUM_AM_BUFFERS);
     }
 
+    defaultval.d = 0;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_CH4_OFI_NUM_OPTIMIZED_MEMORY_REGIONS, /* name */
+        &MPIR_CVAR_CH4_OFI_NUM_OPTIMIZED_MEMORY_REGIONS, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_LOCAL,
+        defaultval,
+        "CH4_OFI", /* category */
+        "Specifies the number of optimized memory regions supported by the provider. An optimized memory region is used for lower-overhead, unordered RMA operations. It uses a low-overhead RX path and additionally, a low-overhead packet format may be used to target an optimized memory region.");
+    MPIR_CVAR_CH4_OFI_NUM_OPTIMIZED_MEMORY_REGIONS = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_CH4_OFI_NUM_OPTIMIZED_MEMORY_REGIONS", &(MPIR_CVAR_CH4_OFI_NUM_OPTIMIZED_MEMORY_REGIONS));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_OFI_NUM_OPTIMIZED_MEMORY_REGIONS");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_CH4_OFI_NUM_OPTIMIZED_MEMORY_REGIONS", &(MPIR_CVAR_CH4_OFI_NUM_OPTIMIZED_MEMORY_REGIONS));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_OFI_NUM_OPTIMIZED_MEMORY_REGIONS");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_CH4_OFI_NUM_OPTIMIZED_MEMORY_REGIONS", &(MPIR_CVAR_CH4_OFI_NUM_OPTIMIZED_MEMORY_REGIONS));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_OFI_NUM_OPTIMIZED_MEMORY_REGIONS");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_CH4_OFI_NUM_OPTIMIZED_MEMORY_REGIONS = %d\n", MPIR_CVAR_CH4_OFI_NUM_OPTIMIZED_MEMORY_REGIONS);
+    }
+
     defaultval.d = 100;
     MPIR_T_CVAR_REGISTER_STATIC(
         MPI_INT,
@@ -9896,58 +11553,6 @@ silent  - silently fallback to the internally selected algorithm");
     got_rc += rc;
     if (got_rc && debug) {
         printf("CVAR: MPIR_CVAR_CH4_OFI_RMA_IOVEC_MAX = %d\n", MPIR_CVAR_CH4_OFI_RMA_IOVEC_MAX);
-    }
-
-    defaultval.d = 16;
-    MPIR_T_CVAR_REGISTER_STATIC(
-        MPI_INT,
-        MPIR_CVAR_CH4_OFI_NUM_PACK_BUFFERS_PER_CHUNK, /* name */
-        &MPIR_CVAR_CH4_OFI_NUM_PACK_BUFFERS_PER_CHUNK, /* address */
-        1, /* count */
-        MPI_T_VERBOSITY_USER_BASIC,
-        MPI_T_SCOPE_LOCAL,
-        defaultval,
-        "CH4_OFI", /* category */
-        "Specifies the number of buffers for packing/unpacking messages in each block of the pool.");
-    MPIR_CVAR_CH4_OFI_NUM_PACK_BUFFERS_PER_CHUNK = defaultval.d;
-    got_rc = 0;
-    rc = MPL_env2int("MPICH_CH4_OFI_NUM_PACK_BUFFERS_PER_CHUNK", &(MPIR_CVAR_CH4_OFI_NUM_PACK_BUFFERS_PER_CHUNK));
-    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_OFI_NUM_PACK_BUFFERS_PER_CHUNK");
-    got_rc += rc;
-    rc = MPL_env2int("MPIR_PARAM_CH4_OFI_NUM_PACK_BUFFERS_PER_CHUNK", &(MPIR_CVAR_CH4_OFI_NUM_PACK_BUFFERS_PER_CHUNK));
-    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_OFI_NUM_PACK_BUFFERS_PER_CHUNK");
-    got_rc += rc;
-    rc = MPL_env2int("MPIR_CVAR_CH4_OFI_NUM_PACK_BUFFERS_PER_CHUNK", &(MPIR_CVAR_CH4_OFI_NUM_PACK_BUFFERS_PER_CHUNK));
-    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_OFI_NUM_PACK_BUFFERS_PER_CHUNK");
-    got_rc += rc;
-    if (got_rc && debug) {
-        printf("CVAR: MPIR_CVAR_CH4_OFI_NUM_PACK_BUFFERS_PER_CHUNK = %d\n", MPIR_CVAR_CH4_OFI_NUM_PACK_BUFFERS_PER_CHUNK);
-    }
-
-    defaultval.d = 0;
-    MPIR_T_CVAR_REGISTER_STATIC(
-        MPI_INT,
-        MPIR_CVAR_CH4_OFI_MAX_NUM_PACK_BUFFERS, /* name */
-        &MPIR_CVAR_CH4_OFI_MAX_NUM_PACK_BUFFERS, /* address */
-        1, /* count */
-        MPI_T_VERBOSITY_USER_BASIC,
-        MPI_T_SCOPE_LOCAL,
-        defaultval,
-        "CH4_OFI", /* category */
-        "Specifies the max number of buffers for packing/unpacking messages in the pool. Use 0 for unlimited.");
-    MPIR_CVAR_CH4_OFI_MAX_NUM_PACK_BUFFERS = defaultval.d;
-    got_rc = 0;
-    rc = MPL_env2int("MPICH_CH4_OFI_MAX_NUM_PACK_BUFFERS", &(MPIR_CVAR_CH4_OFI_MAX_NUM_PACK_BUFFERS));
-    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_OFI_MAX_NUM_PACK_BUFFERS");
-    got_rc += rc;
-    rc = MPL_env2int("MPIR_PARAM_CH4_OFI_MAX_NUM_PACK_BUFFERS", &(MPIR_CVAR_CH4_OFI_MAX_NUM_PACK_BUFFERS));
-    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_OFI_MAX_NUM_PACK_BUFFERS");
-    got_rc += rc;
-    rc = MPL_env2int("MPIR_CVAR_CH4_OFI_MAX_NUM_PACK_BUFFERS", &(MPIR_CVAR_CH4_OFI_MAX_NUM_PACK_BUFFERS));
-    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_OFI_MAX_NUM_PACK_BUFFERS");
-    got_rc += rc;
-    if (got_rc && debug) {
-        printf("CVAR: MPIR_CVAR_CH4_OFI_MAX_NUM_PACK_BUFFERS = %d\n", MPIR_CVAR_CH4_OFI_MAX_NUM_PACK_BUFFERS);
     }
 
     defaultval.d = -1;
@@ -10010,7 +11615,7 @@ silent  - silently fallback to the internally selected algorithm");
 #if defined MPID_CH4_OFI_ENABLE_MULTI_NIC_STRIPING
     defaultval.d = MPID_CH4_OFI_ENABLE_MULTI_NIC_STRIPING;
 #else
-    defaultval.d = 1;
+    defaultval.d = 0;
 #endif /* MPID_CH4_OFI_ENABLE_MULTI_NIC_STRIPING */
 
     MPIR_T_CVAR_REGISTER_STATIC(
@@ -10100,6 +11705,37 @@ silent  - silently fallback to the internally selected algorithm");
         printf("CVAR: MPIR_CVAR_CH4_OFI_ENABLE_MULTI_NIC_HASHING = %d\n", MPIR_CVAR_CH4_OFI_ENABLE_MULTI_NIC_HASHING);
     }
 
+#if defined MPID_CH4_OFI_MULTIRECV_BUFFER_SIZE
+    defaultval.d = MPID_CH4_OFI_MULTIRECV_BUFFER_SIZE;
+#else
+    defaultval.d = 2097152;
+#endif /* MPID_CH4_OFI_MULTIRECV_BUFFER_SIZE */
+
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_CH4_OFI_MULTIRECV_BUFFER_SIZE, /* name */
+        &MPIR_CVAR_CH4_OFI_MULTIRECV_BUFFER_SIZE, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_LOCAL,
+        defaultval,
+        "CH4", /* category */
+        "Controls the multirecv am buffer size. It is recommended to match this to the hugepage size so that the buffer can be allocated at the page boundary.");
+    MPIR_CVAR_CH4_OFI_MULTIRECV_BUFFER_SIZE = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_CH4_OFI_MULTIRECV_BUFFER_SIZE", &(MPIR_CVAR_CH4_OFI_MULTIRECV_BUFFER_SIZE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_OFI_MULTIRECV_BUFFER_SIZE");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_CH4_OFI_MULTIRECV_BUFFER_SIZE", &(MPIR_CVAR_CH4_OFI_MULTIRECV_BUFFER_SIZE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_OFI_MULTIRECV_BUFFER_SIZE");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_CH4_OFI_MULTIRECV_BUFFER_SIZE", &(MPIR_CVAR_CH4_OFI_MULTIRECV_BUFFER_SIZE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_OFI_MULTIRECV_BUFFER_SIZE");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_CH4_OFI_MULTIRECV_BUFFER_SIZE = %d\n", MPIR_CVAR_CH4_OFI_MULTIRECV_BUFFER_SIZE);
+    }
+
     defaultval.d = 1;
     MPIR_T_CVAR_REGISTER_STATIC(
         MPI_INT,
@@ -10126,33 +11762,365 @@ silent  - silently fallback to the internally selected algorithm");
         printf("CVAR: MPIR_CVAR_OFI_USE_MIN_NICS = %d\n", MPIR_CVAR_OFI_USE_MIN_NICS);
     }
 
-    defaultval.d = 0;
+#if defined MPID_CH4_OFI_ENABLE_TRIGGERED
+    defaultval.d = MPID_CH4_OFI_ENABLE_TRIGGERED;
+#else
+    defaultval.d = -1;
+#endif /* MPID_CH4_OFI_ENABLE_TRIGGERED */
+
     MPIR_T_CVAR_REGISTER_STATIC(
         MPI_INT,
-        MPIR_CVAR_CH4_UCX_MAX_VNIS, /* name */
-        &MPIR_CVAR_CH4_UCX_MAX_VNIS, /* address */
+        MPIR_CVAR_CH4_OFI_ENABLE_TRIGGERED, /* name */
+        &MPIR_CVAR_CH4_OFI_ENABLE_TRIGGERED, /* address */
         1, /* count */
         MPI_T_VERBOSITY_USER_BASIC,
         MPI_T_SCOPE_LOCAL,
         defaultval,
-        "CH4_UCX", /* category */
-        "If set to positive, this CVAR specifies the maximum number of CH4 VNIs that UCX netmod exposes. If set to 0 (the default) or bigger than MPIR_CVAR_CH4_NUM_VCIS, the number of exposed VNIs is set to MPIR_CVAR_CH4_NUM_VCIS.");
-    MPIR_CVAR_CH4_UCX_MAX_VNIS = defaultval.d;
+        "CH4_OFI", /* category */
+        "If true, enable OFI triggered ops for MPI collectives.");
+    MPIR_CVAR_CH4_OFI_ENABLE_TRIGGERED = defaultval.d;
     got_rc = 0;
-    rc = MPL_env2int("MPICH_CH4_UCX_MAX_VNIS", &(MPIR_CVAR_CH4_UCX_MAX_VNIS));
-    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_UCX_MAX_VNIS");
+    rc = MPL_env2int("MPICH_CH4_OFI_ENABLE_TRIGGERED", &(MPIR_CVAR_CH4_OFI_ENABLE_TRIGGERED));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_OFI_ENABLE_TRIGGERED");
     got_rc += rc;
-    rc = MPL_env2int("MPIR_PARAM_CH4_UCX_MAX_VNIS", &(MPIR_CVAR_CH4_UCX_MAX_VNIS));
-    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_UCX_MAX_VNIS");
+    rc = MPL_env2int("MPIR_PARAM_CH4_OFI_ENABLE_TRIGGERED", &(MPIR_CVAR_CH4_OFI_ENABLE_TRIGGERED));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_OFI_ENABLE_TRIGGERED");
     got_rc += rc;
-    rc = MPL_env2int("MPIR_CVAR_CH4_UCX_MAX_VNIS", &(MPIR_CVAR_CH4_UCX_MAX_VNIS));
-    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_UCX_MAX_VNIS");
+    rc = MPL_env2int("MPIR_CVAR_CH4_OFI_ENABLE_TRIGGERED", &(MPIR_CVAR_CH4_OFI_ENABLE_TRIGGERED));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_OFI_ENABLE_TRIGGERED");
     got_rc += rc;
     if (got_rc && debug) {
-        printf("CVAR: MPIR_CVAR_CH4_UCX_MAX_VNIS = %d\n", MPIR_CVAR_CH4_UCX_MAX_VNIS);
+        printf("CVAR: MPIR_CVAR_CH4_OFI_ENABLE_TRIGGERED = %d\n", MPIR_CVAR_CH4_OFI_ENABLE_TRIGGERED);
     }
 
-    defaultval.d = 1;
+    defaultval.d = MPIR_CVAR_CH4_OFI_GPU_SEND_ENGINE_TYPE_copy_low_latency;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_CH4_OFI_GPU_SEND_ENGINE_TYPE, /* name */
+        &MPIR_CVAR_CH4_OFI_GPU_SEND_ENGINE_TYPE, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_LOCAL,
+        defaultval,
+        "CH4_OFI", /* category */
+        "Specifies GPU engine type for GPU pt2pt on the sender side.\n"
+"compute - use a compute engine\n"
+"copy_high_bandwidth - use a high-bandwidth copy engine\n"
+"copy_low_latency - use a low-latency copy engine\n"
+"yaksa - use Yaksa");
+    MPIR_CVAR_CH4_OFI_GPU_SEND_ENGINE_TYPE = defaultval.d;
+    tmp_str=NULL;
+    got_rc = 0;
+    rc = MPL_env2str("MPICH_CH4_OFI_GPU_SEND_ENGINE_TYPE", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_OFI_GPU_SEND_ENGINE_TYPE");
+    got_rc += rc;
+    rc = MPL_env2str("MPIR_PARAM_CH4_OFI_GPU_SEND_ENGINE_TYPE", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_OFI_GPU_SEND_ENGINE_TYPE");
+    got_rc += rc;
+    rc = MPL_env2str("MPIR_CVAR_CH4_OFI_GPU_SEND_ENGINE_TYPE", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_OFI_GPU_SEND_ENGINE_TYPE");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_CH4_OFI_GPU_SEND_ENGINE_TYPE = %s\n", tmp_str);
+    }
+    if (tmp_str != NULL) {
+        if (0 == strcmp(tmp_str, "compute"))
+            MPIR_CVAR_CH4_OFI_GPU_SEND_ENGINE_TYPE = MPIR_CVAR_CH4_OFI_GPU_SEND_ENGINE_TYPE_compute;
+        else if (0 == strcmp(tmp_str, "copy_high_bandwidth"))
+            MPIR_CVAR_CH4_OFI_GPU_SEND_ENGINE_TYPE = MPIR_CVAR_CH4_OFI_GPU_SEND_ENGINE_TYPE_copy_high_bandwidth;
+        else if (0 == strcmp(tmp_str, "copy_low_latency"))
+            MPIR_CVAR_CH4_OFI_GPU_SEND_ENGINE_TYPE = MPIR_CVAR_CH4_OFI_GPU_SEND_ENGINE_TYPE_copy_low_latency;
+        else if (0 == strcmp(tmp_str, "yaksa"))
+            MPIR_CVAR_CH4_OFI_GPU_SEND_ENGINE_TYPE = MPIR_CVAR_CH4_OFI_GPU_SEND_ENGINE_TYPE_yaksa;
+        else {
+            mpi_errno = MPIR_Err_create_code(MPI_SUCCESS, MPIR_ERR_RECOVERABLE, __func__, __LINE__,MPI_ERR_OTHER, "**cvar_val", "**cvar_val %s %s", "MPIR_CVAR_CH4_OFI_GPU_SEND_ENGINE_TYPE", tmp_str);
+            goto fn_fail;
+        }
+    }
+
+    defaultval.d = MPIR_CVAR_CH4_OFI_GPU_RECEIVE_ENGINE_TYPE_copy_low_latency;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_CH4_OFI_GPU_RECEIVE_ENGINE_TYPE, /* name */
+        &MPIR_CVAR_CH4_OFI_GPU_RECEIVE_ENGINE_TYPE, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_LOCAL,
+        defaultval,
+        "CH4_OFI", /* category */
+        "Specifies GPU engine type for GPU pt2pt on the receiver side.\n"
+"compute - use a compute engine\n"
+"copy_high_bandwidth - use a high-bandwidth copy engine\n"
+"copy_low_latency - use a low-latency copy engine\n"
+"yaksa - use Yaksa");
+    MPIR_CVAR_CH4_OFI_GPU_RECEIVE_ENGINE_TYPE = defaultval.d;
+    tmp_str=NULL;
+    got_rc = 0;
+    rc = MPL_env2str("MPICH_CH4_OFI_GPU_RECEIVE_ENGINE_TYPE", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_OFI_GPU_RECEIVE_ENGINE_TYPE");
+    got_rc += rc;
+    rc = MPL_env2str("MPIR_PARAM_CH4_OFI_GPU_RECEIVE_ENGINE_TYPE", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_OFI_GPU_RECEIVE_ENGINE_TYPE");
+    got_rc += rc;
+    rc = MPL_env2str("MPIR_CVAR_CH4_OFI_GPU_RECEIVE_ENGINE_TYPE", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_OFI_GPU_RECEIVE_ENGINE_TYPE");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_CH4_OFI_GPU_RECEIVE_ENGINE_TYPE = %s\n", tmp_str);
+    }
+    if (tmp_str != NULL) {
+        if (0 == strcmp(tmp_str, "compute"))
+            MPIR_CVAR_CH4_OFI_GPU_RECEIVE_ENGINE_TYPE = MPIR_CVAR_CH4_OFI_GPU_RECEIVE_ENGINE_TYPE_compute;
+        else if (0 == strcmp(tmp_str, "copy_high_bandwidth"))
+            MPIR_CVAR_CH4_OFI_GPU_RECEIVE_ENGINE_TYPE = MPIR_CVAR_CH4_OFI_GPU_RECEIVE_ENGINE_TYPE_copy_high_bandwidth;
+        else if (0 == strcmp(tmp_str, "copy_low_latency"))
+            MPIR_CVAR_CH4_OFI_GPU_RECEIVE_ENGINE_TYPE = MPIR_CVAR_CH4_OFI_GPU_RECEIVE_ENGINE_TYPE_copy_low_latency;
+        else if (0 == strcmp(tmp_str, "yaksa"))
+            MPIR_CVAR_CH4_OFI_GPU_RECEIVE_ENGINE_TYPE = MPIR_CVAR_CH4_OFI_GPU_RECEIVE_ENGINE_TYPE_yaksa;
+        else {
+            mpi_errno = MPIR_Err_create_code(MPI_SUCCESS, MPIR_ERR_RECOVERABLE, __func__, __LINE__,MPI_ERR_OTHER, "**cvar_val", "**cvar_val %s %s", "MPIR_CVAR_CH4_OFI_GPU_RECEIVE_ENGINE_TYPE", tmp_str);
+            goto fn_fail;
+        }
+    }
+
+    defaultval.d = 0;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_CH4_OFI_ENABLE_GPU_PIPELINE, /* name */
+        &MPIR_CVAR_CH4_OFI_ENABLE_GPU_PIPELINE, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_LOCAL,
+        defaultval,
+        "CH4_OFI", /* category */
+        "If true, enable pipeline for GPU data transfer. GPU pipeline does not support non-contiguous datatypes or mixed buffer types (i.e. GPU send buffer, host recv buffer). If GPU pipeline is enabled, the unsupported scenarios will cause undefined behavior if encountered.");
+    MPIR_CVAR_CH4_OFI_ENABLE_GPU_PIPELINE = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2bool("MPICH_CH4_OFI_ENABLE_GPU_PIPELINE", &(MPIR_CVAR_CH4_OFI_ENABLE_GPU_PIPELINE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_OFI_ENABLE_GPU_PIPELINE");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_PARAM_CH4_OFI_ENABLE_GPU_PIPELINE", &(MPIR_CVAR_CH4_OFI_ENABLE_GPU_PIPELINE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_OFI_ENABLE_GPU_PIPELINE");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_CVAR_CH4_OFI_ENABLE_GPU_PIPELINE", &(MPIR_CVAR_CH4_OFI_ENABLE_GPU_PIPELINE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_OFI_ENABLE_GPU_PIPELINE");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_CH4_OFI_ENABLE_GPU_PIPELINE = %d\n", MPIR_CVAR_CH4_OFI_ENABLE_GPU_PIPELINE);
+    }
+
+    defaultval.d = 131072;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_CH4_OFI_GPU_PIPELINE_THRESHOLD, /* name */
+        &MPIR_CVAR_CH4_OFI_GPU_PIPELINE_THRESHOLD, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_LOCAL,
+        defaultval,
+        "CH4_OFI", /* category */
+        "This is the threshold to start using GPU pipeline.");
+    MPIR_CVAR_CH4_OFI_GPU_PIPELINE_THRESHOLD = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_CH4_OFI_GPU_PIPELINE_THRESHOLD", &(MPIR_CVAR_CH4_OFI_GPU_PIPELINE_THRESHOLD));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_OFI_GPU_PIPELINE_THRESHOLD");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_CH4_OFI_GPU_PIPELINE_THRESHOLD", &(MPIR_CVAR_CH4_OFI_GPU_PIPELINE_THRESHOLD));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_OFI_GPU_PIPELINE_THRESHOLD");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_CH4_OFI_GPU_PIPELINE_THRESHOLD", &(MPIR_CVAR_CH4_OFI_GPU_PIPELINE_THRESHOLD));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_OFI_GPU_PIPELINE_THRESHOLD");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_CH4_OFI_GPU_PIPELINE_THRESHOLD = %d\n", MPIR_CVAR_CH4_OFI_GPU_PIPELINE_THRESHOLD);
+    }
+
+    defaultval.d = 1048576;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_CH4_OFI_GPU_PIPELINE_BUFFER_SZ, /* name */
+        &MPIR_CVAR_CH4_OFI_GPU_PIPELINE_BUFFER_SZ, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_LOCAL,
+        defaultval,
+        "CH4_OFI", /* category */
+        "Specifies the buffer size (in bytes) for GPU pipeline data transfer.");
+    MPIR_CVAR_CH4_OFI_GPU_PIPELINE_BUFFER_SZ = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_CH4_OFI_GPU_PIPELINE_BUFFER_SZ", &(MPIR_CVAR_CH4_OFI_GPU_PIPELINE_BUFFER_SZ));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_OFI_GPU_PIPELINE_BUFFER_SZ");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_CH4_OFI_GPU_PIPELINE_BUFFER_SZ", &(MPIR_CVAR_CH4_OFI_GPU_PIPELINE_BUFFER_SZ));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_OFI_GPU_PIPELINE_BUFFER_SZ");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_CH4_OFI_GPU_PIPELINE_BUFFER_SZ", &(MPIR_CVAR_CH4_OFI_GPU_PIPELINE_BUFFER_SZ));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_OFI_GPU_PIPELINE_BUFFER_SZ");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_CH4_OFI_GPU_PIPELINE_BUFFER_SZ = %d\n", MPIR_CVAR_CH4_OFI_GPU_PIPELINE_BUFFER_SZ);
+    }
+
+    defaultval.d = 32;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_CH4_OFI_GPU_PIPELINE_NUM_BUFFERS_PER_CHUNK, /* name */
+        &MPIR_CVAR_CH4_OFI_GPU_PIPELINE_NUM_BUFFERS_PER_CHUNK, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_LOCAL,
+        defaultval,
+        "CH4_OFI", /* category */
+        "Specifies the number of buffers for GPU pipeline data transfer in each block/chunk of the pool.");
+    MPIR_CVAR_CH4_OFI_GPU_PIPELINE_NUM_BUFFERS_PER_CHUNK = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_CH4_OFI_GPU_PIPELINE_NUM_BUFFERS_PER_CHUNK", &(MPIR_CVAR_CH4_OFI_GPU_PIPELINE_NUM_BUFFERS_PER_CHUNK));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_OFI_GPU_PIPELINE_NUM_BUFFERS_PER_CHUNK");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_CH4_OFI_GPU_PIPELINE_NUM_BUFFERS_PER_CHUNK", &(MPIR_CVAR_CH4_OFI_GPU_PIPELINE_NUM_BUFFERS_PER_CHUNK));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_OFI_GPU_PIPELINE_NUM_BUFFERS_PER_CHUNK");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_CH4_OFI_GPU_PIPELINE_NUM_BUFFERS_PER_CHUNK", &(MPIR_CVAR_CH4_OFI_GPU_PIPELINE_NUM_BUFFERS_PER_CHUNK));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_OFI_GPU_PIPELINE_NUM_BUFFERS_PER_CHUNK");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_CH4_OFI_GPU_PIPELINE_NUM_BUFFERS_PER_CHUNK = %d\n", MPIR_CVAR_CH4_OFI_GPU_PIPELINE_NUM_BUFFERS_PER_CHUNK);
+    }
+
+    defaultval.d = 32;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_CH4_OFI_GPU_PIPELINE_MAX_NUM_BUFFERS, /* name */
+        &MPIR_CVAR_CH4_OFI_GPU_PIPELINE_MAX_NUM_BUFFERS, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_LOCAL,
+        defaultval,
+        "CH4_OFI", /* category */
+        "Specifies the total number of buffers for GPU pipeline data transfer");
+    MPIR_CVAR_CH4_OFI_GPU_PIPELINE_MAX_NUM_BUFFERS = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_CH4_OFI_GPU_PIPELINE_MAX_NUM_BUFFERS", &(MPIR_CVAR_CH4_OFI_GPU_PIPELINE_MAX_NUM_BUFFERS));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_OFI_GPU_PIPELINE_MAX_NUM_BUFFERS");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_CH4_OFI_GPU_PIPELINE_MAX_NUM_BUFFERS", &(MPIR_CVAR_CH4_OFI_GPU_PIPELINE_MAX_NUM_BUFFERS));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_OFI_GPU_PIPELINE_MAX_NUM_BUFFERS");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_CH4_OFI_GPU_PIPELINE_MAX_NUM_BUFFERS", &(MPIR_CVAR_CH4_OFI_GPU_PIPELINE_MAX_NUM_BUFFERS));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_OFI_GPU_PIPELINE_MAX_NUM_BUFFERS");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_CH4_OFI_GPU_PIPELINE_MAX_NUM_BUFFERS = %d\n", MPIR_CVAR_CH4_OFI_GPU_PIPELINE_MAX_NUM_BUFFERS);
+    }
+
+    defaultval.d = 0;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_CH4_OFI_GPU_PIPELINE_D2H_ENGINE_TYPE, /* name */
+        &MPIR_CVAR_CH4_OFI_GPU_PIPELINE_D2H_ENGINE_TYPE, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_LOCAL,
+        defaultval,
+        "CH4_OFI", /* category */
+        "Specifies the GPU engine type for GPU pipeline on the sender side, default is MPL_GPU_ENGINE_TYPE_COMPUTE");
+    MPIR_CVAR_CH4_OFI_GPU_PIPELINE_D2H_ENGINE_TYPE = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_CH4_OFI_GPU_PIPELINE_D2H_ENGINE_TYPE", &(MPIR_CVAR_CH4_OFI_GPU_PIPELINE_D2H_ENGINE_TYPE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_OFI_GPU_PIPELINE_D2H_ENGINE_TYPE");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_CH4_OFI_GPU_PIPELINE_D2H_ENGINE_TYPE", &(MPIR_CVAR_CH4_OFI_GPU_PIPELINE_D2H_ENGINE_TYPE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_OFI_GPU_PIPELINE_D2H_ENGINE_TYPE");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_CH4_OFI_GPU_PIPELINE_D2H_ENGINE_TYPE", &(MPIR_CVAR_CH4_OFI_GPU_PIPELINE_D2H_ENGINE_TYPE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_OFI_GPU_PIPELINE_D2H_ENGINE_TYPE");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_CH4_OFI_GPU_PIPELINE_D2H_ENGINE_TYPE = %d\n", MPIR_CVAR_CH4_OFI_GPU_PIPELINE_D2H_ENGINE_TYPE);
+    }
+
+    defaultval.d = 0;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_CH4_OFI_GPU_PIPELINE_H2D_ENGINE_TYPE, /* name */
+        &MPIR_CVAR_CH4_OFI_GPU_PIPELINE_H2D_ENGINE_TYPE, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_LOCAL,
+        defaultval,
+        "CH4_OFI", /* category */
+        "Specifies the GPU engine type for GPU pipeline on the receiver side, default is MPL_GPU_ENGINE_TYPE_COMPUTE");
+    MPIR_CVAR_CH4_OFI_GPU_PIPELINE_H2D_ENGINE_TYPE = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_CH4_OFI_GPU_PIPELINE_H2D_ENGINE_TYPE", &(MPIR_CVAR_CH4_OFI_GPU_PIPELINE_H2D_ENGINE_TYPE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_OFI_GPU_PIPELINE_H2D_ENGINE_TYPE");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_CH4_OFI_GPU_PIPELINE_H2D_ENGINE_TYPE", &(MPIR_CVAR_CH4_OFI_GPU_PIPELINE_H2D_ENGINE_TYPE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_OFI_GPU_PIPELINE_H2D_ENGINE_TYPE");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_CH4_OFI_GPU_PIPELINE_H2D_ENGINE_TYPE", &(MPIR_CVAR_CH4_OFI_GPU_PIPELINE_H2D_ENGINE_TYPE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_OFI_GPU_PIPELINE_H2D_ENGINE_TYPE");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_CH4_OFI_GPU_PIPELINE_H2D_ENGINE_TYPE = %d\n", MPIR_CVAR_CH4_OFI_GPU_PIPELINE_H2D_ENGINE_TYPE);
+    }
+
+    defaultval.d = 0;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_CH4_OFI_DISABLE_INJECT_WRITE, /* name */
+        &MPIR_CVAR_CH4_OFI_DISABLE_INJECT_WRITE, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_LOCAL,
+        defaultval,
+        "CH4_OFI", /* category */
+        "Avoid use fi_inject_write. For some provider, e.g. tcp;ofi_rxm, inject write may break the synchronization.");
+    MPIR_CVAR_CH4_OFI_DISABLE_INJECT_WRITE = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2bool("MPICH_CH4_OFI_DISABLE_INJECT_WRITE", &(MPIR_CVAR_CH4_OFI_DISABLE_INJECT_WRITE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_OFI_DISABLE_INJECT_WRITE");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_PARAM_CH4_OFI_DISABLE_INJECT_WRITE", &(MPIR_CVAR_CH4_OFI_DISABLE_INJECT_WRITE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_OFI_DISABLE_INJECT_WRITE");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_CVAR_CH4_OFI_DISABLE_INJECT_WRITE", &(MPIR_CVAR_CH4_OFI_DISABLE_INJECT_WRITE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_OFI_DISABLE_INJECT_WRITE");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_CH4_OFI_DISABLE_INJECT_WRITE = %d\n", MPIR_CVAR_CH4_OFI_DISABLE_INJECT_WRITE);
+    }
+
+    defaultval.d = 0;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_UCX_DT_RECV, /* name */
+        &MPIR_CVAR_UCX_DT_RECV, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "CH4_UCX", /* category */
+        "Variable to select method for receiving noncontiguous data\n"
+"true                - Use UCX datatype with pack/unpack callbacks\n"
+"false               - MPICH will decide to pack/unpack at completion or use IOVs\n"
+"based on the datatype");
+    MPIR_CVAR_UCX_DT_RECV = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2bool("MPICH_UCX_DT_RECV", &(MPIR_CVAR_UCX_DT_RECV));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_UCX_DT_RECV");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_PARAM_UCX_DT_RECV", &(MPIR_CVAR_UCX_DT_RECV));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_UCX_DT_RECV");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_CVAR_UCX_DT_RECV", &(MPIR_CVAR_UCX_DT_RECV));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_UCX_DT_RECV");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_UCX_DT_RECV = %d\n", MPIR_CVAR_UCX_DT_RECV);
+    }
+
+    defaultval.d = MPIR_CVAR_CH4_IPC_GPU_HANDLE_CACHE_specialized;
     MPIR_T_CVAR_REGISTER_STATIC(
         MPI_INT,
         MPIR_CVAR_CH4_IPC_GPU_HANDLE_CACHE, /* name */
@@ -10162,23 +12130,42 @@ silent  - silently fallback to the internally selected algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "CH4", /* category */
-        "By default, we will cache ipc handle. To manually disable ipc handle cache, user can set this variable to 0.");
+        "By default, we will cache ipc handles using the specialized cache mechanism. If the\n"
+"gpu-specific backend does not implement a specialized cache, then we will fallback to\n"
+"the generic cache mechanism. Users can optionally force the generic cache mechanism or\n"
+"disable ipc caching entirely.\n"
+"generic - use the cache mechanism in the generic layer\n"
+"specialized - use the cache mechanism in a gpu-specific mpl layer (if applicable)\n"
+"disabled - disable caching completely");
     MPIR_CVAR_CH4_IPC_GPU_HANDLE_CACHE = defaultval.d;
+    tmp_str=NULL;
     got_rc = 0;
-    rc = MPL_env2int("MPICH_CH4_IPC_GPU_HANDLE_CACHE", &(MPIR_CVAR_CH4_IPC_GPU_HANDLE_CACHE));
+    rc = MPL_env2str("MPICH_CH4_IPC_GPU_HANDLE_CACHE", &tmp_str);
     MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_IPC_GPU_HANDLE_CACHE");
     got_rc += rc;
-    rc = MPL_env2int("MPIR_PARAM_CH4_IPC_GPU_HANDLE_CACHE", &(MPIR_CVAR_CH4_IPC_GPU_HANDLE_CACHE));
+    rc = MPL_env2str("MPIR_PARAM_CH4_IPC_GPU_HANDLE_CACHE", &tmp_str);
     MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_IPC_GPU_HANDLE_CACHE");
     got_rc += rc;
-    rc = MPL_env2int("MPIR_CVAR_CH4_IPC_GPU_HANDLE_CACHE", &(MPIR_CVAR_CH4_IPC_GPU_HANDLE_CACHE));
+    rc = MPL_env2str("MPIR_CVAR_CH4_IPC_GPU_HANDLE_CACHE", &tmp_str);
     MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_IPC_GPU_HANDLE_CACHE");
     got_rc += rc;
     if (got_rc && debug) {
-        printf("CVAR: MPIR_CVAR_CH4_IPC_GPU_HANDLE_CACHE = %d\n", MPIR_CVAR_CH4_IPC_GPU_HANDLE_CACHE);
+        printf("CVAR: MPIR_CVAR_CH4_IPC_GPU_HANDLE_CACHE = %s\n", tmp_str);
+    }
+    if (tmp_str != NULL) {
+        if (0 == strcmp(tmp_str, "generic"))
+            MPIR_CVAR_CH4_IPC_GPU_HANDLE_CACHE = MPIR_CVAR_CH4_IPC_GPU_HANDLE_CACHE_generic;
+        else if (0 == strcmp(tmp_str, "specialized"))
+            MPIR_CVAR_CH4_IPC_GPU_HANDLE_CACHE = MPIR_CVAR_CH4_IPC_GPU_HANDLE_CACHE_specialized;
+        else if (0 == strcmp(tmp_str, "disabled"))
+            MPIR_CVAR_CH4_IPC_GPU_HANDLE_CACHE = MPIR_CVAR_CH4_IPC_GPU_HANDLE_CACHE_disabled;
+        else {
+            mpi_errno = MPIR_Err_create_code(MPI_SUCCESS, MPIR_ERR_RECOVERABLE, __func__, __LINE__,MPI_ERR_OTHER, "**cvar_val", "**cvar_val %s %s", "MPIR_CVAR_CH4_IPC_GPU_HANDLE_CACHE", tmp_str);
+            goto fn_fail;
+        }
     }
 
-    defaultval.d = 32768;
+    defaultval.d = 1048576;
     MPIR_T_CVAR_REGISTER_STATIC(
         MPI_INT,
         MPIR_CVAR_CH4_IPC_GPU_P2P_THRESHOLD, /* name */
@@ -10202,6 +12189,184 @@ silent  - silently fallback to the internally selected algorithm");
     got_rc += rc;
     if (got_rc && debug) {
         printf("CVAR: MPIR_CVAR_CH4_IPC_GPU_P2P_THRESHOLD = %d\n", MPIR_CVAR_CH4_IPC_GPU_P2P_THRESHOLD);
+    }
+
+    defaultval.d = 1024;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_CH4_IPC_GPU_FAST_COPY_MAX_SIZE, /* name */
+        &MPIR_CVAR_CH4_IPC_GPU_FAST_COPY_MAX_SIZE, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "CH4", /* category */
+        "If a send message size is less than or equal to MPIR_CVAR_CH4_IPC_GPU_FAST_COPY_MAX_SIZE (in bytes), then enable GPU-basedfast memcpy. The environment variable is valid only when then GPU IPC shmmod is enabled.");
+    MPIR_CVAR_CH4_IPC_GPU_FAST_COPY_MAX_SIZE = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_CH4_IPC_GPU_FAST_COPY_MAX_SIZE", &(MPIR_CVAR_CH4_IPC_GPU_FAST_COPY_MAX_SIZE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_IPC_GPU_FAST_COPY_MAX_SIZE");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_CH4_IPC_GPU_FAST_COPY_MAX_SIZE", &(MPIR_CVAR_CH4_IPC_GPU_FAST_COPY_MAX_SIZE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_IPC_GPU_FAST_COPY_MAX_SIZE");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_CH4_IPC_GPU_FAST_COPY_MAX_SIZE", &(MPIR_CVAR_CH4_IPC_GPU_FAST_COPY_MAX_SIZE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_IPC_GPU_FAST_COPY_MAX_SIZE");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_CH4_IPC_GPU_FAST_COPY_MAX_SIZE = %d\n", MPIR_CVAR_CH4_IPC_GPU_FAST_COPY_MAX_SIZE);
+    }
+
+    defaultval.d = MPIR_CVAR_CH4_IPC_ZE_SHAREABLE_HANDLE_drmfd;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_CH4_IPC_ZE_SHAREABLE_HANDLE, /* name */
+        &MPIR_CVAR_CH4_IPC_ZE_SHAREABLE_HANDLE, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "CH4", /* category */
+        "Variable to select implementation for ZE shareable IPC handle\n"
+"pidfd - use pidfd_getfd syscall to implement shareable IPC handle\n"
+"drmfd - force to use device fd-based shareable IPC handle");
+    MPIR_CVAR_CH4_IPC_ZE_SHAREABLE_HANDLE = defaultval.d;
+    tmp_str=NULL;
+    got_rc = 0;
+    rc = MPL_env2str("MPICH_CH4_IPC_ZE_SHAREABLE_HANDLE", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_IPC_ZE_SHAREABLE_HANDLE");
+    got_rc += rc;
+    rc = MPL_env2str("MPIR_PARAM_CH4_IPC_ZE_SHAREABLE_HANDLE", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_IPC_ZE_SHAREABLE_HANDLE");
+    got_rc += rc;
+    rc = MPL_env2str("MPIR_CVAR_CH4_IPC_ZE_SHAREABLE_HANDLE", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_IPC_ZE_SHAREABLE_HANDLE");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_CH4_IPC_ZE_SHAREABLE_HANDLE = %s\n", tmp_str);
+    }
+    if (tmp_str != NULL) {
+        if (0 == strcmp(tmp_str, "pidfd"))
+            MPIR_CVAR_CH4_IPC_ZE_SHAREABLE_HANDLE = MPIR_CVAR_CH4_IPC_ZE_SHAREABLE_HANDLE_pidfd;
+        else if (0 == strcmp(tmp_str, "drmfd"))
+            MPIR_CVAR_CH4_IPC_ZE_SHAREABLE_HANDLE = MPIR_CVAR_CH4_IPC_ZE_SHAREABLE_HANDLE_drmfd;
+        else {
+            mpi_errno = MPIR_Err_create_code(MPI_SUCCESS, MPIR_ERR_RECOVERABLE, __func__, __LINE__,MPI_ERR_OTHER, "**cvar_val", "**cvar_val %s %s", "MPIR_CVAR_CH4_IPC_ZE_SHAREABLE_HANDLE", tmp_str);
+            goto fn_fail;
+        }
+    }
+
+    defaultval.d = MPIR_CVAR_CH4_IPC_GPU_ENGINE_TYPE_auto;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_CH4_IPC_GPU_ENGINE_TYPE, /* name */
+        &MPIR_CVAR_CH4_IPC_GPU_ENGINE_TYPE, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "CH4", /* category */
+        "By default, select engine type automatically\n"
+"auto - select automatically\n"
+"compute - use compute engine\n"
+"copy_high_bandwidth - use high-bandwidth copy engine\n"
+"copy_low_latency - use low-latency copy engine");
+    MPIR_CVAR_CH4_IPC_GPU_ENGINE_TYPE = defaultval.d;
+    tmp_str=NULL;
+    got_rc = 0;
+    rc = MPL_env2str("MPICH_CH4_IPC_GPU_ENGINE_TYPE", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_IPC_GPU_ENGINE_TYPE");
+    got_rc += rc;
+    rc = MPL_env2str("MPIR_PARAM_CH4_IPC_GPU_ENGINE_TYPE", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_IPC_GPU_ENGINE_TYPE");
+    got_rc += rc;
+    rc = MPL_env2str("MPIR_CVAR_CH4_IPC_GPU_ENGINE_TYPE", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_IPC_GPU_ENGINE_TYPE");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_CH4_IPC_GPU_ENGINE_TYPE = %s\n", tmp_str);
+    }
+    if (tmp_str != NULL) {
+        if (0 == strcmp(tmp_str, "auto"))
+            MPIR_CVAR_CH4_IPC_GPU_ENGINE_TYPE = MPIR_CVAR_CH4_IPC_GPU_ENGINE_TYPE_auto;
+        else if (0 == strcmp(tmp_str, "compute"))
+            MPIR_CVAR_CH4_IPC_GPU_ENGINE_TYPE = MPIR_CVAR_CH4_IPC_GPU_ENGINE_TYPE_compute;
+        else if (0 == strcmp(tmp_str, "copy_high_bandwidth"))
+            MPIR_CVAR_CH4_IPC_GPU_ENGINE_TYPE = MPIR_CVAR_CH4_IPC_GPU_ENGINE_TYPE_copy_high_bandwidth;
+        else if (0 == strcmp(tmp_str, "copy_low_latency"))
+            MPIR_CVAR_CH4_IPC_GPU_ENGINE_TYPE = MPIR_CVAR_CH4_IPC_GPU_ENGINE_TYPE_copy_low_latency;
+        else {
+            mpi_errno = MPIR_Err_create_code(MPI_SUCCESS, MPIR_ERR_RECOVERABLE, __func__, __LINE__,MPI_ERR_OTHER, "**cvar_val", "**cvar_val %s %s", "MPIR_CVAR_CH4_IPC_GPU_ENGINE_TYPE", tmp_str);
+            goto fn_fail;
+        }
+    }
+
+    defaultval.d = MPIR_CVAR_CH4_IPC_GPU_READ_WRITE_PROTOCOL_read;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_CH4_IPC_GPU_READ_WRITE_PROTOCOL, /* name */
+        &MPIR_CVAR_CH4_IPC_GPU_READ_WRITE_PROTOCOL, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "CH4", /* category */
+        "By default, use read protocol.\n"
+"auto - select automatically\n"
+"read - use read protocol\n"
+"write - use write protocol if remote device is visible");
+    MPIR_CVAR_CH4_IPC_GPU_READ_WRITE_PROTOCOL = defaultval.d;
+    tmp_str=NULL;
+    got_rc = 0;
+    rc = MPL_env2str("MPICH_CH4_IPC_GPU_READ_WRITE_PROTOCOL", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_IPC_GPU_READ_WRITE_PROTOCOL");
+    got_rc += rc;
+    rc = MPL_env2str("MPIR_PARAM_CH4_IPC_GPU_READ_WRITE_PROTOCOL", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_IPC_GPU_READ_WRITE_PROTOCOL");
+    got_rc += rc;
+    rc = MPL_env2str("MPIR_CVAR_CH4_IPC_GPU_READ_WRITE_PROTOCOL", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_IPC_GPU_READ_WRITE_PROTOCOL");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_CH4_IPC_GPU_READ_WRITE_PROTOCOL = %s\n", tmp_str);
+    }
+    if (tmp_str != NULL) {
+        if (0 == strcmp(tmp_str, "auto"))
+            MPIR_CVAR_CH4_IPC_GPU_READ_WRITE_PROTOCOL = MPIR_CVAR_CH4_IPC_GPU_READ_WRITE_PROTOCOL_auto;
+        else if (0 == strcmp(tmp_str, "read"))
+            MPIR_CVAR_CH4_IPC_GPU_READ_WRITE_PROTOCOL = MPIR_CVAR_CH4_IPC_GPU_READ_WRITE_PROTOCOL_read;
+        else if (0 == strcmp(tmp_str, "write"))
+            MPIR_CVAR_CH4_IPC_GPU_READ_WRITE_PROTOCOL = MPIR_CVAR_CH4_IPC_GPU_READ_WRITE_PROTOCOL_write;
+        else {
+            mpi_errno = MPIR_Err_create_code(MPI_SUCCESS, MPIR_ERR_RECOVERABLE, __func__, __LINE__,MPI_ERR_OTHER, "**cvar_val", "**cvar_val %s %s", "MPIR_CVAR_CH4_IPC_GPU_READ_WRITE_PROTOCOL", tmp_str);
+            goto fn_fail;
+        }
+    }
+
+    defaultval.d = 1;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_CH4_IPC_MAP_REPEAT_ADDR, /* name */
+        &MPIR_CVAR_CH4_IPC_MAP_REPEAT_ADDR, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "CH4", /* category */
+        "If an address is used more than once in the last ten send operations, map it for IPC use even if it is below the IPC threshold.");
+    MPIR_CVAR_CH4_IPC_MAP_REPEAT_ADDR = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2bool("MPICH_CH4_IPC_MAP_REPEAT_ADDR", &(MPIR_CVAR_CH4_IPC_MAP_REPEAT_ADDR));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_IPC_MAP_REPEAT_ADDR");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_PARAM_CH4_IPC_MAP_REPEAT_ADDR", &(MPIR_CVAR_CH4_IPC_MAP_REPEAT_ADDR));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_IPC_MAP_REPEAT_ADDR");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_CVAR_CH4_IPC_MAP_REPEAT_ADDR", &(MPIR_CVAR_CH4_IPC_MAP_REPEAT_ADDR));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_IPC_MAP_REPEAT_ADDR");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_CH4_IPC_MAP_REPEAT_ADDR = %d\n", MPIR_CVAR_CH4_IPC_MAP_REPEAT_ADDR);
     }
 
     defaultval.d = 1;
@@ -10230,7 +12395,7 @@ silent  - silently fallback to the internally selected algorithm");
         printf("CVAR: MPIR_CVAR_CH4_XPMEM_ENABLE = %d\n", MPIR_CVAR_CH4_XPMEM_ENABLE);
     }
 
-    defaultval.d = 4096;
+    defaultval.d = 16384;
     MPIR_T_CVAR_REGISTER_STATIC(
         MPI_INT,
         MPIR_CVAR_CH4_IPC_XPMEM_P2P_THRESHOLD, /* name */
@@ -10266,10 +12431,11 @@ silent  - silently fallback to the internally selected algorithm");
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select algorithm for intra-node bcast\
-mpir           - Fallback to MPIR collectives\
-release_gather - Force shm optimized algo using release, gather primitives\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_CH4_POSIX_COLL_SELECTION_TUNING_JSON_FILE)");
+        "Variable to select algorithm for intra-node bcast\n"
+"mpir           - Fallback to MPIR collectives\n"
+"release_gather - Force shm optimized algo using release, gather primitives\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_CH4_POSIX_COLL_SELECTION_TUNING_JSON_FILE)\n"
+"ipc_read - Uses read-based collective with ipc");
     MPIR_CVAR_BCAST_POSIX_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -10292,8 +12458,52 @@ auto - Internal algorithm selection (can be overridden with MPIR_CVAR_CH4_POSIX_
             MPIR_CVAR_BCAST_POSIX_INTRA_ALGORITHM = MPIR_CVAR_BCAST_POSIX_INTRA_ALGORITHM_release_gather;
         else if (0 == strcmp(tmp_str, "auto"))
             MPIR_CVAR_BCAST_POSIX_INTRA_ALGORITHM = MPIR_CVAR_BCAST_POSIX_INTRA_ALGORITHM_auto;
+        else if (0 == strcmp(tmp_str, "ipc_read"))
+            MPIR_CVAR_BCAST_POSIX_INTRA_ALGORITHM = MPIR_CVAR_BCAST_POSIX_INTRA_ALGORITHM_ipc_read;
         else {
             mpi_errno = MPIR_Err_create_code(MPI_SUCCESS, MPIR_ERR_RECOVERABLE, __func__, __LINE__,MPI_ERR_OTHER, "**cvar_val", "**cvar_val %s %s", "MPIR_CVAR_BCAST_POSIX_INTRA_ALGORITHM", tmp_str);
+            goto fn_fail;
+        }
+    }
+
+    defaultval.d = MPIR_CVAR_IBCAST_POSIX_INTRA_ALGORITHM_auto;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_IBCAST_POSIX_INTRA_ALGORITHM, /* name */
+        &MPIR_CVAR_IBCAST_POSIX_INTRA_ALGORITHM, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "Variable to select algorithm for intra-node bcast\n"
+"mpir           - Fallback to MPIR collectives\n"
+"release_gather - Force shm optimized algo using release, gather primitives\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_CH4_POSIX_COLL_SELECTION_TUNING_JSON_FILE)");
+    MPIR_CVAR_IBCAST_POSIX_INTRA_ALGORITHM = defaultval.d;
+    tmp_str=NULL;
+    got_rc = 0;
+    rc = MPL_env2str("MPICH_IBCAST_POSIX_INTRA_ALGORITHM", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_IBCAST_POSIX_INTRA_ALGORITHM");
+    got_rc += rc;
+    rc = MPL_env2str("MPIR_PARAM_IBCAST_POSIX_INTRA_ALGORITHM", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_IBCAST_POSIX_INTRA_ALGORITHM");
+    got_rc += rc;
+    rc = MPL_env2str("MPIR_CVAR_IBCAST_POSIX_INTRA_ALGORITHM", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_IBCAST_POSIX_INTRA_ALGORITHM");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_IBCAST_POSIX_INTRA_ALGORITHM = %s\n", tmp_str);
+    }
+    if (tmp_str != NULL) {
+        if (0 == strcmp(tmp_str, "mpir"))
+            MPIR_CVAR_IBCAST_POSIX_INTRA_ALGORITHM = MPIR_CVAR_IBCAST_POSIX_INTRA_ALGORITHM_mpir;
+        else if (0 == strcmp(tmp_str, "release_gather"))
+            MPIR_CVAR_IBCAST_POSIX_INTRA_ALGORITHM = MPIR_CVAR_IBCAST_POSIX_INTRA_ALGORITHM_release_gather;
+        else if (0 == strcmp(tmp_str, "auto"))
+            MPIR_CVAR_IBCAST_POSIX_INTRA_ALGORITHM = MPIR_CVAR_IBCAST_POSIX_INTRA_ALGORITHM_auto;
+        else {
+            mpi_errno = MPIR_Err_create_code(MPI_SUCCESS, MPIR_ERR_RECOVERABLE, __func__, __LINE__,MPI_ERR_OTHER, "**cvar_val", "**cvar_val %s %s", "MPIR_CVAR_IBCAST_POSIX_INTRA_ALGORITHM", tmp_str);
             goto fn_fail;
         }
     }
@@ -10308,10 +12518,10 @@ auto - Internal algorithm selection (can be overridden with MPIR_CVAR_CH4_POSIX_
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select algorithm for intra-node reduce\
-mpir           - Fallback to MPIR collectives\
-release_gather - Force shm optimized algo using release, gather primitives\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_CH4_POSIX_COLL_SELECTION_TUNING_JSON_FILE)");
+        "Variable to select algorithm for intra-node reduce\n"
+"mpir           - Fallback to MPIR collectives\n"
+"release_gather - Force shm optimized algo using release, gather primitives\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_CH4_POSIX_COLL_SELECTION_TUNING_JSON_FILE)");
     MPIR_CVAR_REDUCE_POSIX_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -10340,6 +12550,48 @@ auto - Internal algorithm selection (can be overridden with MPIR_CVAR_CH4_POSIX_
         }
     }
 
+    defaultval.d = MPIR_CVAR_IREDUCE_POSIX_INTRA_ALGORITHM_auto;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_IREDUCE_POSIX_INTRA_ALGORITHM, /* name */
+        &MPIR_CVAR_IREDUCE_POSIX_INTRA_ALGORITHM, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "Variable to select algorithm for intra-node reduce\n"
+"mpir           - Fallback to MPIR collectives\n"
+"release_gather - Force shm optimized algo using release, gather primitives\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_CH4_POSIX_COLL_SELECTION_TUNING_JSON_FILE)");
+    MPIR_CVAR_IREDUCE_POSIX_INTRA_ALGORITHM = defaultval.d;
+    tmp_str=NULL;
+    got_rc = 0;
+    rc = MPL_env2str("MPICH_IREDUCE_POSIX_INTRA_ALGORITHM", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_IREDUCE_POSIX_INTRA_ALGORITHM");
+    got_rc += rc;
+    rc = MPL_env2str("MPIR_PARAM_IREDUCE_POSIX_INTRA_ALGORITHM", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_IREDUCE_POSIX_INTRA_ALGORITHM");
+    got_rc += rc;
+    rc = MPL_env2str("MPIR_CVAR_IREDUCE_POSIX_INTRA_ALGORITHM", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_IREDUCE_POSIX_INTRA_ALGORITHM");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_IREDUCE_POSIX_INTRA_ALGORITHM = %s\n", tmp_str);
+    }
+    if (tmp_str != NULL) {
+        if (0 == strcmp(tmp_str, "mpir"))
+            MPIR_CVAR_IREDUCE_POSIX_INTRA_ALGORITHM = MPIR_CVAR_IREDUCE_POSIX_INTRA_ALGORITHM_mpir;
+        else if (0 == strcmp(tmp_str, "release_gather"))
+            MPIR_CVAR_IREDUCE_POSIX_INTRA_ALGORITHM = MPIR_CVAR_IREDUCE_POSIX_INTRA_ALGORITHM_release_gather;
+        else if (0 == strcmp(tmp_str, "auto"))
+            MPIR_CVAR_IREDUCE_POSIX_INTRA_ALGORITHM = MPIR_CVAR_IREDUCE_POSIX_INTRA_ALGORITHM_auto;
+        else {
+            mpi_errno = MPIR_Err_create_code(MPI_SUCCESS, MPIR_ERR_RECOVERABLE, __func__, __LINE__,MPI_ERR_OTHER, "**cvar_val", "**cvar_val %s %s", "MPIR_CVAR_IREDUCE_POSIX_INTRA_ALGORITHM", tmp_str);
+            goto fn_fail;
+        }
+    }
+
     defaultval.d = MPIR_CVAR_ALLREDUCE_POSIX_INTRA_ALGORITHM_auto;
     MPIR_T_CVAR_REGISTER_STATIC(
         MPI_INT,
@@ -10350,10 +12602,10 @@ auto - Internal algorithm selection (can be overridden with MPIR_CVAR_CH4_POSIX_
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select algorithm for intra-node allreduce\
-mpir           - Fallback to MPIR collectives\
-release_gather - Force shm optimized algo using release, gather primitives\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_CH4_POSIX_COLL_SELECTION_TUNING_JSON_FILE)");
+        "Variable to select algorithm for intra-node allreduce\n"
+"mpir           - Fallback to MPIR collectives\n"
+"release_gather - Force shm optimized algo using release, gather primitives\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_CH4_POSIX_COLL_SELECTION_TUNING_JSON_FILE)");
     MPIR_CVAR_ALLREDUCE_POSIX_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -10392,10 +12644,10 @@ auto - Internal algorithm selection (can be overridden with MPIR_CVAR_CH4_POSIX_
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Variable to select algorithm for intra-node barrier\
-mpir           - Fallback to MPIR collectives\
-release_gather - Force shm optimized algo using release, gather primitives\
-auto - Internal algorithm selection (can be overridden with MPIR_CVAR_CH4_POSIX_COLL_SELECTION_TUNING_JSON_FILE)");
+        "Variable to select algorithm for intra-node barrier\n"
+"mpir           - Fallback to MPIR collectives\n"
+"release_gather - Force shm optimized algo using release, gather primitives\n"
+"auto - Internal algorithm selection (can be overridden with MPIR_CVAR_CH4_POSIX_COLL_SELECTION_TUNING_JSON_FILE)");
     MPIR_CVAR_BARRIER_POSIX_INTRA_ALGORITHM = defaultval.d;
     tmp_str=NULL;
     got_rc = 0;
@@ -10422,6 +12674,123 @@ auto - Internal algorithm selection (can be overridden with MPIR_CVAR_CH4_POSIX_
             mpi_errno = MPIR_Err_create_code(MPI_SUCCESS, MPIR_ERR_RECOVERABLE, __func__, __LINE__,MPI_ERR_OTHER, "**cvar_val", "**cvar_val %s %s", "MPIR_CVAR_BARRIER_POSIX_INTRA_ALGORITHM", tmp_str);
             goto fn_fail;
         }
+    }
+
+    defaultval.d = MPIR_CVAR_ALLTOALL_POSIX_INTRA_ALGORITHM_mpir;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_ALLTOALL_POSIX_INTRA_ALGORITHM, /* name */
+        &MPIR_CVAR_ALLTOALL_POSIX_INTRA_ALGORITHM, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "Variable to select algorithm for intra-node alltoall\n"
+"mpir           - Fallback to MPIR collectives (default)\n"
+"ipc_read    - Uses read-based collective with ipc");
+    MPIR_CVAR_ALLTOALL_POSIX_INTRA_ALGORITHM = defaultval.d;
+    tmp_str=NULL;
+    got_rc = 0;
+    rc = MPL_env2str("MPICH_ALLTOALL_POSIX_INTRA_ALGORITHM", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_ALLTOALL_POSIX_INTRA_ALGORITHM");
+    got_rc += rc;
+    rc = MPL_env2str("MPIR_PARAM_ALLTOALL_POSIX_INTRA_ALGORITHM", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_ALLTOALL_POSIX_INTRA_ALGORITHM");
+    got_rc += rc;
+    rc = MPL_env2str("MPIR_CVAR_ALLTOALL_POSIX_INTRA_ALGORITHM", &tmp_str);
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_ALLTOALL_POSIX_INTRA_ALGORITHM");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_ALLTOALL_POSIX_INTRA_ALGORITHM = %s\n", tmp_str);
+    }
+    if (tmp_str != NULL) {
+        if (0 == strcmp(tmp_str, "mpir"))
+            MPIR_CVAR_ALLTOALL_POSIX_INTRA_ALGORITHM = MPIR_CVAR_ALLTOALL_POSIX_INTRA_ALGORITHM_mpir;
+        else if (0 == strcmp(tmp_str, "ipc_read"))
+            MPIR_CVAR_ALLTOALL_POSIX_INTRA_ALGORITHM = MPIR_CVAR_ALLTOALL_POSIX_INTRA_ALGORITHM_ipc_read;
+        else {
+            mpi_errno = MPIR_Err_create_code(MPI_SUCCESS, MPIR_ERR_RECOVERABLE, __func__, __LINE__,MPI_ERR_OTHER, "**cvar_val", "**cvar_val %s %s", "MPIR_CVAR_ALLTOALL_POSIX_INTRA_ALGORITHM", tmp_str);
+            goto fn_fail;
+        }
+    }
+
+    defaultval.d = 1000;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_POSIX_POLL_FREQUENCY, /* name */
+        &MPIR_CVAR_POSIX_POLL_FREQUENCY, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "This cvar sets the number of loops before the yield function is called.  A value of 0 disables yielding.");
+    MPIR_CVAR_POSIX_POLL_FREQUENCY = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_POSIX_POLL_FREQUENCY", &(MPIR_CVAR_POSIX_POLL_FREQUENCY));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_POSIX_POLL_FREQUENCY");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_POSIX_POLL_FREQUENCY", &(MPIR_CVAR_POSIX_POLL_FREQUENCY));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_POSIX_POLL_FREQUENCY");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_POSIX_POLL_FREQUENCY", &(MPIR_CVAR_POSIX_POLL_FREQUENCY));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_POSIX_POLL_FREQUENCY");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_POSIX_POLL_FREQUENCY = %d\n", MPIR_CVAR_POSIX_POLL_FREQUENCY);
+    }
+
+    defaultval.d = 256;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_BCAST_IPC_READ_MSG_SIZE_THRESHOLD, /* name */
+        &MPIR_CVAR_BCAST_IPC_READ_MSG_SIZE_THRESHOLD, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "Use gpu ipc read bcast only when the message size is larger than this threshold.");
+    MPIR_CVAR_BCAST_IPC_READ_MSG_SIZE_THRESHOLD = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_BCAST_IPC_READ_MSG_SIZE_THRESHOLD", &(MPIR_CVAR_BCAST_IPC_READ_MSG_SIZE_THRESHOLD));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_BCAST_IPC_READ_MSG_SIZE_THRESHOLD");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_BCAST_IPC_READ_MSG_SIZE_THRESHOLD", &(MPIR_CVAR_BCAST_IPC_READ_MSG_SIZE_THRESHOLD));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_BCAST_IPC_READ_MSG_SIZE_THRESHOLD");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_BCAST_IPC_READ_MSG_SIZE_THRESHOLD", &(MPIR_CVAR_BCAST_IPC_READ_MSG_SIZE_THRESHOLD));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_BCAST_IPC_READ_MSG_SIZE_THRESHOLD");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_BCAST_IPC_READ_MSG_SIZE_THRESHOLD = %d\n", MPIR_CVAR_BCAST_IPC_READ_MSG_SIZE_THRESHOLD);
+    }
+
+    defaultval.d = 256;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_ALLTOALL_IPC_READ_MSG_SIZE_THRESHOLD, /* name */
+        &MPIR_CVAR_ALLTOALL_IPC_READ_MSG_SIZE_THRESHOLD, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "Use gpu ipc read alltoall only when the message size is larger than this threshold.");
+    MPIR_CVAR_ALLTOALL_IPC_READ_MSG_SIZE_THRESHOLD = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_ALLTOALL_IPC_READ_MSG_SIZE_THRESHOLD", &(MPIR_CVAR_ALLTOALL_IPC_READ_MSG_SIZE_THRESHOLD));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_ALLTOALL_IPC_READ_MSG_SIZE_THRESHOLD");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_ALLTOALL_IPC_READ_MSG_SIZE_THRESHOLD", &(MPIR_CVAR_ALLTOALL_IPC_READ_MSG_SIZE_THRESHOLD));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_ALLTOALL_IPC_READ_MSG_SIZE_THRESHOLD");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_ALLTOALL_IPC_READ_MSG_SIZE_THRESHOLD", &(MPIR_CVAR_ALLTOALL_IPC_READ_MSG_SIZE_THRESHOLD));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_ALLTOALL_IPC_READ_MSG_SIZE_THRESHOLD");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_ALLTOALL_IPC_READ_MSG_SIZE_THRESHOLD = %d\n", MPIR_CVAR_ALLTOALL_IPC_READ_MSG_SIZE_THRESHOLD);
     }
 
     defaultval.d = 5;
@@ -10550,7 +12919,7 @@ auto - Internal algorithm selection (can be overridden with MPIR_CVAR_CH4_POSIX_
         printf("CVAR: MPIR_CVAR_CH4_SHM_POSIX_IQUEUE_NUM_CELLS = %d\n", MPIR_CVAR_CH4_SHM_POSIX_IQUEUE_NUM_CELLS);
     }
 
-    defaultval.d = 69632;
+    defaultval.d = 16384;
     MPIR_T_CVAR_REGISTER_STATIC(
         MPI_INT,
         MPIR_CVAR_CH4_SHM_POSIX_IQUEUE_CELL_SIZE, /* name */
@@ -10560,7 +12929,7 @@ auto - Internal algorithm selection (can be overridden with MPIR_CVAR_CH4_POSIX_
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "CH4", /* category */
-        "Size of each cell. 4KB * 17 is default to avoid a cache aliasing issue.");
+        "Size of each cell.");
     MPIR_CVAR_CH4_SHM_POSIX_IQUEUE_CELL_SIZE = defaultval.d;
     got_rc = 0;
     rc = MPL_env2int("MPICH_CH4_SHM_POSIX_IQUEUE_CELL_SIZE", &(MPIR_CVAR_CH4_SHM_POSIX_IQUEUE_CELL_SIZE));
@@ -10742,7 +13111,7 @@ auto - Internal algorithm selection (can be overridden with MPIR_CVAR_CH4_POSIX_
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Tree type for intra-node bcast tree kary      - kary tree type knomial_1 - knomial_1 tree type (ranks are added in order from the left side) knomial_2 - knomial_2 tree type (ranks are added in order from the right side)");
+        "Tree type for intra-node bcast tree kary      - kary tree type knomial_1 - knomial_1 tree type (ranks are added in order from the left side) knomial_2 - knomial_2 tree type (ranks are added in order from the right side) knomial_2 is only supported with non topology aware trees.");
     tmp_str = defaultval.str;
     got_rc = 0;
     rc = MPL_env2str("MPICH_BCAST_INTRANODE_TREE_TYPE", &tmp_str);
@@ -10805,7 +13174,7 @@ auto - Internal algorithm selection (can be overridden with MPIR_CVAR_CH4_POSIX_
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Tree type for intra-node reduce tree kary      - kary tree type knomial_1 - knomial_1 tree type (ranks are added in order from the left side) knomial_2 - knomial_2 tree type (ranks are added in order from the right side)");
+        "Tree type for intra-node reduce tree kary      - kary tree type knomial_1 - knomial_1 tree type (ranks are added in order from the left side) knomial_2 - knomial_2 tree type (ranks are added in order from the right side) knomial_2 is only supported with non topology aware trees.");
     tmp_str = defaultval.str;
     got_rc = 0;
     rc = MPL_env2str("MPICH_REDUCE_INTRANODE_TREE_TYPE", &tmp_str);
@@ -10842,7 +13211,7 @@ auto - Internal algorithm selection (can be overridden with MPIR_CVAR_CH4_POSIX_
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "COLLECTIVE", /* category */
-        "Enable collective specific intra-node trees which leverage the memory hierarchy of a machine. Depends on hwloc to extract the binding information of each rank. Pick a leader rank per package (socket), then create a per_package tree for ranks on a same package, package leaders tree for package leaders. For Bcast - Assemble the per_package and package_leaders tree in such a way that leaders interact among themselves first before interacting with package local ranks. Both the package_leaders and per_package trees are left skewed (children are added from left to right, first child to be added is the first one to be processed in traversal) For Reduce - Assemble the per_package and package_leaders tree in such a way that a leader rank interacts with its package local ranks first, then with the other package leaders. Both the per_package and package_leaders tree is right skewed (children are added in reverse order, first child to be added is the last one to be processed in traversal) The tree radix and tree type of package_leaders and per_package tree is MPIR_CVAR_BCAST{REDUCE}_INTRANODE_TREE_KVAL and MPIR_CVAR_BCAST{REDUCE}_INTRANODE_TREE_TYPE respectively for bast and reduce. But of as now topology aware trees are only kary. knomial is to be implemented.");
+        "Enable collective specific intra-node trees which leverage the memory hierarchy of a machine. Depends on hwloc to extract the binding information of each rank. Pick a leader rank per package (socket), then create a per_package tree for ranks on a same package, package leaders tree for package leaders. For Bcast - Assemble the per_package and package_leaders tree in such a way that leaders interact among themselves first before interacting with package local ranks. Both the package_leaders and per_package trees are left skewed (children are added from left to right, first child to be added is the first one to be processed in traversal) For Reduce - Assemble the per_package and package_leaders tree in such a way that a leader rank interacts with its package local ranks first, then with the other package leaders. Both the per_package and package_leaders tree is right skewed (children are added in reverse order, first child to be added is the last one to be processed in traversal) The tree radix and tree type of package_leaders and per_package tree is MPIR_CVAR_BCAST{REDUCE}_INTRANODE_TREE_KVAL and MPIR_CVAR_BCAST{REDUCE}_INTRANODE_TREE_TYPE respectively for bast and reduce. But of as now topology aware trees are only kary and knomial_1. knomial_2 is not implemented.");
     MPIR_CVAR_ENABLE_INTRANODE_TOPOLOGY_AWARE_TREES = defaultval.d;
     got_rc = 0;
     rc = MPL_env2int("MPICH_ENABLE_INTRANODE_TOPOLOGY_AWARE_TREES", &(MPIR_CVAR_ENABLE_INTRANODE_TOPOLOGY_AWARE_TREES));
@@ -10856,6 +13225,318 @@ auto - Internal algorithm selection (can be overridden with MPIR_CVAR_CH4_POSIX_
     got_rc += rc;
     if (got_rc && debug) {
         printf("CVAR: MPIR_CVAR_ENABLE_INTRANODE_TOPOLOGY_AWARE_TREES = %d\n", MPIR_CVAR_ENABLE_INTRANODE_TOPOLOGY_AWARE_TREES);
+    }
+
+    defaultval.d = 0;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_BARRIER_COMPOSITION, /* name */
+        &MPIR_CVAR_BARRIER_COMPOSITION, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "Select composition (inter_node + intra_node) for Barrier 0 Auto selection 1 NM + SHM 2 NM only");
+    MPIR_CVAR_BARRIER_COMPOSITION = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_BARRIER_COMPOSITION", &(MPIR_CVAR_BARRIER_COMPOSITION));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_BARRIER_COMPOSITION");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_BARRIER_COMPOSITION", &(MPIR_CVAR_BARRIER_COMPOSITION));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_BARRIER_COMPOSITION");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_BARRIER_COMPOSITION", &(MPIR_CVAR_BARRIER_COMPOSITION));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_BARRIER_COMPOSITION");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_BARRIER_COMPOSITION = %d\n", MPIR_CVAR_BARRIER_COMPOSITION);
+    }
+
+    defaultval.d = 0;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_BCAST_COMPOSITION, /* name */
+        &MPIR_CVAR_BCAST_COMPOSITION, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "Select composition (inter_node + intra_node) for Bcast 0 Auto selection 1 NM + SHM with explicit send-recv between rank 0 and root 2 NM + SHM without the explicit send-recv 3 NM only");
+    MPIR_CVAR_BCAST_COMPOSITION = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_BCAST_COMPOSITION", &(MPIR_CVAR_BCAST_COMPOSITION));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_BCAST_COMPOSITION");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_BCAST_COMPOSITION", &(MPIR_CVAR_BCAST_COMPOSITION));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_BCAST_COMPOSITION");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_BCAST_COMPOSITION", &(MPIR_CVAR_BCAST_COMPOSITION));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_BCAST_COMPOSITION");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_BCAST_COMPOSITION = %d\n", MPIR_CVAR_BCAST_COMPOSITION);
+    }
+
+    defaultval.d = 0;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_ALLREDUCE_COMPOSITION, /* name */
+        &MPIR_CVAR_ALLREDUCE_COMPOSITION, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "Select composition (inter_node + intra_node) for Allreduce 0 Auto selection 1 NM + SHM with reduce + bcast 2 NM only composition 3 SHM only composition 4 Multi leaders based inter node + intra node composition");
+    MPIR_CVAR_ALLREDUCE_COMPOSITION = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_ALLREDUCE_COMPOSITION", &(MPIR_CVAR_ALLREDUCE_COMPOSITION));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_ALLREDUCE_COMPOSITION");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_ALLREDUCE_COMPOSITION", &(MPIR_CVAR_ALLREDUCE_COMPOSITION));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_ALLREDUCE_COMPOSITION");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_ALLREDUCE_COMPOSITION", &(MPIR_CVAR_ALLREDUCE_COMPOSITION));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_ALLREDUCE_COMPOSITION");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_ALLREDUCE_COMPOSITION = %d\n", MPIR_CVAR_ALLREDUCE_COMPOSITION);
+    }
+
+    defaultval.d = 0;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_ALLGATHER_COMPOSITION, /* name */
+        &MPIR_CVAR_ALLGATHER_COMPOSITION, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "Select composition (inter_node + intra_node) for Allgather 0 Auto selection 1 Multi leaders based inter node + intra node composition 2 NM only composition");
+    MPIR_CVAR_ALLGATHER_COMPOSITION = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_ALLGATHER_COMPOSITION", &(MPIR_CVAR_ALLGATHER_COMPOSITION));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_ALLGATHER_COMPOSITION");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_ALLGATHER_COMPOSITION", &(MPIR_CVAR_ALLGATHER_COMPOSITION));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_ALLGATHER_COMPOSITION");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_ALLGATHER_COMPOSITION", &(MPIR_CVAR_ALLGATHER_COMPOSITION));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_ALLGATHER_COMPOSITION");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_ALLGATHER_COMPOSITION = %d\n", MPIR_CVAR_ALLGATHER_COMPOSITION);
+    }
+
+    defaultval.d = 0;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_ALLTOALL_COMPOSITION, /* name */
+        &MPIR_CVAR_ALLTOALL_COMPOSITION, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "Select composition (inter_node + intra_node) for Alltoall 0 Auto selection 1 Multi leaders based inter node + intra node composition 2 NM only composition");
+    MPIR_CVAR_ALLTOALL_COMPOSITION = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_ALLTOALL_COMPOSITION", &(MPIR_CVAR_ALLTOALL_COMPOSITION));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_ALLTOALL_COMPOSITION");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_ALLTOALL_COMPOSITION", &(MPIR_CVAR_ALLTOALL_COMPOSITION));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_ALLTOALL_COMPOSITION");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_ALLTOALL_COMPOSITION", &(MPIR_CVAR_ALLTOALL_COMPOSITION));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_ALLTOALL_COMPOSITION");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_ALLTOALL_COMPOSITION = %d\n", MPIR_CVAR_ALLTOALL_COMPOSITION);
+    }
+
+    defaultval.d = 0;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_REDUCE_COMPOSITION, /* name */
+        &MPIR_CVAR_REDUCE_COMPOSITION, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "Select composition (inter_node + intra_node) for Reduce 0 Auto selection 1 NM + SHM with explicit send-recv between rank 0 and root 2 NM + SHM without the explicit send-recv 3 NM only");
+    MPIR_CVAR_REDUCE_COMPOSITION = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_REDUCE_COMPOSITION", &(MPIR_CVAR_REDUCE_COMPOSITION));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_REDUCE_COMPOSITION");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_REDUCE_COMPOSITION", &(MPIR_CVAR_REDUCE_COMPOSITION));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_REDUCE_COMPOSITION");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_REDUCE_COMPOSITION", &(MPIR_CVAR_REDUCE_COMPOSITION));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_REDUCE_COMPOSITION");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_REDUCE_COMPOSITION = %d\n", MPIR_CVAR_REDUCE_COMPOSITION);
+    }
+
+    defaultval.d = 4096;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_ALLTOALL_SHM_PER_RANK, /* name */
+        &MPIR_CVAR_ALLTOALL_SHM_PER_RANK, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "Shared memory region per rank for multi-leaders based composition for MPI_Alltoall (in bytes)");
+    MPIR_CVAR_ALLTOALL_SHM_PER_RANK = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_ALLTOALL_SHM_PER_RANK", &(MPIR_CVAR_ALLTOALL_SHM_PER_RANK));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_ALLTOALL_SHM_PER_RANK");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_ALLTOALL_SHM_PER_RANK", &(MPIR_CVAR_ALLTOALL_SHM_PER_RANK));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_ALLTOALL_SHM_PER_RANK");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_ALLTOALL_SHM_PER_RANK", &(MPIR_CVAR_ALLTOALL_SHM_PER_RANK));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_ALLTOALL_SHM_PER_RANK");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_ALLTOALL_SHM_PER_RANK = %d\n", MPIR_CVAR_ALLTOALL_SHM_PER_RANK);
+    }
+
+    defaultval.d = 4096;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_ALLGATHER_SHM_PER_RANK, /* name */
+        &MPIR_CVAR_ALLGATHER_SHM_PER_RANK, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "Shared memory region per rank for multi-leaders based composition for MPI_Allgather (in bytes)");
+    MPIR_CVAR_ALLGATHER_SHM_PER_RANK = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_ALLGATHER_SHM_PER_RANK", &(MPIR_CVAR_ALLGATHER_SHM_PER_RANK));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_ALLGATHER_SHM_PER_RANK");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_ALLGATHER_SHM_PER_RANK", &(MPIR_CVAR_ALLGATHER_SHM_PER_RANK));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_ALLGATHER_SHM_PER_RANK");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_ALLGATHER_SHM_PER_RANK", &(MPIR_CVAR_ALLGATHER_SHM_PER_RANK));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_ALLGATHER_SHM_PER_RANK");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_ALLGATHER_SHM_PER_RANK = %d\n", MPIR_CVAR_ALLGATHER_SHM_PER_RANK);
+    }
+
+    defaultval.d = 4;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_NUM_MULTI_LEADS, /* name */
+        &MPIR_CVAR_NUM_MULTI_LEADS, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "Number of leader ranks per node to be used for multi-leaders based collective algorithms");
+    MPIR_CVAR_NUM_MULTI_LEADS = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_NUM_MULTI_LEADS", &(MPIR_CVAR_NUM_MULTI_LEADS));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_NUM_MULTI_LEADS");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_NUM_MULTI_LEADS", &(MPIR_CVAR_NUM_MULTI_LEADS));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_NUM_MULTI_LEADS");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_NUM_MULTI_LEADS", &(MPIR_CVAR_NUM_MULTI_LEADS));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_NUM_MULTI_LEADS");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_NUM_MULTI_LEADS = %d\n", MPIR_CVAR_NUM_MULTI_LEADS);
+    }
+
+    defaultval.d = -1;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_ALLREDUCE_SHM_PER_LEADER, /* name */
+        &MPIR_CVAR_ALLREDUCE_SHM_PER_LEADER, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "Shared memory region per node-leader for multi-leaders based composition for MPI_Allreduce (in bytes) If it is undefined by the user, it is set to the message size of the first call to the algorithm. Max shared memory size is limited to 4MB.");
+    MPIR_CVAR_ALLREDUCE_SHM_PER_LEADER = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_ALLREDUCE_SHM_PER_LEADER", &(MPIR_CVAR_ALLREDUCE_SHM_PER_LEADER));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_ALLREDUCE_SHM_PER_LEADER");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_ALLREDUCE_SHM_PER_LEADER", &(MPIR_CVAR_ALLREDUCE_SHM_PER_LEADER));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_ALLREDUCE_SHM_PER_LEADER");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_ALLREDUCE_SHM_PER_LEADER", &(MPIR_CVAR_ALLREDUCE_SHM_PER_LEADER));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_ALLREDUCE_SHM_PER_LEADER");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_ALLREDUCE_SHM_PER_LEADER = %d\n", MPIR_CVAR_ALLREDUCE_SHM_PER_LEADER);
+    }
+
+    defaultval.d = 512;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_ALLREDUCE_CACHE_PER_LEADER, /* name */
+        &MPIR_CVAR_ALLREDUCE_CACHE_PER_LEADER, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "Amount of data reduced in allreduce delta composition's reduce local step (in bytes). Smaller msg size per leader avoids cache misses and improves performance. Experiments indicate 512 to be the best value.");
+    MPIR_CVAR_ALLREDUCE_CACHE_PER_LEADER = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_ALLREDUCE_CACHE_PER_LEADER", &(MPIR_CVAR_ALLREDUCE_CACHE_PER_LEADER));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_ALLREDUCE_CACHE_PER_LEADER");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_ALLREDUCE_CACHE_PER_LEADER", &(MPIR_CVAR_ALLREDUCE_CACHE_PER_LEADER));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_ALLREDUCE_CACHE_PER_LEADER");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_ALLREDUCE_CACHE_PER_LEADER", &(MPIR_CVAR_ALLREDUCE_CACHE_PER_LEADER));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_ALLREDUCE_CACHE_PER_LEADER");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_ALLREDUCE_CACHE_PER_LEADER = %d\n", MPIR_CVAR_ALLREDUCE_CACHE_PER_LEADER);
+    }
+
+    defaultval.d = 2;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_ALLREDUCE_LOCAL_COPY_OFFSETS, /* name */
+        &MPIR_CVAR_ALLREDUCE_LOCAL_COPY_OFFSETS, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "COLLECTIVE", /* category */
+        "number of offsets in the allreduce delta composition's local copy The value of 2 performed the best in our 2 NIC test cases.");
+    MPIR_CVAR_ALLREDUCE_LOCAL_COPY_OFFSETS = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_ALLREDUCE_LOCAL_COPY_OFFSETS", &(MPIR_CVAR_ALLREDUCE_LOCAL_COPY_OFFSETS));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_ALLREDUCE_LOCAL_COPY_OFFSETS");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_ALLREDUCE_LOCAL_COPY_OFFSETS", &(MPIR_CVAR_ALLREDUCE_LOCAL_COPY_OFFSETS));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_ALLREDUCE_LOCAL_COPY_OFFSETS");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_ALLREDUCE_LOCAL_COPY_OFFSETS", &(MPIR_CVAR_ALLREDUCE_LOCAL_COPY_OFFSETS));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_ALLREDUCE_LOCAL_COPY_OFFSETS");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_ALLREDUCE_LOCAL_COPY_OFFSETS = %d\n", MPIR_CVAR_ALLREDUCE_LOCAL_COPY_OFFSETS);
     }
 
     defaultval.str = (const char *) "";
@@ -10994,7 +13675,7 @@ auto - Internal algorithm selection (can be overridden with MPIR_CVAR_CH4_POSIX_
         MPI_T_SCOPE_ALL_EQ,
         defaultval,
         "CH4", /* category */
-        "Specifies the CH4 multi-threading model. Possible values are: direct (default) handoff lockless");
+        "Specifies the CH4 multi-threading model. Possible values are: direct (default) lockless");
     tmp_str = defaultval.str;
     got_rc = 0;
     rc = MPL_env2str("MPICH_CH4_MT_MODEL", &tmp_str);
@@ -11031,7 +13712,7 @@ auto - Internal algorithm selection (can be overridden with MPIR_CVAR_CH4_POSIX_
         MPI_T_SCOPE_LOCAL,
         defaultval,
         "CH4", /* category */
-        "Sets the number of VCIs that user needs (should be a subset of MPIDI_CH4_MAX_VCIS).");
+        "Sets the number of VCIs to be implicitly used (should be a subset of MPIDI_CH4_MAX_VCIS).");
     MPIR_CVAR_CH4_NUM_VCIS = defaultval.d;
     got_rc = 0;
     rc = MPL_env2int("MPICH_CH4_NUM_VCIS", &(MPIR_CVAR_CH4_NUM_VCIS));
@@ -11045,6 +13726,32 @@ auto - Internal algorithm selection (can be overridden with MPIR_CVAR_CH4_POSIX_
     got_rc += rc;
     if (got_rc && debug) {
         printf("CVAR: MPIR_CVAR_CH4_NUM_VCIS = %d\n", MPIR_CVAR_CH4_NUM_VCIS);
+    }
+
+    defaultval.d = 0;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_CH4_RESERVE_VCIS, /* name */
+        &MPIR_CVAR_CH4_RESERVE_VCIS, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_LOCAL,
+        defaultval,
+        "CH4", /* category */
+        "Sets the number of VCIs that user can explicitly allocate (should be a subset of MPIDI_CH4_MAX_VCIS).");
+    MPIR_CVAR_CH4_RESERVE_VCIS = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_CH4_RESERVE_VCIS", &(MPIR_CVAR_CH4_RESERVE_VCIS));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_RESERVE_VCIS");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_CH4_RESERVE_VCIS", &(MPIR_CVAR_CH4_RESERVE_VCIS));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_RESERVE_VCIS");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_CH4_RESERVE_VCIS", &(MPIR_CVAR_CH4_RESERVE_VCIS));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_RESERVE_VCIS");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_CH4_RESERVE_VCIS = %d\n", MPIR_CVAR_CH4_RESERVE_VCIS);
     }
 
     defaultval.str = (const char *) "";
@@ -11110,6 +13817,162 @@ auto - Internal algorithm selection (can be overridden with MPIR_CVAR_CH4_POSIX_
         printf("CVAR: MPIR_CVAR_CH4_IOV_DENSITY_MIN = %d\n", MPIR_CVAR_CH4_IOV_DENSITY_MIN);
     }
 
+    defaultval.d = 16384;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_CH4_PACK_BUFFER_SIZE, /* name */
+        &MPIR_CVAR_CH4_PACK_BUFFER_SIZE, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_LOCAL,
+        defaultval,
+        "CH4", /* category */
+        "Specifies the number of buffers for packing/unpacking active messages in each block of the pool. The size here should be greater or equal to the max of the eager buffer limit of SHM and NETMOD.");
+    MPIR_CVAR_CH4_PACK_BUFFER_SIZE = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_CH4_PACK_BUFFER_SIZE", &(MPIR_CVAR_CH4_PACK_BUFFER_SIZE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_PACK_BUFFER_SIZE");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_CH4_PACK_BUFFER_SIZE", &(MPIR_CVAR_CH4_PACK_BUFFER_SIZE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_PACK_BUFFER_SIZE");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_CH4_PACK_BUFFER_SIZE", &(MPIR_CVAR_CH4_PACK_BUFFER_SIZE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_PACK_BUFFER_SIZE");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_CH4_PACK_BUFFER_SIZE = %d\n", MPIR_CVAR_CH4_PACK_BUFFER_SIZE);
+    }
+
+    defaultval.d = 64;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_CH4_NUM_PACK_BUFFERS_PER_CHUNK, /* name */
+        &MPIR_CVAR_CH4_NUM_PACK_BUFFERS_PER_CHUNK, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_LOCAL,
+        defaultval,
+        "CH4", /* category */
+        "Specifies the number of buffers for packing/unpacking active messages in each block of the pool.");
+    MPIR_CVAR_CH4_NUM_PACK_BUFFERS_PER_CHUNK = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_CH4_NUM_PACK_BUFFERS_PER_CHUNK", &(MPIR_CVAR_CH4_NUM_PACK_BUFFERS_PER_CHUNK));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_NUM_PACK_BUFFERS_PER_CHUNK");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_CH4_NUM_PACK_BUFFERS_PER_CHUNK", &(MPIR_CVAR_CH4_NUM_PACK_BUFFERS_PER_CHUNK));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_NUM_PACK_BUFFERS_PER_CHUNK");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_CH4_NUM_PACK_BUFFERS_PER_CHUNK", &(MPIR_CVAR_CH4_NUM_PACK_BUFFERS_PER_CHUNK));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_NUM_PACK_BUFFERS_PER_CHUNK");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_CH4_NUM_PACK_BUFFERS_PER_CHUNK = %d\n", MPIR_CVAR_CH4_NUM_PACK_BUFFERS_PER_CHUNK);
+    }
+
+    defaultval.d = 0;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_CH4_MAX_NUM_PACK_BUFFERS, /* name */
+        &MPIR_CVAR_CH4_MAX_NUM_PACK_BUFFERS, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_LOCAL,
+        defaultval,
+        "CH4", /* category */
+        "Specifies the max number of buffers for packing/unpacking buffers in the pool. Use 0 for unlimited.");
+    MPIR_CVAR_CH4_MAX_NUM_PACK_BUFFERS = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_CH4_MAX_NUM_PACK_BUFFERS", &(MPIR_CVAR_CH4_MAX_NUM_PACK_BUFFERS));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_MAX_NUM_PACK_BUFFERS");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_CH4_MAX_NUM_PACK_BUFFERS", &(MPIR_CVAR_CH4_MAX_NUM_PACK_BUFFERS));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_MAX_NUM_PACK_BUFFERS");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_CH4_MAX_NUM_PACK_BUFFERS", &(MPIR_CVAR_CH4_MAX_NUM_PACK_BUFFERS));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_MAX_NUM_PACK_BUFFERS");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_CH4_MAX_NUM_PACK_BUFFERS = %d\n", MPIR_CVAR_CH4_MAX_NUM_PACK_BUFFERS);
+    }
+
+    defaultval.d = 1048576;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_CH4_GPU_COLL_SWAP_BUFFER_SZ, /* name */
+        &MPIR_CVAR_CH4_GPU_COLL_SWAP_BUFFER_SZ, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_LOCAL,
+        defaultval,
+        "CH4_OFI", /* category */
+        "Specifies the buffer size (in bytes) for GPU collectives data transfer.");
+    MPIR_CVAR_CH4_GPU_COLL_SWAP_BUFFER_SZ = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_CH4_GPU_COLL_SWAP_BUFFER_SZ", &(MPIR_CVAR_CH4_GPU_COLL_SWAP_BUFFER_SZ));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_GPU_COLL_SWAP_BUFFER_SZ");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_CH4_GPU_COLL_SWAP_BUFFER_SZ", &(MPIR_CVAR_CH4_GPU_COLL_SWAP_BUFFER_SZ));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_GPU_COLL_SWAP_BUFFER_SZ");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_CH4_GPU_COLL_SWAP_BUFFER_SZ", &(MPIR_CVAR_CH4_GPU_COLL_SWAP_BUFFER_SZ));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_GPU_COLL_SWAP_BUFFER_SZ");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_CH4_GPU_COLL_SWAP_BUFFER_SZ = %d\n", MPIR_CVAR_CH4_GPU_COLL_SWAP_BUFFER_SZ);
+    }
+
+    defaultval.d = 1;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_CH4_GPU_COLL_NUM_BUFFERS_PER_CHUNK, /* name */
+        &MPIR_CVAR_CH4_GPU_COLL_NUM_BUFFERS_PER_CHUNK, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_LOCAL,
+        defaultval,
+        "CH4_OFI", /* category */
+        "Specifies the number of buffers for GPU collectives data transfer in each block/chunk of the pool.");
+    MPIR_CVAR_CH4_GPU_COLL_NUM_BUFFERS_PER_CHUNK = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_CH4_GPU_COLL_NUM_BUFFERS_PER_CHUNK", &(MPIR_CVAR_CH4_GPU_COLL_NUM_BUFFERS_PER_CHUNK));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_GPU_COLL_NUM_BUFFERS_PER_CHUNK");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_CH4_GPU_COLL_NUM_BUFFERS_PER_CHUNK", &(MPIR_CVAR_CH4_GPU_COLL_NUM_BUFFERS_PER_CHUNK));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_GPU_COLL_NUM_BUFFERS_PER_CHUNK");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_CH4_GPU_COLL_NUM_BUFFERS_PER_CHUNK", &(MPIR_CVAR_CH4_GPU_COLL_NUM_BUFFERS_PER_CHUNK));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_GPU_COLL_NUM_BUFFERS_PER_CHUNK");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_CH4_GPU_COLL_NUM_BUFFERS_PER_CHUNK = %d\n", MPIR_CVAR_CH4_GPU_COLL_NUM_BUFFERS_PER_CHUNK);
+    }
+
+    defaultval.d = 256;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_CH4_GPU_COLL_MAX_NUM_BUFFERS, /* name */
+        &MPIR_CVAR_CH4_GPU_COLL_MAX_NUM_BUFFERS, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_LOCAL,
+        defaultval,
+        "CH4_OFI", /* category */
+        "Specifies the total number of buffers for GPU collectives data transfer.");
+    MPIR_CVAR_CH4_GPU_COLL_MAX_NUM_BUFFERS = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2int("MPICH_CH4_GPU_COLL_MAX_NUM_BUFFERS", &(MPIR_CVAR_CH4_GPU_COLL_MAX_NUM_BUFFERS));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_GPU_COLL_MAX_NUM_BUFFERS");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_PARAM_CH4_GPU_COLL_MAX_NUM_BUFFERS", &(MPIR_CVAR_CH4_GPU_COLL_MAX_NUM_BUFFERS));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_GPU_COLL_MAX_NUM_BUFFERS");
+    got_rc += rc;
+    rc = MPL_env2int("MPIR_CVAR_CH4_GPU_COLL_MAX_NUM_BUFFERS", &(MPIR_CVAR_CH4_GPU_COLL_MAX_NUM_BUFFERS));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_GPU_COLL_MAX_NUM_BUFFERS");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_CH4_GPU_COLL_MAX_NUM_BUFFERS = %d\n", MPIR_CVAR_CH4_GPU_COLL_MAX_NUM_BUFFERS);
+    }
+
     defaultval.d = 1;
     MPIR_T_CVAR_REGISTER_STATIC(
         MPI_INT,
@@ -11162,82 +14025,30 @@ auto - Internal algorithm selection (can be overridden with MPIR_CVAR_CH4_POSIX_
         printf("CVAR: MPIR_CVAR_CH4_COMM_CONNECT_TIMEOUT = %d\n", MPIR_CVAR_CH4_COMM_CONNECT_TIMEOUT);
     }
 
-    defaultval.d = 69632;
+    defaultval.d = 0;
     MPIR_T_CVAR_REGISTER_STATIC(
         MPI_INT,
-        MPIR_CVAR_CH4_AM_PACK_BUFFER_SIZE, /* name */
-        &MPIR_CVAR_CH4_AM_PACK_BUFFER_SIZE, /* address */
+        MPIR_CVAR_CH4_ENABLE_STREAM_WORKQ, /* name */
+        &MPIR_CVAR_CH4_ENABLE_STREAM_WORKQ, /* address */
         1, /* count */
         MPI_T_VERBOSITY_USER_BASIC,
         MPI_T_SCOPE_LOCAL,
         defaultval,
         "CH4", /* category */
-        "Specifies the number of buffers for packing/unpacking active messages in each block of the pool. The size here should be greater or equal to the max of the eager buffer limit of SHM and NETMOD.");
-    MPIR_CVAR_CH4_AM_PACK_BUFFER_SIZE = defaultval.d;
+        "Enable stream enqueue operations via stream work queue. Requires progress thread on the corresponding MPIX stream. Reference: MPIX_Stream_progress and MPIX_Start_progress_thread.");
+    MPIR_CVAR_CH4_ENABLE_STREAM_WORKQ = defaultval.d;
     got_rc = 0;
-    rc = MPL_env2int("MPICH_CH4_AM_PACK_BUFFER_SIZE", &(MPIR_CVAR_CH4_AM_PACK_BUFFER_SIZE));
-    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_AM_PACK_BUFFER_SIZE");
+    rc = MPL_env2bool("MPICH_CH4_ENABLE_STREAM_WORKQ", &(MPIR_CVAR_CH4_ENABLE_STREAM_WORKQ));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_ENABLE_STREAM_WORKQ");
     got_rc += rc;
-    rc = MPL_env2int("MPIR_PARAM_CH4_AM_PACK_BUFFER_SIZE", &(MPIR_CVAR_CH4_AM_PACK_BUFFER_SIZE));
-    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_AM_PACK_BUFFER_SIZE");
+    rc = MPL_env2bool("MPIR_PARAM_CH4_ENABLE_STREAM_WORKQ", &(MPIR_CVAR_CH4_ENABLE_STREAM_WORKQ));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_ENABLE_STREAM_WORKQ");
     got_rc += rc;
-    rc = MPL_env2int("MPIR_CVAR_CH4_AM_PACK_BUFFER_SIZE", &(MPIR_CVAR_CH4_AM_PACK_BUFFER_SIZE));
-    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_AM_PACK_BUFFER_SIZE");
+    rc = MPL_env2bool("MPIR_CVAR_CH4_ENABLE_STREAM_WORKQ", &(MPIR_CVAR_CH4_ENABLE_STREAM_WORKQ));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_ENABLE_STREAM_WORKQ");
     got_rc += rc;
     if (got_rc && debug) {
-        printf("CVAR: MPIR_CVAR_CH4_AM_PACK_BUFFER_SIZE = %d\n", MPIR_CVAR_CH4_AM_PACK_BUFFER_SIZE);
-    }
-
-    defaultval.d = 16;
-    MPIR_T_CVAR_REGISTER_STATIC(
-        MPI_INT,
-        MPIR_CVAR_CH4_NUM_AM_PACK_BUFFERS_PER_CHUNK, /* name */
-        &MPIR_CVAR_CH4_NUM_AM_PACK_BUFFERS_PER_CHUNK, /* address */
-        1, /* count */
-        MPI_T_VERBOSITY_USER_BASIC,
-        MPI_T_SCOPE_LOCAL,
-        defaultval,
-        "CH4", /* category */
-        "Specifies the number of buffers for packing/unpacking active messages in each block of the pool.");
-    MPIR_CVAR_CH4_NUM_AM_PACK_BUFFERS_PER_CHUNK = defaultval.d;
-    got_rc = 0;
-    rc = MPL_env2int("MPICH_CH4_NUM_AM_PACK_BUFFERS_PER_CHUNK", &(MPIR_CVAR_CH4_NUM_AM_PACK_BUFFERS_PER_CHUNK));
-    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_NUM_AM_PACK_BUFFERS_PER_CHUNK");
-    got_rc += rc;
-    rc = MPL_env2int("MPIR_PARAM_CH4_NUM_AM_PACK_BUFFERS_PER_CHUNK", &(MPIR_CVAR_CH4_NUM_AM_PACK_BUFFERS_PER_CHUNK));
-    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_NUM_AM_PACK_BUFFERS_PER_CHUNK");
-    got_rc += rc;
-    rc = MPL_env2int("MPIR_CVAR_CH4_NUM_AM_PACK_BUFFERS_PER_CHUNK", &(MPIR_CVAR_CH4_NUM_AM_PACK_BUFFERS_PER_CHUNK));
-    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_NUM_AM_PACK_BUFFERS_PER_CHUNK");
-    got_rc += rc;
-    if (got_rc && debug) {
-        printf("CVAR: MPIR_CVAR_CH4_NUM_AM_PACK_BUFFERS_PER_CHUNK = %d\n", MPIR_CVAR_CH4_NUM_AM_PACK_BUFFERS_PER_CHUNK);
-    }
-
-    defaultval.d = 8388608;
-    MPIR_T_CVAR_REGISTER_STATIC(
-        MPI_INT,
-        MPIR_CVAR_CH4_MAX_AM_UNEXPECTED_PACK_BUFFERS_SIZE_BYTE, /* name */
-        &MPIR_CVAR_CH4_MAX_AM_UNEXPECTED_PACK_BUFFERS_SIZE_BYTE, /* address */
-        1, /* count */
-        MPI_T_VERBOSITY_USER_BASIC,
-        MPI_T_SCOPE_LOCAL,
-        defaultval,
-        "CH4", /* category */
-        "Specifies the max number of buffers for packing/unpacking active messages in the pool.");
-    MPIR_CVAR_CH4_MAX_AM_UNEXPECTED_PACK_BUFFERS_SIZE_BYTE = defaultval.d;
-    got_rc = 0;
-    rc = MPL_env2int("MPICH_CH4_MAX_AM_UNEXPECTED_PACK_BUFFERS_SIZE_BYTE", &(MPIR_CVAR_CH4_MAX_AM_UNEXPECTED_PACK_BUFFERS_SIZE_BYTE));
-    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_CH4_MAX_AM_UNEXPECTED_PACK_BUFFERS_SIZE_BYTE");
-    got_rc += rc;
-    rc = MPL_env2int("MPIR_PARAM_CH4_MAX_AM_UNEXPECTED_PACK_BUFFERS_SIZE_BYTE", &(MPIR_CVAR_CH4_MAX_AM_UNEXPECTED_PACK_BUFFERS_SIZE_BYTE));
-    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_CH4_MAX_AM_UNEXPECTED_PACK_BUFFERS_SIZE_BYTE");
-    got_rc += rc;
-    rc = MPL_env2int("MPIR_CVAR_CH4_MAX_AM_UNEXPECTED_PACK_BUFFERS_SIZE_BYTE", &(MPIR_CVAR_CH4_MAX_AM_UNEXPECTED_PACK_BUFFERS_SIZE_BYTE));
-    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_CH4_MAX_AM_UNEXPECTED_PACK_BUFFERS_SIZE_BYTE");
-    got_rc += rc;
-    if (got_rc && debug) {
-        printf("CVAR: MPIR_CVAR_CH4_MAX_AM_UNEXPECTED_PACK_BUFFERS_SIZE_BYTE = %d\n", MPIR_CVAR_CH4_MAX_AM_UNEXPECTED_PACK_BUFFERS_SIZE_BYTE);
+        printf("CVAR: MPIR_CVAR_CH4_ENABLE_STREAM_WORKQ = %d\n", MPIR_CVAR_CH4_ENABLE_STREAM_WORKQ);
     }
 
     defaultval.d = 0;
@@ -11344,6 +14155,32 @@ auto - Internal algorithm selection (can be overridden with MPIR_CVAR_CH4_POSIX_
         printf("CVAR: MPIR_CVAR_CH4_RMA_AM_PROGRESS_LOW_FREQ_INTERVAL = %d\n", MPIR_CVAR_CH4_RMA_AM_PROGRESS_LOW_FREQ_INTERVAL);
     }
 
+    defaultval.d = 1;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_GENQ_SHMEM_POOL_FREE_QUEUE_SENDER_SIDE, /* name */
+        &MPIR_CVAR_GENQ_SHMEM_POOL_FREE_QUEUE_SENDER_SIDE, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_ALL_EQ,
+        defaultval,
+        "CH4", /* category */
+        "The genq shmem code allocates pools of cells on each process and, when needed, a cell is removed from the pool and passed to another process. This can happen by either removing a cell from the pool of the sending process or from the pool of the receiving process. This CVAR determines which pool to use. If true, the cell will come from the sender-side. If false, the cell will com from the receiver-side. There are specific advantages of using receiver-side cells when combined with the \"avx\" fast configure option, which allows MPICH to use AVX streaming copy intrintrinsics, when available, to avoid polluting the cache of the sender with the data being copied to the receiver. Using receiver-side cells does have the trade-off of requiring an MPMC lock for the free queue rather than an MPSC lock, which is used for sender-side cells. Initial performance analysis shows that using the MPMC lock in this case had no significant performance loss. By default, the queue will continue to use sender-side queues until the performance impact is verified.");
+    MPIR_CVAR_GENQ_SHMEM_POOL_FREE_QUEUE_SENDER_SIDE = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2bool("MPICH_GENQ_SHMEM_POOL_FREE_QUEUE_SENDER_SIDE", &(MPIR_CVAR_GENQ_SHMEM_POOL_FREE_QUEUE_SENDER_SIDE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_GENQ_SHMEM_POOL_FREE_QUEUE_SENDER_SIDE");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_PARAM_GENQ_SHMEM_POOL_FREE_QUEUE_SENDER_SIDE", &(MPIR_CVAR_GENQ_SHMEM_POOL_FREE_QUEUE_SENDER_SIDE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_GENQ_SHMEM_POOL_FREE_QUEUE_SENDER_SIDE");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_CVAR_GENQ_SHMEM_POOL_FREE_QUEUE_SENDER_SIDE", &(MPIR_CVAR_GENQ_SHMEM_POOL_FREE_QUEUE_SENDER_SIDE));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_GENQ_SHMEM_POOL_FREE_QUEUE_SENDER_SIDE");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_GENQ_SHMEM_POOL_FREE_QUEUE_SENDER_SIDE = %d\n", MPIR_CVAR_GENQ_SHMEM_POOL_FREE_QUEUE_SENDER_SIDE);
+    }
+
     defaultval.d = 0;
     MPIR_T_CVAR_REGISTER_STATIC(
         MPI_INT,
@@ -11448,6 +14285,32 @@ auto - Internal algorithm selection (can be overridden with MPIR_CVAR_CH4_POSIX_
         printf("CVAR: MPIR_CVAR_SHM_SYMHEAP_RETRY = %d\n", MPIR_CVAR_SHM_SYMHEAP_RETRY);
     }
 
+    defaultval.d = 0;
+    MPIR_T_CVAR_REGISTER_STATIC(
+        MPI_INT,
+        MPIR_CVAR_ENABLE_HEAVY_YIELD, /* name */
+        &MPIR_CVAR_ENABLE_HEAVY_YIELD, /* address */
+        1, /* count */
+        MPI_T_VERBOSITY_USER_BASIC,
+        MPI_T_SCOPE_LOCAL,
+        defaultval,
+        "THREADS", /* category */
+        "If enabled, use nanosleep to ensure other threads have a chance to grab the lock. Note: this may not work with some thread runtimes, e.g. non-preemptive user-level threads.");
+    MPIR_CVAR_ENABLE_HEAVY_YIELD = defaultval.d;
+    got_rc = 0;
+    rc = MPL_env2bool("MPICH_ENABLE_HEAVY_YIELD", &(MPIR_CVAR_ENABLE_HEAVY_YIELD));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPICH_ENABLE_HEAVY_YIELD");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_PARAM_ENABLE_HEAVY_YIELD", &(MPIR_CVAR_ENABLE_HEAVY_YIELD));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_PARAM_ENABLE_HEAVY_YIELD");
+    got_rc += rc;
+    rc = MPL_env2bool("MPIR_CVAR_ENABLE_HEAVY_YIELD", &(MPIR_CVAR_ENABLE_HEAVY_YIELD));
+    MPIR_ERR_CHKANDJUMP1((-1 == rc),mpi_errno,MPI_ERR_OTHER,"**envvarparse","**envvarparse %s","MPIR_CVAR_ENABLE_HEAVY_YIELD");
+    got_rc += rc;
+    if (got_rc && debug) {
+        printf("CVAR: MPIR_CVAR_ENABLE_HEAVY_YIELD = %d\n", MPIR_CVAR_ENABLE_HEAVY_YIELD);
+    }
+
 fn_exit:
     return mpi_errno;
 fn_fail:
@@ -11458,17 +14321,26 @@ int MPIR_T_cvar_finalize(void)
 {
     int mpi_errno = MPI_SUCCESS;
 
+    MPL_free((char *)MPIR_CVAR_BCAST_TREE_TYPE);
+    MPIR_CVAR_BCAST_TREE_TYPE = NULL;
+
     MPL_free((char *)MPIR_CVAR_IBCAST_TREE_TYPE);
     MPIR_CVAR_IBCAST_TREE_TYPE = NULL;
 
     MPL_free((char *)MPIR_CVAR_IREDUCE_TREE_TYPE);
     MPIR_CVAR_IREDUCE_TREE_TYPE = NULL;
 
+    MPL_free((char *)MPIR_CVAR_ALLREDUCE_TREE_TYPE);
+    MPIR_CVAR_ALLREDUCE_TREE_TYPE = NULL;
+
     MPL_free((char *)MPIR_CVAR_IALLREDUCE_TREE_TYPE);
     MPIR_CVAR_IALLREDUCE_TREE_TYPE = NULL;
 
     MPL_free((char *)MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE);
     MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE = NULL;
+
+    MPL_free((char *)MPIR_CVAR_COORDINATES_FILE);
+    MPIR_CVAR_COORDINATES_FILE = NULL;
 
     MPL_free((char *)MPIR_CVAR_PROGRESS_THREAD_AFFINITY);
     MPIR_CVAR_PROGRESS_THREAD_AFFINITY = NULL;
@@ -11485,9 +14357,6 @@ int MPIR_T_cvar_finalize(void)
     MPL_free((char *)MPIR_CVAR_NETLOC_NODE_FILE);
     MPIR_CVAR_NETLOC_NODE_FILE = NULL;
 
-    MPL_free((char *)MPIR_CVAR_OFI_USE_PROVIDER);
-    MPIR_CVAR_OFI_USE_PROVIDER = NULL;
-
     MPL_free((char *)MPIR_CVAR_CH3_INTERFACE_HOSTNAME);
     MPIR_CVAR_CH3_INTERFACE_HOSTNAME = NULL;
 
@@ -11496,6 +14365,9 @@ int MPIR_T_cvar_finalize(void)
 
     MPL_free((char *)MPIR_CVAR_NEMESIS_NETMOD);
     MPIR_CVAR_NEMESIS_NETMOD = NULL;
+
+    MPL_free((char *)MPIR_CVAR_OFI_USE_PROVIDER);
+    MPIR_CVAR_OFI_USE_PROVIDER = NULL;
 
     MPL_free((char *)MPIR_CVAR_CH4_SHM_POSIX_EAGER);
     MPIR_CVAR_CH4_SHM_POSIX_EAGER = NULL;

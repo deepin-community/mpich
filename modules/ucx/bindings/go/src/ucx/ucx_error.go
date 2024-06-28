@@ -1,5 +1,5 @@
 /*
- * Copyright (C) Mellanox Technologies Ltd. 2021. ALL RIGHTS RESERVED.
+ * Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2021. ALL RIGHTS RESERVED.
  * See file LICENSE for terms.
  */
 
@@ -13,7 +13,14 @@ type UcxError struct {
 	status UcsStatus
 }
 
-func NewUcxError(status C.ucs_status_t) error {
+func NewUcxError(status UcsStatus) error {
+	return &UcxError{
+		msg:    C.GoString(C.ucs_status_string(C.ucs_status_t(status))),
+		status: status,
+	}
+}
+
+func newUcxError(status C.ucs_status_t) error {
 	return &UcxError{
 		msg:    C.GoString(C.ucs_status_string(status)),
 		status: UcsStatus(status),

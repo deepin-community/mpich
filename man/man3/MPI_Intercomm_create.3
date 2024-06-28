@@ -1,11 +1,16 @@
-.TH MPI_Intercomm_create 3 "2/22/2022" " " "MPI"
+.TH MPI_Intercomm_create 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Intercomm_create \-  Creates an intercommuncator from two intracommunicators 
 .SH SYNOPSIS
 .nf
-int MPI_Intercomm_create(MPI_Comm local_comm, int local_leader, MPI_Comm peer_comm,
-int remote_leader, int tag, MPI_Comm *newintercomm)
 .fi
+.nf
+int MPI_Intercomm_create(MPI_Comm local_comm, int local_leader,
+MPI_Comm peer_comm, int remote_leader, int tag,
+MPI_Comm *newintercomm)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -131,7 +136,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

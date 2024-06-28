@@ -1,10 +1,14 @@
-.TH MPI_Graph_neighbors_count 3 "2/22/2022" " " "MPI"
+.TH MPI_Graph_neighbors_count 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Graph_neighbors_count \-  Returns the number of neighbors of a node 
 .SH SYNOPSIS
 .nf
+.fi
+.nf
 int MPI_Graph_neighbors_count(MPI_Comm comm, int rank, int *nneighbors)
 .fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -90,7 +94,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

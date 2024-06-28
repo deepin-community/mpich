@@ -76,19 +76,12 @@ int MPII_init_local_proc_attrs(int *p_thread_required)
 
     MPIR_Process.comm_parent = NULL;
 
-    /* create MPI_INFO_NULL object */
-    MPIR_Info *info_ptr;
-    info_ptr = MPIR_Info_builtin + 1;
-    info_ptr->handle = MPI_INFO_ENV;
-    MPIR_Object_set_ref(info_ptr, 1);
-    /* Add data to MPI_INFO_ENV. */
-    MPIR_Info_setup_env(info_ptr);
-    info_ptr->next = NULL;
-    info_ptr->key = NULL;
-    info_ptr->value = NULL;
-
     /* Set the number of tag bits. The device may override this value. */
     MPIR_Process.tag_bits = MPIR_TAG_BITS_DEFAULT;
+
+    char *requested_kinds = MPIR_pmi_get_jobattr("PMI_mpi_memory_alloc_kinds");
+    MPIR_get_supported_memory_kinds(requested_kinds, &MPIR_Process.memory_alloc_kinds);
+    MPL_free(requested_kinds);
 
     return mpi_errno;
 }
@@ -107,4 +100,24 @@ int MPII_init_tag_ub(void)
     MPIR_Assert(MPIR_Process.attrs.tag_ub >= 32767);
 
     return MPI_SUCCESS;
+}
+
+int MPII_init_builtin_infos(void)
+{
+    /* Init MPI_INFO_ENV object */
+    MPIR_Info *info_ptr;
+    MPIR_Info_get_ptr(MPI_INFO_ENV, info_ptr);
+    info_ptr->handle = MPI_INFO_ENV;
+    MPIR_Object_set_ref(info_ptr, 1);
+    /* Add data to MPI_INFO_ENV. */
+    MPIR_Info_setup_env(info_ptr);
+
+    return MPI_SUCCESS;
+}
+
+int MPII_finalize_builtin_infos(void)
+{
+    MPIR_Info *info_ptr = NULL;
+    MPIR_Info_get_ptr(MPI_INFO_ENV, info_ptr);
+    return MPIR_Info_free_impl(info_ptr);
 }

@@ -1,10 +1,14 @@
-.TH MPI_File_set_errhandler 3 "2/22/2022" " " "MPI"
+.TH MPI_File_set_errhandler 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_File_set_errhandler \-  Set the error handler for an MPI file 
 .SH SYNOPSIS
 .nf
+.fi
+.nf
 int MPI_File_set_errhandler(MPI_File file, MPI_Errhandler errhandler)
 .fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -90,15 +94,6 @@ possible.
 .TP
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
-.PD 1
-
-.PD 0
-.TP
-.B MPI_ERR_ARG 
-- Invalid argument.  Some argument is invalid and is not
-identified by a specific error class (e.g., 
-.I MPI_ERR_RANK
-).
 .PD 1
 .PD 0
 .TP

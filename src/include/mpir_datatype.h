@@ -11,13 +11,8 @@
  * predefined datatype handles, take the greatest one, and convert it to decimal
  * here. */
 /* FIXME: I will fix this by refactor the current datatype code out-of configure.ac */
-#define MPIR_DATATYPE_N_BUILTIN 71
 #define MPIR_DATATYPE_PAIRTYPE 5
 #define MPIR_DATATYPE_N_PREDEFINED (MPIR_DATATYPE_N_BUILTIN + MPIR_DATATYPE_PAIRTYPE)
-
-#ifndef MPIR_DATATYPE_PREALLOC
-#define MPIR_DATATYPE_PREALLOC 8
-#endif /* MPIR_DATATYPE_PREALLOC */
 
 /*S
   MPIR_Datatype_contents - Holds envelope and contents data for a given
@@ -201,6 +196,16 @@ void MPIR_Datatype_get_flattened(MPI_Datatype type, void **flattened, int *flatt
         basic_type_ = MPI_DATATYPE_NULL;                            \
  } while (0)
 
+#define MPIR_Datatype_is_float(a, is_float) do { \
+    MPI_Datatype basic_type; \
+    MPIR_Datatype_get_basic_type(a, basic_type); \
+    if (basic_type == MPI_FLOAT || basic_type == MPI_DOUBLE) { \
+        is_float = true; \
+    } else { \
+        is_float = false; \
+    } \
+} while (0)
+
 #define MPIR_Datatype_get_ptr(a,ptr)   MPIR_Getb_ptr(Datatype,DATATYPE,a,0x000000ff,ptr)
 
 /* Note: Probably there is some clever way to build all of these from a macro.
@@ -375,7 +380,7 @@ static inline int MPIR_Datatype_set_contents(MPIR_Datatype * new_dtp,
                                              const MPI_Aint array_of_counts[],
                                              const MPI_Datatype array_of_types[])
 {
-    int mpi_errno;
+    int mpi_errno = MPI_SUCCESS;
     MPI_Aint struct_sz, ints_sz, aints_sz, counts_sz, types_sz, contents_size;
     MPIR_Datatype_contents *cp;
     MPIR_Datatype *old_dtp;
@@ -460,11 +465,12 @@ static inline int MPIR_Datatype_set_contents(MPIR_Datatype * new_dtp,
     for (MPI_Aint i = 0; i < nr_types; i++) {
         if (!HANDLE_IS_BUILTIN(array_of_types[i])) {
             MPIR_Datatype_get_ptr(array_of_types[i], old_dtp);
+            MPIR_Datatype_valid_ptr(old_dtp, mpi_errno);
             MPIR_Datatype_ptr_add_ref(old_dtp);
         }
     }
 
-    return MPI_SUCCESS;
+    return mpi_errno;
 }
 
 MPL_STATIC_INLINE_PREFIX void MPIR_Datatype_access_contents(MPIR_Datatype_contents * cp,
@@ -572,13 +578,8 @@ void MPII_Datatype_attr_finalize(void);
 int MPII_Type_zerolen(MPI_Datatype * newtype);
 
 int MPIR_Get_elements_x_impl(MPI_Count * bytes, MPI_Datatype datatype, MPI_Count * elements);
-void MPIR_Type_get_extent_x_impl(MPI_Datatype datatype, MPI_Count * lb, MPI_Count * extent);
-void MPIR_Type_get_true_extent_x_impl(MPI_Datatype datatype, MPI_Count * true_lb,
-                                      MPI_Count * true_extent);
 int MPIR_Type_contiguous_x_impl(MPI_Count count, MPI_Datatype old_type, MPI_Datatype * new_type_p);
-void MPIR_Type_free_impl(MPI_Datatype * datatype);
 void MPIR_Pack_size(MPI_Aint incount, MPI_Datatype datatype, MPI_Aint * size);
-void MPIR_Type_lb_impl(MPI_Datatype datatype, MPI_Aint * displacement);
 
 /* Datatype functions */
 int MPII_Type_zerolen(MPI_Datatype * newtype);

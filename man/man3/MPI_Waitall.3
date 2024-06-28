@@ -1,10 +1,15 @@
-.TH MPI_Waitall 3 "2/22/2022" " " "MPI"
+.TH MPI_Waitall 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Waitall \-  Waits for all given MPI Requests to complete 
 .SH SYNOPSIS
 .nf
-int MPI_Waitall(int count, MPI_Request array_of_requests[], MPI_Status array_of_statuses[])
 .fi
+.nf
+int MPI_Waitall(int count, MPI_Request array_of_requests[],
+MPI_Status *array_of_statuses)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -157,7 +162,14 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
+.PD 0
+.TP
+.B MPI_ERR_ARG 
+- Invalid argument.  Some argument is invalid and is not
+identified by a specific error class (e.g., 
+.I MPI_ERR_RANK
+).
+.PD 1
 .PD 0
 .TP
 .B MPI_ERR_COUNT 

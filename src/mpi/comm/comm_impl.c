@@ -26,6 +26,44 @@ cvars:
 === END_MPI_T_CVAR_INFO_BLOCK ===
 */
 
+int MPIR_Comm_rank_impl(MPIR_Comm * comm_ptr, int *rank)
+{
+    *rank = MPIR_Comm_rank(comm_ptr);
+    return MPI_SUCCESS;
+}
+
+int MPIR_Comm_size_impl(MPIR_Comm * comm_ptr, int *size)
+{
+    *size = MPIR_Comm_size(comm_ptr);
+    return MPI_SUCCESS;
+}
+
+int MPIR_Comm_remote_size_impl(MPIR_Comm * comm_ptr, int *size)
+{
+    *size = comm_ptr->remote_size;
+    return MPI_SUCCESS;
+}
+
+int MPIR_Comm_set_name_impl(MPIR_Comm * comm_ptr, const char *comm_name)
+{
+    MPID_THREAD_CS_ENTER(VCI, comm_ptr->mutex);
+    MPL_strncpy(comm_ptr->name, comm_name, MPI_MAX_OBJECT_NAME);
+    MPID_THREAD_CS_EXIT(VCI, comm_ptr->mutex);
+    return MPI_SUCCESS;
+}
+
+int MPIR_Comm_test_inter_impl(MPIR_Comm * comm_ptr, int *flag)
+{
+    *flag = (comm_ptr->comm_kind == MPIR_COMM_KIND__INTERCOMM);
+    return MPI_SUCCESS;
+}
+
+int MPIR_Comm_test_threadcomm_impl(MPIR_Comm * comm_ptr, int *flag)
+{
+    *flag = (comm_ptr->threadcomm != NULL);
+    return MPI_SUCCESS;
+}
+
 /* used in MPIR_Comm_group_impl and MPIR_Comm_create_group_impl */
 static int comm_create_local_group(MPIR_Comm * comm_ptr)
 {
@@ -35,6 +73,9 @@ static int comm_create_local_group(MPIR_Comm * comm_ptr)
 
     mpi_errno = MPIR_Group_create(n, &group_ptr);
     MPIR_ERR_CHECK(mpi_errno);
+
+    /* Group belongs to the same session as communicator */
+    MPIR_Group_set_session_ptr(group_ptr, comm_ptr->session_ptr);
 
     group_ptr->is_local_dense_monotonic = TRUE;
 
@@ -59,81 +100,6 @@ static int comm_create_local_group(MPIR_Comm * comm_ptr)
      * communicators */
 
   fn_exit:
-    return mpi_errno;
-  fn_fail:
-    goto fn_exit;
-}
-
-int MPIR_Comm_agree_impl(MPIR_Comm * comm_ptr, int *flag)
-{
-    int mpi_errno = MPI_SUCCESS, mpi_errno_tmp = MPI_SUCCESS;
-    MPIR_Group *comm_grp = NULL, *failed_grp = NULL, *new_group_ptr = NULL, *global_failed = NULL;
-    int result, success = 1;
-    MPIR_Errflag_t errflag = MPIR_ERR_NONE;
-    int values[2];
-
-    MPIR_FUNC_ENTER;
-
-    MPIR_Comm_group_impl(comm_ptr, &comm_grp);
-
-    /* Get the locally known (not acknowledged) group of failed procs */
-    mpi_errno = MPID_Comm_failure_get_acked(comm_ptr, &failed_grp);
-    MPIR_ERR_CHECK(mpi_errno);
-
-    /* First decide on the group of failed procs. */
-    mpi_errno = MPID_Comm_get_all_failed_procs(comm_ptr, &global_failed, MPIR_AGREE_TAG);
-    if (mpi_errno)
-        errflag = MPIR_ERR_PROC_FAILED;
-
-    mpi_errno = MPIR_Group_compare_impl(failed_grp, global_failed, &result);
-    MPIR_ERR_CHECK(mpi_errno);
-
-    /* Create a subgroup without the failed procs */
-    mpi_errno = MPIR_Group_difference_impl(comm_grp, global_failed, &new_group_ptr);
-    MPIR_ERR_CHECK(mpi_errno);
-
-    /* If that group isn't the same as what we think is failed locally, then
-     * mark it as such. */
-    if (result == MPI_UNEQUAL || errflag)
-        success = 0;
-
-    /* Do an allreduce to decide whether or not anyone thinks the group
-     * has changed */
-    mpi_errno_tmp = MPII_Allreduce_group(MPI_IN_PLACE, &success, 1, MPI_INT, MPI_MIN, comm_ptr,
-                                         new_group_ptr, MPIR_AGREE_TAG, &errflag);
-    if (!success || errflag || mpi_errno_tmp)
-        success = 0;
-
-    values[0] = success;
-    values[1] = *flag;
-
-    /* Determine both the result of this function (mpi_errno) and the result
-     * of flag that will be returned to the user. */
-    MPII_Allreduce_group(MPI_IN_PLACE, values, 2, MPI_INT, MPI_BAND, comm_ptr,
-                         new_group_ptr, MPIR_AGREE_TAG, &errflag);
-    /* Ignore the result of the operation this time. Everyone will either
-     * return a failure because of !success earlier or they will return
-     * something useful for flag because of this operation. If there was a new
-     * failure in between the first allreduce and the second one, it's ignored
-     * here. */
-
-    if (failed_grp != MPIR_Group_empty)
-        MPIR_Group_release(failed_grp);
-    MPIR_Group_release(new_group_ptr);
-    MPIR_Group_release(comm_grp);
-    if (global_failed != MPIR_Group_empty)
-        MPIR_Group_release(global_failed);
-
-    success = values[0];
-    *flag = values[1];
-
-    if (!success) {
-        MPIR_ERR_SET(mpi_errno_tmp, MPIX_ERR_PROC_FAILED, "**mpix_comm_agree");
-        MPIR_ERR_ADD(mpi_errno, mpi_errno_tmp);
-    }
-
-  fn_exit:
-    MPIR_FUNC_EXIT;
     return mpi_errno;
   fn_fail:
     goto fn_exit;
@@ -396,6 +362,8 @@ int MPIR_Comm_create_intra(MPIR_Comm * comm_ptr, MPIR_Group * group_ptr, MPIR_Co
         (*newcomm_ptr)->context_id = (*newcomm_ptr)->recvcontext_id;
         (*newcomm_ptr)->remote_size = (*newcomm_ptr)->local_size = n;
 
+        MPIR_Comm_set_session_ptr(*newcomm_ptr, comm_ptr->session_ptr);
+
         /* Setup the communicator's network address mapping.  This is for the remote group,
          * which is the same as the local group for intracommunicators */
         mpi_errno = MPII_Comm_create_map(n, 0, mapping, NULL, mapping_comm, *newcomm_ptr);
@@ -438,7 +406,6 @@ int MPIR_Comm_create_inter(MPIR_Comm * comm_ptr, MPIR_Group * group_ptr, MPIR_Co
     MPIR_Comm *mapping_comm = NULL;
     int remote_size = -1;
     int rinfo[2];
-    MPIR_Errflag_t errflag = MPIR_ERR_NONE;
     MPIR_CHKLMEM_DECL(1);
 
     MPIR_FUNC_ENTER;
@@ -486,6 +453,8 @@ int MPIR_Comm_create_inter(MPIR_Comm * comm_ptr, MPIR_Group * group_ptr, MPIR_Co
         (*newcomm_ptr)->remote_group = 0;
 
         (*newcomm_ptr)->is_low_group = comm_ptr->is_low_group;
+
+        MPIR_Comm_set_session_ptr(*newcomm_ptr, comm_ptr->session_ptr);
     }
 
     /* There is an additional step.  We must communicate the
@@ -502,7 +471,8 @@ int MPIR_Comm_create_inter(MPIR_Comm * comm_ptr, MPIR_Group * group_ptr, MPIR_Co
         info[1] = group_ptr->size;
 
         mpi_errno = MPIC_Sendrecv(info, 2, MPI_INT, 0, 0,
-                                  rinfo, 2, MPI_INT, 0, 0, comm_ptr, MPI_STATUS_IGNORE, &errflag);
+                                  rinfo, 2, MPI_INT, 0, 0, comm_ptr, MPI_STATUS_IGNORE,
+                                  MPIR_ERR_NONE);
         MPIR_ERR_CHECK(mpi_errno);
         if (*newcomm_ptr != NULL) {
             (*newcomm_ptr)->context_id = rinfo[0];
@@ -516,22 +486,20 @@ int MPIR_Comm_create_inter(MPIR_Comm * comm_ptr, MPIR_Group * group_ptr, MPIR_Co
         /* Populate and exchange the ranks */
         mpi_errno = MPIC_Sendrecv(mapping, group_ptr->size, MPI_INT, 0, 0,
                                   remote_mapping, remote_size, MPI_INT, 0, 0,
-                                  comm_ptr, MPI_STATUS_IGNORE, &errflag);
+                                  comm_ptr, MPI_STATUS_IGNORE, MPIR_ERR_NONE);
         MPIR_ERR_CHECK(mpi_errno);
 
         /* Broadcast to the other members of the local group */
-        mpi_errno = MPIR_Bcast(rinfo, 2, MPI_INT, 0, comm_ptr->local_comm, &errflag);
+        mpi_errno = MPIR_Bcast(rinfo, 2, MPI_INT, 0, comm_ptr->local_comm, MPIR_ERR_NONE);
         MPIR_ERR_CHECK(mpi_errno);
         mpi_errno = MPIR_Bcast(remote_mapping, remote_size, MPI_INT, 0,
-                               comm_ptr->local_comm, &errflag);
+                               comm_ptr->local_comm, MPIR_ERR_NONE);
         MPIR_ERR_CHECK(mpi_errno);
-        MPIR_ERR_CHKANDJUMP(errflag, mpi_errno, MPI_ERR_OTHER, "**coll_fail");
     } else {
         /* The other processes */
         /* Broadcast to the other members of the local group */
-        mpi_errno = MPIR_Bcast(rinfo, 2, MPI_INT, 0, comm_ptr->local_comm, &errflag);
+        mpi_errno = MPIR_Bcast(rinfo, 2, MPI_INT, 0, comm_ptr->local_comm, MPIR_ERR_NONE);
         MPIR_ERR_CHECK(mpi_errno);
-        MPIR_ERR_CHKANDJUMP(errflag, mpi_errno, MPI_ERR_OTHER, "**coll_fail");
         if (*newcomm_ptr != NULL) {
             (*newcomm_ptr)->context_id = rinfo[0];
         }
@@ -540,9 +508,8 @@ int MPIR_Comm_create_inter(MPIR_Comm * comm_ptr, MPIR_Group * group_ptr, MPIR_Co
                             remote_size * sizeof(int),
                             mpi_errno, "remote_mapping", MPL_MEM_ADDRESS);
         mpi_errno = MPIR_Bcast(remote_mapping, remote_size, MPI_INT, 0,
-                               comm_ptr->local_comm, &errflag);
+                               comm_ptr->local_comm, MPIR_ERR_NONE);
         MPIR_ERR_CHECK(mpi_errno);
-        MPIR_ERR_CHKANDJUMP(errflag, mpi_errno, MPI_ERR_OTHER, "**coll_fail");
     }
 
     MPIR_Assert(remote_size >= 0);
@@ -663,6 +630,8 @@ int MPIR_Comm_create_group_impl(MPIR_Comm * comm_ptr, MPIR_Group * group_ptr, in
         (*newcomm_ptr)->context_id = (*newcomm_ptr)->recvcontext_id;
         (*newcomm_ptr)->remote_size = (*newcomm_ptr)->local_size = n;
 
+        MPIR_Comm_set_session_ptr(*newcomm_ptr, group_ptr->session_ptr);
+
         /* Setup the communicator's vc table.  This is for the remote group,
          * which is the same as the local group for intracommunicators */
         mpi_errno = MPII_Comm_create_map(n, 0, mapping, NULL, mapping_comm, *newcomm_ptr);
@@ -696,34 +665,29 @@ int MPIR_Comm_create_group_impl(MPIR_Comm * comm_ptr, MPIR_Group * group_ptr, in
 
 int MPIR_Comm_dup_impl(MPIR_Comm * comm_ptr, MPIR_Comm ** newcomm_ptr)
 {
-    return MPIR_Comm_dup_with_info_impl(comm_ptr, NULL, newcomm_ptr);
+    int mpi_errno = MPI_SUCCESS;
+
+    mpi_errno = MPII_Comm_dup(comm_ptr, NULL, newcomm_ptr);
+    MPIR_ERR_CHECK(mpi_errno);
+
+    mpi_errno = MPIR_Comm_copy_stream(comm_ptr, *newcomm_ptr);
+    MPIR_ERR_CHECK(mpi_errno);
+
+  fn_exit:
+    return mpi_errno;
+  fn_fail:
+    goto fn_exit;
 }
 
 int MPIR_Comm_dup_with_info_impl(MPIR_Comm * comm_ptr, MPIR_Info * info, MPIR_Comm ** newcomm_ptr)
 {
     int mpi_errno = MPI_SUCCESS;
-    MPIR_Attribute *new_attributes = 0;
 
-    /* Copy attributes, executing the attribute copy functions */
-    /* This accesses the attribute dup function through the perprocess
-     * structure to prevent comm_dup from forcing the linking of the
-     * attribute functions.  The actual function is (by default)
-     * MPIR_Attr_dup_list
-     */
-    if (MPIR_Process.attr_dup) {
-        mpi_errno = MPIR_Process.attr_dup(comm_ptr->handle, comm_ptr->attributes, &new_attributes);
-        MPIR_ERR_CHECK(mpi_errno);
-    }
-
-
-    /* Generate a new context value and a new communicator structure */
-    /* We must use the local size, because this is compared to the
-     * rank of the process in the communicator.  For intercomms,
-     * this must be the local size */
-    mpi_errno = MPII_Comm_copy(comm_ptr, comm_ptr->local_size, info, newcomm_ptr);
+    mpi_errno = MPII_Comm_dup(comm_ptr, info, newcomm_ptr);
     MPIR_ERR_CHECK(mpi_errno);
 
-    (*newcomm_ptr)->attributes = new_attributes;
+    mpi_errno = MPIR_Comm_copy_stream(comm_ptr, *newcomm_ptr);
+    MPIR_ERR_CHECK(mpi_errno);
 
   fn_exit:
     return mpi_errno;
@@ -786,18 +750,22 @@ int MPIR_Comm_create_from_group_impl(MPIR_Group * group_ptr, const char *stringt
         }
         MPL_initlock_unlock(&lock);
         MPIR_ERR_CHECK(mpi_errno);
-        MPIR_Comm_create_group_impl(MPIR_Process.comm_world, group_ptr, tag, p_newcom_ptr);
+        mpi_errno =
+            MPIR_Comm_create_group_impl(MPIR_Process.comm_world, group_ptr, tag, p_newcom_ptr);
+        MPIR_ERR_CHECK(mpi_errno);
     } else {
         /* Currently only self comm is allowed here */
         MPIR_Assert(is_self_group(group_ptr));
 
         mpi_errno = MPIR_Comm_dup_impl(MPIR_Process.comm_self, p_newcom_ptr);
         MPIR_ERR_CHECK(mpi_errno);
+
+        MPIR_Comm_set_session_ptr(*p_newcom_ptr, group_ptr->session_ptr);
     }
 
     if (*p_newcom_ptr) {
         if (info_ptr) {
-            MPII_Comm_set_hints(*p_newcom_ptr, info_ptr);
+            MPII_Comm_set_hints(*p_newcom_ptr, info_ptr, true);
         }
 
         if (errhan_ptr) {
@@ -849,7 +817,18 @@ int MPIR_Intercomm_create_from_groups_impl(MPIR_Group * local_group_ptr, int loc
 
 int MPIR_Comm_free_impl(MPIR_Comm * comm_ptr)
 {
-    return MPIR_Comm_release(comm_ptr);
+    int mpi_errno = MPI_SUCCESS;
+
+    mpi_errno = MPIR_Comm_release(comm_ptr);
+    MPIR_ERR_CHECK(mpi_errno);
+
+    if (comm_ptr == MPIR_Process.comm_parent) {
+        MPIR_Process.comm_parent = NULL;
+    }
+  fn_exit:
+    return mpi_errno;
+  fn_fail:
+    goto fn_exit;
 }
 
 int MPIR_Comm_get_info_impl(MPIR_Comm * comm_ptr, MPIR_Info ** info_p_p)
@@ -872,7 +851,11 @@ int MPIR_Comm_get_info_impl(MPIR_Comm * comm_ptr, MPIR_Info ** info_p_p)
 int MPIR_Comm_get_name_impl(MPIR_Comm * comm_ptr, char *comm_name, int *resultlen)
 {
     /* The user must allocate a large enough section of memory */
-    MPL_strncpy(comm_name, comm_ptr->name, MPI_MAX_OBJECT_NAME);
+    if (comm_ptr == NULL) {
+        MPL_strncpy(comm_name, "MPI_COMM_NULL", MPI_MAX_OBJECT_NAME);
+    } else {
+        MPL_strncpy(comm_name, comm_ptr->name, MPI_MAX_OBJECT_NAME);
+    }
     *resultlen = (int) strlen(comm_name);
     return MPI_SUCCESS;
 }
@@ -924,6 +907,9 @@ int MPIR_Comm_idup_with_info_impl(MPIR_Comm * comm_ptr, MPIR_Info * info,
     mpi_errno = MPII_Comm_copy_data(comm_ptr, info, newcommp);
     MPIR_ERR_CHECK(mpi_errno);
 
+    mpi_errno = MPIR_Comm_copy_stream(comm_ptr, *newcommp);
+    MPIR_ERR_CHECK(mpi_errno);
+
     (*newcommp)->attributes = new_attributes;
 
     /* We now have a mostly-valid new communicator, so begin the process of
@@ -964,6 +950,8 @@ int MPIR_Comm_remote_group_impl(MPIR_Comm * comm_ptr, MPIR_Group ** group_ptr)
         (*group_ptr)->rank = MPI_UNDEFINED;
         (*group_ptr)->idx_of_first_lpid = -1;
 
+        MPIR_Group_set_session_ptr(*group_ptr, comm_ptr->session_ptr);
+
         comm_ptr->remote_group = *group_ptr;
     } else {
         *group_ptr = comm_ptr->remote_group;
@@ -984,7 +972,7 @@ int MPIR_Comm_set_info_impl(MPIR_Comm * comm_ptr, MPIR_Info * info_ptr)
 
     MPIR_FUNC_ENTER;
 
-    mpi_errno = MPII_Comm_set_hints(comm_ptr, info_ptr);
+    mpi_errno = MPII_Comm_set_hints(comm_ptr, info_ptr, false);
     if (mpi_errno != MPI_SUCCESS)
         goto fn_fail;
 
@@ -992,76 +980,6 @@ int MPIR_Comm_set_info_impl(MPIR_Comm * comm_ptr, MPIR_Info * info_ptr)
     MPIR_FUNC_EXIT;
     return mpi_errno;
   fn_fail:
-    goto fn_exit;
-}
-
-/* comm shrink impl; assumes that standard error checking has already taken
- * place in the calling function */
-int MPIR_Comm_shrink_impl(MPIR_Comm * comm_ptr, MPIR_Comm ** newcomm_ptr)
-{
-    int mpi_errno = MPI_SUCCESS;
-    MPIR_Group *global_failed = NULL, *comm_grp = NULL, *new_group_ptr = NULL;
-    int attempts = 0;
-    MPIR_Errflag_t errflag = MPIR_ERR_NONE;
-
-    MPIR_FUNC_ENTER;
-
-    /* TODO - Implement this function for intercommunicators */
-    MPIR_Comm_group_impl(comm_ptr, &comm_grp);
-
-    do {
-        errflag = MPIR_ERR_NONE;
-
-        MPID_Comm_get_all_failed_procs(comm_ptr, &global_failed, MPIR_SHRINK_TAG);
-        /* Ignore the mpi_errno value here as it will definitely communicate
-         * with failed procs */
-
-        mpi_errno = MPIR_Group_difference_impl(comm_grp, global_failed, &new_group_ptr);
-        MPIR_ERR_CHECK(mpi_errno);
-        if (MPIR_Group_empty != global_failed)
-            MPIR_Group_release(global_failed);
-
-        mpi_errno = MPIR_Comm_create_group_impl(comm_ptr, new_group_ptr, MPIR_SHRINK_TAG,
-                                                newcomm_ptr);
-        if (*newcomm_ptr == NULL) {
-            errflag = MPIR_ERR_PROC_FAILED;
-        } else if (mpi_errno) {
-            errflag =
-                MPIX_ERR_PROC_FAILED ==
-                MPIR_ERR_GET_CLASS(mpi_errno) ? MPIR_ERR_PROC_FAILED : MPIR_ERR_OTHER;
-            MPIR_Comm_release(*newcomm_ptr);
-        }
-
-        mpi_errno = MPII_Allreduce_group(MPI_IN_PLACE, &errflag, 1, MPI_INT, MPI_MAX, comm_ptr,
-                                         new_group_ptr, MPIR_SHRINK_TAG, &errflag);
-        MPIR_Group_release(new_group_ptr);
-
-        if (errflag) {
-            if (*newcomm_ptr != NULL && MPIR_Object_get_ref(*newcomm_ptr) > 0) {
-                MPIR_Object_set_ref(*newcomm_ptr, 1);
-                MPIR_Comm_release(*newcomm_ptr);
-            }
-            if (MPIR_Object_get_ref(new_group_ptr) > 0) {
-                MPIR_Object_set_ref(new_group_ptr, 1);
-                MPIR_Group_release(new_group_ptr);
-            }
-        }
-    } while (errflag && ++attempts < 5);
-
-    if (errflag && attempts >= 5)
-        goto fn_fail;
-    else
-        mpi_errno = MPI_SUCCESS;
-
-  fn_exit:
-    MPIR_Group_release(comm_grp);
-    MPIR_FUNC_EXIT;
-    return mpi_errno;
-  fn_fail:
-    if (*newcomm_ptr)
-        MPIR_Object_set_ref(*newcomm_ptr, 0);
-    MPIR_Object_set_ref(global_failed, 0);
-    MPIR_Object_set_ref(new_group_ptr, 0);
     goto fn_exit;
 }
 
@@ -1075,7 +993,6 @@ int MPIR_Intercomm_create_impl(MPIR_Comm * local_comm_ptr, int local_leader,
     uint64_t *remote_lpids = NULL;
     int comm_info[3];
     int is_low_group = 0;
-    MPIR_Errflag_t errflag = MPIR_ERR_NONE;
 
     MPIR_FUNC_ENTER;
 
@@ -1112,7 +1029,7 @@ int MPIR_Intercomm_create_impl(MPIR_Comm * local_comm_ptr, int local_leader,
         mpi_errno =
             MPIC_Sendrecv(&recvcontext_id, 1, MPIR_CONTEXT_ID_T_DATATYPE, remote_leader, tag,
                           &remote_context_id, 1, MPIR_CONTEXT_ID_T_DATATYPE, remote_leader, tag,
-                          peer_comm_ptr, MPI_STATUS_IGNORE, &errflag);
+                          peer_comm_ptr, MPI_STATUS_IGNORE, MPIR_ERR_NONE);
         MPIR_ERR_CHECK(mpi_errno);
 
         final_context_id = remote_context_id;
@@ -1121,17 +1038,15 @@ int MPIR_Intercomm_create_impl(MPIR_Comm * local_comm_ptr, int local_leader,
          * along with the final context id */
         comm_info[0] = final_context_id;
         MPL_DBG_MSG(MPIR_DBG_COMM, VERBOSE, "About to bcast on local_comm");
-        mpi_errno = MPIR_Bcast(comm_info, 1, MPI_INT, local_leader, local_comm_ptr, &errflag);
+        mpi_errno = MPIR_Bcast(comm_info, 1, MPI_INT, local_leader, local_comm_ptr, MPIR_ERR_NONE);
         MPIR_ERR_CHECK(mpi_errno);
-        MPIR_ERR_CHKANDJUMP(errflag, mpi_errno, MPI_ERR_OTHER, "**coll_fail");
         MPL_DBG_MSG_D(MPIR_DBG_COMM, VERBOSE, "end of bcast on local_comm of size %d",
                       local_comm_ptr->local_size);
     } else {
         /* we're the other processes */
         MPL_DBG_MSG(MPIR_DBG_COMM, VERBOSE, "About to receive bcast on local_comm");
-        mpi_errno = MPIR_Bcast(comm_info, 1, MPI_INT, local_leader, local_comm_ptr, &errflag);
+        mpi_errno = MPIR_Bcast(comm_info, 1, MPI_INT, local_leader, local_comm_ptr, MPIR_ERR_NONE);
         MPIR_ERR_CHECK(mpi_errno);
-        MPIR_ERR_CHKANDJUMP(errflag, mpi_errno, MPI_ERR_OTHER, "**coll_fail");
 
         /* Extract the context and group sign information */
         final_context_id = comm_info[0];
@@ -1155,6 +1070,8 @@ int MPIR_Intercomm_create_impl(MPIR_Comm * local_comm_ptr, int local_leader,
     (*new_intercomm_ptr)->local_comm = 0;
     (*new_intercomm_ptr)->is_low_group = is_low_group;
 
+    MPIR_Comm_set_session_ptr(*new_intercomm_ptr, local_comm_ptr->session_ptr);
+
     mpi_errno = MPID_Create_intercomm_from_lpids(*new_intercomm_ptr, remote_size, remote_lpids);
     if (mpi_errno)
         goto fn_fail;
@@ -1162,13 +1079,11 @@ int MPIR_Intercomm_create_impl(MPIR_Comm * local_comm_ptr, int local_leader,
     MPIR_Comm_map_dup(*new_intercomm_ptr, local_comm_ptr, MPIR_COMM_MAP_DIR__L2L);
 
     /* Inherit the error handler (if any) */
-    MPID_THREAD_CS_ENTER(POBJ, local_comm_ptr->mutex);
     MPID_THREAD_CS_ENTER(VCI, local_comm_ptr->mutex);
     (*new_intercomm_ptr)->errhandler = local_comm_ptr->errhandler;
     if (local_comm_ptr->errhandler) {
         MPIR_Errhandler_add_ref(local_comm_ptr->errhandler);
     }
-    MPID_THREAD_CS_EXIT(POBJ, local_comm_ptr->mutex);
     MPID_THREAD_CS_EXIT(VCI, local_comm_ptr->mutex);
 
     (*new_intercomm_ptr)->tainted = 1;
@@ -1212,13 +1127,11 @@ int MPIR_peer_intercomm_create(MPIR_Context_id_t context_id, MPIR_Context_id_t r
     MPIR_Comm_map_dup(*newcomm, comm_self, MPIR_COMM_MAP_DIR__L2L);
 
     /* Inherit the error handler  */
-    MPID_THREAD_CS_ENTER(POBJ, comm_self->mutex);
     MPID_THREAD_CS_ENTER(VCI, comm_self->mutex);
     (*newcomm)->errhandler = comm_self->errhandler;
     if (comm_self->errhandler) {
         MPIR_Errhandler_add_ref(comm_self->errhandler);
     }
-    MPID_THREAD_CS_EXIT(POBJ, comm_self->mutex);
     MPID_THREAD_CS_EXIT(VCI, comm_self->mutex);
 
     (*newcomm)->tainted = 1;
@@ -1268,7 +1181,6 @@ int MPIR_Intercomm_merge_impl(MPIR_Comm * comm_ptr, int high, MPIR_Comm ** new_i
     int mpi_errno = MPI_SUCCESS;
     int local_high, remote_high, new_size;
     MPIR_Context_id_t new_context_id;
-    MPIR_Errflag_t errflag = MPIR_ERR_NONE;
 
     MPIR_FUNC_ENTER;
     /* Make sure that we have a local intercommunicator */
@@ -1287,7 +1199,7 @@ int MPIR_Intercomm_merge_impl(MPIR_Comm * comm_ptr, int high, MPIR_Comm ** new_i
          * context rather than the point-to-point context. */
         mpi_errno = MPIC_Sendrecv(&local_high, 1, MPI_INT, 0, 0,
                                   &remote_high, 1, MPI_INT, 0, 0, comm_ptr,
-                                  MPI_STATUS_IGNORE, &errflag);
+                                  MPI_STATUS_IGNORE, MPIR_ERR_NONE);
         MPIR_ERR_CHECK(mpi_errno);
 
         /* If local_high and remote_high are the same, then order is arbitrary.
@@ -1305,9 +1217,8 @@ int MPIR_Intercomm_merge_impl(MPIR_Comm * comm_ptr, int high, MPIR_Comm ** new_i
      * value of local_high, which may have changed if both groups
      * of processes had the same value for high
      */
-    mpi_errno = MPIR_Bcast(&local_high, 1, MPI_INT, 0, comm_ptr->local_comm, &errflag);
+    mpi_errno = MPIR_Bcast(&local_high, 1, MPI_INT, 0, comm_ptr->local_comm, MPIR_ERR_NONE);
     MPIR_ERR_CHECK(mpi_errno);
-    MPIR_ERR_CHKANDJUMP(errflag, mpi_errno, MPI_ERR_OTHER, "**coll_fail");
 
     /*
      * For the intracomm, we need a consistent context id.
@@ -1336,6 +1247,8 @@ int MPIR_Intercomm_merge_impl(MPIR_Comm * comm_ptr, int high, MPIR_Comm ** new_i
     (*new_intracomm_ptr)->remote_size = (*new_intracomm_ptr)->local_size = new_size;
     (*new_intracomm_ptr)->rank = -1;
     (*new_intracomm_ptr)->comm_kind = MPIR_COMM_KIND__INTRACOMM;
+
+    MPIR_Comm_set_session_ptr(*new_intracomm_ptr, comm_ptr->session_ptr);
 
     /* Now we know which group comes first.  Build the new mapping
      * from the existing comm */
@@ -1373,6 +1286,8 @@ int MPIR_Intercomm_merge_impl(MPIR_Comm * comm_ptr, int high, MPIR_Comm ** new_i
     (*new_intracomm_ptr)->comm_kind = MPIR_COMM_KIND__INTRACOMM;
     (*new_intracomm_ptr)->context_id = new_context_id;
     (*new_intracomm_ptr)->recvcontext_id = new_context_id;
+
+    MPIR_Comm_set_session_ptr(*new_intracomm_ptr, comm_ptr->session_ptr);
 
     mpi_errno = create_and_map(comm_ptr, local_high, (*new_intracomm_ptr));
     MPIR_ERR_CHECK(mpi_errno);

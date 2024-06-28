@@ -88,6 +88,8 @@ const char * fi_av_straddr(struct fid_av *av, const void *addr,
 *fi_addr*
 : For insert, a reference to an array where returned fabric addresses
   will be written.  For remove, one or more fabric addresses to remove.
+  If FI_AV_USER_ID is requested, also used as input into insert calls
+  to assign the user ID with the added address.
 
 *count*
 : Number of addresses to insert/remove from an AV.
@@ -97,14 +99,27 @@ const char * fi_av_straddr(struct fid_av *av, const void *addr,
 
 # DESCRIPTION
 
-Address vectors are used to map higher level addresses, which may be
+Address vectors are used to map higher-level addresses, which may be
 more natural for an application to use, into fabric specific
-addresses.  The mapping of addresses is fabric and provider specific,
+addresses.  For example, an endpoint may be associated with a
+struct sockaddr_in address, indicating the endpoint is reachable using
+a TCP port number over an IPv4 address.  This may hold even if the
+endpoint communicates using a proprietary network protocol.  The
+purpose of the AV is to associate a higher-level address with
+a simpler, more efficient value that can be used by the libfabric API in a
+fabric agnostic way.  The mapped address is of type fi_addr_t and is
+returned through an AV insertion call.  The fi_addr_t is designed such
+that it may be a simple index into an array, a pointer to a structure,
+or a compact network address that may be placed directly into protocol
+headers.
+
+The process of mapping an address is fabric and provider specific,
 but may involve lengthy address resolution and fabric management
 protocols.  AV operations are synchronous by default, but may be set
 to operate asynchronously by specifying the FI_EVENT flag to
 `fi_av_open`.  When requesting asynchronous operation, the application
-must first bind an event queue to the AV before inserting addresses.
+must first bind an event queue to the AV before inserting addresses.  See
+the NOTES section for AV restrictions on duplicate addresses.
 
 ## fi_av_open
 
@@ -154,7 +169,7 @@ struct fi_av_attr {
   indices will be assigned across insertion calls on the same AV.
 
 - *FI_AV_UNSPEC*
-: Provider will choose its preferred AV type. The AV type used will 
+: Provider will choose its preferred AV type. The AV type used will
   be returned through the type field in fi_av_attr.
 
 *Receive Context Bits (rx_ctx_bits)*
@@ -336,6 +351,11 @@ determine what the next assigned index will be.
   written to the corresponding array location.  Successful insertions
   will be updated to 0.  Failures will contain a fabric errno code.
 
+- *FI_AV_USER_ID*
+: This flag associates a user-assigned identifier with each AV entry
+  that is returned with any completion entry in place of the AV's address.
+  See the user ID section below.
+
 ## fi_av_insertsvc
 
 The fi_av_insertsvc call behaves similar to fi_av_insert, but allows the
@@ -432,11 +452,52 @@ results will be truncated.  fi_av_straddr returns a pointer to buf.
 
 # NOTES
 
+An AV should only store a single instance of an address.
+Attempting to insert a duplicate copy of the same address into an AV
+may result in undefined behavior, depending on the provider implementation.
+Providers are not required to check for duplicates, as doing so could
+incur significant overhead to the insertion process. For portability,
+applications may need to track which peer addresses have been inserted
+into a given AV in order to avoid duplicate entries.  However, providers are
+required to support the removal, followed by the re-insertion of an
+address.  Only duplicate insertions are restricted.
+
 Providers may implement AV's using a variety of mechanisms.
 Specifically, a provider may begin resolving inserted addresses as
 soon as they have been added to an AV, even if asynchronous operation
 has been specified.  Similarly, a provider may lazily release
 resources from removed entries.
+
+# USER IDENTIFIERS FOR ADDRESSES
+
+As described above, endpoint addresses that are inserted into an AV are
+mapped to an fi_addr_t value.  The fi_addr_t is used in data transfer APIs
+to specify the destination of an outbound transfer, in receive APIs to
+indicate the source for an inbound transfer, and also in completion events
+to report the source address of inbound transfers.  The FI_AV_USER_ID
+capability bit and flag provide a mechanism by which the fi_addr_t value
+reported by a completion event is replaced with a user-specified value
+instead.  This is useful for applications that need to map the source
+address to their own data structure.
+
+Support for FI_AV_USER_ID is provider specific, as it may not be feasible
+for a provider to implement this support without significant overhead.
+For example, some providers may need to add a reverse lookup mechanism.
+This feature may be unavailable if shared AVs are requested, or
+negatively impact the per process memory footprint if implemented.  For
+providers that do not support FI_AV_USER_ID, users may be able to trade
+off lookup processing with protocol overhead, by carrying source
+identification within a message header.
+
+User-specified fi_addr_t values are provided as part of address insertion
+(e.g. fi_av_insert) through the fi_addr parameter.  The fi_addr parameter
+acts as input/output in this case.  When the FI_AV_USER_ID flag is passed
+to any of the insert calls, the caller must specify an fi_addr_t identifier
+value to associate with each address.  The provider will record that
+identifier and use it where required as part of any completion event.  Note
+that the output from the AV insertion call is unchanged.  The provider will
+return an fi_addr_t value that maps to each address, and that value must be
+used for all data transfer operations.
 
 # RETURN VALUES
 

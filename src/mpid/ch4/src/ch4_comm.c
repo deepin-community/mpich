@@ -147,14 +147,7 @@ int MPID_Comm_commit_pre_hook(MPIR_Comm * comm)
         MPIDI_COMM(comm, local_map).mode = MPIDI_RANK_MAP_NONE;
         MPIDIU_avt_add_ref(0);
 
-        mpi_errno = MPIDU_Init_shm_init();
-        MPIR_ERR_CHECK(mpi_errno);
-
-#ifndef MPIDI_CH4_DIRECT_NETMOD
-        mpi_errno = MPIDI_SHM_init_world();
-        MPIR_ERR_CHECK(mpi_errno);
-#endif
-        mpi_errno = MPIDI_NM_init_world();
+        mpi_errno = MPIDI_world_pre_init();
         MPIR_ERR_CHECK(mpi_errno);
     } else if (comm == MPIR_Process.comm_self) {
         MPIDI_COMM(comm, map).mode = MPIDI_RANK_MAP_OFFSET_INTRA;
@@ -189,6 +182,15 @@ int MPID_Comm_commit_pre_hook(MPIR_Comm * comm)
         }
     }
 
+    MPIDI_COMM(comm, multi_leads_comm) = NULL;
+    MPIDI_COMM(comm, inter_node_leads_comm) = NULL;
+    MPIDI_COMM(comm, sub_node_comm) = NULL;
+    MPIDI_COMM(comm, intra_node_leads_comm) = NULL;
+    MPIDI_COMM(comm, spanned_num_nodes) = -1;
+    MPIDI_COMM(comm, alltoall_comp_info) = NULL;
+    MPIDI_COMM(comm, allgather_comp_info) = NULL;
+    MPIDI_COMM(comm, allreduce_comp_info) = NULL;
+
     mpi_errno = MPIDIG_init_comm(comm);
     MPIR_ERR_CHECK(mpi_errno);
 
@@ -216,10 +218,8 @@ int MPID_Comm_commit_post_hook(MPIR_Comm * comm)
     MPIR_FUNC_ENTER;
 
     if (comm == MPIR_Process.comm_world) {
-        mpi_errno = MPIDI_NM_post_init();
+        mpi_errno = MPIDI_world_post_init();
         MPIR_ERR_CHECK(mpi_errno);
-
-        MPIDI_global.is_initialized = 1;
     }
 
     mpi_errno = MPIDI_NM_mpi_comm_commit_post_hook(comm);
@@ -244,6 +244,57 @@ int MPID_Comm_free_hook(MPIR_Comm * comm)
 {
     int mpi_errno;
     MPIR_FUNC_ENTER;
+
+    if (MPIDI_COMM(comm, multi_leads_comm) != NULL) {
+        MPIR_Comm_release(MPIDI_COMM(comm, multi_leads_comm));
+    }
+
+    if (MPIDI_COMM(comm, inter_node_leads_comm) != NULL) {
+        MPIR_Comm_release(MPIDI_COMM(comm, inter_node_leads_comm));
+    }
+
+    if (MPIDI_COMM(comm, sub_node_comm) != NULL) {
+        MPIR_Comm_release(MPIDI_COMM(comm, sub_node_comm));
+    }
+
+    if (MPIDI_COMM(comm, intra_node_leads_comm) != NULL) {
+        MPIR_Comm_release(MPIDI_COMM(comm, intra_node_leads_comm));
+    }
+
+
+    if (MPIDI_COMM(comm, alltoall_comp_info) != NULL) {
+        /* Destroy the associated shared memory region used by multi-leads Alltoall */
+        if (MPIDI_COMM_ALLTOALL(comm, shm_addr) != NULL) {
+            mpi_errno = MPIDU_shm_free(MPIDI_COMM_ALLTOALL(comm, shm_addr));
+            if (mpi_errno != MPI_SUCCESS) {
+                MPIR_ERR_POP(mpi_errno);
+            }
+        }
+        MPL_free(MPIDI_COMM(comm, alltoall_comp_info));
+    }
+    if (MPIDI_COMM(comm, allgather_comp_info) != NULL) {
+        /* Destroy the associated shared memory region used by multi-leads Allgather */
+        if (MPIDI_COMM_ALLGATHER(comm, shm_addr) != NULL) {
+            mpi_errno = MPIDU_shm_free(MPIDI_COMM_ALLGATHER(comm, shm_addr));
+            if (mpi_errno != MPI_SUCCESS) {
+                MPIR_ERR_POP(mpi_errno);
+            }
+        }
+        MPL_free(MPIDI_COMM(comm, allgather_comp_info));
+    }
+    if (MPIDI_COMM(comm, allreduce_comp_info) != NULL) {
+        /* Destroy the associated shared memory region used by multi-leads Allreduce */
+        if (MPIDI_COMM_ALLREDUCE(comm, shm_addr) != NULL) {
+            mpi_errno = MPIDU_shm_free(MPIDI_COMM_ALLREDUCE(comm, shm_addr));
+            if (mpi_errno != MPI_SUCCESS) {
+                MPIR_ERR_POP(mpi_errno);
+            }
+        }
+        MPL_free(MPIDI_COMM(comm, allreduce_comp_info));
+    }
+
+
+
     /* release ref to avts */
     switch (MPIDI_COMM(comm, map).mode) {
         case MPIDI_RANK_MAP_NONE:
@@ -331,7 +382,6 @@ int MPID_Intercomm_exchange_map(MPIR_Comm * local_comm, int local_leader, MPIR_C
     int local_avtid = 0, remote_avtid = 0;
     int local_size_send = 0, remote_size_recv = 0;
     int cts_tag = 0;
-    MPIR_Errflag_t errflag = MPIR_ERR_NONE;
     int pure_intracomm = 1;
     int local_size = 0;
     uint64_t *local_gpids = NULL;
@@ -382,7 +432,8 @@ int MPID_Intercomm_exchange_map(MPIR_Comm * local_comm, int local_leader, MPIR_C
         mpi_errno = MPIC_Sendrecv(&local_size_send, 1, MPI_INT,
                                   remote_leader, cts_tag,
                                   &remote_size_recv, 1, MPI_INT,
-                                  remote_leader, cts_tag, peer_comm, MPI_STATUS_IGNORE, &errflag);
+                                  remote_leader, cts_tag, peer_comm, MPI_STATUS_IGNORE,
+                                  MPIR_ERR_NONE);
         MPIR_ERR_CHECK(mpi_errno);
 
         if (remote_size_recv & MPIDI_DYNPROC_MASK)
@@ -419,7 +470,7 @@ int MPID_Intercomm_exchange_map(MPIR_Comm * local_comm, int local_leader, MPIR_C
                                       remote_leader, cts_tag,
                                       remote_upid_size, *remote_size, MPI_INT,
                                       remote_leader, cts_tag,
-                                      peer_comm, MPI_STATUS_IGNORE, &errflag);
+                                      peer_comm, MPI_STATUS_IGNORE, MPIR_ERR_NONE);
             MPIR_ERR_CHECK(mpi_errno);
             upid_send_size = 0;
             for (i = 0; i < local_size; i++)
@@ -433,7 +484,7 @@ int MPID_Intercomm_exchange_map(MPIR_Comm * local_comm, int local_leader, MPIR_C
                                       remote_leader, cts_tag,
                                       remote_upids, upid_recv_size, MPI_BYTE,
                                       remote_leader, cts_tag,
-                                      peer_comm, MPI_STATUS_IGNORE, &errflag);
+                                      peer_comm, MPI_STATUS_IGNORE, MPIR_ERR_NONE);
             MPIR_ERR_CHECK(mpi_errno);
 
             /* Stage 1.2 convert remote UPID to GPID and get GPID for local group */
@@ -444,7 +495,7 @@ int MPID_Intercomm_exchange_map(MPIR_Comm * local_comm, int local_leader, MPIR_C
                                       remote_leader, cts_tag,
                                       *remote_gpids, *remote_size, MPI_UINT64_T,
                                       remote_leader, cts_tag,
-                                      peer_comm, MPI_STATUS_IGNORE, &errflag);
+                                      peer_comm, MPI_STATUS_IGNORE, MPIR_ERR_NONE);
             MPIR_ERR_CHECK(mpi_errno);
         }
         /* Stage 1.3 check if local/remote groups are disjoint */
@@ -534,7 +585,6 @@ int MPIDIU_Intercomm_map_bcast_intra(MPIR_Comm * local_comm, int local_leader, i
     int i;
     int upid_recv_size = 0;
     int map_info[4];
-    MPIR_Errflag_t errflag = MPIR_ERR_NONE;
     int *_remote_upid_size = NULL;
     char *_remote_upids = NULL;
 
@@ -554,23 +604,23 @@ int MPIDIU_Intercomm_map_bcast_intra(MPIR_Comm * local_comm, int local_leader, i
         map_info[2] = *is_low_group;
         map_info[3] = pure_intracomm;
         mpi_errno =
-            MPIR_Bcast_allcomm_auto(map_info, 4, MPI_INT, local_leader, local_comm, &errflag);
+            MPIR_Bcast_allcomm_auto(map_info, 4, MPI_INT, local_leader, local_comm, MPIR_ERR_NONE);
         MPIR_ERR_CHECK(mpi_errno);
 
         if (!pure_intracomm) {
             mpi_errno = MPIR_Bcast_allcomm_auto(remote_upid_size, *remote_size, MPI_INT,
-                                                local_leader, local_comm, &errflag);
+                                                local_leader, local_comm, MPIR_ERR_NONE);
             MPIR_ERR_CHECK(mpi_errno);
             mpi_errno = MPIR_Bcast_allcomm_auto(remote_upids, upid_recv_size, MPI_BYTE,
-                                                local_leader, local_comm, &errflag);
+                                                local_leader, local_comm, MPIR_ERR_NONE);
             MPIR_ERR_CHECK(mpi_errno);
         } else {
             mpi_errno = MPIR_Bcast_allcomm_auto(*remote_gpids, *remote_size, MPI_UINT64_T,
-                                                local_leader, local_comm, &errflag);
+                                                local_leader, local_comm, MPIR_ERR_NONE);
         }
     } else {
         mpi_errno =
-            MPIR_Bcast_allcomm_auto(map_info, 4, MPI_INT, local_leader, local_comm, &errflag);
+            MPIR_Bcast_allcomm_auto(map_info, 4, MPI_INT, local_leader, local_comm, MPIR_ERR_NONE);
         MPIR_ERR_CHECK(mpi_errno);
         *remote_size = map_info[0];
         upid_recv_size = map_info[1];
@@ -583,18 +633,18 @@ int MPIDIU_Intercomm_map_bcast_intra(MPIR_Comm * local_comm, int local_leader, i
             MPIR_CHKLMEM_MALLOC(_remote_upid_size, int *, (*remote_size) * sizeof(int),
                                 mpi_errno, "_remote_upid_size", MPL_MEM_COMM);
             mpi_errno = MPIR_Bcast_allcomm_auto(_remote_upid_size, *remote_size, MPI_INT,
-                                                local_leader, local_comm, &errflag);
+                                                local_leader, local_comm, MPIR_ERR_NONE);
             MPIR_ERR_CHECK(mpi_errno);
             MPIR_CHKLMEM_MALLOC(_remote_upids, char *, upid_recv_size * sizeof(char),
                                 mpi_errno, "_remote_upids", MPL_MEM_COMM);
             mpi_errno = MPIR_Bcast_allcomm_auto(_remote_upids, upid_recv_size, MPI_BYTE,
-                                                local_leader, local_comm, &errflag);
+                                                local_leader, local_comm, MPIR_ERR_NONE);
             MPIR_ERR_CHECK(mpi_errno);
 
             MPIDIU_upids_to_gpids(*remote_size, _remote_upid_size, _remote_upids, *remote_gpids);
         } else {
             mpi_errno = MPIR_Bcast_allcomm_auto(*remote_gpids, *remote_size, MPI_UINT64_T,
-                                                local_leader, local_comm, &errflag);
+                                                local_leader, local_comm, MPIR_ERR_NONE);
         }
     }
 
@@ -631,6 +681,175 @@ int MPID_Create_intercomm_from_lpids(MPIR_Comm * newcomm_ptr, int size, const ui
                          MPIDI_COMM(newcomm_ptr, map).irreg.mlut.gpid[i].avtid,
                          MPIDI_COMM(newcomm_ptr, map).irreg.mlut.gpid[i].lpid));
     }
+
+  fn_exit:
+    MPIR_FUNC_EXIT;
+    return mpi_errno;
+  fn_fail:
+    goto fn_exit;
+}
+
+/* Create multi-leaders communicator */
+/* Create a comm with rank 0 of each node. A comm with rank 1 of each node and so on. Since these
+ * new comms do no overlap, it uses the same context id */
+int MPIDI_Comm_create_multi_leaders(MPIR_Comm * comm)
+{
+    int mpi_errno = MPI_SUCCESS;
+    int num_local = -1, num_external = -1;
+    int local_rank = -1, external_rank = -1, rank;
+    int i = 0;
+    int *local_procs = NULL, *external_procs = NULL;
+    int *intranode_table = NULL, *internode_table = NULL;
+    MPIR_FUNC_TERSE_ENTER;
+
+    mpi_errno = MPIR_Find_local(comm, &num_local, &local_rank, &local_procs, &intranode_table);
+    if (mpi_errno) {
+        if (MPIR_Err_is_fatal(mpi_errno))
+            MPIR_ERR_POP(mpi_errno);
+
+        MPL_DBG_MSG_P(MPIR_DBG_COMM, VERBOSE,
+                      "MPIR_Find_local_and_external failed for comm_ptr=%p", comm);
+        if (intranode_table)
+            MPL_free(intranode_table);
+
+        mpi_errno = MPI_SUCCESS;
+        goto fn_exit;
+    }
+
+    mpi_errno = MPIR_Find_external(comm, &num_external, &external_rank, &external_procs,
+                                   &internode_table);
+    if (mpi_errno) {
+        if (MPIR_Err_is_fatal(mpi_errno))
+            MPIR_ERR_POP(mpi_errno);
+
+        MPL_DBG_MSG_P(MPIR_DBG_COMM, VERBOSE,
+                      "MPIR_Find_local_and_external failed for comm_ptr=%p", comm);
+        if (internode_table)
+            MPL_free(internode_table);
+
+        mpi_errno = MPI_SUCCESS;
+        goto fn_exit;
+    }
+
+    MPIR_Assert(num_local > 0);
+    MPIR_Assert(num_local > 1 || external_rank >= 0);
+    MPIR_Assert(external_rank < 0 || external_procs != NULL);
+    rank = MPIR_Comm_rank(comm);
+
+    external_rank = comm->internode_table[rank];
+    for (i = 0; i < num_external; ++i) {
+        external_procs[i] = i * num_local + local_rank;
+    }
+
+    for (i = 0; i < num_local; i++) {
+        if (local_rank == i) {
+            mpi_errno = MPIR_Comm_create(&MPIDI_COMM(comm, multi_leads_comm));
+            if (mpi_errno)
+                MPIR_ERR_POP(mpi_errno);
+
+            MPIDI_COMM(comm, multi_leads_comm)->context_id =
+                comm->context_id + MPIR_CONTEXT_MULTILEADS_OFFSET;
+            MPIDI_COMM(comm, multi_leads_comm)->recvcontext_id =
+                MPIDI_COMM(comm, multi_leads_comm)->context_id;
+            MPIDI_COMM(comm, multi_leads_comm)->rank = internode_table[rank];
+            MPIDI_COMM(comm, multi_leads_comm)->comm_kind = MPIR_COMM_KIND__INTRACOMM;
+            MPIDI_COMM(comm, multi_leads_comm)->hierarchy_kind =
+                MPIR_COMM_HIERARCHY_KIND__MULTI_LEADS;
+            MPIDI_COMM(comm, multi_leads_comm)->local_comm = NULL;
+            MPIDI_COMM(comm, multi_leads_comm)->node_comm = NULL;
+            MPIDI_COMM(comm, multi_leads_comm)->node_roots_comm = NULL;
+            MPL_DBG_MSG_D(MPIR_DBG_COMM, VERBOSE, "Create multi-leaders_comm=%p\n",
+                          MPIDI_COMM(comm, multi_leads_comm));
+
+            MPIDI_COMM(comm, multi_leads_comm)->local_size = num_external;
+            MPIDI_COMM(comm, multi_leads_comm)->coll.pof2 =
+                MPL_pof2(MPIDI_COMM(comm, multi_leads_comm)->local_size);
+            MPIDI_COMM(comm, multi_leads_comm)->remote_size = num_external;
+
+            MPIR_Comm_map_irregular(MPIDI_COMM(comm, multi_leads_comm), comm,
+                                    external_procs, num_external, MPIR_COMM_MAP_DIR__L2L, NULL);
+
+            /* Notify device of communicator creation */
+            mpi_errno = MPID_Comm_commit_pre_hook(MPIDI_COMM(comm, multi_leads_comm));
+            if (mpi_errno)
+                MPIR_ERR_POP(mpi_errno);
+            /* don't call MPIR_Comm_commit here */
+
+            /* Create collectives-specific infrastructure */
+            mpi_errno = MPIR_Coll_comm_init(MPIDI_COMM(comm, multi_leads_comm));
+            if (mpi_errno)
+                MPIR_ERR_POP(mpi_errno);
+
+            mpi_errno = MPID_Comm_commit_post_hook(MPIDI_COMM(comm, multi_leads_comm));
+            if (mpi_errno)
+                MPIR_ERR_CHECK(mpi_errno);
+
+            MPIR_Comm_map_free(MPIDI_COMM(comm, multi_leads_comm));
+        }
+    }
+
+  fn_exit:
+    if (external_procs != NULL)
+        MPL_free(external_procs);
+    if (local_procs != NULL)
+        MPL_free(local_procs);
+    if (intranode_table != NULL)
+        MPL_free(intranode_table);
+    if (internode_table != NULL)
+        MPL_free(internode_table);
+
+    MPIR_FUNC_TERSE_EXIT;
+    return mpi_errno;
+  fn_fail:
+    goto fn_exit;
+}
+
+/* Example: Ranks 0-3 on node 0 and 4-7 on node 1. Num_leaders = 2 */
+/* This function creates 3 kinds of communicators -
+ * 1. Inter-node sub-comms. A comm out of first leaders from each node, next comm out of second
+ *    leaders from each node and so on. (Example: (0,4), (2,6))
+ * 2. Intra-node sub-communicators. A leader and its followers. (Example: (0,1), (2,3), (4,5), (6,7))
+ * 3. Intra-node sub-comm consisting of all the leaders on that node. (Example: (0,2), (4,6))
+ */
+int MPIDI_Comm_create_multi_leader_subcomms(MPIR_Comm * comm, int num_leaders)
+{
+    int mpi_errno = MPI_SUCCESS;
+    int is_leader_color = MPI_UNDEFINED;
+    int sub_node_comm_size;
+
+    MPIR_FUNC_ENTER;
+
+    sub_node_comm_size = MPIR_Comm_size(comm->node_comm) / num_leaders;
+    /* If node_comm_size is same as number of leaders, each rank should be a leader */
+    if (MPIR_Comm_size(comm->node_comm) == num_leaders)
+        is_leader_color = MPIR_Comm_rank(comm->node_comm);
+    else if (MPIR_Comm_rank(comm->node_comm) % sub_node_comm_size == 0)
+        is_leader_color = MPIR_Comm_rank(comm->node_comm) / sub_node_comm_size;
+
+    /* Create the inter-node leaders sub comms */
+    mpi_errno = MPIR_Comm_split_impl(comm, is_leader_color, MPIR_Comm_rank(comm->node_comm),
+                                     &(MPIDI_COMM(comm, inter_node_leads_comm)));
+    if (mpi_errno)
+        MPIR_ERR_POP(mpi_errno);
+
+    /* Create the intra-node sub comms */
+    mpi_errno =
+        MPIR_Comm_split_impl(comm->node_comm, MPIR_Comm_rank(comm->node_comm) / sub_node_comm_size,
+                             MPIR_Comm_rank(comm->node_comm), &(MPIDI_COMM(comm, sub_node_comm)));
+    if (mpi_errno)
+        MPIR_ERR_POP(mpi_errno);
+
+    if (MPIR_Comm_rank(comm->node_comm) % sub_node_comm_size == 0)
+        is_leader_color = 1;
+    else
+        is_leader_color = MPI_UNDEFINED;
+
+    /* Create an intra-node comm consisting of all leader ranks on that node */
+    mpi_errno = MPIR_Comm_split_impl(comm->node_comm, is_leader_color,
+                                     MPIR_Comm_rank(comm->node_comm),
+                                     &(MPIDI_COMM(comm, intra_node_leads_comm)));
+    if (mpi_errno)
+        MPIR_ERR_POP(mpi_errno);
 
   fn_exit:
     MPIR_FUNC_EXIT;

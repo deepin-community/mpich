@@ -28,19 +28,19 @@ int yaksuri_seqi_pack__Bool(const void *inbuf, void *outbuf, uintptr_t count, ya
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
-                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent)), *((_Bool *) (void *) (dbuf + idx)));
+                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent)), *((_Bool *) (void *) (dbuf + idx)));
                 idx += sizeof(_Bool);
             }
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
-                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + i * extent)), *((_Bool *) (void *) (dbuf + idx)));
+                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + i * extent)), *((_Bool *) (void *) (dbuf + idx)));
                 idx += sizeof(_Bool);
             }
             break;
@@ -80,19 +80,19 @@ int yaksuri_seqi_unpack__Bool(const void *inbuf, void *outbuf, uintptr_t count, 
             break;
         }
         
-        case YAKSA_OP__REPLACE:
+        case YAKSA_OP__LOR:
         {
             for (intptr_t i = 0; i < count; i++) {
-                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent)));
+                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent)));
                 idx += sizeof(_Bool);
             }
             break;
         }
         
-        case YAKSA_OP__LOR:
+        case YAKSA_OP__REPLACE:
         {
             for (intptr_t i = 0; i < count; i++) {
-                YAKSURI_SEQI_OP_LOR(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent)));
+                YAKSURI_SEQI_OP_REPLACE(*((const _Bool *) (const void *) (sbuf + idx)), *((_Bool *) (void *) (dbuf + i * extent)));
                 idx += sizeof(_Bool);
             }
             break;

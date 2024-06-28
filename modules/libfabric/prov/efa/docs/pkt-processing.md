@@ -21,16 +21,15 @@ in progress, sends and receives queued due to resource exhaustion, unexpected
 messages, and structures to track out of order packets and remote peer
 capabilities and status.
 
-`rxr_tx_entry` contains information and structures for a send posted either
-directly by the app or indirectly such as an emulated read/write. When the send
-is completed a send completion will be written and the tx_entry will be
-released.
-
-`rxr_rx_entry` contains information and structures for a receive posted by the
-app. This structure is used for tag matching, to queue unexpected messages to
-be matched later, and to keep track of whether long message receives are
-complete. Just like the tx_entry, when done a receive completion is written to
-the app and the rx_entry is freed.
+`rxr_op_entry` contains information and structures used in send/receive operations. 
+It is used in send operation for send posted directly by the app or indirectly 
+by emulated read/write operations. When the send is completed a send completion 
+will be written and the tx_entry will be released.
+It is used in  receive operation for a receive posted by the app. This structure 
+is used for tag matching, to queue unexpected messages to be matched later, and to 
+keep track of whether long message receives are completed. Just like the tx_entry,
+when a receive operation is completed a receive completion is written to the app 
+and the rx_entry is released.
 
 `rxr_ep_progress` is the progress handler we register when the completion queue
 is created and is called via the util completion queue functions. While the EFA
@@ -60,10 +59,6 @@ where those are queued and progressed in `rxr_ep_progress_internal`.
 
 ### Dealing with receiver not ready errors (RNR)
 
-Note: this functionality is currently turned off. We configure the device to do
-infinite retries as there are known bugs in the queuing/RNR logic that need to
-be resolved first.
-
 Finally, the EFA device may write an error completion for RNR, meaning there is
 no receive buffer available for the device to place the payload. This can
 happen when the application is not posting receive buffers fast enough, but for
@@ -81,6 +76,6 @@ retransmit we start random exponential backoff for that peer. We stop sending
 to that peer until the peer exits backoff, meaning we either received a
 successful send completion for that peer or the backoff timer expires.
 
-See `rxr_cq_queue_pkt` for where the packets are queued and backoff timers are
+See `rxr_cq_queue_rnr_pkt` for where the packets are queued and backoff timers are
 set, and see `rxr_ep_check_peer_backoff_timer` for where those timers are
 checked and we allow sends to that remote peer again.

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) Mellanox Technologies Ltd. 2001-2020.  ALL RIGHTS RESERVED.
+ * Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2001-2020. ALL RIGHTS RESERVED.
  * Copyright (C) Advanced Micro Devices, Inc. 2019.  ALL RIGHTS RESERVED.
  *
  * See file LICENSE for terms.
@@ -24,11 +24,16 @@
     do { \
         cudaError_t cerr = _code; \
         if (cerr != cudaSuccess) { \
-            UCS_TEST_ABORT(#_code << " failed with code " << cerr \
+            UCS_TEST_ABORT(#_code << " failed: " \
+                    << cudaGetErrorString(cerr) \
                     << _details); \
         } \
     } while (0)
 
+#endif
+
+#if HAVE_NVML_H
+#include <nvml.h>
 #endif
 
 #if HAVE_ROCM
@@ -75,12 +80,22 @@ bool mem_buffer::is_gpu_supported()
 bool mem_buffer::is_rocm_managed_supported()
 {
 #if HAVE_ROCM
-    int device_id, has_managed_mem;
-    return ((hipGetDevice(&device_id) == hipSuccess) &&
-            (hipDeviceGetAttribute(&has_managed_mem,
-                                   hipDeviceAttributeManagedMemory,
-                                   device_id) == hipSuccess) &&
-            has_managed_mem);
+    hipError_t ret;
+    void *dptr;
+    hipPointerAttribute_t attr;
+
+    ret = hipMallocManaged(&dptr, 64);
+    if (ret != hipSuccess) {
+        return false;
+    }
+
+    ret = hipPointerGetAttributes(&attr, dptr);
+    if (ret != hipSuccess) {
+        return false;
+    }
+
+    hipFree(dptr);
+    return attr.memoryType == hipMemoryTypeUnified;
 #else
     return false;
 #endif
@@ -118,6 +133,10 @@ void mem_buffer::set_device_context()
 #if HAVE_CUDA
     if (is_cuda_supported()) {
         cudaSetDevice(0);
+        /* need to call free as context maybe lazily initialized when calling
+         * cudaSetDevice(0) but calling cudaFree(0) should guarantee context
+         * creation upon return */
+        cudaFree(0);
     }
 #endif
 
@@ -128,6 +147,54 @@ void mem_buffer::set_device_context()
 #endif
 
     device_set = true;
+}
+
+size_t mem_buffer::get_bar1_free_size()
+{
+    /* All gtest CUDA tests explicitly assume that all memory allocations are
+     * done on the device 0. The same assumption is followed here. */
+    size_t available_size = SIZE_MAX;
+
+#if HAVE_NVML_H
+    nvmlReturn_t ret;
+    nvmlDevice_t device;
+    nvmlBAR1Memory_t bar1mem;
+
+    ret = nvmlInit_v2();
+    if (ret != NVML_SUCCESS) {
+        UCS_TEST_MESSAGE << "nvmlInit_v2 failed: " << nvmlErrorString(ret)
+                         << ", error code: " << ret;
+        return available_size;
+    }
+
+    ret = nvmlDeviceGetHandleByIndex(0, &device);
+    if (ret != NVML_SUCCESS) {
+        /* For whatever reason we cannot open device handle.
+         * As a result let's assume there is no limit on the size
+         * and in the worse case scenario gtest will fail in runtime */
+        UCS_TEST_MESSAGE << "nvmlDeviceGetHandleByIndex failed: "
+                         << nvmlErrorString(ret) << ", error code: " << ret;
+        return available_size;
+    }
+
+    ret = nvmlDeviceGetBAR1MemoryInfo(device, &bar1mem);
+    if (ret != NVML_SUCCESS) {
+        /* Similarly let's assume there is no limit on the size */
+        UCS_TEST_MESSAGE << "nvmlDeviceGetBAR1MemoryInfo failed: "
+                         << nvmlErrorString(ret) << ", error code: " << ret;
+        return available_size;
+    }
+
+    available_size = (size_t)bar1mem.bar1Free;
+
+    ret = nvmlShutdown();
+    if (ret != NVML_SUCCESS) {
+        UCS_TEST_MESSAGE << "nvmlShutdown failed: " << nvmlErrorString(ret)
+                         << ", error code: " << ret;
+    }
+#endif
+
+    return available_size;
 }
 
 void *mem_buffer::allocate(size_t size, ucs_memory_type_t mem_type)
@@ -301,13 +368,17 @@ void mem_buffer::memset(void *buffer, size_t length, int c,
     case UCS_MEMORY_TYPE_CUDA:
     case UCS_MEMORY_TYPE_CUDA_MANAGED:
         CUDA_CALL(cudaMemset(buffer, c, length),
-                  ": ptr=" << buffer << " value=" << c << "count=" << length);
+                  ": ptr=" << buffer << " value=" << c << " count=" << length);
         CUDA_CALL(cudaDeviceSynchronize(), "");
         break;
 #endif
 #if HAVE_ROCM
     case UCS_MEMORY_TYPE_ROCM:
-        ROCM_CALL(hipMemset(buffer, c, length));
+        if (length <= 8) {
+            ::memset(buffer, c, length);
+        } else {
+            ROCM_CALL(hipMemset(buffer, c, length));
+        }
         ROCM_CALL(hipDeviceSynchronize());
         break;
 #endif
@@ -358,7 +429,7 @@ void mem_buffer::copy_between(void *dst, const void *src, size_t length,
 #if HAVE_CUDA
     } else if (check_mem_types(dst_mem_type, src_mem_type, cuda_mem_types)) {
         CUDA_CALL(cudaMemcpy(dst, src, length, cudaMemcpyDefault),
-                  ": dst=" << dst << " src=" << src << "length=" << length);
+                  ": dst=" << dst << " src=" << src << " length=" << length);
         CUDA_CALL(cudaDeviceSynchronize(), "");
 #endif
 #if HAVE_ROCM

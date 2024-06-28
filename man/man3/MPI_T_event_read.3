@@ -1,10 +1,15 @@
-.TH MPI_T_event_read 3 "2/22/2022" " " "MPI"
+.TH MPI_T_event_read 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_T_event_read \-  Copy one element of event data to a user-specified buffer 
 .SH SYNOPSIS
 .nf
-int MPI_T_event_read(MPI_T_event_instance event_instance, int element_index, void *buffer)
 .fi
+.nf
+int MPI_T_event_read(MPI_T_event_instance event_instance, int element_index,
+void *buffer)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -67,7 +72,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_T_ERR_INVALID 

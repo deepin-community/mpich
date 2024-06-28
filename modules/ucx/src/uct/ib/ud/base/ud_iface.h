@@ -1,5 +1,5 @@
 /**
-* Copyright (C) Mellanox Technologies Ltd. 2001-2020.  ALL RIGHTS RESERVED.
+* Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2001-2020. ALL RIGHTS RESERVED.
 *
 * See file LICENSE for terms.
 */
@@ -52,6 +52,7 @@ enum {
 typedef struct uct_ud_iface_config {
     uct_ib_iface_config_t         super;
     uct_ud_iface_common_config_t  ud_common;
+    double                        linger_timeout;
     double                        peer_timeout;
     double                        min_poke_time;
     double                        timer_tick;
@@ -105,6 +106,8 @@ typedef struct uct_ud_iface_ops {
     uint16_t                  (*send_ctl)(uct_ud_ep_t *ud_ep, uct_ud_send_skb_t *skb,
                                           const uct_ud_iov_t *iov, uint16_t iovcnt,
                                           int flags, int max_log_sge);
+    ucs_status_t              (*ep_new)(const uct_ep_params_t* params,
+                                        uct_ep_h *ep_p);
     void                      (*ep_free)(uct_ep_h ep);
     ucs_status_t              (*create_qp)(uct_ib_iface_t *iface, uct_ib_qp_attr_t *attr,
                                            struct ibv_qp **qp_p);
@@ -180,9 +183,11 @@ struct uct_ud_iface {
         unsigned               timer_sweep_count;
     } tx;
     struct {
+        ucs_time_t           linger_timeout;
         ucs_time_t           peer_timeout;
         ucs_time_t           min_poke_time;
         unsigned             tx_qp_len;
+        unsigned             rx_qp_len;
         unsigned             max_inline;
         int                  check_grh_dgid;
         unsigned             max_window;
@@ -249,12 +254,13 @@ void uct_ud_iface_add_ep(uct_ud_iface_t *iface, uct_ud_ep_t *ep);
 
 void uct_ud_iface_remove_ep(uct_ud_iface_t *iface, uct_ud_ep_t *ep);
 
-void uct_ud_iface_replace_ep(uct_ud_iface_t *iface, uct_ud_ep_t *old_ep, uct_ud_ep_t *new_ep);
-
 ucs_status_t uct_ud_iface_flush(uct_iface_h tl_iface, unsigned flags,
                                 uct_completion_t *comp);
 
 ucs_status_t uct_ud_iface_complete_init(uct_ud_iface_t *iface);
+
+ucs_status_t
+uct_ud_iface_set_event_cb(uct_ud_iface_t *iface, ucs_async_event_cb_t event_cb);
 
 void uct_ud_iface_remove_async_handlers(uct_ud_iface_t *iface);
 
@@ -287,13 +293,13 @@ and connection id.
 Connection id is essentially a counter of endpoints that are created by
 ep_create_connected(). The counter is per destination interface. Purpose of
 conn_sn is to ensure order between multiple CREQ packets and to handle
-simultanuous connection establishment. The case when both sides call
+simultaneous connection establishment. The case when both sides call
 ep_create_connected(). The rule is that connected endpoints must have
 same conn_sn.
 
 2: CREP (dest_ep_id)
 
-Connection reply. It includes id of destination endpoint and optinally ACK
+Connection reply. It includes id of destination endpoint and optionally ACK
 request flag. From this point reliability is handled by UD protocol as
 source and destination endpoint ids are known.
 
@@ -337,7 +343,8 @@ void uct_ud_iface_cep_remove_ep(uct_ud_iface_t *iface, uct_ud_ep_t *ep);
 
 unsigned uct_ud_iface_dispatch_pending_rx_do(uct_ud_iface_t *iface);
 
-ucs_status_t uct_ud_iface_event_arm(uct_iface_h tl_iface, unsigned events);
+ucs_status_t uct_ud_iface_event_arm_common(uct_ud_iface_t *iface,
+                                           unsigned events, uint64_t *dirs_p);
 
 void uct_ud_iface_progress_enable(uct_iface_h tl_iface, unsigned flags);
 
@@ -345,6 +352,8 @@ void uct_ud_iface_progress_disable(uct_iface_h tl_iface, unsigned flags);
 
 void uct_ud_iface_ctl_skb_complete(uct_ud_iface_t *iface,
                                    uct_ud_ctl_desc_t *cdesc, int is_async);
+
+void uct_ud_iface_vfs_refresh(uct_iface_h iface);
 
 void uct_ud_iface_send_completion(uct_ud_iface_t *iface, uint16_t sn,
                                   int is_async);
@@ -443,21 +452,6 @@ uct_ud_iface_check_grh(uct_ud_iface_t *iface, void *packet, int is_grh_present,
 }
 
 
-/* get time of the last async wakeup */
-static UCS_F_ALWAYS_INLINE ucs_time_t
-uct_ud_iface_get_async_time(uct_ud_iface_t *iface)
-{
-    return iface->super.super.worker->async->last_wakeup;
-}
-
-
-static UCS_F_ALWAYS_INLINE ucs_time_t
-uct_ud_iface_get_time(uct_ud_iface_t *iface)
-{
-    return ucs_get_time();
-}
-
-
 static UCS_F_ALWAYS_INLINE void
 uct_ud_iface_twheel_sweep(uct_ud_iface_t *iface)
 {
@@ -469,7 +463,7 @@ uct_ud_iface_twheel_sweep(uct_ud_iface_t *iface)
         return;
     }
 
-    ucs_twheel_sweep(&iface->tx.timer, uct_ud_iface_get_time(iface));
+    ucs_twheel_sweep(&iface->tx.timer, ucs_get_time());
 }
 
 

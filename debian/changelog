@@ -1,8 +1,144 @@
-mpich (4.0.2-2) UNRELEASED; urgency=medium
+mpich (4.2.0-6) unstable; urgency=medium
 
-  * update
+  * Team upload.
+  * Run autogen.sh via dh_autoreconf.
+  * Fix building twice in a row.  (Closes: #1047086)
+  * Fix inverted logic when enabling features.
+  * Fix non-verbose build.
+  * Declare Rules-Requires-Root: no.
+  * Fix symbols file for amd64.
+  * libmpich-dev: Only ship .so links for libraries built from this source.
+  * libmpich-dev.preinst: Perform cleanup on upgrades from versions missing
+    dir_to_symlink/symlink_to_dir for the include directory.
+  * libmpich-dev: Perform dir/symlink direction change for the include
+    directory.  (Closes: #1071115)
+  * Reproducibility: Strip -ffile-prefix-map from macros and shipped files.
+  * mpich-doc: Drop unusable build system artefacts from examples.
+  * Update Lintian overrides.
 
- -- Debian Science Maintainers <debian-science-maintainers@lists.alioth.debian.org>  Tue, 05 Jul 2022 12:46:54 +0800
+ -- Andreas Beckmann <anbe@debian.org>  Mon, 27 May 2024 00:33:02 +0200
+
+mpich (4.2.0-5.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * rules: Re-disable pmix: Closes: #1066735
+
+ -- Samuel Thibault <sthibault@debian.org>  Tue, 26 Mar 2024 22:40:26 +0100
+
+mpich (4.2.0-5) unstable; urgency=medium
+
+  * Install mod files in include dir until all deps updated
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Tue, 27 Feb 2024 08:59:43 +0000
+
+mpich (4.2.0-4) unstable; urgency=medium
+
+  * Fix for ppc64 detection: Closes: #1032008
+  * Put default install of *mod files in d/not-installed.Closes: #1064841
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Mon, 26 Feb 2024 14:43:24 +0000
+
+mpich (4.2.0-3) unstable; urgency=medium
+
+  * Push to unstable
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Mon, 26 Feb 2024 13:02:02 +0000
+
+mpich (4.2.0-2) experimental; urgency=medium
+
+  * Fix install locations
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Sun, 18 Feb 2024 13:34:24 +0000
+
+mpich (4.2.0-1) experimental; urgency=medium
+
+  * New upstream release
+  * Build-conflicts libamdhip64-dev until hipcc detection code is fixed
+  * Expand list of supported valgrind archs
+  * Drop obsolete libmpl* install file
+  * Install path fixes
+  * Add fortran:Depends to libmpich-dev
+  * Drop duperflous patterns in d/copyright
+
+  * Change main install point to LIBDIR/mpich/{include,lib} to match
+    openmpi, etc
+  * Add perl depends to mpich pkg for parkill
+  * Close obsolete bugs: Closes: #512142
+  * Update hurd configuration. Closes: #1055455
+  * Delete obsolete d/control package handling, libopa/libmpl files
+  * Simplify postinst/prerm removing obsolete code
+  * Drop autotools.patch, no-real128.patch - not used
+  * Update autogen bash patch
+
+  * Fix findstring->filter in arch checks in d/rules. Closes: #1054035
+  * Re-enable pmix
+  * Close obsolete bugs: Closes: #446883, #573449, #581172, #512142
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Mon, 12 Feb 2024 12:43:13 +0000
+
+mpich (4.1.2-3) unstable; urgency=medium
+
+  * Team upload
+  * debian/patches/7a28682a805acfe84a4ea7b41cea079696407398.patch:
+    - upstream build fix (Closes: #1063833)
+
+ -- Gianfranco Costamagna <locutusofborg@debian.org>  Tue, 13 Feb 2024 10:41:59 +0100
+
+mpich (4.1.2-2) unstable; urgency=medium
+
+  * Team upload
+  * Drop kfreebsd
+  * d/control: Drop unused B-D quilt
+  * Add Deps to libmpich-dev needed for pkg-config (Closes: #1028172)
+
+ -- Bastian Germann <bage@debian.org>  Sat, 16 Sep 2023 21:29:42 +0200
+
+mpich (4.1.2-1) unstable; urgency=medium
+
+  * New upstream release
+  * Fix watch file to avoid testsuite package
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Wed, 06 Sep 2023 14:46:56 +0100
+
+mpich (4.1.1.0-1) experimental; urgency=medium
+
+  * New upstream release
+  * Standards-Version: 4.6.2
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Fri, 31 Mar 2023 09:43:31 +0100
+
+mpich (4.1.1a1+really.4.1-1) experimental; urgency=medium
+
+  * New upstream release
+  * Drop superfluous d/copyright entries
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Fri, 10 Mar 2023 10:16:31 +0000
+
+mpich (4.1.1a1+really.4.1~rc3-1) experimental; urgency=medium
+
+  * New upstream release
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Sun, 22 Jan 2023 15:47:27 +0000
+
+mpich (4.1.1a1+really.4.1~rc1-1) experimental; urgency=medium
+
+  * New upstream release
+  * Standards-Version: 4.6.1
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Sun, 01 Jan 2023 12:18:28 +0000
+
+mpich (4.1.1a1-1) experimental; urgency=medium
+
+  * New upstream release
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Mon, 09 May 2022 16:48:32 +0100
+
+mpich (4.0.2-3) unstable; urgency=medium
+
+  * Standards-Version: 4.6.1
+  * Add Deps to libmpich-dev needed for pkg-config. Closes: #1028172
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Tue, 10 Jan 2023 09:40:39 +0000
 
 mpich (4.0.2-2) unstable; urgency=medium
 
@@ -22,7 +158,7 @@ mpich (4.0.1-1) unstable; urgency=medium
   * New upstream release
   * Re-enable ucx for testing (pmix appears still broken)
 
-  [ Andread Beckmann ]
+  [ Andreas Beckmann ]
   * libmpich12: Add Breaks: libmpich1.0-dev (<< 3) which provided libmpich-dev
     causing the old package using the ancient alternatives scheme to be kept
     installed on some upgrade paths.
@@ -41,7 +177,7 @@ mpich (4.0-2) unstable; urgency=medium
 
   * Temporarily disable ucx; problem with mpich/ucx/pmix to debug.
     Closes: #1004556
-  * mpich-4 works with  autoconf2.7.0. Closes: #978867	
+  * mpich-4 works with autoconf2.7.0. Closes: #978867
 
  -- Alastair McKinstry <mckinstry@debian.org>  Sun, 20 Feb 2022 11:57:20 +0000
 
@@ -77,7 +213,7 @@ mpich (4.0~b1-3) experimental; urgency=medium
 
  -- Alastair McKinstry <mckinstry@debian.org>  Thu, 02 Dec 2021 10:06:25 +0000
 
-mpich (4.0~b1-2) unstable; urgency=medium
+mpich (4.0~b1-2) experimental; urgency=medium
 
   * Enable ch4
   * Enable UCX, adding dep on libucx-dev on archs
@@ -113,14 +249,33 @@ mpich (4.0~a1-1) experimental; urgency=medium
 
  -- Alastair McKinstry <mckinstry@debian.org>  Mon, 08 Mar 2021 10:20:15 +0000
 
+mpich (3.4.1-5~deb11u1) bullseye; urgency=medium
+
+  * Team upload.
+  * Rebuild for bullseye.
+
+ -- Andreas Beckmann <anbe@debian.org>  Tue, 01 Feb 2022 14:19:13 +0100
+
+mpich (3.4.1-5) unstable; urgency=medium
+
+  * Team upload.
+  * libmpich12: Add Breaks: libmpich1.0-dev (<< 3) which provided libmpich-dev
+    causing the old package using the ancient alternatives scheme to be kept
+    installed on some upgrade paths.
+  * mpich: Add Breaks+Replaces: libmpich1.0-dev (<< 3) since some files got
+    moved around.  (Closes: #992065)
+
+ -- Andreas Beckmann <anbe@debian.org>  Tue, 10 Aug 2021 18:03:27 +0200
+
 mpich (3.4.1-4) unstable; urgency=medium
 
+  * Team upload.
   * libmpich-dev: Fix maintainer script generation to restore missing
     alternatives.  (Closes: #986599)
   * mpich: Do not install symlinks or alternatives to missing manpages or
     pkgconfig files.  (Closes: #985394)
 
- -- Andreas Beckmann <anbe@debian.org>  Wed, 07 Apr 2021 22:10:11 +0200
+ -- Andreas Beckmann <anbe@debian.org>  Mon, 26 Apr 2021 18:34:55 +0200
 
 mpich (3.4.1-3) unstable; urgency=medium
 
@@ -205,6 +360,12 @@ mpich (3.4~a3-1) experimental; urgency=medium
 
  -- Alastair McKinstry <mckinstry@debian.org>  Mon, 21 Sep 2020 17:21:40 +0100
 
+mpich (3.4~a2+really3.3.2-2) unstable; urgency=medium
+
+  * Fix FTBFS with gfortran-10. Closes: #957566
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Thu, 30 Jul 2020 10:02:21 +0100
+
 mpich (3.4~a2+really3.3.2-1) unstable; urgency=medium
 
   * Upload to remove broken 3.4~a2 pkg. Closes: #954244
@@ -270,7 +431,7 @@ mpich (3.3.1-1) unstable; urgency=medium
   * Fix Vcs-* URLs.
   * Use debhelper-compat (=12)
   * Update patches; obsolete gcc version patches no longer needed
-  * Need to use chrpath on the libs. 
+  * Need to use chrpath on the libs.
 
  -- Alastair McKinstry <mckinstry@debian.org>  Thu, 29 Aug 2019 15:58:59 +0100
 

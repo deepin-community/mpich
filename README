@@ -1,8 +1,8 @@
-			MPICH Release 4.0.2
+			MPICH Release 4.2.0
 
 MPICH is a high-performance and widely portable implementation of the
-MPI-4.0 standard from the Argonne National Laboratory.  This release
-has all MPI 4.0 functions and features required by the standard with
+MPI-4.1 standard from the Argonne National Laboratory.  This release
+has all MPI 4.1 functions and features required by the standard with
 the exception of support for user-defined data representations for I/O.
 
 This README file should contain enough information to get you started
@@ -35,16 +35,23 @@ information on bug fixes and new releases.
 1. Getting Started
 ==================
 
+Note: this guide assumes you are building MPICH from one of the MPICH
+release tarballs. If you are starting from a git checkout, you will need
+a few additional steps. Please refer to the wiki page --
+https://github.com/pmodels/mpich/blob/main/doc/wiki/Index.md.
+
 The following instructions take you through a sequence of steps to get
 the default configuration (ch3 device, nemesis channel (with TCP and
 shared memory), Hydra process management) of MPICH up and running.
 
 (a) You will need the following prerequisites.
 
-    - REQUIRED: This tar file mpich-4.0.2.tar.gz
+    - REQUIRED: This tar file mpich-4.2.0.tar.gz
+
+    - REQUIRED: Perl
 
     - REQUIRED: A C compiler (C99 support is required. See
-      https://wiki.mpich.org/mpich/index.php/Shifting_toward_C99)
+      https://github.com/pmodels/mpich/blob/main/doc/wiki/source_code/Shifting_Toward_C99.md)
 
     - OPTIONAL: A C++ compiler, if C++ applications are to be used
       (g++, etc.). If you do not require support for C++ applications,
@@ -58,20 +65,22 @@ shared memory), Hydra process management) of MPICH up and running.
       --disable-fortran (configuring MPICH is described in step 1(d)
       below).
 
+    - OPTIONAL: Python 3. Python 3 is needed to generate Fortran bindings.
+
     Also, you need to know what shell you are using since different shell
     has different command syntax. Command "echo $SHELL" prints out the
     current shell used by your terminal program.
 
 (b) Unpack the tar file and go to the top level directory:
 
-      tar xzf mpich-4.0.2.tar.gz
-      cd mpich-4.0.2
+      tar xzf mpich-4.2.0.tar.gz
+      cd mpich-4.2.0
 
     If your tar doesn't accept the z option, use
 
-      gunzip mpich-4.0.2.tar.gz
-      tar xf mpich-4.0.2.tar
-      cd mpich-4.0.2
+      gunzip mpich-4.2.0.tar.gz
+      tar xf mpich-4.2.0.tar
+      cd mpich-4.2.0
 
 (c) Choose an installation directory, say
     /home/<USERNAME>/mpich-install, which is assumed to non-existent
@@ -193,7 +202,7 @@ shared memory), Hydra process management) of MPICH up and running.
     Now we will run an MPI job, using the mpiexec command as specified
     in the MPI standard. There are some examples in the install
     directory, which you have already put in your path, as well as in
-    the directory mpich-4.0.2/examples. One of them is the classic
+    the directory mpich-4.2.0/examples. One of them is the classic
     CPI example, which computes the value of pi by numerical
     integration in parallel.
 
@@ -219,7 +228,7 @@ shared memory), Hydra process management) of MPICH up and running.
     nothing is specified, ':1' is assumed.
 
     More details on interacting with Hydra can be found at
-    http://wiki.mpich.org/mpich/index.php/Using_the_Hydra_Process_Manager
+    https://github.com/pmodels/mpich/blob/main/doc/wiki/how_to/Using_the_Hydra_Process_Manager.md
 
 If you have completed all of the above steps, you have successfully
 installed MPICH and run an MPI example.
@@ -237,8 +246,8 @@ environments as well as our partner institutes. If you have problems
 with the installation or usage of MPICH, please follow these steps:
 
 1. First see the Frequently Asked Questions (FAQ) page at
-http://wiki.mpich.org/mpich/index.php/Frequently_Asked_Questions to
-see if the problem you are facing has a simple solution. Many common
+https://github.com/pmodels/mpich/blob/main/doc/wiki/faq/Frequently_Asked_Questions.md
+to see if the problem you are facing has a simple solution. Many common
 problems and their solutions are listed here.
 
 2. If you cannot find an answer on the FAQ page, look through previous
@@ -257,23 +266,12 @@ COMPRESS BEFORE SENDING, AS THE FILES CAN BE LARGE.  Note that,
 depending on which step the build failed, some of the files might not
 exist.
 
-<<<<<<< HEAD
-    mpich-4.0rc3/c.txt (generated in step 1(d) above)
-    mpich-4.0rc3/m.txt (generated in step 1(e) above)
-    mpich-4.0rc3/mi.txt (generated in step 1(f) above)
-    mpich-4.0rc3/config.log (generated in step 1(d) above)
-    mpich-4.0rc3/src/mpl/config.log (generated in step 1(d) above)
-    mpich-4.0rc3/src/pm/hydra/config.log (generated in step 1(d) above)
-    mpich-4.0rc3/src/pm/hydra/tools/topo/hwloc/hwloc/config.log (generated in step 1(d) above)
-=======
-    mpich-4.0.2/c.txt (generated in step 1(d) above)
-    mpich-4.0.2/m.txt (generated in step 1(e) above)
-    mpich-4.0.2/mi.txt (generated in step 1(f) above)
-    mpich-4.0.2/config.log (generated in step 1(d) above)
-    mpich-4.0.2/src/mpl/config.log (generated in step 1(d) above)
-    mpich-4.0.2/src/pm/hydra/config.log (generated in step 1(d) above)
-    mpich-4.0.2/src/pm/hydra/tools/topo/hwloc/hwloc/config.log (generated in step 1(d) above)
->>>>>>> upstream/4.0.2
+    mpich-4.2.0/c.txt (generated in step 1(d) above)
+    mpich-4.2.0/m.txt (generated in step 1(e) above)
+    mpich-4.2.0/mi.txt (generated in step 1(f) above)
+    mpich-4.2.0/config.log (generated in step 1(d) above)
+    mpich-4.2.0/src/mpl/config.log (generated in step 1(d) above)
+    mpich-4.2.0/src/pm/hydra/config.log (generated in step 1(d) above)
 
     DID WE MENTION? DO NOT FORGET TO COMPRESS THESE FILES!
 
@@ -566,7 +564,7 @@ hydra
 Hydra is the default process management framework that uses existing
 daemons on nodes (e.g., ssh, pbs, slurm, sge) to start MPI
 processes. More information on Hydra can be found at
-http://wiki.mpich.org/mpich/index.php/Using_the_Hydra_Process_Manager
+https://github.com/pmodels/mpich/blob/main/doc/wiki/how_to/Using_the_Hydra_Process_Manager.md
 
 gforker
 -------
@@ -605,11 +603,18 @@ configuration options can be found using:
 ==================================
 
 To test MPICH, we package the MPICH test suite in the MPICH
-distribution. You can run the test suite using:
+distribution. You can run the test suite after "make install" using:
 
      make testing
 
-The results summary will be placed in test/summary.xml
+The results summary will be placed in test/summary.xml.
+
+The test suite can be used independently to test any installed MPI
+implementations:
+
+     cd test/mpi
+     ./configure --with-mpi=/path/to/mpi
+     make testing
 
 -------------------------------------------------------------------------
 
@@ -733,7 +738,7 @@ where <N> is the checkpoint number you want to restart from.
 
 These instructions can also be found on the MPICH wiki:
 
-  http://wiki.mpich.org/mpich/index.php/Checkpointing
+  https://github.com/pmodels/mpich/blob/main/doc/wiki/design/Checkpointing.md
 
 -------------------------------------------------------------------------
 
@@ -743,7 +748,7 @@ For MPICH developers who want to directly work on the primary version
 control system, there are a few additional steps involved (people
 using the release tarballs do not have to follow these steps). Details
 about these steps can be found here:
-http://wiki.mpich.org/mpich/index.php/Getting_And_Building_MPICH
+https://github.com/pmodels/mpich/blob/main/doc/wiki/source_code/Github.md
 
 -------------------------------------------------------------------------
 

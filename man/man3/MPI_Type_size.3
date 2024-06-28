@@ -1,10 +1,18 @@
-.TH MPI_Type_size 3 "2/22/2022" " " "MPI"
+.TH MPI_Type_size 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Type_size \-  Return the number of bytes occupied by entries in the datatype 
 .SH SYNOPSIS
 .nf
+.fi
+.nf
 int MPI_Type_size(MPI_Datatype datatype, int *size)
 .fi
+
+.nf
+int MPI_Type_size_c(MPI_Datatype datatype, MPI_Count *size)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -85,7 +93,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

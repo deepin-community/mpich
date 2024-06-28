@@ -433,6 +433,8 @@ uninitialized keyvals.
 <DT><B>MPI_IN_PLACE                   <a name="MPI_IN_PLACE"></a></B> <DD> Special location for buffer in some
 collective communication routines
 
+<DT><B>MPI_BUFFER_AUTOMATIC           <a name="MPI_BUFFER_AUTOMATIC"></a></B> <DD> Use automatic (unlimited) buffering in buffered send
+
 <DT><B>MPI_VERSION                    <a name="MPI_VERSION"></a></B> <DD> Numeric value of MPI version (e.g., 3)
 
 <DT><B>MPI_SUBVERSION                 <a name="MPI_SUBVERSION"></a></B> <DD> Numeric value of MPI subversion (e.g., 1)
@@ -628,6 +630,8 @@ has error class <tt>MPI_ERR_IN_STATUS</tt>)
 <DT><B>MPI_T_BIND_MPI_MESSAGE         <a name="MPI_T_BIND_MPI_MESSAGE"></a></B> <DD> MPI message object
 
 <DT><B>MPI_T_BIND_MPI_INFO            <a name="MPI_T_BIND_MPI_INFO"></a></B> <DD> MPI info object
+
+<DT><B>MPI_T_BIND_MPI_SESSION         <a name="MPI_T_BIND_MPI_SESSION"></a></B> <DD> MPI session object
 
 <DT><B>MPI_T_SCOPE_CONSTANT           <a name="MPI_T_SCOPE_CONSTANT"></a></B> <DD> read-only, value is constant
 
@@ -871,6 +875,14 @@ resource exhaustion)
 the group of the specified communicator cannot expose shared memory)
 
 <DT><B>MPI_ERR_RMA_FLAVOR        <a name="MPI_ERR_RMA_FLAVOR"></a></B> <DD> Passed window has the wrong flavor for the
+
+<DT><B>MPI_ERR_SESSION           <a name="MPI_ERR_SESSION"></a></B> <DD> Invalid session argument
+
+<DT><B>MPI_ERR_PROC_ABORTED      <a name="MPI_ERR_PROC_ABORTED"></a></B> <DD> Trying to communicate with aborted processes
+
+<DT><B>MPI_ERR_VALUE_TOO_LARGE   <a name="MPI_ERR_VALUE_TOO_LARGE"></a></B> <DD> Value is too large to store
+
+<DT><B>MPI_ERR_ERRHANDLER        <a name="MPI_ERR_ERRHANDLER"></a></B> <DD> Invalid error handler argument
 called function
 
 <DT><B>MPI_ERR_LASTCODE          <a name="MPI_ERR_LASTCODE"></a></B> <DD> Last error code -- always at end

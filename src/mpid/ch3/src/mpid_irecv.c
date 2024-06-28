@@ -6,7 +6,7 @@
 #include "mpidimpl.h"
 
 int MPID_Irecv(void * buf, MPI_Aint count, MPI_Datatype datatype, int rank, int tag,
-	       MPIR_Comm * comm, int context_offset,
+	       MPIR_Comm * comm, int attr,
                MPIR_Request ** request)
 {
     MPIR_Request * rreq = NULL;
@@ -15,6 +15,7 @@ int MPID_Irecv(void * buf, MPI_Aint count, MPI_Datatype datatype, int rank, int 
 
     MPIR_FUNC_ENTER;
 
+    int context_offset = MPIR_PT2PT_ATTR_CONTEXT_OFFSET(attr);
     MPL_DBG_MSG_FMT(MPIDI_CH3_DBG_OTHER,VERBOSE,(MPL_DBG_FDEST,
 			"rank=%d, tag=%d, context=%d", 
 			rank, tag, comm->recvcontext_id + context_offset));
@@ -27,13 +28,11 @@ int MPID_Irecv(void * buf, MPI_Aint count, MPI_Datatype datatype, int rank, int 
         MPIR_ERR_SETANDJUMP(mpi_errno,MPIX_ERR_REVOKED,"**revoked");
     }
 
-    MPID_THREAD_CS_ENTER(POBJ, MPIR_THREAD_POBJ_MSGQ_MUTEX);
     rreq = MPIDI_CH3U_Recvq_FDU_or_AEP(rank, tag, 
 				       comm->recvcontext_id + context_offset,
                                        comm, buf, count, datatype, &found);
     if (rreq == NULL)
     {
-	MPID_THREAD_CS_EXIT(POBJ, MPIR_THREAD_POBJ_MSGQ_MUTEX);
 	MPIR_ERR_SETANDJUMP(mpi_errno,MPI_ERR_OTHER,"**nomemreq");
     }
 
@@ -46,7 +45,6 @@ int MPID_Irecv(void * buf, MPI_Aint count, MPI_Datatype datatype, int rank, int 
 
 	/* Release the message queue - we've removed this request from 
 	   the queue already */
-	MPID_THREAD_CS_EXIT(POBJ, MPIR_THREAD_POBJ_MSGQ_MUTEX);
 
 	if (MPIDI_Request_get_msg_type(rreq) == MPIDI_REQUEST_EAGER_MSG)
 	{
@@ -148,13 +146,13 @@ int MPID_Irecv(void * buf, MPI_Aint count, MPI_Datatype datatype, int rank, int 
 	/* We must wait until here to exit the msgqueue critical section
 	   on this request (we needed to set the recv_pending_count
 	   and the datatype pointer) */
-        MPID_THREAD_CS_EXIT(POBJ, MPIR_THREAD_POBJ_MSGQ_MUTEX);
     }
 
   fn_exit:
     *request = rreq;
     MPL_DBG_MSG_P(MPIDI_CH3_DBG_OTHER,VERBOSE,"request allocated, handle=0x%08x",
 		   rreq->handle);
+    MPII_RECVQ_REMEMBER(rreq, rank, tag, comm->recvcontext_id, buf, count);
     MPIR_FUNC_EXIT;
     return mpi_errno;
 

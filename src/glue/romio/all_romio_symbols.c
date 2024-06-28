@@ -38,7 +38,7 @@
 void MPIR_All_romio_symbols(void);
 void MPIR_All_romio_symbols(void)
 {
-#ifdef MPI_MODE_RDONLY
+#ifdef HAVE_ROMIO
     {
         MPI_Comm comm = MPI_COMM_NULL;
         const char* filename = NULL;
@@ -869,5 +869,5 @@ void MPIR_All_romio_symbols(void)
     }
 
     MPIR_Comm_split_filesystem(MPI_COMM_NULL, 0, NULL, NULL);
-#endif /* MPI_MODE_RDONLY */
+#endif /* HAVE_ROMIO */
 }
