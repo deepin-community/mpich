@@ -15,7 +15,7 @@ typedef unsigned int uint32_t;
 typedef unsigned long uint64_t;
 #include "yaksuri_zei_md.h"
 
-__kernel void yaksuri_zei_kernel_pack_SUM_resized_c_complex(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
+__kernel void yaksuri_zei_kernel_pack_REPLACE_resized_c_complex(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
 {
     __global const char *__restrict__ sbuf = (__global char *) inbuf;
     __global char *__restrict__ dbuf = (__global char *) outbuf;
@@ -30,10 +30,10 @@ __kernel void yaksuri_zei_kernel_pack_SUM_resized_c_complex(__global const void 
     
     uintptr_t x0 = res;
     
-    *((float2 *) (void *) (dbuf + idx * sizeof(float2))) += *((const float2 *) (const void *) (sbuf + x0 * extent));
+    *((float2 *) (void *) (dbuf + idx * sizeof(float2))) = *((const float2 *) (const void *) (sbuf + x0 * extent));
 }
 
-__kernel void yaksuri_zei_kernel_unpack_SUM_resized_c_complex(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
+__kernel void yaksuri_zei_kernel_unpack_REPLACE_resized_c_complex(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
 {
     __global const char *__restrict__ sbuf = (__global char *) inbuf;
     __global char *__restrict__ dbuf = (__global char *) outbuf;
@@ -48,7 +48,7 @@ __kernel void yaksuri_zei_kernel_unpack_SUM_resized_c_complex(__global const voi
     
     uintptr_t x0 = res;
     
-    *((float2 *) (void *) (dbuf + x0 * extent)) += *((const float2 *) (const void *) (sbuf + idx * sizeof(float2)));
+    *((float2 *) (void *) (dbuf + x0 * extent)) = *((const float2 *) (const void *) (sbuf + idx * sizeof(float2)));
 }
 
 __kernel void yaksuri_zei_kernel_pack_PROD_resized_c_complex(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
@@ -97,7 +97,7 @@ __kernel void yaksuri_zei_kernel_unpack_PROD_resized_c_complex(__global const vo
     *((float2 *) (void *) (dbuf + x0 * extent)) = dest;
 }
 
-__kernel void yaksuri_zei_kernel_pack_REPLACE_resized_c_complex(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
+__kernel void yaksuri_zei_kernel_pack_SUM_resized_c_complex(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
 {
     __global const char *__restrict__ sbuf = (__global char *) inbuf;
     __global char *__restrict__ dbuf = (__global char *) outbuf;
@@ -112,10 +112,10 @@ __kernel void yaksuri_zei_kernel_pack_REPLACE_resized_c_complex(__global const v
     
     uintptr_t x0 = res;
     
-    *((float2 *) (void *) (dbuf + idx * sizeof(float2))) = *((const float2 *) (const void *) (sbuf + x0 * extent));
+    *((float2 *) (void *) (dbuf + idx * sizeof(float2))) += *((const float2 *) (const void *) (sbuf + x0 * extent));
 }
 
-__kernel void yaksuri_zei_kernel_unpack_REPLACE_resized_c_complex(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
+__kernel void yaksuri_zei_kernel_unpack_SUM_resized_c_complex(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
 {
     __global const char *__restrict__ sbuf = (__global char *) inbuf;
     __global char *__restrict__ dbuf = (__global char *) outbuf;
@@ -130,6 +130,6 @@ __kernel void yaksuri_zei_kernel_unpack_REPLACE_resized_c_complex(__global const
     
     uintptr_t x0 = res;
     
-    *((float2 *) (void *) (dbuf + x0 * extent)) = *((const float2 *) (const void *) (sbuf + idx * sizeof(float2)));
+    *((float2 *) (void *) (dbuf + x0 * extent)) += *((const float2 *) (const void *) (sbuf + idx * sizeof(float2)));
 }
 

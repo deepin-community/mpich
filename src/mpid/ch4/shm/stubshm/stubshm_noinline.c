@@ -28,6 +28,13 @@ int MPIDI_STUBSHM_mpi_finalize_hook(void)
     return mpi_errno;
 }
 
+int MPIDI_STUBSHM_post_init(void)
+{
+    int mpi_errno = MPI_SUCCESS;
+    MPIR_Assert(0);
+    return mpi_errno;
+}
+
 int MPIDI_STUBSHM_comm_set_hints(MPIR_Comm * comm_ptr, MPIR_Info * info)
 {
     int mpi_errno = MPI_SUCCESS;

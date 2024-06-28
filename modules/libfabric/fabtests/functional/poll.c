@@ -90,6 +90,9 @@ static int free_poll_res(void)
 {
 	int ret;
 
+	if (!pollset)
+		return 0;
+
 	if (txcq) {
 		ret = fi_poll_del(pollset, &txcq->fid, 0);
 		if (ret)
@@ -122,6 +125,14 @@ err:
 static int init_fabric(void)
 {
 	int ret;
+
+	ret = ft_init();
+	if (ret)
+		return ret;
+
+	ret = ft_init_oob();
+	if (ret)
+		return ret;
 
 	ret = ft_getinfo(hints, &fi);
 	if (ret)

@@ -7,10 +7,6 @@ AC_DEFUN([PAC_SUBCFG_PREREQ_]PAC_SUBCFG_AUTO_SUFFIX,[
             AS_CASE([$net],[ucx],[build_ch4_netmod_ucx=yes])
 	    if test $net = "ucx" ; then
 	       AC_DEFINE(HAVE_CH4_NETMOD_UCX,1,[UCX netmod is built])
-	       if test "$build_ch4_locality_info" != "yes" ; then
-	          AC_DEFINE(MPIDI_BUILD_CH4_LOCALITY_INFO, 1, [CH4 should build locality info])
-		  build_ch4_locality_info="yes"
-	       fi
 	    fi
         done
     ])
@@ -39,21 +35,25 @@ AM_COND_IF([BUILD_CH4_NETMOD_UCX],[
         with_ucx=embedded
     fi
     if test "$with_ucx" = "embedded" ; then
-        PAC_PUSH_ALL_FLAGS()
-        PAC_RESET_ALL_FLAGS()
-        if test "$enable_fast" = "yes" -o "$enable_fast" = "all" ; then
-            # add flags from contrib/configure-release and contrib/configure-opt scripts in the ucx source
-            ucx_opt_flags="--disable-logging --disable-debug --disable-assertions --disable-params-check --enable-optimizations"
+        ucxlib="modules/ucx/src/ucp/libucp.la"
+        if test -e "${use_top_srcdir}/modules/PREBUILT" -a -e "$ucxlib"; then
+            ucxdir=""
         else
-            ucx_opt_flags=""
+            PAC_PUSH_ALL_FLAGS()
+            PAC_RESET_ALL_FLAGS()
+            if test "$enable_fast" = "yes" -o "$enable_fast" = "all" ; then
+                # add flags from contrib/configure-release and contrib/configure-opt scripts in the ucx source
+                ucx_opt_flags="--disable-logging --disable-debug --disable-assertions --disable-params-check --enable-optimizations"
+            else
+                ucx_opt_flags=""
+            fi
+            PAC_CONFIG_SUBDIR_ARGS([modules/ucx],[--disable-static --enable-embedded --with-java=no --with-go=no $ucx_opt_flags],[],[AC_MSG_ERROR(ucx configure failed)])
+            PAC_POP_ALL_FLAGS()
+            ucxdir="modules/ucx"
         fi
-        PAC_CONFIG_SUBDIR_ARGS([modules/ucx],[--disable-static --enable-embedded --with-java=no $ucx_opt_flags],[],[AC_MSG_ERROR(ucx configure failed)])
-        PAC_POP_ALL_FLAGS()
         PAC_APPEND_FLAG([-I${main_top_builddir}/modules/ucx/src], [CPPFLAGS])
         PAC_APPEND_FLAG([-I${use_top_srcdir}/modules/ucx/src], [CPPFLAGS])
 
-        ucxdir="modules/ucx"
-        ucxlib="modules/ucx/src/ucp/libucp.la"
     else
         dnl PAC_PROBE_HEADER_LIB must've been successful
         AC_MSG_NOTICE([CH4 UCX Netmod:  Using an external ucx])

@@ -6,10 +6,13 @@
 #ifndef MPIR_COMM_H_INCLUDED
 #define MPIR_COMM_H_INCLUDED
 
-#if defined HAVE_LIBHCOLL
+#if defined HAVE_HCOLL
 #include "../mpid/common/hcoll/hcollpre.h"
 #endif
 
+/* Maximum radix up to which the nbrs from
+ * recursive exchange algorithm will be stored in the communicator */
+#define MAX_RADIX 8
 /*E
   MPIR_Comm_kind_t - Name the two types of communicators
   E*/
@@ -25,7 +28,7 @@ typedef enum MPIR_Comm_hierarchy_kind_t {
     MPIR_COMM_HIERARCHY_KIND__PARENT = 1,       /* has subcommunicators */
     MPIR_COMM_HIERARCHY_KIND__NODE_ROOTS = 2,   /* is the subcomm for node roots */
     MPIR_COMM_HIERARCHY_KIND__NODE = 3, /* is the subcomm for a node */
-    MPIR_COMM_HIERARCHY_KIND__SIZE      /* cardinality of this enum */
+    MPIR_COMM_HIERARCHY_KIND__MULTI_LEADS = 4,  /* is the multi_leaders_comm for a node */
 } MPIR_Comm_hierarchy_kind_t;
 
 typedef enum {
@@ -84,10 +87,10 @@ enum MPIR_COMM_HINT_PREDEFINED_t {
     MPIR_COMM_HINT_NO_ANY_SOURCE,
     MPIR_COMM_HINT_EXACT_LENGTH,
     MPIR_COMM_HINT_ALLOW_OVERTAKING,
+    MPIR_COMM_HINT_STRICT_PCOLL_ORDERING,
     /* device specific hints.
      * Potentially, we can use macros and configure to hide them */
     MPIR_COMM_HINT_EAGER_THRESH,        /* ch3 */
-    MPIR_COMM_HINT_EAGAIN,      /* ch4:ofi */
     MPIR_COMM_HINT_ENABLE_MULTI_NIC_STRIPING,   /* ch4:ofi */
     MPIR_COMM_HINT_ENABLE_MULTI_NIC_HASHING,    /* ch4:ofi */
     MPIR_COMM_HINT_MULTI_NIC_PREF_NIC,  /* ch4:ofi */
@@ -171,6 +174,7 @@ struct MPIR_Comm {
     MPIR_Errhandler *errhandler;        /* Pointer to the error handler structure */
     struct MPIR_Comm *local_comm;       /* Defined only for intercomms, holds
                                          * an intracomm for the local group */
+    struct MPIR_Threadcomm *threadcomm; /* Not NULL only if it's associated with a threadcomm */
 
     MPIR_Comm_hierarchy_kind_t hierarchy_kind;  /* flat, parent, node, or node_roots */
     struct MPIR_Comm *node_comm;        /* Comm of processes in this comm that are on
@@ -197,6 +201,8 @@ struct MPIR_Comm {
                                          * communicators */
     struct MPII_Topo_ops *topo_fns;     /* Pointer to a table of functions
                                          * implementting the topology routines */
+    struct MPII_BsendBuffer *bsendbuffer;       /* for MPI_Comm_attach_buffer */
+
     int next_sched_tag;         /* used by the NBC schedule code to allocate tags */
 
     int revoked;                /* Flag to track whether the communicator
@@ -219,12 +225,27 @@ struct MPIR_Comm {
         int pof2;               /* Nearest (smaller than or equal to) power of 2
                                  * to the number of ranks in the communicator.
                                  * To be used during collective communication */
+        int pofk[MAX_RADIX - 1];
+        int k[MAX_RADIX - 1];
+        int step1_sendto[MAX_RADIX - 1];
+        int step1_nrecvs[MAX_RADIX - 1];
+        int *step1_recvfrom[MAX_RADIX - 1];
+        int step2_nphases[MAX_RADIX - 1];
+        int **step2_nbrs[MAX_RADIX - 1];
+        int nbrs_defined[MAX_RADIX - 1];
+        void **recexch_allreduce_nbr_buffer;
+        int topo_aware_tree_root;
+        MPIR_Treealgo_tree_t *topo_aware_tree;
+        int topo_aware_k_tree_root;
+        MPIR_Treealgo_tree_t *topo_aware_k_tree;
+        int topo_wave_tree_root;
+        MPIR_Treealgo_tree_t *topo_wave_tree;
     } coll;
 
     void *csel_comm;            /* collective selector handle */
-#if defined HAVE_LIBHCOLL
+#if defined HAVE_HCOLL
     hcoll_comm_priv_t hcoll_priv;
-#endif                          /* HAVE_LIBHCOLL */
+#endif                          /* HAVE_HCOLL */
 
     /* the mapper is temporarily filled out in order to allow the
      * device to setup its network addresses.  it will be freed after
@@ -232,20 +253,58 @@ struct MPIR_Comm {
     MPIR_Comm_map_t *mapper_head;
     MPIR_Comm_map_t *mapper_tail;
 
+    enum { MPIR_STREAM_COMM_NONE, MPIR_STREAM_COMM_SINGLE, MPIR_STREAM_COMM_MULTIPLEX }
+        stream_comm_type;
+    union {
+        struct {
+            struct MPIR_Stream *stream;
+            int *vci_table;
+        } single;
+        struct {
+            struct MPIR_Stream **local_streams;
+            MPI_Aint *vci_displs;       /* comm size + 1 */
+            int *vci_table;     /* comm size */
+        } multiplex;
+    } stream_comm;
+
+    MPIR_Request *persistent_requests;
+
     /* Other, device-specific information */
 #ifdef MPID_DEV_COMM_DECL
      MPID_DEV_COMM_DECL
 #endif
+     MPIR_Session * session_ptr;        /* Pointer to MPI session to which the communicator belongs */
 };
+
+#define MPIR_is_self_comm(comm) \
+    ((comm)->remote_size == 1 && (comm)->comm_kind == MPIR_COMM_KIND__INTRACOMM && \
+     (!(comm)->threadcomm || (comm)->threadcomm->num_threads == 1))
+
 extern MPIR_Object_alloc_t MPIR_Comm_mem;
 
 /* this function should not be called by normal code! */
 int MPIR_Comm_delete_internal(MPIR_Comm * comm_ptr);
+void MPIR_stream_comm_init(MPIR_Comm * comm_ptr);
+void MPIR_stream_comm_free(MPIR_Comm * comm_ptr);
+int MPIR_Comm_copy_stream(MPIR_Comm * oldcomm, MPIR_Comm * newcomm);
+int MPIR_get_local_gpu_stream(MPIR_Comm * comm_ptr, MPL_gpu_stream_t * gpu_stream);
 
+MPL_STATIC_INLINE_PREFIX MPIR_Stream *MPIR_stream_comm_get_local_stream(MPIR_Comm * comm_ptr)
+{
+    if (comm_ptr->stream_comm_type == MPIR_STREAM_COMM_SINGLE) {
+        return comm_ptr->stream_comm.single.stream;
+    } else if (comm_ptr->stream_comm_type == MPIR_STREAM_COMM_MULTIPLEX) {
+        return comm_ptr->stream_comm.multiplex.local_streams[comm_ptr->rank];
+    } else {
+        return NULL;
+    }
+}
+
+/* We never skip reference counting for built-in comms */
 #define MPIR_Comm_add_ref(comm_p_) \
-    do { MPIR_Object_add_ref((comm_p_)); } while (0)
+    do { MPIR_Object_add_ref_always((comm_p_)); } while (0)
 #define MPIR_Comm_release_ref(comm_p_, inuse_) \
-    do { MPIR_Object_release_ref(comm_p_, inuse_); } while (0)
+    do { MPIR_Object_release_ref_always(comm_p_, inuse_); } while (0)
 
 
 /* Release a reference to a communicator.  If there are no pending
@@ -272,11 +331,34 @@ static inline int MPIR_Comm_release(MPIR_Comm * comm_ptr)
     return mpi_errno;
 }
 
+MPL_STATIC_INLINE_PREFIX int MPIR_Stream_comm_set_attr(MPIR_Comm * comm, int src_rank, int dst_rank,
+                                                       int src_index, int dst_index, int *attr_out)
+{
+    int mpi_errno = MPI_SUCCESS;
 
-/* MPIR_Comm_release_always is the same as MPIR_Comm_release except it uses
-   MPIR_Comm_release_ref_always instead.
-*/
-int MPIR_Comm_release_always(MPIR_Comm * comm_ptr);
+    *attr_out = 0;
+
+    MPIR_ERR_CHKANDJUMP(comm->stream_comm_type != MPIR_STREAM_COMM_MULTIPLEX,
+                        mpi_errno, MPI_ERR_OTHER, "**streamcomm_notmult");
+
+    MPI_Aint *displs = comm->stream_comm.multiplex.vci_displs;
+
+    MPIR_ERR_CHKANDJUMP(displs[src_rank] + src_index >= displs[src_rank + 1],
+                        mpi_errno, MPI_ERR_OTHER, "**streamcomm_srcidx");
+    MPIR_ERR_CHKANDJUMP(displs[dst_rank] + dst_index >= displs[dst_rank + 1],
+                        mpi_errno, MPI_ERR_OTHER, "**streamcomm_dstidx");
+
+    int src_vci = comm->stream_comm.multiplex.vci_table[displs[src_rank] + src_index];
+    int dst_vci = comm->stream_comm.multiplex.vci_table[displs[src_rank] + dst_index];
+
+    MPIR_PT2PT_ATTR_SET_VCIS(*attr_out, src_vci, dst_vci);
+
+  fn_exit:
+    return mpi_errno;
+  fn_fail:
+    goto fn_exit;
+}
+
 
 int MPIR_Comm_create(MPIR_Comm **);
 int MPIR_Comm_create_intra(MPIR_Comm * comm_ptr, MPIR_Group * group_ptr, MPIR_Comm ** newcomm_ptr);
@@ -298,6 +380,10 @@ int MPIR_Comm_split_filesystem(MPI_Comm comm, int key, const char *dirname, MPI_
 
 #define MPIR_Comm_rank(comm_ptr) ((comm_ptr)->rank)
 #define MPIR_Comm_size(comm_ptr) ((comm_ptr)->local_size)
+
+int MPIR_Comm_save_inactive_request(MPIR_Comm * comm, MPIR_Request * request);
+int MPIR_Comm_delete_inactive_request(MPIR_Comm * comm, MPIR_Request * request);
+int MPIR_Comm_free_inactive_requests(MPIR_Comm * comm);
 
 /* Comm hint registration.
  *
@@ -323,11 +409,6 @@ int MPIR_Comm_connect_impl(const char *port_name, MPIR_Info * info_ptr, int root
                            MPIR_Comm * comm_ptr, MPIR_Comm ** newcomm_ptr);
 
 int MPIR_Comm_split_type_self(MPIR_Comm * comm_ptr, int key, MPIR_Comm ** newcomm_ptr);
-int MPIR_Comm_split_type_hw_guided(MPIR_Comm * comm_ptr, int key, MPIR_Info * info_ptr,
-                                   MPIR_Comm ** newcomm_ptr);
-int MPIR_Comm_split_type_hw_unguided(MPIR_Comm * comm_ptr, int key, MPIR_Info * info_ptr,
-                                     MPIR_Comm ** newcomm_ptr);
-int MPIR_Comm_split_type_by_node(MPIR_Comm * comm_ptr, int key, MPIR_Comm ** newcomm_ptr);
 int MPIR_Comm_split_type_node_topo(MPIR_Comm * comm_ptr, int key,
                                    MPIR_Info * info_ptr, MPIR_Comm ** newcomm_ptr);
 int MPIR_Comm_split_type(MPIR_Comm * comm_ptr, int split_type, int key, MPIR_Info * info_ptr,
@@ -335,16 +416,11 @@ int MPIR_Comm_split_type(MPIR_Comm * comm_ptr, int split_type, int key, MPIR_Inf
 
 int MPIR_Comm_split_type_neighborhood(MPIR_Comm * comm_ptr, int split_type, int key,
                                       MPIR_Info * info_ptr, MPIR_Comm ** newcomm_ptr);
-int MPIR_Comm_split_type_nbhd_common_dir(MPIR_Comm * user_comm_ptr, int key, const char *hintval,
-                                         MPIR_Comm ** newcomm_ptr);
-int MPIR_Comm_split_type_network_topo(MPIR_Comm * user_comm_ptr, int key, const char *hintval,
-                                      MPIR_Comm ** newcomm_ptr);
 
 /* Preallocated comm objects.  There are 3: comm_world, comm_self, and
    a private (non-user accessible) dup of comm world that is provided
    if needed in MPI_Finalize.  Having a separate version of comm_world
    avoids possible interference with User code */
-#define MPIR_COMM_N_BUILTIN 3
 extern MPIR_Comm MPIR_Comm_builtin[MPIR_COMM_N_BUILTIN];
 extern MPIR_Comm MPIR_Comm_direct[];
 /* This is the handle for the internal MPI_COMM_WORLD .  The "2" at the end
@@ -362,7 +438,9 @@ extern struct MPIR_Commops *MPIR_Comm_fns;      /* Communicator creation functio
 int MPII_Comm_init(MPIR_Comm *);
 
 int MPII_Comm_is_node_consecutive(MPIR_Comm *);
+int MPII_Comm_is_node_balanced(MPIR_Comm *, int *, bool *);
 
+int MPII_Comm_dup(MPIR_Comm * comm_ptr, MPIR_Info * info, MPIR_Comm ** newcomm_ptr);
 int MPII_Comm_copy(MPIR_Comm * comm_ptr, int size, MPIR_Info * info, MPIR_Comm ** outcomm_ptr);
 int MPII_Comm_copy_data(MPIR_Comm * comm_ptr, MPIR_Info * info, MPIR_Comm ** outcomm_ptr);
 
@@ -378,7 +456,7 @@ int MPII_Comm_create_map(int local_n,
                          int *local_mapping,
                          int *remote_mapping, MPIR_Comm * mapping_comm, MPIR_Comm * newcomm);
 
-int MPII_Comm_set_hints(MPIR_Comm * comm_ptr, MPIR_Info * info);
+int MPII_Comm_set_hints(MPIR_Comm * comm_ptr, MPIR_Info * info, bool in_comm_create);
 int MPII_Comm_get_hints(MPIR_Comm * comm_ptr, MPIR_Info * info);
 int MPII_Comm_check_hints(MPIR_Comm * comm_ptr);
 
@@ -388,4 +466,6 @@ int MPIR_init_comm_world(void);
 int MPIR_init_icomm_world(void);
 #endif
 int MPIR_finalize_builtin_comms(void);
+
+void MPIR_Comm_set_session_ptr(MPIR_Comm * comm_ptr, MPIR_Session * session_ptr);
 #endif /* MPIR_COMM_H_INCLUDED */

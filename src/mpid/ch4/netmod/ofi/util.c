@@ -7,8 +7,6 @@
 #include "ofi_impl.h"
 #include "ofi_events.h"
 
-#define MPIDI_OFI_MR_KEY_PREFIX_SHIFT 63
-
 int MPIDI_OFI_retry_progress(void)
 {
     /* We do not call progress on hooks form netmod level
@@ -62,11 +60,15 @@ int MPIDI_OFI_mr_key_allocator_init(void)
  * pass a collectively unique key as requested_key and mr key allocator will mark
  * coll bit of the key and return to user.
  * we use highest bit of key to distinguish coll (user-specific key) and local
- * (auto-generated) 64-bits key; since the highest bit is reserved for key type,
- * a valid key has maximal 63 bits. */
+ * (auto-generated) (max_mr_key_size * 8) bit key; since the highest bit is reserved
+ * for key type, a valid key has maximal (max_mr_key_size * 8 - 1) bits. For example,
+ * when the max_mr_key_size is 8 bytes, a valid key has 63 bits. */
 uint64_t MPIDI_OFI_mr_key_alloc(int key_type, uint64_t requested_key)
 {
     uint64_t ret_key = MPIDI_OFI_INVALID_MR_KEY;
+
+    // Shift key by number of bits - 1
+    uint64_t key_mask = 1ULL << (MPIDI_OFI_global.max_mr_key_size * 8 - 1);
 
     switch (key_type) {
         case MPIDI_OFI_LOCAL_MR_KEY:
@@ -87,7 +89,8 @@ uint64_t MPIDI_OFI_mr_key_alloc(int key_type, uint64_t requested_key)
                         mr_key_allocator.last_free_mr_key = i;
                         ret_key = i * sizeof(uint64_t) * 8 + (nval - 1);
                         /* assert local key does not exceed its range */
-                        MPIR_Assert((ret_key & (1ULL << MPIDI_OFI_MR_KEY_PREFIX_SHIFT)) == 0);
+                        if ((ret_key & key_mask) != 0)
+                            return MPIDI_OFI_INVALID_MR_KEY;
                         break;
                     }
                     if (i == mr_key_allocator.num_ints - 1) {
@@ -108,7 +111,7 @@ uint64_t MPIDI_OFI_mr_key_alloc(int key_type, uint64_t requested_key)
         case MPIDI_OFI_COLL_MR_KEY:
             {
                 MPIR_Assert(requested_key != MPIDI_OFI_INVALID_MR_KEY);
-                ret_key = requested_key | (1ULL << MPIDI_OFI_MR_KEY_PREFIX_SHIFT);
+                ret_key = requested_key | key_mask;
                 break;
             }
 
@@ -178,8 +181,8 @@ int MPIDI_OFI_control_handler(void *am_hdr, void *data, MPI_Aint data_sz,
             break;
 
         case MPIDI_OFI_CTRL_HUGE:
-            MPIR_Assert(local_vci == ctrlsend->u.huge.info.vni_dst);
-            MPIR_Assert(remote_vci == ctrlsend->u.huge.info.vni_src);
+            MPIR_Assert(local_vci == ctrlsend->u.huge.info.vci_dst);
+            MPIR_Assert(remote_vci == ctrlsend->u.huge.info.vci_src);
             mpi_errno = MPIDI_OFI_recv_huge_control(local_vci,
                                                     ctrlsend->u.huge.info.comm_id,
                                                     ctrlsend->u.huge.info.origin_rank,
@@ -227,10 +230,12 @@ static bool check_mpi_acc_valid(MPI_Datatype dtype, MPI_Op op)
     return valid_flag;
 }
 
-static void mpi_to_ofi(MPI_Datatype dt, enum fi_datatype *fi_dt, MPI_Op op, enum fi_op *fi_op)
+int MPIDI_OFI_mpi_to_ofi(MPI_Datatype dt, enum fi_datatype *fi_dt, MPI_Op op, enum fi_op *fi_op)
 {
     *fi_dt = FI_DATATYPE_LAST;
-    *fi_op = FI_ATOMIC_OP_LAST;
+
+    if (fi_op != NULL)
+        *fi_op = FI_ATOMIC_OP_LAST;
 
     int dt_size;
     MPIR_Datatype_get_size_macro(dt, dt_size);
@@ -256,7 +261,7 @@ static void mpi_to_ofi(MPI_Datatype dt, enum fi_datatype *fi_dt, MPI_Op op, enum
                 break;
             default:
                 /* no matching type */
-                goto fn_exit;
+                goto fn_fail;
         }
     } else if (dt == MPI_UNSIGNED_CHAR || dt == MPI_UNSIGNED_SHORT || dt == MPI_UNSIGNED ||
                dt == MPI_UNSIGNED_LONG || dt == MPI_UNSIGNED_LONG_LONG ||
@@ -277,7 +282,7 @@ static void mpi_to_ofi(MPI_Datatype dt, enum fi_datatype *fi_dt, MPI_Op op, enum
                 break;
             default:
                 /* no matching type */
-                goto fn_exit;
+                goto fn_fail;
         }
     } else if (isFLOAT(dt)) {
         *fi_dt = FI_FLOAT;
@@ -291,8 +296,11 @@ static void mpi_to_ofi(MPI_Datatype dt, enum fi_datatype *fi_dt, MPI_Op op, enum
         *fi_dt = FI_DOUBLE_COMPLEX;
     } else {
         /* no matching type */
-        goto fn_exit;
+        goto fn_fail;
     }
+
+    if (fi_op == NULL)
+        goto fn_exit;
 
     *fi_op = FI_ATOMIC_OP_LAST;
 
@@ -347,11 +355,13 @@ static void mpi_to_ofi(MPI_Datatype dt, enum fi_datatype *fi_dt, MPI_Op op, enum
             break;
         default:
             /* no matching op */
-            break;
+            goto fn_fail;
     }
 
   fn_exit:
-    return;
+    return MPI_SUCCESS;
+  fn_fail:
+    return -1;
 }
 
 #define _TBL MPIDI_OFI_global.win_op_table[i][j]
@@ -401,7 +411,7 @@ static void create_dt_map(struct fid_ep *ep)
             enum fi_datatype fi_dt = (enum fi_datatype) -1;
             enum fi_op fi_op = (enum fi_op) -1;
 
-            mpi_to_ofi(dt, &fi_dt, op, &fi_op);
+            MPIDI_OFI_mpi_to_ofi(dt, &fi_dt, op, &fi_op);
             MPIR_Assert(fi_dt != (enum fi_datatype) -1);
             MPIR_Assert(fi_op != (enum fi_op) -1);
             _TBL.dt = fi_dt;

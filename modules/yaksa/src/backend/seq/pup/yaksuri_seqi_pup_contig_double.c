@@ -23,22 +23,22 @@ int yaksuri_seqi_pack_contig_double(const void *inbuf, void *outbuf, uintptr_t c
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1)), *((double *) (void *) (dbuf + idx)));
+                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1)), *((double *) (void *) (dbuf + idx)));
                     idx += sizeof(double);
                 }
             }
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1)), *((double *) (void *) (dbuf + idx)));
+                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1)), *((double *) (void *) (dbuf + idx)));
                     idx += sizeof(double);
                 }
             }
@@ -56,11 +56,11 @@ int yaksuri_seqi_pack_contig_double(const void *inbuf, void *outbuf, uintptr_t c
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1)), *((double *) (void *) (dbuf + idx)));
+                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1)), *((double *) (void *) (dbuf + idx)));
                     idx += sizeof(double);
                 }
             }
@@ -98,22 +98,22 @@ int yaksuri_seqi_unpack_contig_double(const void *inbuf, void *outbuf, uintptr_t
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1)));
+                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1)));
                     idx += sizeof(double);
                 }
             }
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1)));
+                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1)));
                     idx += sizeof(double);
                 }
             }
@@ -131,11 +131,11 @@ int yaksuri_seqi_unpack_contig_double(const void *inbuf, void *outbuf, uintptr_t
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
-                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1)));
+                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1)));
                     idx += sizeof(double);
                 }
             }

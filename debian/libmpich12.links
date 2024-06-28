@@ -1,0 +1,7 @@
+# SONAME symlinks
+usr/lib/${DEB_HOST_MULTIARCH}/libmpichcxx.so.12.4.0              usr/lib/${DEB_HOST_MULTIARCH}/libmpichcxx.so.12
+usr/lib/${DEB_HOST_MULTIARCH}/libmpichfort.so.12.4.0              usr/lib/${DEB_HOST_MULTIARCH}/libmpichfort.so.12
+usr/lib/${DEB_HOST_MULTIARCH}/libmpich.so.12.4.0              usr/lib/${DEB_HOST_MULTIARCH}/libmpich.so.12
+# Link for MPICH ABI
+usr/lib/${DEB_HOST_MULTIARCH}/libmpich.so.12.4.0              usr/lib/${DEB_HOST_MULTIARCH}/libmpi.so.12
+

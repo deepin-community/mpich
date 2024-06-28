@@ -1,10 +1,18 @@
-.TH MPI_Buffer_attach 3 "2/22/2022" " " "MPI"
+.TH MPI_Buffer_attach 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Buffer_attach \-  Attaches a user-provided buffer for sending 
 .SH SYNOPSIS
 .nf
+.fi
+.nf
 int MPI_Buffer_attach(void *buffer, int size)
 .fi
+
+.nf
+int MPI_Buffer_attach_c(void *buffer, MPI_Count size)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -138,7 +146,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

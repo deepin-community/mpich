@@ -1,12 +1,28 @@
-.TH MPI_Type_get_contents 3 "2/22/2022" " " "MPI"
+.TH MPI_Type_get_contents 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Type_get_contents \-  get type contents 
 .SH SYNOPSIS
 .nf
-int MPI_Type_get_contents(MPI_Datatype datatype, int max_integers, int max_addresses,
-int max_datatypes, int array_of_integers[], MPI_Aint array_of_addresses[],
+.fi
+.nf
+int MPI_Type_get_contents(MPI_Datatype datatype, int max_integers,
+int max_addresses, int max_large_counts,
+int max_datatypes, int array_of_integers[],
+MPI_Aint array_of_addresses[],
+MPI_Count array_of_large_counts[],
 MPI_Datatype array_of_datatypes[])
 .fi
+
+.nf
+int MPI_Type_get_contents_c(MPI_Datatype datatype, MPI_Count max_integers,
+MPI_Count max_addresses, MPI_Count max_large_counts,
+MPI_Count max_datatypes, int array_of_integers[],
+MPI_Aint array_of_addresses[],
+MPI_Count array_of_large_counts[],
+MPI_Datatype array_of_datatypes[])
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -25,6 +41,11 @@ MPI_Datatype array_of_datatypes[])
 .PD 1
 .PD 0
 .TP
+.B max_large_counts 
+- number of elements in array_of_large_counts (non-negative integer)
+.PD 1
+.PD 0
+.TP
 .B max_datatypes 
 - number of elements in array_of_datatypes (non-negative integer)
 .PD 1
@@ -39,6 +60,11 @@ MPI_Datatype array_of_datatypes[])
 .TP
 .B array_of_addresses 
 - contains address arguments used in constructing datatype (integer)
+.PD 1
+.PD 0
+.TP
+.B array_of_large_counts 
+- contains large count arguments used in constructing datatype (integer)
 .PD 1
 .PD 0
 .TP
@@ -103,7 +129,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

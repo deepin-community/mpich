@@ -13,6 +13,7 @@
 int MPIDI_OFI_init_local(int *tag_bits);
 int MPIDI_OFI_init_world(void);
 int MPIDI_OFI_mpi_finalize_hook(void);
+int MPIDI_OFI_init_vcis(int num_vcis, int *num_vcis_actual);
 int MPIDI_OFI_post_init(void);
 int MPIDI_OFI_comm_set_hints(MPIR_Comm * comm_ptr, MPIR_Info * info);
 int MPIDI_OFI_get_local_upids(MPIR_Comm * comm, int **local_upid_size, char **local_upids);
@@ -59,6 +60,7 @@ int MPIDI_OFI_mpi_op_free_hook(MPIR_Op * op_p);
 #define MPIDI_NM_init_local MPIDI_OFI_init_local
 #define MPIDI_NM_init_world MPIDI_OFI_init_world
 #define MPIDI_NM_mpi_finalize_hook MPIDI_OFI_mpi_finalize_hook
+#define MPIDI_NM_init_vcis MPIDI_OFI_init_vcis
 #define MPIDI_NM_post_init MPIDI_OFI_post_init
 #define MPIDI_NM_comm_set_hints MPIDI_OFI_comm_set_hints
 #define MPIDI_NM_get_local_upids MPIDI_OFI_get_local_upids

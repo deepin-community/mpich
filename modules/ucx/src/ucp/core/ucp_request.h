@@ -1,5 +1,5 @@
 /**
- * Copyright (C) Mellanox Technologies Ltd. 2001-2020.  ALL RIGHTS RESERVED.
+ * Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2001-2020. ALL RIGHTS RESERVED.
  * Copyright (c) UT-Battelle, LLC. 2015-2017. ALL RIGHTS RESERVED.
  * Copyright (C) Los Alamos National Security, LLC. 2019 ALL RIGHTS RESERVED.
  *
@@ -37,12 +37,13 @@ enum {
     UCP_REQUEST_FLAG_COMPLETED             = UCS_BIT(0),
     UCP_REQUEST_FLAG_RELEASED              = UCS_BIT(1),
     UCP_REQUEST_FLAG_PROTO_SEND            = UCS_BIT(2),
-    /* UCS_BIT(3) is a vacant flag */
+    UCP_REQUEST_FLAG_USER_MEMH             = UCS_BIT(3),
     UCP_REQUEST_FLAG_SYNC_LOCAL_COMPLETED  = UCS_BIT(4),
     UCP_REQUEST_FLAG_SYNC_REMOTE_COMPLETED = UCS_BIT(5),
     UCP_REQUEST_FLAG_CALLBACK              = UCS_BIT(6),
     UCP_REQUEST_FLAG_PROTO_INITIALIZED     = UCS_BIT(7),
     UCP_REQUEST_FLAG_SYNC                  = UCS_BIT(8),
+    UCP_REQUEST_FLAG_PROTO_AMO_PACKED      = UCS_BIT(9),
     UCP_REQUEST_FLAG_OFFLOADED             = UCS_BIT(10),
     UCP_REQUEST_FLAG_BLOCK_OFFLOAD         = UCS_BIT(11),
     UCP_REQUEST_FLAG_STREAM_RECV_WAITALL   = UCS_BIT(12),
@@ -52,10 +53,11 @@ enum {
     UCP_REQUEST_FLAG_RECV_AM               = UCS_BIT(16),
     UCP_REQUEST_FLAG_RECV_TAG              = UCS_BIT(17),
     UCP_REQUEST_FLAG_RKEY_INUSE            = UCS_BIT(18),
+    UCP_REQUEST_FLAG_USER_HEADER_COPIED    = UCS_BIT(19),
 #if UCS_ENABLE_ASSERT
-    UCP_REQUEST_FLAG_STREAM_RECV           = UCS_BIT(19),
-    UCP_REQUEST_DEBUG_FLAG_EXTERNAL        = UCS_BIT(20),
-    UCP_REQUEST_FLAG_SUPER_VALID           = UCS_BIT(21)
+    UCP_REQUEST_FLAG_STREAM_RECV           = UCS_BIT(20),
+    UCP_REQUEST_DEBUG_FLAG_EXTERNAL        = UCS_BIT(21),
+    UCP_REQUEST_FLAG_SUPER_VALID           = UCS_BIT(22),
 #else
     UCP_REQUEST_FLAG_STREAM_RECV           = 0,
     UCP_REQUEST_DEBUG_FLAG_EXTERNAL        = 0,
@@ -88,8 +90,15 @@ enum {
     UCP_RECV_DESC_FLAG_EAGER_LAST       = UCS_BIT(5), /* Last fragment of eager tag message.
                                                          Used by tag offload protocol. */
     UCP_RECV_DESC_FLAG_RNDV             = UCS_BIT(6), /* Rendezvous request */
-    UCP_RECV_DESC_FLAG_RECV_STARTED     = UCS_BIT(7), /* Receive operation on this descriptor
-                                                         was initiated by ucp_am_recv_data_nbx */
+    UCP_RECV_DESC_FLAG_RECV_STARTED     = UCS_BIT(7), /* Used in two different flows:
+                                                         1) AM: receive operation on this
+                                                            descriptor was initiated by
+                                                            ucp_am_recv_data_nbx
+                                                         2) TAG offload eager: multi fragment
+                                                            eager message is being received, but
+                                                            not all fragments received yet. Once
+                                                            all fragments arrive, this flag is cleared.
+                                                            Note: it is set for the first fragment only. */
     UCP_RECV_DESC_FLAG_MALLOC           = UCS_BIT(8), /* Descriptor was allocated with malloc
                                                          and must be freed, not returned to the
                                                          memory pool or UCT */
@@ -133,7 +142,7 @@ struct ucp_request {
         /* "send" part - used for tag_send, am_send, stream_send, put, get, and atomic
          * operations */
         struct {
-            ucp_ep_h                ep;
+            ucp_ep_h                   ep;
             union {
                 void                   *buffer; /* Send buffer */
                 ucp_request_callback_t flushed_cb; /* Called when flushed */
@@ -176,15 +185,24 @@ struct ucp_request {
                         ucp_tag_t tag;
 
                         struct {
-                            union {
-                                /* Can be union, because once header is packed to
-                                 * reg_desc, it is not accessed anymore. */
-                                void           *header;
-                                ucp_mem_desc_t *reg_desc; /* pointer to pre-registered buffer,
-                                                             used for sending header with
-                                                             zcopy protocol */
-                            };
-                            uint32_t       header_length;
+                            struct {
+                                /* Pointer to buffer used for sending header.
+                                 * - When UCP_AM_SEND_FLAG_COPY_HEADER is set
+                                 *   and reg_desc is NULL ptr holds
+                                 *   address of ucx mpool buffer.
+                                 * - When UCP_AM_SEND_FLAG_COPY_HEADER is not set
+                                 *   ptr holds address of external buffer, provided
+                                 *   by the user, that is expected to be valid
+                                 *   during the send operation.
+                                 */
+                                void           *ptr;
+                                /* pointer to pre-registered buffer,
+                                 * used for sending header with zcopy protocol.
+                                 */
+                                ucp_mem_desc_t *reg_desc;
+                                uint32_t       length;
+                            } header UCS_S_PACKED; /* packed to avoid 32-bit
+                                                      padding */
                             uint16_t       am_id;
                             uint16_t       flags;
                         } am;
@@ -228,6 +246,10 @@ struct ucp_request {
 
                         /* Pointer for access to remote memory */
                         void           *rkey_ptr_addr;
+
+                        /* Pointer to packed RKEY, used only by rkey_ptr mtype
+                         * protocol */
+                        const void     *rkey_buffer;
                     };
 
                     union {
@@ -238,9 +260,6 @@ struct ucp_request {
 
                             /* Actual lanes count */
                             uint8_t        lanes_count;
-
-                            /* Remote key index map */
-                            uint8_t        rkey_index[UCP_MAX_LANES];
                         };
 
                         /* Used by "new" rendezvous protocols, in proto_rndv.c */
@@ -289,14 +308,6 @@ struct ucp_request {
                 } rkey_ptr;
 
                 struct {
-                    /* The length of the data that should be fetched from sender
-                     * side */
-                    size_t            length;
-                    /* Offset in the receiver's buffer */
-                    size_t            offset;
-                } rndv_rtr;
-
-                struct {
                     unsigned           uct_flags; /* Flags to pass to @ref uct_ep_flush */
                     uct_worker_cb_id_t prog_id; /* Progress callback ID */
                     uint32_t           cmpl_sn; /* Sequence number of the remote completion
@@ -308,6 +319,10 @@ struct ucp_request {
                 } flush;
 
                 struct {
+                    ucp_worker_h       worker;
+                } invalidate;
+
+                struct {
                     /* UCT EP that should be flushed and destroyed */
                     uct_ep_h           uct_ep;
                     /* Flags that should be passed into @ref uct_ep_flush */
@@ -315,12 +330,16 @@ struct ucp_request {
                     /* Progress ID, if it's UCS_CALLBACKQ_ID_NULL, no operations
                      * are in-progress */
                     uct_worker_cb_id_t cb_id;
+                    /* Index of UCT EP to be flushed and destroyed */
+                    ucp_rsc_index_t    rsc_index;
                 } discard_uct_ep;
 
                 struct {
                     uint64_t              remote_addr; /* Remote address */
                     ucp_rkey_h            rkey;        /* Remote memory key */
                     uint64_t              value;       /* Atomic argument */
+                    uint64_t              result;      /* Atomic result */
+                    void                  *reply_buffer;
                     uct_atomic_op_t       uct_op;      /* Requested UCT AMO */
                 } amo;
 
@@ -365,14 +384,20 @@ struct ucp_request {
             ucp_datatype_t        datatype; /* Receive type */
             size_t                length;   /* Total length, in bytes */
             ucs_memory_type_t     mem_type; /* Memory type */
+            uint32_t              op_attr;  /* Operation attributes */
             ucp_dt_state_t        state;
             ucp_worker_t          *worker;
             uct_tag_context_t     uct_ctx;  /* Transport offload context */
             union {
-                ssize_t           remaining; /* How much more data
-                                              * to be received */
-                size_t            offset; /* offset in recv buffer for multi
-                                             fragment tag offload flow */
+                /* How much more data to be received */
+                ssize_t   remaining;
+
+                /* Offset in recv buffer for multi fragment tag offload flow */
+                size_t    offset;
+
+                /* User-defined memory handle supplied to ucp_[tag|am)_recv_nbx,
+                   valid if UCP_REQUEST_FLAG_USER_MEMH is set */
+                ucp_mem_h user_memh;
             };
 
             /* Remote request ID received from a peer */
@@ -424,11 +449,12 @@ struct ucp_request {
         } recv;
 
         struct {
-            ucp_worker_h            worker;     /* Worker to flush */
-            ucp_send_nbx_callback_t cb;         /* Completion callback */
-            uct_worker_cb_id_t      prog_id;    /* Progress callback ID */
-            int                     comp_count; /* Countdown to request completion */
-            ucp_ep_ext_gen_t        *next_ep;   /* Next endpoint to flush */
+            ucp_worker_h            worker;       /* Worker to flush */
+            ucp_send_nbx_callback_t cb;           /* Completion callback */
+            uct_worker_cb_id_t      prog_id;      /* Progress callback ID */
+            ucp_ep_ext_t            *next_ep_ext; /* Extension of the next endpoint to flush */
+            int                     comp_count;   /* Countdown to request completion */
+            unsigned                uct_flags;    /* Flags to pass to @ref uct_ep_flush */
         } flush_worker;
     };
 };
@@ -496,13 +522,14 @@ extern const ucp_request_param_t ucp_request_null_param;
 
 int ucp_request_pending_add(ucp_request_t *req);
 
-ucs_status_t ucp_request_memory_reg(ucp_context_t *context, ucp_md_map_t md_map,
-                                    void *buffer, size_t length, ucp_datatype_t datatype,
-                                    ucp_dt_state_t *state, ucs_memory_type_t mem_type,
-                                    ucp_request_t *req_dbg, unsigned uct_flags);
+ucs_status_t
+ucp_request_memory_reg(ucp_context_t *context, ucp_md_map_t md_map,
+                       void *buffer, size_t length, ucp_datatype_t datatype,
+                       ucp_dt_state_t *state, ucs_memory_type_t mem_type,
+                       ucp_request_t *req, unsigned uct_flags);
 
 void ucp_request_memory_dereg(ucp_context_t *context, ucp_datatype_t datatype,
-                              ucp_dt_state_t *state, ucp_request_t *req_dbg);
+                              ucp_dt_state_t *state, ucp_request_t *req);
 
 void ucp_request_dt_invalidate(ucp_request_t *req, ucs_status_t status);
 
@@ -510,8 +537,9 @@ ucs_status_t ucp_request_send_start(ucp_request_t *req, ssize_t max_short,
                                     size_t zcopy_thresh, size_t zcopy_max,
                                     size_t dt_count, size_t priv_iov_count,
                                     size_t length,
-                                    const ucp_ep_msg_config_t* msg_config,
-                                    const ucp_request_send_proto_t *proto);
+                                    const ucp_ep_msg_config_t *msg_config,
+                                    const ucp_request_send_proto_t *proto,
+                                    const ucp_request_param_t *param);
 
 /* Fast-forward to data end */
 void ucp_request_send_state_ff(ucp_request_t *req, ucs_status_t status);

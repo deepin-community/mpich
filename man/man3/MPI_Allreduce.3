@@ -1,11 +1,20 @@
-.TH MPI_Allreduce 3 "2/22/2022" " " "MPI"
+.TH MPI_Allreduce 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Allreduce \-  Combines values from all processes and distributes the result back to all processes 
 .SH SYNOPSIS
 .nf
-int MPI_Allreduce(const void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype, MPI_Op op,
-MPI_Comm comm)
 .fi
+.nf
+int MPI_Allreduce(const void *sendbuf, void *recvbuf, int count,
+MPI_Datatype datatype, MPI_Op op, MPI_Comm comm)
+.fi
+
+.nf
+int MPI_Allreduce_c(const void *sendbuf, void *recvbuf, MPI_Count count,
+MPI_Datatype datatype, MPI_Op op, MPI_Comm comm)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -123,7 +132,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_BUFFER 

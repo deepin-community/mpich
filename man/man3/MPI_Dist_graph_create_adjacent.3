@@ -1,13 +1,19 @@
-.TH MPI_Dist_graph_create_adjacent 3 "2/22/2022" " " "MPI"
+.TH MPI_Dist_graph_create_adjacent 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Dist_graph_create_adjacent \-  returns a handle to a new communicator to which the distributed graph topology information is attached 
 .SH SYNOPSIS
 .nf
-int MPI_Dist_graph_create_adjacent(MPI_Comm comm_old, int indegree, const int sources[],
+.fi
+.nf
+int MPI_Dist_graph_create_adjacent(MPI_Comm comm_old, int indegree,
+const int sources[],
 const int sourceweights[], int outdegree,
-const int destinations[], const int destweights[], MPI_Info info,
+const int destinations[],
+const int destweights[], MPI_Info info,
 int reorder, MPI_Comm *comm_dist_graph)
 .fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -52,7 +58,7 @@ int reorder, MPI_Comm *comm_dist_graph)
 .PD 0
 .TP
 .B reorder 
-- the ranks may be reordered (true) or not~(false) (logical)
+- the ranks may be reordered (true) or not~(false)
 .PD 1
 
 .SH OUTPUT PARAMETERS
@@ -128,7 +134,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

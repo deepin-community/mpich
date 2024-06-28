@@ -64,28 +64,28 @@ __global__ void yaksuri_hipi_kernel_unpack_REPLACE_hvector_wchar_t(const void *i
     YAKSURI_HIPI_OP_REPLACE(*((const wchar_t *) (const void *) (sbuf + idx * sizeof(wchar_t))), *((wchar_t *) (void *) (dbuf + x0 * extent + x1 * stride1 + x2 * sizeof(wchar_t))));
 }
 
-void yaksuri_hipi_pack_hvector_wchar_t(const void *inbuf, void *outbuf, uintptr_t count, yaksa_op_t op, yaksuri_hipi_md_s *md, int n_threads, int n_blocks_x, int n_blocks_y, int n_blocks_z, int device)
+void yaksuri_hipi_pack_hvector_wchar_t(const void *inbuf, void *outbuf, uintptr_t count, yaksa_op_t op, yaksuri_hipi_md_s *md, int n_threads, int n_blocks_x, int n_blocks_y, int n_blocks_z, hipStream_t stream)
 {
 void *args[] = { &inbuf, &outbuf, &count, &md };
     hipError_t cerr;
     switch (op) {
         case YAKSA_OP__REPLACE:
         cerr = hipLaunchKernel((const void *) yaksuri_hipi_kernel_pack_REPLACE_hvector_wchar_t,
-            dim3(n_blocks_x, n_blocks_y, n_blocks_z), dim3(n_threads), args, 0, yaksuri_hipi_global.stream[device]);
+            dim3(n_blocks_x, n_blocks_y, n_blocks_z), dim3(n_threads), args, 0, stream);
         YAKSURI_HIPI_HIP_ERR_CHECK(cerr);
         break;
 
     }
 }
 
-void yaksuri_hipi_unpack_hvector_wchar_t(const void *inbuf, void *outbuf, uintptr_t count, yaksa_op_t op, yaksuri_hipi_md_s *md, int n_threads, int n_blocks_x, int n_blocks_y, int n_blocks_z, int device)
+void yaksuri_hipi_unpack_hvector_wchar_t(const void *inbuf, void *outbuf, uintptr_t count, yaksa_op_t op, yaksuri_hipi_md_s *md, int n_threads, int n_blocks_x, int n_blocks_y, int n_blocks_z, hipStream_t stream)
 {
 void *args[] = { &inbuf, &outbuf, &count, &md };
     hipError_t cerr;
     switch (op) {
         case YAKSA_OP__REPLACE:
         cerr = hipLaunchKernel((const void *) yaksuri_hipi_kernel_unpack_REPLACE_hvector_wchar_t,
-            dim3(n_blocks_x, n_blocks_y, n_blocks_z), dim3(n_threads), args, 0, yaksuri_hipi_global.stream[device]);
+            dim3(n_blocks_x, n_blocks_y, n_blocks_z), dim3(n_threads), args, 0, stream);
         YAKSURI_HIPI_HIP_ERR_CHECK(cerr);
         break;
 

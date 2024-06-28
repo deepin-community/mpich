@@ -10,9 +10,12 @@
 **finalized:MPI has already called MPI_Finalize
 **inittwice:Cannot call MPI_INIT or MPI_INIT_THREAD more than once
 **psetinvalidn:Invalid pset number
+**psetinvalidn %d:Invalid pset number - %d
 **psetinvalidname:Invalid pset name
 **session:Invalid MPI_Session handle
 **sessionnull: NULL MPI_Session
+**sessioninuse:MPI_Session is referenced and cannot be released
+**sessioninuse %d:MPI_Session is referenced by %d other objects and cannot be released
 **nomem:Out of memory
 **nomem %s %d:Out of memory (unable to allocate a '%s' of size %d)
 **nomem %s:Out of memory (unable to allocate a '%s')
@@ -50,8 +53,14 @@
 **keyval:Invalid keyval
 **noerrclasses:No more user-defined error classes
 **predeferrclass:Predefined error class given
+**invaliderrclass:Invalid error class given
+**errclassref:Error class still in use
+**errclassref %x %d:Error class %x still in use (ref_count = %d)
 **noerrcodes:No more user-defined error codes
 **predeferrcode:Predefined error code given
+**invaliderrcode:Invalid error code given
+**errcoderef:Error code still in use
+**errcoderef %x %d:Error code %x still in use (ref_count = %d)
 **rankdup:Duplicate ranks in rank array 
 **rankdup %d %d %d:Duplicate ranks in rank array at index %d, has value %d which is \
 also the value at index %d
@@ -107,10 +116,9 @@ also the value at index %d
 **bufexists:Buffer already attached with MPI_BUFFER_ATTACH.
 **bsendbufsmall:Buffer size is smaller than MPI_BSEND_OVERHEAD
 **bsendbufsmall %d %d:Buffer size of %d is smaller than MPI_BSEND_OVERHEAD (%d)
-**bsendpending:Internal error - completion of Bsend requests that were \
- deferred because of resource limits is not implemented
 **notgenreq:Attempt to complete a request with MPI_GREQUEST_COMPLETE that \
 was not started with MPI_GREQUEST_START
+**cancelinactive:Attempt to cancel an inactive persistent request
 **cancelunknown:Attempt to cancel an unknown type of request
 **permop:Cannot free permanent MPI_Op 
 **attrsentinal:Internal fields in an attribute have been overwritten; \
@@ -149,8 +157,8 @@ be in the range 0 to %d
  buffer size is %d
 **inttoosmall:An address does not fit into a Fortran INTEGER.  Use \
  MPI_Get_address instead
-**namepubnotpub:Lookup failed for service name 
-**namepubnotpub %s:Lookup failed for service name %s
+**namepubnotpub:Publish failed for service name
+**namepubnotpub %s:Publish failed for service name %s
 **nonamepub:No name publishing service available
 **namepubfile:Unable to publish service name
 **namepubfile %s %s %s:Unable to publish service name %s using file %s for \
@@ -228,6 +236,7 @@ MPI_TYPECLASS_INTEGER, or MPI_TYPECLASS_COMPLEX
 **invalidcollid: Invalid collective ID used.
 **sockaddrfailed: MPL_get_sockaddr failed
 
+**nosupport: Algorithm selected is not supported. Please choose another algorithm
 **nomembind: hwloc_set_area_membind() is not available
 **invalidmembind: Invalid bind object identifier.
 **invalidmembind %d: cannot bind memory to object (%d). \
@@ -236,6 +245,9 @@ A memory object id was expected but a non-memory object id was passed instead
 **partitioninvalid: Invalid partition
 **partitioninvalid %d: Invalid partition, value is %d 
 **partitioninvalid %d %d: Invalid partition range, values are %d %d
+
+**opencolltuningfile: Unable to open collective tuning file
+**opencolltuningfile %s: Unable to open collective tuning file %s.\nCheck the file or unset MPIR_CVAR_COLL_SELECTION_TUNING_JSON_FILE to use the default settings.
 
 # -- FIXME: Some (but not all) of the messages below this line have been used
 #---- The messages below this line haven't been used yet.
@@ -379,6 +391,7 @@ be in the range 0 to %d
 **infonkey %d %d:Requested key %d but this MPI_Info only has %d keys
 **infonoteq:MPI_Info key value are not consistent for all processes
 **infonoteq %s:MPI_Info value with key %s is not consistent for all processes
+**infohexinvalid:MPI_Info key value is invalid
 **io:Other I/O error 
 **io %s:Other I/O error %s
 **iobadoverlap: write voilates monotonically non-decreasing
@@ -479,14 +492,18 @@ unexpected messages queued.
 **badcase:INTERNAL ERROR: unexpected value in case statement
 **badcase %d:INTERNAL ERROR: unexpected value in case statement (value=%d)
 **node_root_rank:Unable to get the node root rank
+**proc_aborted:Process was aborted
 **proc_failed:Process failed
 **failure_pending:Request pending due to failure
 **revoked:Communication object revoked
 **eagain:Operation could not be issued (EAGAIN)
+**commhasunmatched:Communicator being freed has unmatched message(s)
+**commhasunmatched %x %d:Communicator (handle=%x) being freed has %d unmatched message(s)
 # Duplicates?
 #**argnull:Invalid null parameter
 #**argnull %s:Invalid null parameter %s
 **commstack:Internal overflow in stack used for MPI_Comm_split
+**timeout:Operation timed out
 
 **cond_create:MPID_Thread_cond_create failed
 **cond_create %s:MPID_Thread_cond_create failed: %s
@@ -588,6 +605,9 @@ unexpected messages queued.
 **select %s %d: select of socket fds failed, %s (errno %d)
 **ioctlsocket: ioctl on socket failed
 **ioctlsocket %s %d: ioctl on socket failed, %s (errno %d)
+**sock_unlink:unlinking socket fd failed
+**sock_unlink %s:unlinking socket fd failed - %s
+**sock_unlink %s %d:unlink failed, %s (errno %d)
 
 **gethostbyname:gethostbyname failed
 **gethostbyname %s %d:gethostbyname failed, %s (errno %d)
@@ -608,6 +628,16 @@ unexpected messages queued.
 **shmw_sethnd: Unable to set shared memory handle
 **shmw_deserbufbig: Size of buffer to deserialize shared memory handle  \
 is too big (> MPIU_SHMW_GHND_SZ) 
+
+**sendmsg:sendmsg failed
+**sendmsg %s:sendmsg failed - %s
+**sendmsg %s %d:sendmsg failed, %s (errno %d)
+**recvmsg:recvmsg failed
+**recvmsg %s:recvmsg failed - %s
+**recvmsg %s %d:recvmsg failed, %s (errno %d)
+**recv:recv failed
+**recv %s:recv failed - %s
+**recv %s %d:recv failed, %s (errno %d)
 
 #
 # CH3:ssm
@@ -755,6 +785,7 @@ is too big (> MPIU_SHMW_GHND_SZ)
 **shmhost %s %s:process not on the same host (%s != %s)
 **shmsize:Shared memory subsystem unable to allocate a block of the requested size
 **shmsize %d:Shared memory subsystem unable to allocate a block of the requested size, %d bytes
+**winallocnotshared:processes are not in the same shared memory domain
 
 
 #
@@ -874,6 +905,7 @@ is too big (> MPIU_SHMW_GHND_SZ)
 **procnamefailed:Failed to get processor name
 
 **notsuppmultithread:this functionality is not supported when the thread level is greater than MPI_THREAD_SINGLE
+**valuetoolarge:Value is too large to store
 
 #
 # mpi functions
@@ -934,6 +966,13 @@ is too big (> MPIU_SHMW_GHND_SZ)
 **gpu_get_global_dev_ids: gpu_get_global_dev_ids failed
 **gpu_get_buffer_info: gpu_get_buffer_info failed
 **gpu_get_dev_count: gpu_get_dev_count failed
+**gpu_pipeline_packed: GPU pipelining does not support non-contiguous data types
+**mpl_ze_init_device_fds: mpl_ze_init_device_fds failed
+**mpl_ze_mmap_device_ptr:  MPL_ze_mmap_device_pointer failed
+**mpl_gpu_fast_memcpy:  MPL_gpu_fast_memcpy failed
+**mpl_gpu_get_dev_id_from_attr: MPL_gpu_get_dev_id_from_attr failed
+**mpl_gpu_imemcpy: MPL_gpu_imemcpy failed
+**mpl_gpu_test: MPL_gpu_test failed
 
 ## GAVL tree related error messages
 **mpl_gavl_search: mpl_gavl_search failed
@@ -948,6 +987,22 @@ is too big (> MPIU_SHMW_GHND_SZ)
 **set_thread_affinity:Failed to set the async thread affinity
 **set_thread_affinity %d:Failed to set the async thread affinity to the logical processor [%d]
 
+## MPIX_Stream
+**ch3nostream:Stream is not supported in ch3.
+**ch4nostream:No streams available. Configure --enable-thread-cs=per-vci and --with-ch4-max-vcis=# to enable streams.
+**outofstream:No streams available. Use MPIR_CVAR_CH4_RESERVE_VCIS to reserve the number of streams can be allocated.
+**cannotfreestream:The stream is still in use, cannot be freed.
+**missinggpustream:Info hint 'type' is set, but info hint 'value' is missing.
+**invalidgpustream:Info hint 'type' is set, but info hint 'value' is invalid.
+**notgpustream:The communicator does not have a local gpu stream attached.
+**streamcomm_notmult:The communicator is not a multiplex stream communicator.
+**streamcomm_srcidx:The source stream index exceeds the number of streams.
+**streamcomm_dstidx:The destination stream index exceeds the number of streams.
+**gpu_enqueue_noncontig:Non-contig datatype not supported due to missing TLS.
+
+## topology-aware collectives
+**read_file:Failed to read from file
+**read_file %s %s:Failed to read from file %s error: %s
 # -----------------------------------------------------------------------------
 # The following names are defined but not used (see the -careful option 
 # for extracterrmsgs) (still to do: move the undefined names here)

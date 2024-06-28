@@ -9,7 +9,7 @@ tagline: Libfabric Programmer's Manual
 
 fi_endpoint \- Fabric endpoint operations
 
-fi_endpoint / fi_scalable_ep / fi_passive_ep / fi_close
+fi_endpoint / fi_endpoint2 / fi_scalable_ep / fi_passive_ep / fi_close
 :   Allocate or close an endpoint.
 
 fi_ep_bind
@@ -58,6 +58,9 @@ fi_rx_size_left / fi_tx_size_left (DEPRECATED)
 
 int fi_endpoint(struct fid_domain *domain, struct fi_info *info,
     struct fid_ep **ep, void *context);
+
+int fi_endpoint2(struct fid_domain *domain, struct fi_info *info,
+    struct fid_ep **ep, uint64_t flags, void *context);
 
 int fi_scalable_ep(struct fid_domain *domain, struct fi_info *info,
     struct fid_ep **sep, void *context);
@@ -242,6 +245,12 @@ endpoint, the passive endpoint is no longer bound to any fabric resources and
 must no longer be used. The user is expected to close the passive endpoint
 after opening the active endpoint in order to free up any lingering resources
 that had been used.
+
+## fi_endpoint2
+
+Similar to fi_endpoint, buf accepts an extra parameter *flags*. Mainly used for
+opening endpoints that use peer transfer feature. See
+[`fi_peer`(3)](fi_peer.3.html)
 
 ## fi_close
 
@@ -520,6 +529,54 @@ The following option levels and option names and parameters are defined.
   that applications that want to override the default MIN_MULTI_RECV
   value set this option before enabling the corresponding endpoint.
 
+- *FI_OPT_FI_HMEM_P2P - int*
+: Defines how the provider should handle peer to peer FI_HMEM transfers for
+  this endpoint. By default, the provider will chose whether to use peer to peer
+  support based on the type of transfer (FI_HMEM_P2P_ENABLED). Valid values
+  defined in fi_endpoint.h are:
+	* FI_HMEM_P2P_ENABLED: Peer to peer support may be used by the provider
+	  to handle FI_HMEM transfers, and which transfers are initiated using
+	  peer to peer is subject to the provider implementation.
+	* FI_HMEM_P2P_REQUIRED: Peer to peer support must be used for
+	  transfers, transfers that cannot be performed using p2p will be
+	  reported as failing.
+	* FI_HMEM_P2P_PREFERRED: Peer to peer support should be used by the
+	  provider for all transfers if available, but the provider may choose
+	  to copy the data to initiate the transfer if peer to peer support is
+	  unavailable.
+	* FI_HMEM_P2P_DISABLED: Peer to peer support should not be used.
+: fi_setopt() will return -FI_EOPNOTSUPP if the mode requested cannot be supported
+  by the provider.
+: The FI_HMEM_DISABLE_P2P environment variable discussed in
+  [`fi_mr`(3)](fi_mr.3.html) takes precedence over this setopt option.
+
+- *FI_OPT_XPU_TRIGGER - struct fi_trigger_xpu \**
+: This option only applies to the fi_getopt() call.  It is used to query
+  the maximum number of variables required to support XPU
+  triggered operations, along with the size of each variable.
+
+  The user provides a filled out struct fi_trigger_xpu on input.  The iface
+  and device fields should reference an HMEM domain.  If the provider does not
+  support XPU triggered operations from the given device, fi_getopt() will
+  return -FI_EOPNOTSUPP.  On input, var should reference an array of
+  struct fi_trigger_var data structures, with count set to the size of the
+  referenced array.  If count is 0, the var field will be ignored, and the
+  provider will return the number of fi_trigger_var structures needed.  If
+  count is > 0, the provider will set count to the needed value, and for
+  each fi_trigger_var available, set the datatype and count of the variable
+  used for the trigger.
+
+- *FI_OPT_CUDA_API_PERMITTED - bool \**
+: This option only applies to the fi_setopt call. It is used to control
+  endpoint's behavior in making calls to CUDA API. By default, an endpoint
+  is permitted to call CUDA API. If user wish to prohibit an endpoint from
+  making such calls, user can achieve that by set this option to false.
+  If an endpoint's support of CUDA memory relies on making calls to CUDA API,
+  it will return -FI_EOPNOTSUPP for the call to fi_setopt.
+  If either CUDA library or CUDA device is not available, endpoint will
+  return -FI_EINVAL.
+  All providers that support FI_HMEM capability implement this option.
+
 ## fi_tc_dscp_set
 
 This call converts a DSCP defined value into a libfabric traffic class value.
@@ -625,6 +682,10 @@ interoperability.  The following protocol values are defined.
 Provider specific protocols are also allowed.  Provider specific
 protocols will be indicated by having the upper bit of the
 protocol value set to one.
+
+*FI_PROTO_EFA*
+: Proprietary protocol on Elastic Fabric Adapter fabric. It supports both
+  DGRAM and RDM endpoints.
 
 *FI_PROTO_GNI*
 : Protocol runs over Cray GNI low-level interface.
@@ -890,7 +951,7 @@ capability bits from the fi_info structure will be used.
 The following capabilities apply to the transmit attributes: FI_MSG,
 FI_RMA, FI_TAGGED, FI_ATOMIC, FI_READ, FI_WRITE, FI_SEND, FI_HMEM,
 FI_TRIGGER, FI_FENCE, FI_MULTICAST, FI_RMA_PMEM, FI_NAMED_RX_CTX,
-and FI_COLLECTIVE.
+FI_COLLECTIVE, and FI_XPU.
 
 Many applications will be able to ignore this field and rely solely
 on the fi_info::caps field.  Use of this field provides fine grained
@@ -1198,8 +1259,8 @@ capability bits from the fi_info structure will be used.
 The following capabilities apply to the receive attributes: FI_MSG,
 FI_RMA, FI_TAGGED, FI_ATOMIC, FI_REMOTE_READ, FI_REMOTE_WRITE, FI_RECV,
 FI_HMEM, FI_TRIGGER, FI_RMA_PMEM, FI_DIRECTED_RECV, FI_VARIABLE_MSG,
-FI_MULTI_RECV, FI_SOURCE, FI_RMA_EVENT, FI_SOURCE_ERR, and
-FI_COLLECTIVE.
+FI_MULTI_RECV, FI_SOURCE, FI_RMA_EVENT, FI_SOURCE_ERR, FI_COLLECTIVE,
+and FI_XPU.
 
 Many applications will be able to ignore this field and rely solely
 on the fi_info::caps field.  Use of this field provides fine grained
@@ -1569,6 +1630,8 @@ required by the application.
 Returns 0 on success.  On error, a negative value corresponding to
 fabric errno is returned.  For fi_cancel, a return value of 0
 indicates that the cancel request was submitted for processing.
+For fi_setopt/fi_getopt, a return value of -FI_ENOPROTOOPT
+indicates the provider does not support the requested option.
 
 Fabric errno values are defined in `rdma/fi_errno.h`.
 
@@ -1592,3 +1655,4 @@ Fabric errno values are defined in `rdma/fi_errno.h`.
 [`fi_msg`(3)](fi_msg.3.html),
 [`fi_tagged`(3)](fi_tagged.3.html),
 [`fi_rma`(3)](fi_rma.3.html)
+[`fi_peer`(3)](fi_peer.3.html)

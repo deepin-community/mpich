@@ -45,6 +45,18 @@ int MPIDI_NM_mpi_finalize_hook(void)
     return ret;
 }
 
+int MPIDI_NM_init_vcis(int num_vcis, int *num_vcis_actual)
+{
+    int ret;
+
+    MPIR_FUNC_ENTER;
+
+    ret = MPIDI_NM_func->init_vcis(num_vcis, num_vcis_actual);
+
+    MPIR_FUNC_EXIT;
+    return ret;
+}
+
 int MPIDI_NM_post_init(void)
 {
     int ret;

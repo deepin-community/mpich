@@ -99,7 +99,7 @@ static int Init_shm_barrier(void)
     } else {
         /* wait */
         while (MPL_atomic_load_int(&barrier->wait) == sense)
-            MPL_sched_yield();  /* skip */
+            MPID_Thread_yield();        /* skip */
     }
     sense = 1 - sense;
 
@@ -155,7 +155,7 @@ int MPIDU_Init_shm_init(void)
 
             mpl_err = MPL_shm_hnd_get_serialized_by_ref(memory.hnd, &serialized_hnd);
             MPIR_ERR_CHKANDJUMP(mpl_err, mpi_errno, MPI_ERR_OTHER, "**alloc_shar_mem");
-            serialized_hnd_size = strlen(serialized_hnd);
+            serialized_hnd_size = strlen(serialized_hnd) + 1;
             MPIR_Assert(serialized_hnd_size < MPIR_pmi_max_val_size());
 
             mpi_errno = Init_shm_barrier_init(TRUE);
@@ -222,9 +222,6 @@ int MPIDU_Init_shm_finalize(void)
     if (!init_shm_initialized) {
         goto fn_exit;
     }
-
-    mpi_errno = Init_shm_barrier();
-    MPIR_ERR_CHECK(mpi_errno);
 
     if (local_size == 1)
         MPL_free(memory.base_addr);

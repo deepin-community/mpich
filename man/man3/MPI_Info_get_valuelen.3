@@ -1,10 +1,15 @@
-.TH MPI_Info_get_valuelen 3 "2/22/2022" " " "MPI"
+.TH MPI_Info_get_valuelen 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Info_get_valuelen \-  Retrieves the length of the value associated with a key 
 .SH SYNOPSIS
 .nf
-int MPI_Info_get_valuelen(MPI_Info info, const char *key, int *valuelen, int *flag)
 .fi
+.nf
+int MPI_Info_get_valuelen(MPI_Info info, const char *key, int *valuelen,
+int *flag)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -101,7 +106,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

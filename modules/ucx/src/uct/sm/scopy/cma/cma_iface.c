@@ -1,6 +1,6 @@
 /**
  * Copyright (c) UT-Battelle, LLC. 2014-2015. ALL RIGHTS RESERVED.
- * Copyright (C) Mellanox Technologies Ltd. 2001-2019.  ALL RIGHTS RESERVED.
+ * Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2001-2019. ALL RIGHTS RESERVED.
  * See file LICENSE for terms.
  */
 
@@ -114,9 +114,12 @@ static uct_iface_ops_t uct_cma_iface_tl_ops = {
 
 static uct_scopy_iface_ops_t uct_cma_iface_ops = {
     .super = {
-        .iface_estimate_perf = uct_base_iface_estimate_perf,
-        .iface_vfs_refresh   = (uct_iface_vfs_refresh_func_t)ucs_empty_function,
-        .ep_query            = (uct_ep_query_func_t)ucs_empty_function_return_unsupported
+        .iface_estimate_perf   = uct_base_iface_estimate_perf,
+        .iface_vfs_refresh     = (uct_iface_vfs_refresh_func_t)ucs_empty_function,
+        .ep_query              = (uct_ep_query_func_t)ucs_empty_function_return_unsupported,
+        .ep_invalidate         = (uct_ep_invalidate_func_t)ucs_empty_function_return_unsupported,
+        .ep_connect_to_ep_v2   = ucs_empty_function_return_unsupported,
+        .iface_is_reachable_v2 = uct_base_iface_is_reachable_v2
     },
     .ep_tx = uct_cma_ep_tx,
 };
@@ -144,6 +147,8 @@ static UCS_CLASS_DEFINE_NEW_FUNC(uct_cma_iface_t, uct_iface_t, uct_md_h,
                                  const uct_iface_config_t *);
 static UCS_CLASS_DEFINE_DELETE_FUNC(uct_cma_iface_t, uct_iface_t);
 
-UCT_TL_DEFINE(&uct_cma_component, cma, uct_sm_base_query_tl_devices,
-              uct_cma_iface_t, "CMA_", uct_cma_iface_config_table,
-              uct_cma_iface_config_t);
+UCT_TL_DEFINE_ENTRY(&uct_cma_component, cma, uct_sm_base_query_tl_devices,
+                    uct_cma_iface_t, "CMA_", uct_cma_iface_config_table,
+                    uct_cma_iface_config_t);
+
+UCT_SINGLE_TL_INIT(&uct_cma_component, cma, ctor,,)

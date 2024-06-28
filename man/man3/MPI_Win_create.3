@@ -1,11 +1,20 @@
-.TH MPI_Win_create 3 "2/22/2022" " " "MPI"
+.TH MPI_Win_create 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Win_create \-  Create an MPI Window object for one-sided communication 
 .SH SYNOPSIS
 .nf
-int MPI_Win_create(void *base, MPI_Aint size, int disp_unit, MPI_Info info, MPI_Comm comm,
-MPI_Win *win)
 .fi
+.nf
+int MPI_Win_create(void *base, MPI_Aint size, int disp_unit, MPI_Info info,
+MPI_Comm comm, MPI_Win *win)
+.fi
+
+.nf
+int MPI_Win_create_c(void *base, MPI_Aint size, MPI_Aint disp_unit,
+MPI_Info info, MPI_Comm comm, MPI_Win *win)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -87,6 +96,19 @@ certain operation types where the hardware can guarantee atomicity. The default
 is same_op_no_op.
 .PD 1
 
+.PD 0
+.TP
+.B mpi_accumulate_granularity 
+- Controls the desired synchronization granularity
+for accumulate ops. It sets the size of memory range in bytes for which the
+MPI library should acquire a synchronization primitive to ensure the atomicity
+of updates. The default is 0 which let the MPI library decides the granularity.
+When the info hint is set to a positive value, the actual range of synchroniation
+is round-up to the next size that fits the Datatype used in the accumulate
+operation (see MPI standard 4.1). All processes in the group of a windows must
+set to the same value.
+.PD 1
+
 .SH THREAD AND INTERRUPT SAFETY
 
 This routine is thread-safe.  This means that this routine may be
@@ -153,7 +175,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

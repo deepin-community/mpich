@@ -10,7 +10,7 @@
 
 /* ---- barrier ---- */
 
-int MPIR_Barrier_allcomm_auto(MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
+int MPIR_Barrier_allcomm_auto(MPIR_Comm * comm_ptr, MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -23,8 +23,16 @@ int MPIR_Barrier_allcomm_auto(MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
     MPIR_Assert(cnt);
     
     switch (cnt->id) {
-        case MPII_CSEL_CONTAINER_TYPE__ALGORITHM__MPIR_Barrier_intra_dissemination:
-            mpi_errno = MPIR_Barrier_intra_dissemination(comm_ptr, errflag);
+        case MPII_CSEL_CONTAINER_TYPE__ALGORITHM__MPIR_Barrier_intra_k_dissemination:
+            mpi_errno = MPIR_Barrier_intra_k_dissemination(comm_ptr,
+                                                           cnt->u.barrier.intra_k_dissemination.k,
+                                                           errflag);
+            break;
+        
+        case MPII_CSEL_CONTAINER_TYPE__ALGORITHM__MPIR_Barrier_intra_recexch:
+            mpi_errno = MPIR_Barrier_intra_recexch(comm_ptr, cnt->u.barrier.intra_recexch.k,
+                                                   cnt->u.barrier.intra_recexch.single_phase_recv,
+                                                   errflag);
             break;
         
         case MPII_CSEL_CONTAINER_TYPE__ALGORITHM__MPIR_Barrier_intra_smp:
@@ -50,14 +58,20 @@ int MPIR_Barrier_allcomm_auto(MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
     goto fn_exit;
 }
 
-int MPIR_Barrier_impl(MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
+int MPIR_Barrier_impl(MPIR_Comm * comm_ptr, MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
     if (comm_ptr->comm_kind == MPIR_COMM_KIND__INTRACOMM) {
         switch (MPIR_CVAR_BARRIER_INTRA_ALGORITHM) {
-            case MPIR_CVAR_BARRIER_INTRA_ALGORITHM_dissemination:
-                mpi_errno = MPIR_Barrier_intra_dissemination(comm_ptr, errflag);
+            case MPIR_CVAR_BARRIER_INTRA_ALGORITHM_k_dissemination:
+                mpi_errno = MPIR_Barrier_intra_k_dissemination(comm_ptr, MPIR_CVAR_BARRIER_DISSEM_KVAL,
+                                                               errflag);
+                break;
+            case MPIR_CVAR_BARRIER_INTRA_ALGORITHM_recexch:
+                mpi_errno = MPIR_Barrier_intra_recexch(comm_ptr, MPIR_CVAR_BARRIER_RECEXCH_KVAL,
+                                                       MPIR_CVAR_BARRIER_RECEXCH_SINGLE_PHASE_RECV,
+                                                       errflag);
                 break;
             case MPIR_CVAR_BARRIER_INTRA_ALGORITHM_smp:
                 MPII_COLLECTIVE_FALLBACK_CHECK(comm_ptr->rank, MPIR_Comm_is_parent_comm(comm_ptr), mpi_errno,
@@ -101,7 +115,7 @@ int MPIR_Barrier_impl(MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
     goto fn_exit;
 }
 
-int MPIR_Barrier(MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
+int MPIR_Barrier(MPIR_Comm * comm_ptr, MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -137,6 +151,18 @@ int MPIR_Ibarrier_allcomm_sched_auto(MPIR_Comm * comm_ptr, bool is_persistent, v
             mpi_errno = MPIR_Ibarrier_intra_sched_recursive_doubling(comm_ptr, *sched_p);
             break;
         
+        case MPII_CSEL_CONTAINER_TYPE__ALGORITHM__MPIR_Ibarrier_intra_tsp_recexch:
+            MPII_GENTRAN_CREATE_SCHED_P();
+            mpi_errno = MPIR_TSP_Ibarrier_sched_intra_recexch(comm_ptr,
+                                cnt->u.ibarrier.intra_tsp_recexch.k, *sched_p);
+            break;
+        
+        case MPII_CSEL_CONTAINER_TYPE__ALGORITHM__MPIR_Ibarrier_intra_tsp_k_dissemination:
+            MPII_GENTRAN_CREATE_SCHED_P();
+            mpi_errno = MPIR_TSP_Ibarrier_sched_intra_k_dissemination(comm_ptr,
+                                cnt->u.ibarrier.intra_tsp_k_dissemination.k, *sched_p);
+            break;
+        
         case MPII_CSEL_CONTAINER_TYPE__ALGORITHM__MPIR_Ibarrier_inter_sched_bcast:
             MPII_SCHED_CREATE_SCHED_P();
             mpi_errno = MPIR_Ibarrier_inter_sched_bcast(comm_ptr, *sched_p);
@@ -163,6 +189,16 @@ int MPIR_Ibarrier_sched_impl(MPIR_Comm * comm_ptr, bool is_persistent, void **sc
             case MPIR_CVAR_IBARRIER_INTRA_ALGORITHM_sched_recursive_doubling:
                 MPII_SCHED_CREATE_SCHED_P();
                 mpi_errno = MPIR_Ibarrier_intra_sched_recursive_doubling(comm_ptr, *sched_p);
+                break;
+            case MPIR_CVAR_IBARRIER_INTRA_ALGORITHM_tsp_recexch:
+                MPII_GENTRAN_CREATE_SCHED_P();
+                mpi_errno = MPIR_TSP_Ibarrier_sched_intra_recexch(comm_ptr,
+                                    MPIR_CVAR_IBARRIER_RECEXCH_KVAL, *sched_p);
+                break;
+            case MPIR_CVAR_IBARRIER_INTRA_ALGORITHM_tsp_k_dissemination:
+                MPII_GENTRAN_CREATE_SCHED_P();
+                mpi_errno = MPIR_TSP_Ibarrier_sched_intra_k_dissemination(comm_ptr,
+                                    MPIR_CVAR_IBARRIER_DISSEM_KVAL, *sched_p);
                 break;
             case MPIR_CVAR_IBARRIER_INTRA_ALGORITHM_auto:
                 mpi_errno = MPIR_Ibarrier_allcomm_sched_auto(comm_ptr, is_persistent, sched_p,
@@ -234,6 +270,7 @@ int MPIR_Barrier_init_impl(MPIR_Comm * comm_ptr, MPIR_Info * info_ptr, MPIR_Requ
     MPIR_ERR_CHKANDJUMP(!req, mpi_errno, MPI_ERR_OTHER, "**nomem");
     MPIR_Comm_add_ref(comm_ptr);
     req->comm = comm_ptr;
+    MPIR_Comm_save_inactive_request(comm_ptr, req);
     req->u.persist_coll.sched_type = MPIR_SCHED_INVALID;
     req->u.persist_coll.real_request = NULL;
     mpi_errno = MPIR_Ibarrier_sched_impl(comm_ptr, true, &req->u.persist_coll.sched,
@@ -266,7 +303,7 @@ int MPIR_Barrier_init(MPIR_Comm * comm_ptr, MPIR_Info * info_ptr, MPIR_Request *
 /* ---- bcast ---- */
 
 int MPIR_Bcast_allcomm_auto(void *buffer, MPI_Aint count, MPI_Datatype datatype, int root,
-                            MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
+                            MPIR_Comm * comm_ptr, MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -302,6 +339,23 @@ int MPIR_Bcast_allcomm_auto(void *buffer, MPI_Aint count, MPI_Datatype datatype,
             mpi_errno = MPIR_Bcast_intra_smp(buffer, count, datatype, root, comm_ptr, errflag);
             break;
         
+        case MPII_CSEL_CONTAINER_TYPE__ALGORITHM__MPIR_Bcast_intra_tree:
+            mpi_errno = MPIR_Bcast_intra_tree(buffer, count, datatype, root, comm_ptr,
+                                              cnt->u.bcast.intra_tree.tree_type,
+                                              cnt->u.bcast.intra_tree.k,
+                                              cnt->u.bcast.intra_tree.is_non_blocking, errflag);
+            break;
+        
+        case MPII_CSEL_CONTAINER_TYPE__ALGORITHM__MPIR_Bcast_intra_pipelined_tree:
+            mpi_errno = MPIR_Bcast_intra_pipelined_tree(buffer, count, datatype, root, comm_ptr,
+                                                        cnt->u.bcast.intra_pipelined_tree.tree_type,
+                                                        cnt->u.bcast.intra_pipelined_tree.k,
+                                                        cnt->u.bcast.intra_pipelined_tree.is_non_blocking,
+                                                        cnt->u.bcast.intra_pipelined_tree.chunk_size,
+                                                        cnt->u.bcast.intra_pipelined_tree.recv_pre_posted,
+                                                        errflag);
+            break;
+        
         case MPII_CSEL_CONTAINER_TYPE__ALGORITHM__MPIR_Bcast_inter_remote_send_local_bcast:
             mpi_errno = MPIR_Bcast_inter_remote_send_local_bcast(buffer, count, datatype, root,
                                 comm_ptr, errflag);
@@ -323,7 +377,7 @@ int MPIR_Bcast_allcomm_auto(void *buffer, MPI_Aint count, MPI_Datatype datatype,
 }
 
 int MPIR_Bcast_impl(void *buffer, MPI_Aint count, MPI_Datatype datatype, int root,
-                    MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
+                    MPIR_Comm * comm_ptr, MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -345,6 +399,19 @@ int MPIR_Bcast_impl(void *buffer, MPI_Aint count, MPI_Datatype datatype, int roo
                 MPII_COLLECTIVE_FALLBACK_CHECK(comm_ptr->rank, MPIR_Comm_is_parent_comm(comm_ptr), mpi_errno,
                                                "Bcast smp cannot be applied.\n");
                 mpi_errno = MPIR_Bcast_intra_smp(buffer, count, datatype, root, comm_ptr, errflag);
+                break;
+            case MPIR_CVAR_BCAST_INTRA_ALGORITHM_tree:
+                mpi_errno = MPIR_Bcast_intra_tree(buffer, count, datatype, root, comm_ptr,
+                                                  MPIR_Bcast_tree_type, MPIR_CVAR_BCAST_TREE_KVAL,
+                                                  MPIR_CVAR_BCAST_IS_NON_BLOCKING, errflag);
+                break;
+            case MPIR_CVAR_BCAST_INTRA_ALGORITHM_pipelined_tree:
+                mpi_errno = MPIR_Bcast_intra_pipelined_tree(buffer, count, datatype, root, comm_ptr,
+                                                            MPIR_Bcast_tree_type,
+                                                            MPIR_CVAR_BCAST_TREE_KVAL,
+                                                            MPIR_CVAR_BCAST_IS_NON_BLOCKING,
+                                                            MPIR_CVAR_BCAST_TREE_PIPELINE_CHUNK_SIZE,
+                                                            MPIR_CVAR_BCAST_RECV_PRE_POST, errflag);
                 break;
             case MPIR_CVAR_BCAST_INTRA_ALGORITHM_nb:
                 mpi_errno = MPIR_Bcast_allcomm_nb(buffer, count, datatype, root, comm_ptr,
@@ -389,7 +456,7 @@ int MPIR_Bcast_impl(void *buffer, MPI_Aint count, MPI_Datatype datatype, int roo
 }
 
 int MPIR_Bcast(void *buffer, MPI_Aint count, MPI_Datatype datatype, int root, MPIR_Comm * comm_ptr,
-               MPIR_Errflag_t * errflag)
+               MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -462,8 +529,17 @@ int MPIR_Ibcast_allcomm_sched_auto(void *buffer, MPI_Aint count, MPI_Datatype da
             MPII_GENTRAN_CREATE_SCHED_P();
             mpi_errno = MPIR_TSP_Ibcast_sched_intra_scatterv_allgatherv(buffer, count, datatype,
                                 root, comm_ptr,
+                                MPIR_CVAR_IALLGATHERV_INTRA_ALGORITHM_tsp_recexch_doubling,
                                 cnt->u.ibcast.intra_tsp_scatterv_recexch_allgatherv.scatterv_k,
                                 cnt->u.ibcast.intra_tsp_scatterv_recexch_allgatherv.allgatherv_k,
+                                *sched_p);
+            break;
+        
+        case MPII_CSEL_CONTAINER_TYPE__ALGORITHM__MPIR_Ibcast_intra_tsp_scatterv_ring_allgatherv:
+            MPII_GENTRAN_CREATE_SCHED_P();
+            mpi_errno = MPIR_TSP_Ibcast_sched_intra_scatterv_ring_allgatherv(buffer, count,
+                                datatype, root, comm_ptr,
+                                cnt->u.ibcast.intra_tsp_scatterv_ring_allgatherv.scatterv_k,
                                 *sched_p);
             break;
         
@@ -535,8 +611,16 @@ int MPIR_Ibcast_sched_impl(void *buffer, MPI_Aint count, MPI_Datatype datatype, 
             case MPIR_CVAR_IBCAST_INTRA_ALGORITHM_tsp_scatterv_recexch_allgatherv:
                 MPII_GENTRAN_CREATE_SCHED_P();
                 mpi_errno = MPIR_TSP_Ibcast_sched_intra_scatterv_allgatherv(buffer, count, datatype,
-                                    root, comm_ptr, MPIR_CVAR_IBCAST_SCATTERV_KVAL,
+                                    root, comm_ptr,
+                                    MPIR_CVAR_IALLGATHERV_INTRA_ALGORITHM_tsp_recexch_doubling,
+                                    MPIR_CVAR_IBCAST_SCATTERV_KVAL,
                                     MPIR_CVAR_IBCAST_ALLGATHERV_RECEXCH_KVAL, *sched_p);
+                break;
+            case MPIR_CVAR_IBCAST_INTRA_ALGORITHM_tsp_scatterv_ring_allgatherv:
+                MPII_GENTRAN_CREATE_SCHED_P();
+                mpi_errno = MPIR_TSP_Ibcast_sched_intra_scatterv_ring_allgatherv(buffer, count,
+                                    datatype, root, comm_ptr, MPIR_CVAR_IBCAST_SCATTERV_KVAL,
+                                    *sched_p);
                 break;
             case MPIR_CVAR_IBCAST_INTRA_ALGORITHM_tsp_ring:
                 MPII_GENTRAN_CREATE_SCHED_P();
@@ -625,6 +709,7 @@ int MPIR_Bcast_init_impl(void *buffer, MPI_Aint count, MPI_Datatype datatype, in
     MPIR_ERR_CHKANDJUMP(!req, mpi_errno, MPI_ERR_OTHER, "**nomem");
     MPIR_Comm_add_ref(comm_ptr);
     req->comm = comm_ptr;
+    MPIR_Comm_save_inactive_request(comm_ptr, req);
     req->u.persist_coll.sched_type = MPIR_SCHED_INVALID;
     req->u.persist_coll.real_request = NULL;
     mpi_errno = MPIR_Ibcast_sched_impl(buffer, count, datatype, root, comm_ptr, true,
@@ -661,7 +746,7 @@ int MPIR_Bcast_init(void *buffer, MPI_Aint count, MPI_Datatype datatype, int roo
 
 int MPIR_Gather_allcomm_auto(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype sendtype,
                              void *recvbuf, MPI_Aint recvcount, MPI_Datatype recvtype, int root,
-                             MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
+                             MPIR_Comm * comm_ptr, MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -714,7 +799,7 @@ int MPIR_Gather_allcomm_auto(const void *sendbuf, MPI_Aint sendcount, MPI_Dataty
 
 int MPIR_Gather_impl(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype sendtype, void *recvbuf,
                      MPI_Aint recvcount, MPI_Datatype recvtype, int root, MPIR_Comm * comm_ptr,
-                     MPIR_Errflag_t * errflag)
+                     MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -768,7 +853,7 @@ int MPIR_Gather_impl(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype sendt
 
 int MPIR_Gather(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype sendtype, void *recvbuf,
                 MPI_Aint recvcount, MPI_Datatype recvtype, int root, MPIR_Comm * comm_ptr,
-                MPIR_Errflag_t * errflag)
+                MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -960,6 +1045,7 @@ int MPIR_Gather_init_impl(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype 
     MPIR_ERR_CHKANDJUMP(!req, mpi_errno, MPI_ERR_OTHER, "**nomem");
     MPIR_Comm_add_ref(comm_ptr);
     req->comm = comm_ptr;
+    MPIR_Comm_save_inactive_request(comm_ptr, req);
     req->u.persist_coll.sched_type = MPIR_SCHED_INVALID;
     req->u.persist_coll.real_request = NULL;
     mpi_errno = MPIR_Igather_sched_impl(sendbuf, sendcount, sendtype, recvbuf, recvcount, recvtype,
@@ -999,7 +1085,7 @@ int MPIR_Gather_init(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype sendt
 int MPIR_Gatherv_allcomm_auto(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype sendtype,
                               void *recvbuf, const MPI_Aint recvcounts[], const MPI_Aint displs[],
                               MPI_Datatype recvtype, int root, MPIR_Comm * comm_ptr,
-                              MPIR_Errflag_t * errflag)
+                              MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -1044,7 +1130,7 @@ int MPIR_Gatherv_allcomm_auto(const void *sendbuf, MPI_Aint sendcount, MPI_Datat
 
 int MPIR_Gatherv_impl(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype sendtype, void *recvbuf,
                       const MPI_Aint recvcounts[], const MPI_Aint displs[], MPI_Datatype recvtype,
-                      int root, MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
+                      int root, MPIR_Comm * comm_ptr, MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -1100,7 +1186,7 @@ int MPIR_Gatherv_impl(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype send
 
 int MPIR_Gatherv(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype sendtype, void *recvbuf,
                  const MPI_Aint recvcounts[], const MPI_Aint displs[], MPI_Datatype recvtype,
-                 int root, MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
+                 int root, MPIR_Comm * comm_ptr, MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -1279,6 +1365,7 @@ int MPIR_Gatherv_init_impl(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype
     MPIR_ERR_CHKANDJUMP(!req, mpi_errno, MPI_ERR_OTHER, "**nomem");
     MPIR_Comm_add_ref(comm_ptr);
     req->comm = comm_ptr;
+    MPIR_Comm_save_inactive_request(comm_ptr, req);
     req->u.persist_coll.sched_type = MPIR_SCHED_INVALID;
     req->u.persist_coll.real_request = NULL;
     mpi_errno = MPIR_Igatherv_sched_impl(sendbuf, sendcount, sendtype, recvbuf, recvcounts, displs,
@@ -1318,7 +1405,7 @@ int MPIR_Gatherv_init(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype send
 
 int MPIR_Scatter_allcomm_auto(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype sendtype,
                               void *recvbuf, MPI_Aint recvcount, MPI_Datatype recvtype, int root,
-                              MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
+                              MPIR_Comm * comm_ptr, MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -1371,7 +1458,7 @@ int MPIR_Scatter_allcomm_auto(const void *sendbuf, MPI_Aint sendcount, MPI_Datat
 
 int MPIR_Scatter_impl(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype sendtype, void *recvbuf,
                       MPI_Aint recvcount, MPI_Datatype recvtype, int root, MPIR_Comm * comm_ptr,
-                      MPIR_Errflag_t * errflag)
+                      MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -1427,7 +1514,7 @@ int MPIR_Scatter_impl(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype send
 
 int MPIR_Scatter(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype sendtype, void *recvbuf,
                  MPI_Aint recvcount, MPI_Datatype recvtype, int root, MPIR_Comm * comm_ptr,
-                 MPIR_Errflag_t * errflag)
+                 MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -1617,6 +1704,7 @@ int MPIR_Scatter_init_impl(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype
     MPIR_ERR_CHKANDJUMP(!req, mpi_errno, MPI_ERR_OTHER, "**nomem");
     MPIR_Comm_add_ref(comm_ptr);
     req->comm = comm_ptr;
+    MPIR_Comm_save_inactive_request(comm_ptr, req);
     req->u.persist_coll.sched_type = MPIR_SCHED_INVALID;
     req->u.persist_coll.real_request = NULL;
     mpi_errno = MPIR_Iscatter_sched_impl(sendbuf, sendcount, sendtype, recvbuf, recvcount, recvtype,
@@ -1656,7 +1744,7 @@ int MPIR_Scatter_init(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype send
 int MPIR_Scatterv_allcomm_auto(const void *sendbuf, const MPI_Aint sendcounts[],
                                const MPI_Aint displs[], MPI_Datatype sendtype, void *recvbuf,
                                MPI_Aint recvcount, MPI_Datatype recvtype, int root,
-                               MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
+                               MPIR_Comm * comm_ptr, MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -1701,7 +1789,7 @@ int MPIR_Scatterv_allcomm_auto(const void *sendbuf, const MPI_Aint sendcounts[],
 int MPIR_Scatterv_impl(const void *sendbuf, const MPI_Aint sendcounts[], const MPI_Aint displs[],
                        MPI_Datatype sendtype, void *recvbuf, MPI_Aint recvcount,
                        MPI_Datatype recvtype, int root, MPIR_Comm * comm_ptr,
-                       MPIR_Errflag_t * errflag)
+                       MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -1753,7 +1841,7 @@ int MPIR_Scatterv_impl(const void *sendbuf, const MPI_Aint sendcounts[], const M
 
 int MPIR_Scatterv(const void *sendbuf, const MPI_Aint sendcounts[], const MPI_Aint displs[],
                   MPI_Datatype sendtype, void *recvbuf, MPI_Aint recvcount, MPI_Datatype recvtype,
-                  int root, MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
+                  int root, MPIR_Comm * comm_ptr, MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -1932,6 +2020,7 @@ int MPIR_Scatterv_init_impl(const void *sendbuf, const MPI_Aint sendcounts[],
     MPIR_ERR_CHKANDJUMP(!req, mpi_errno, MPI_ERR_OTHER, "**nomem");
     MPIR_Comm_add_ref(comm_ptr);
     req->comm = comm_ptr;
+    MPIR_Comm_save_inactive_request(comm_ptr, req);
     req->u.persist_coll.sched_type = MPIR_SCHED_INVALID;
     req->u.persist_coll.real_request = NULL;
     mpi_errno = MPIR_Iscatterv_sched_impl(sendbuf, sendcounts, displs, sendtype, recvbuf, recvcount,
@@ -1973,7 +2062,7 @@ int MPIR_Scatterv_init(const void *sendbuf, const MPI_Aint sendcounts[], const M
 
 int MPIR_Allgather_allcomm_auto(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype sendtype,
                                 void *recvbuf, MPI_Aint recvcount, MPI_Datatype recvtype,
-                                MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
+                                MPIR_Comm * comm_ptr, MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -1997,6 +2086,12 @@ int MPIR_Allgather_allcomm_auto(const void *sendbuf, MPI_Aint sendcount, MPI_Dat
                                                     recvcount, recvtype, comm_ptr, errflag);
             break;
         
+        case MPII_CSEL_CONTAINER_TYPE__ALGORITHM__MPIR_Allgather_intra_k_brucks:
+            mpi_errno = MPIR_Allgather_intra_k_brucks(sendbuf, sendcount, sendtype, recvbuf,
+                                                      recvcount, recvtype, comm_ptr,
+                                                      cnt->u.allgather.intra_k_brucks.k, errflag);
+            break;
+        
         case MPII_CSEL_CONTAINER_TYPE__ALGORITHM__MPIR_Allgather_intra_recursive_doubling:
             mpi_errno = MPIR_Allgather_intra_recursive_doubling(sendbuf, sendcount, sendtype,
                                 recvbuf, recvcount, recvtype, comm_ptr, errflag);
@@ -2005,6 +2100,24 @@ int MPIR_Allgather_allcomm_auto(const void *sendbuf, MPI_Aint sendcount, MPI_Dat
         case MPII_CSEL_CONTAINER_TYPE__ALGORITHM__MPIR_Allgather_intra_ring:
             mpi_errno = MPIR_Allgather_intra_ring(sendbuf, sendcount, sendtype, recvbuf, recvcount,
                                                   recvtype, comm_ptr, errflag);
+            break;
+        
+        case MPII_CSEL_CONTAINER_TYPE__ALGORITHM__MPIR_Allgather_intra_recexch_doubling:
+            mpi_errno = MPIR_Allgather_intra_recexch(sendbuf, sendcount, sendtype, recvbuf,
+                                                     recvcount, recvtype, comm_ptr,
+                                                     MPIR_ALLGATHER_RECEXCH_TYPE_DISTANCE_DOUBLING,
+                                                     cnt->u.allgather.intra_recexch_doubling.k,
+                                                     cnt->u.allgather.intra_recexch_doubling.single_phase_recv,
+                                                     errflag);
+            break;
+        
+        case MPII_CSEL_CONTAINER_TYPE__ALGORITHM__MPIR_Allgather_intra_recexch_halving:
+            mpi_errno = MPIR_Allgather_intra_recexch(sendbuf, sendcount, sendtype, recvbuf,
+                                                     recvcount, recvtype, comm_ptr,
+                                                     MPIR_ALLGATHER_RECEXCH_TYPE_DISTANCE_HALVING,
+                                                     cnt->u.allgather.intra_recexch_halving.k,
+                                                     cnt->u.allgather.intra_recexch_halving.single_phase_recv,
+                                                     errflag);
             break;
         
         case MPII_CSEL_CONTAINER_TYPE__ALGORITHM__MPIR_Allgather_inter_local_gather_remote_bcast:
@@ -2030,7 +2143,7 @@ int MPIR_Allgather_allcomm_auto(const void *sendbuf, MPI_Aint sendcount, MPI_Dat
 
 int MPIR_Allgather_impl(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype sendtype,
                         void *recvbuf, MPI_Aint recvcount, MPI_Datatype recvtype,
-                        MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
+                        MPIR_Comm * comm_ptr, MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -2039,6 +2152,11 @@ int MPIR_Allgather_impl(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype se
             case MPIR_CVAR_ALLGATHER_INTRA_ALGORITHM_brucks:
                 mpi_errno = MPIR_Allgather_intra_brucks(sendbuf, sendcount, sendtype, recvbuf,
                                                         recvcount, recvtype, comm_ptr, errflag);
+                break;
+            case MPIR_CVAR_ALLGATHER_INTRA_ALGORITHM_k_brucks:
+                mpi_errno = MPIR_Allgather_intra_k_brucks(sendbuf, sendcount, sendtype, recvbuf,
+                                                          recvcount, recvtype, comm_ptr,
+                                                          MPIR_CVAR_ALLGATHER_BRUCKS_KVAL, errflag);
                 break;
             case MPIR_CVAR_ALLGATHER_INTRA_ALGORITHM_recursive_doubling:
                 MPII_COLLECTIVE_FALLBACK_CHECK(comm_ptr->rank, comm_ptr->local_size == comm_ptr->coll.pof2, mpi_errno,
@@ -2049,6 +2167,22 @@ int MPIR_Allgather_impl(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype se
             case MPIR_CVAR_ALLGATHER_INTRA_ALGORITHM_ring:
                 mpi_errno = MPIR_Allgather_intra_ring(sendbuf, sendcount, sendtype, recvbuf, recvcount,
                                                       recvtype, comm_ptr, errflag);
+                break;
+            case MPIR_CVAR_ALLGATHER_INTRA_ALGORITHM_recexch_doubling:
+                mpi_errno = MPIR_Allgather_intra_recexch(sendbuf, sendcount, sendtype, recvbuf,
+                                                         recvcount, recvtype, comm_ptr,
+                                                         MPIR_ALLGATHER_RECEXCH_TYPE_DISTANCE_DOUBLING,
+                                                         MPIR_CVAR_ALLGATHER_RECEXCH_KVAL,
+                                                         MPIR_CVAR_ALLGATHER_RECEXCH_SINGLE_PHASE_RECV,
+                                                         errflag);
+                break;
+            case MPIR_CVAR_ALLGATHER_INTRA_ALGORITHM_recexch_halving:
+                mpi_errno = MPIR_Allgather_intra_recexch(sendbuf, sendcount, sendtype, recvbuf,
+                                                         recvcount, recvtype, comm_ptr,
+                                                         MPIR_ALLGATHER_RECEXCH_TYPE_DISTANCE_HALVING,
+                                                         MPIR_CVAR_ALLGATHER_RECEXCH_KVAL,
+                                                         MPIR_CVAR_ALLGATHER_RECEXCH_SINGLE_PHASE_RECV,
+                                                         errflag);
                 break;
             case MPIR_CVAR_ALLGATHER_INTRA_ALGORITHM_nb:
                 mpi_errno = MPIR_Allgather_allcomm_nb(sendbuf, sendcount, sendtype, recvbuf,
@@ -2095,7 +2229,7 @@ int MPIR_Allgather_impl(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype se
 
 int MPIR_Allgather(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype sendtype, void *recvbuf,
                    MPI_Aint recvcount, MPI_Datatype recvtype, MPIR_Comm * comm_ptr,
-                   MPIR_Errflag_t * errflag)
+                   MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -2342,6 +2476,7 @@ int MPIR_Allgather_init_impl(const void *sendbuf, MPI_Aint sendcount, MPI_Dataty
     MPIR_ERR_CHKANDJUMP(!req, mpi_errno, MPI_ERR_OTHER, "**nomem");
     MPIR_Comm_add_ref(comm_ptr);
     req->comm = comm_ptr;
+    MPIR_Comm_save_inactive_request(comm_ptr, req);
     req->u.persist_coll.sched_type = MPIR_SCHED_INVALID;
     req->u.persist_coll.real_request = NULL;
     mpi_errno = MPIR_Iallgather_sched_impl(sendbuf, sendcount, sendtype, recvbuf, recvcount,
@@ -2381,7 +2516,7 @@ int MPIR_Allgather_init(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype se
 int MPIR_Allgatherv_allcomm_auto(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype sendtype,
                                  void *recvbuf, const MPI_Aint recvcounts[],
                                  const MPI_Aint displs[], MPI_Datatype recvtype,
-                                 MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
+                                 MPIR_Comm * comm_ptr, MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -2442,7 +2577,7 @@ int MPIR_Allgatherv_allcomm_auto(const void *sendbuf, MPI_Aint sendcount, MPI_Da
 
 int MPIR_Allgatherv_impl(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype sendtype,
                          void *recvbuf, const MPI_Aint recvcounts[], const MPI_Aint displs[],
-                         MPI_Datatype recvtype, MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
+                         MPI_Datatype recvtype, MPIR_Comm * comm_ptr, MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -2514,7 +2649,7 @@ int MPIR_Allgatherv_impl(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype s
 
 int MPIR_Allgatherv(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype sendtype, void *recvbuf,
                     const MPI_Aint recvcounts[], const MPI_Aint displs[], MPI_Datatype recvtype,
-                    MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
+                    MPIR_Comm * comm_ptr, MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -2775,6 +2910,7 @@ int MPIR_Allgatherv_init_impl(const void *sendbuf, MPI_Aint sendcount, MPI_Datat
     MPIR_ERR_CHKANDJUMP(!req, mpi_errno, MPI_ERR_OTHER, "**nomem");
     MPIR_Comm_add_ref(comm_ptr);
     req->comm = comm_ptr;
+    MPIR_Comm_save_inactive_request(comm_ptr, req);
     req->u.persist_coll.sched_type = MPIR_SCHED_INVALID;
     req->u.persist_coll.real_request = NULL;
     mpi_errno = MPIR_Iallgatherv_sched_impl(sendbuf, sendcount, sendtype, recvbuf, recvcounts,
@@ -2815,7 +2951,7 @@ int MPIR_Allgatherv_init(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype s
 
 int MPIR_Alltoall_allcomm_auto(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype sendtype,
                                void *recvbuf, MPI_Aint recvcount, MPI_Datatype recvtype,
-                               MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
+                               MPIR_Comm * comm_ptr, MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -2837,6 +2973,12 @@ int MPIR_Alltoall_allcomm_auto(const void *sendbuf, MPI_Aint sendcount, MPI_Data
         case MPII_CSEL_CONTAINER_TYPE__ALGORITHM__MPIR_Alltoall_intra_brucks:
             mpi_errno = MPIR_Alltoall_intra_brucks(sendbuf, sendcount, sendtype, recvbuf, recvcount,
                                                    recvtype, comm_ptr, errflag);
+            break;
+        
+        case MPII_CSEL_CONTAINER_TYPE__ALGORITHM__MPIR_Alltoall_intra_k_brucks:
+            mpi_errno = MPIR_Alltoall_intra_k_brucks(sendbuf, sendcount, sendtype, recvbuf,
+                                                     recvcount, recvtype, comm_ptr,
+                                                     cnt->u.alltoall.intra_k_brucks.k, errflag);
             break;
         
         case MPII_CSEL_CONTAINER_TYPE__ALGORITHM__MPIR_Alltoall_intra_pairwise:
@@ -2877,7 +3019,7 @@ int MPIR_Alltoall_allcomm_auto(const void *sendbuf, MPI_Aint sendcount, MPI_Data
 
 int MPIR_Alltoall_impl(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype sendtype,
                        void *recvbuf, MPI_Aint recvcount, MPI_Datatype recvtype,
-                       MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
+                       MPIR_Comm * comm_ptr, MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -2888,6 +3030,13 @@ int MPIR_Alltoall_impl(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype sen
                                                "Alltoall brucks cannot be applied.\n");
                 mpi_errno = MPIR_Alltoall_intra_brucks(sendbuf, sendcount, sendtype, recvbuf, recvcount,
                                                        recvtype, comm_ptr, errflag);
+                break;
+            case MPIR_CVAR_ALLTOALL_INTRA_ALGORITHM_k_brucks:
+                MPII_COLLECTIVE_FALLBACK_CHECK(comm_ptr->rank, sendbuf != MPI_IN_PLACE, mpi_errno,
+                                               "Alltoall k_brucks cannot be applied.\n");
+                mpi_errno = MPIR_Alltoall_intra_k_brucks(sendbuf, sendcount, sendtype, recvbuf,
+                                                         recvcount, recvtype, comm_ptr,
+                                                         MPIR_CVAR_ALLTOALL_BRUCKS_KVAL, errflag);
                 break;
             case MPIR_CVAR_ALLTOALL_INTRA_ALGORITHM_pairwise:
                 MPII_COLLECTIVE_FALLBACK_CHECK(comm_ptr->rank, sendbuf != MPI_IN_PLACE, mpi_errno,
@@ -2952,7 +3101,7 @@ int MPIR_Alltoall_impl(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype sen
 
 int MPIR_Alltoall(const void *sendbuf, MPI_Aint sendcount, MPI_Datatype sendtype, void *recvbuf,
                   MPI_Aint recvcount, MPI_Datatype recvtype, MPIR_Comm * comm_ptr,
-                  MPIR_Errflag_t * errflag)
+                  MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -3205,6 +3354,7 @@ int MPIR_Alltoall_init_impl(const void *sendbuf, MPI_Aint sendcount, MPI_Datatyp
     MPIR_ERR_CHKANDJUMP(!req, mpi_errno, MPI_ERR_OTHER, "**nomem");
     MPIR_Comm_add_ref(comm_ptr);
     req->comm = comm_ptr;
+    MPIR_Comm_save_inactive_request(comm_ptr, req);
     req->u.persist_coll.sched_type = MPIR_SCHED_INVALID;
     req->u.persist_coll.real_request = NULL;
     mpi_errno = MPIR_Ialltoall_sched_impl(sendbuf, sendcount, sendtype, recvbuf, recvcount,
@@ -3245,7 +3395,7 @@ int MPIR_Alltoallv_allcomm_auto(const void *sendbuf, const MPI_Aint sendcounts[]
                                 const MPI_Aint sdispls[], MPI_Datatype sendtype, void *recvbuf,
                                 const MPI_Aint recvcounts[], const MPI_Aint rdispls[],
                                 MPI_Datatype recvtype, MPIR_Comm * comm_ptr,
-                                MPIR_Errflag_t * errflag)
+                                MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -3303,7 +3453,7 @@ int MPIR_Alltoallv_allcomm_auto(const void *sendbuf, const MPI_Aint sendcounts[]
 int MPIR_Alltoallv_impl(const void *sendbuf, const MPI_Aint sendcounts[], const MPI_Aint sdispls[],
                         MPI_Datatype sendtype, void *recvbuf, const MPI_Aint recvcounts[],
                         const MPI_Aint rdispls[], MPI_Datatype recvtype, MPIR_Comm * comm_ptr,
-                        MPIR_Errflag_t * errflag)
+                        MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -3374,7 +3524,7 @@ int MPIR_Alltoallv_impl(const void *sendbuf, const MPI_Aint sendcounts[], const 
 int MPIR_Alltoallv(const void *sendbuf, const MPI_Aint sendcounts[], const MPI_Aint sdispls[],
                    MPI_Datatype sendtype, void *recvbuf, const MPI_Aint recvcounts[],
                    const MPI_Aint rdispls[], MPI_Datatype recvtype, MPIR_Comm * comm_ptr,
-                   MPIR_Errflag_t * errflag)
+                   MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -3618,6 +3768,7 @@ int MPIR_Alltoallv_init_impl(const void *sendbuf, const MPI_Aint sendcounts[],
     MPIR_ERR_CHKANDJUMP(!req, mpi_errno, MPI_ERR_OTHER, "**nomem");
     MPIR_Comm_add_ref(comm_ptr);
     req->comm = comm_ptr;
+    MPIR_Comm_save_inactive_request(comm_ptr, req);
     req->u.persist_coll.sched_type = MPIR_SCHED_INVALID;
     req->u.persist_coll.real_request = NULL;
     mpi_errno = MPIR_Ialltoallv_sched_impl(sendbuf, sendcounts, sdispls, sendtype, recvbuf,
@@ -3661,7 +3812,7 @@ int MPIR_Alltoallw_allcomm_auto(const void *sendbuf, const MPI_Aint sendcounts[]
                                 const MPI_Aint sdispls[], const MPI_Datatype sendtypes[],
                                 void *recvbuf, const MPI_Aint recvcounts[],
                                 const MPI_Aint rdispls[], const MPI_Datatype recvtypes[],
-                                MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
+                                MPIR_Comm * comm_ptr, MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -3720,7 +3871,7 @@ int MPIR_Alltoallw_allcomm_auto(const void *sendbuf, const MPI_Aint sendcounts[]
 int MPIR_Alltoallw_impl(const void *sendbuf, const MPI_Aint sendcounts[], const MPI_Aint sdispls[],
                         const MPI_Datatype sendtypes[], void *recvbuf, const MPI_Aint recvcounts[],
                         const MPI_Aint rdispls[], const MPI_Datatype recvtypes[],
-                        MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
+                        MPIR_Comm * comm_ptr, MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -3791,7 +3942,7 @@ int MPIR_Alltoallw_impl(const void *sendbuf, const MPI_Aint sendcounts[], const 
 int MPIR_Alltoallw(const void *sendbuf, const MPI_Aint sendcounts[], const MPI_Aint sdispls[],
                    const MPI_Datatype sendtypes[], void *recvbuf, const MPI_Aint recvcounts[],
                    const MPI_Aint rdispls[], const MPI_Datatype recvtypes[], MPIR_Comm * comm_ptr,
-                   MPIR_Errflag_t * errflag)
+                   MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -4019,6 +4170,7 @@ int MPIR_Alltoallw_init_impl(const void *sendbuf, const MPI_Aint sendcounts[],
     MPIR_ERR_CHKANDJUMP(!req, mpi_errno, MPI_ERR_OTHER, "**nomem");
     MPIR_Comm_add_ref(comm_ptr);
     req->comm = comm_ptr;
+    MPIR_Comm_save_inactive_request(comm_ptr, req);
     req->u.persist_coll.sched_type = MPIR_SCHED_INVALID;
     req->u.persist_coll.real_request = NULL;
     mpi_errno = MPIR_Ialltoallw_sched_impl(sendbuf, sendcounts, sdispls, sendtypes, recvbuf,
@@ -4061,7 +4213,7 @@ int MPIR_Alltoallw_init(const void *sendbuf, const MPI_Aint sendcounts[], const 
 
 int MPIR_Reduce_allcomm_auto(const void *sendbuf, void *recvbuf, MPI_Aint count,
                              MPI_Datatype datatype, MPI_Op op, int root, MPIR_Comm * comm_ptr,
-                             MPIR_Errflag_t * errflag)
+                             MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -4117,7 +4269,7 @@ int MPIR_Reduce_allcomm_auto(const void *sendbuf, void *recvbuf, MPI_Aint count,
 }
 
 int MPIR_Reduce_impl(const void *sendbuf, void *recvbuf, MPI_Aint count, MPI_Datatype datatype,
-                     MPI_Op op, int root, MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
+                     MPI_Op op, int root, MPIR_Comm * comm_ptr, MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -4183,7 +4335,7 @@ int MPIR_Reduce_impl(const void *sendbuf, void *recvbuf, MPI_Aint count, MPI_Dat
 }
 
 int MPIR_Reduce(const void *sendbuf, void *recvbuf, MPI_Aint count, MPI_Datatype datatype,
-                MPI_Op op, int root, MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
+                MPI_Op op, int root, MPIR_Comm * comm_ptr, MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -4442,6 +4594,7 @@ int MPIR_Reduce_init_impl(const void *sendbuf, void *recvbuf, MPI_Aint count, MP
     MPIR_ERR_CHKANDJUMP(!req, mpi_errno, MPI_ERR_OTHER, "**nomem");
     MPIR_Comm_add_ref(comm_ptr);
     req->comm = comm_ptr;
+    MPIR_Comm_save_inactive_request(comm_ptr, req);
     req->u.persist_coll.sched_type = MPIR_SCHED_INVALID;
     req->u.persist_coll.real_request = NULL;
     mpi_errno = MPIR_Ireduce_sched_impl(sendbuf, recvbuf, count, datatype, op, root, comm_ptr, true,
@@ -4495,7 +4648,7 @@ int MPIR_Reduce_init(const void *sendbuf, void *recvbuf, MPI_Aint count, MPI_Dat
 
 int MPIR_Allreduce_allcomm_auto(const void *sendbuf, void *recvbuf, MPI_Aint count,
                                 MPI_Datatype datatype, MPI_Op op, MPIR_Comm * comm_ptr,
-                                MPIR_Errflag_t * errflag)
+                                MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -4528,6 +4681,35 @@ int MPIR_Allreduce_allcomm_auto(const void *sendbuf, void *recvbuf, MPI_Aint cou
                                 datatype, op, comm_ptr, errflag);
             break;
         
+        case MPII_CSEL_CONTAINER_TYPE__ALGORITHM__MPIR_Allreduce_intra_tree:
+            mpi_errno = MPIR_Allreduce_intra_tree(sendbuf, recvbuf, count, datatype, op, comm_ptr,
+                                                  cnt->u.allreduce.intra_tree.tree_type,
+                                                  cnt->u.allreduce.intra_tree.k,
+                                                  cnt->u.allreduce.intra_tree.chunk_size,
+                                                  cnt->u.allreduce.intra_tree.buffer_per_child,
+                                                  errflag);
+            break;
+        
+        case MPII_CSEL_CONTAINER_TYPE__ALGORITHM__MPIR_Allreduce_intra_recexch:
+            mpi_errno = MPIR_Allreduce_intra_recexch(sendbuf, recvbuf, count, datatype, op,
+                                                     comm_ptr, cnt->u.allreduce.intra_recexch.k,
+                                                     cnt->u.allreduce.intra_recexch.single_phase_recv,
+                                                     errflag);
+            break;
+        
+        case MPII_CSEL_CONTAINER_TYPE__ALGORITHM__MPIR_Allreduce_intra_ring:
+            mpi_errno = MPIR_Allreduce_intra_ring(sendbuf, recvbuf, count, datatype, op, comm_ptr,
+                                                  errflag);
+            break;
+        
+        case MPII_CSEL_CONTAINER_TYPE__ALGORITHM__MPIR_Allreduce_intra_k_reduce_scatter_allgather:
+            mpi_errno = MPIR_Allreduce_intra_k_reduce_scatter_allgather(sendbuf, recvbuf, count,
+                                datatype, op, comm_ptr,
+                                cnt->u.allreduce.intra_k_reduce_scatter_allgather.k,
+                                cnt->u.allreduce.intra_k_reduce_scatter_allgather.single_phase_recv,
+                                errflag);
+            break;
+        
         case MPII_CSEL_CONTAINER_TYPE__ALGORITHM__MPIR_Allreduce_inter_reduce_exchange_bcast:
             mpi_errno = MPIR_Allreduce_inter_reduce_exchange_bcast(sendbuf, recvbuf, count,
                                 datatype, op, comm_ptr, errflag);
@@ -4550,7 +4732,7 @@ int MPIR_Allreduce_allcomm_auto(const void *sendbuf, void *recvbuf, MPI_Aint cou
 }
 
 int MPIR_Allreduce_impl(const void *sendbuf, void *recvbuf, MPI_Aint count, MPI_Datatype datatype,
-                        MPI_Op op, MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
+                        MPI_Op op, MPIR_Comm * comm_ptr, MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -4571,6 +4753,33 @@ int MPIR_Allreduce_impl(const void *sendbuf, void *recvbuf, MPI_Aint count, MPI_
                                                "Allreduce reduce_scatter_allgather cannot be applied.\n");
                 mpi_errno = MPIR_Allreduce_intra_reduce_scatter_allgather(sendbuf, recvbuf, count,
                                     datatype, op, comm_ptr, errflag);
+                break;
+            case MPIR_CVAR_ALLREDUCE_INTRA_ALGORITHM_tree:
+                mpi_errno = MPIR_Allreduce_intra_tree(sendbuf, recvbuf, count, datatype, op, comm_ptr,
+                                                      MPIR_Allreduce_tree_type,
+                                                      MPIR_CVAR_ALLREDUCE_TREE_KVAL,
+                                                      MPIR_CVAR_ALLREDUCE_TREE_PIPELINE_CHUNK_SIZE,
+                                                      MPIR_CVAR_ALLREDUCE_TREE_BUFFER_PER_CHILD,
+                                                      errflag);
+                break;
+            case MPIR_CVAR_ALLREDUCE_INTRA_ALGORITHM_recexch:
+                mpi_errno = MPIR_Allreduce_intra_recexch(sendbuf, recvbuf, count, datatype, op,
+                                                         comm_ptr, MPIR_CVAR_ALLREDUCE_RECEXCH_KVAL,
+                                                         MPIR_CVAR_ALLREDUCE_RECEXCH_SINGLE_PHASE_RECV,
+                                                         errflag);
+                break;
+            case MPIR_CVAR_ALLREDUCE_INTRA_ALGORITHM_ring:
+                MPII_COLLECTIVE_FALLBACK_CHECK(comm_ptr->rank, MPIR_Op_is_commutative(op), mpi_errno,
+                                               "Allreduce ring cannot be applied.\n");
+                mpi_errno = MPIR_Allreduce_intra_ring(sendbuf, recvbuf, count, datatype, op, comm_ptr,
+                                                      errflag);
+                break;
+            case MPIR_CVAR_ALLREDUCE_INTRA_ALGORITHM_k_reduce_scatter_allgather:
+                MPII_COLLECTIVE_FALLBACK_CHECK(comm_ptr->rank, MPIR_Op_is_commutative(op), mpi_errno,
+                                               "Allreduce k_reduce_scatter_allgather cannot be applied.\n");
+                mpi_errno = MPIR_Allreduce_intra_k_reduce_scatter_allgather(sendbuf, recvbuf, count,
+                                    datatype, op, comm_ptr, MPIR_CVAR_ALLREDUCE_RECEXCH_KVAL,
+                                    MPIR_CVAR_ALLREDUCE_RECEXCH_SINGLE_PHASE_RECV, errflag);
                 break;
             case MPIR_CVAR_ALLREDUCE_INTRA_ALGORITHM_nb:
                 mpi_errno = MPIR_Allreduce_allcomm_nb(sendbuf, recvbuf, count, datatype, op,
@@ -4616,7 +4825,7 @@ int MPIR_Allreduce_impl(const void *sendbuf, void *recvbuf, MPI_Aint count, MPI_
 }
 
 int MPIR_Allreduce(const void *sendbuf, void *recvbuf, MPI_Aint count, MPI_Datatype datatype,
-                   MPI_Op op, MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
+                   MPI_Op op, MPIR_Comm * comm_ptr, MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -4914,6 +5123,7 @@ int MPIR_Allreduce_init_impl(const void *sendbuf, void *recvbuf, MPI_Aint count,
     MPIR_ERR_CHKANDJUMP(!req, mpi_errno, MPI_ERR_OTHER, "**nomem");
     MPIR_Comm_add_ref(comm_ptr);
     req->comm = comm_ptr;
+    MPIR_Comm_save_inactive_request(comm_ptr, req);
     req->u.persist_coll.sched_type = MPIR_SCHED_INVALID;
     req->u.persist_coll.real_request = NULL;
     mpi_errno = MPIR_Iallreduce_sched_impl(sendbuf, recvbuf, count, datatype, op, comm_ptr, true,
@@ -4967,7 +5177,7 @@ int MPIR_Allreduce_init(const void *sendbuf, void *recvbuf, MPI_Aint count, MPI_
 
 int MPIR_Reduce_scatter_allcomm_auto(const void *sendbuf, void *recvbuf,
                                      const MPI_Aint recvcounts[], MPI_Datatype datatype, MPI_Op op,
-                                     MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
+                                     MPIR_Comm * comm_ptr, MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -5028,7 +5238,7 @@ int MPIR_Reduce_scatter_allcomm_auto(const void *sendbuf, void *recvbuf,
 
 int MPIR_Reduce_scatter_impl(const void *sendbuf, void *recvbuf, const MPI_Aint recvcounts[],
                              MPI_Datatype datatype, MPI_Op op, MPIR_Comm * comm_ptr,
-                             MPIR_Errflag_t * errflag)
+                             MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -5099,7 +5309,7 @@ int MPIR_Reduce_scatter_impl(const void *sendbuf, void *recvbuf, const MPI_Aint 
 
 int MPIR_Reduce_scatter(const void *sendbuf, void *recvbuf, const MPI_Aint recvcounts[],
                         MPI_Datatype datatype, MPI_Op op, MPIR_Comm * comm_ptr,
-                        MPIR_Errflag_t * errflag)
+                        MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -5107,7 +5317,7 @@ int MPIR_Reduce_scatter(const void *sendbuf, void *recvbuf, const MPI_Aint recvc
     void *host_sendbuf = NULL;
     void *host_recvbuf = NULL;
     
-    int count = 0;
+    MPI_Aint count = 0;
     for (int i = 0; i < MPIR_Comm_size(comm_ptr); i++) {
         count += recvcounts[i];
     }
@@ -5323,7 +5533,7 @@ int MPIR_Ireduce_scatter(const void *sendbuf, void *recvbuf, const MPI_Aint recv
     void *host_sendbuf = NULL;
     void *host_recvbuf = NULL;
     
-    int count = 0;
+    MPI_Aint count = 0;
     for (int i = 0; i < MPIR_Comm_size(comm_ptr); i++) {
         count += recvcounts[i];
     }
@@ -5362,6 +5572,7 @@ int MPIR_Reduce_scatter_init_impl(const void *sendbuf, void *recvbuf, const MPI_
     MPIR_ERR_CHKANDJUMP(!req, mpi_errno, MPI_ERR_OTHER, "**nomem");
     MPIR_Comm_add_ref(comm_ptr);
     req->comm = comm_ptr;
+    MPIR_Comm_save_inactive_request(comm_ptr, req);
     req->u.persist_coll.sched_type = MPIR_SCHED_INVALID;
     req->u.persist_coll.real_request = NULL;
     mpi_errno = MPIR_Ireduce_scatter_sched_impl(sendbuf, recvbuf, recvcounts, datatype, op,
@@ -5387,7 +5598,7 @@ int MPIR_Reduce_scatter_init(const void *sendbuf, void *recvbuf, const MPI_Aint 
     void *host_sendbuf = NULL;
     void *host_recvbuf = NULL;
     
-    int count = 0;
+    MPI_Aint count = 0;
     for (int i = 0; i < MPIR_Comm_size(comm_ptr); i++) {
         count += recvcounts[i];
     }
@@ -5420,7 +5631,7 @@ int MPIR_Reduce_scatter_init(const void *sendbuf, void *recvbuf, const MPI_Aint 
 
 int MPIR_Reduce_scatter_block_allcomm_auto(const void *sendbuf, void *recvbuf, MPI_Aint recvcount,
                                            MPI_Datatype datatype, MPI_Op op, MPIR_Comm * comm_ptr,
-                                           MPIR_Errflag_t * errflag)
+                                           MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -5481,7 +5692,7 @@ int MPIR_Reduce_scatter_block_allcomm_auto(const void *sendbuf, void *recvbuf, M
 
 int MPIR_Reduce_scatter_block_impl(const void *sendbuf, void *recvbuf, MPI_Aint recvcount,
                                    MPI_Datatype datatype, MPI_Op op, MPIR_Comm * comm_ptr,
-                                   MPIR_Errflag_t * errflag)
+                                   MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -5554,7 +5765,7 @@ int MPIR_Reduce_scatter_block_impl(const void *sendbuf, void *recvbuf, MPI_Aint 
 
 int MPIR_Reduce_scatter_block(const void *sendbuf, void *recvbuf, MPI_Aint recvcount,
                               MPI_Datatype datatype, MPI_Op op, MPIR_Comm * comm_ptr,
-                              MPIR_Errflag_t * errflag)
+                              MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -5562,7 +5773,7 @@ int MPIR_Reduce_scatter_block(const void *sendbuf, void *recvbuf, MPI_Aint recvc
     void *host_sendbuf = NULL;
     void *host_recvbuf = NULL;
     
-    int count = MPIR_Comm_size(comm_ptr) * recvcount;
+    MPI_Aint count = MPIR_Comm_size(comm_ptr) * recvcount;
     if(!MPIR_Typerep_reduce_is_supported(op, datatype))
       MPIR_Coll_host_buffer_alloc(sendbuf, recvbuf, count, datatype, &host_sendbuf, &host_recvbuf);
     
@@ -5774,7 +5985,7 @@ int MPIR_Ireduce_scatter_block(const void *sendbuf, void *recvbuf, MPI_Aint recv
     void *host_sendbuf = NULL;
     void *host_recvbuf = NULL;
     
-    int count = MPIR_Comm_size(comm_ptr) * recvcount;
+    MPI_Aint count = MPIR_Comm_size(comm_ptr) * recvcount;
     if(!MPIR_Typerep_reduce_is_supported(op, datatype))
       MPIR_Coll_host_buffer_alloc(sendbuf, recvbuf, count, datatype, &host_sendbuf, &host_recvbuf);
     
@@ -5809,6 +6020,7 @@ int MPIR_Reduce_scatter_block_init_impl(const void *sendbuf, void *recvbuf, MPI_
     MPIR_ERR_CHKANDJUMP(!req, mpi_errno, MPI_ERR_OTHER, "**nomem");
     MPIR_Comm_add_ref(comm_ptr);
     req->comm = comm_ptr;
+    MPIR_Comm_save_inactive_request(comm_ptr, req);
     req->u.persist_coll.sched_type = MPIR_SCHED_INVALID;
     req->u.persist_coll.real_request = NULL;
     mpi_errno = MPIR_Ireduce_scatter_block_sched_impl(sendbuf, recvbuf, recvcount, datatype, op,
@@ -5834,7 +6046,7 @@ int MPIR_Reduce_scatter_block_init(const void *sendbuf, void *recvbuf, MPI_Aint 
     void *host_sendbuf = NULL;
     void *host_recvbuf = NULL;
     
-    int count = MPIR_Comm_size(comm_ptr) * recvcount;
+    MPI_Aint count = MPIR_Comm_size(comm_ptr) * recvcount;
     if(!MPIR_Typerep_reduce_is_supported(op, datatype))
       MPIR_Coll_host_buffer_alloc(sendbuf, recvbuf, count, datatype, &host_sendbuf, &host_recvbuf);
     
@@ -5863,7 +6075,7 @@ int MPIR_Reduce_scatter_block_init(const void *sendbuf, void *recvbuf, MPI_Aint 
 
 int MPIR_Scan_allcomm_auto(const void *sendbuf, void *recvbuf, MPI_Aint count,
                            MPI_Datatype datatype, MPI_Op op, MPIR_Comm * comm_ptr,
-                           MPIR_Errflag_t * errflag)
+                           MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -5908,7 +6120,7 @@ int MPIR_Scan_allcomm_auto(const void *sendbuf, void *recvbuf, MPI_Aint count,
 }
 
 int MPIR_Scan_impl(const void *sendbuf, void *recvbuf, MPI_Aint count, MPI_Datatype datatype,
-                   MPI_Op op, MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
+                   MPI_Op op, MPIR_Comm * comm_ptr, MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -5952,7 +6164,7 @@ int MPIR_Scan_impl(const void *sendbuf, void *recvbuf, MPI_Aint count, MPI_Datat
 }
 
 int MPIR_Scan(const void *sendbuf, void *recvbuf, MPI_Aint count, MPI_Datatype datatype, MPI_Op op,
-              MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
+              MPIR_Comm * comm_ptr, MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -6148,6 +6360,7 @@ int MPIR_Scan_init_impl(const void *sendbuf, void *recvbuf, MPI_Aint count, MPI_
     MPIR_ERR_CHKANDJUMP(!req, mpi_errno, MPI_ERR_OTHER, "**nomem");
     MPIR_Comm_add_ref(comm_ptr);
     req->comm = comm_ptr;
+    MPIR_Comm_save_inactive_request(comm_ptr, req);
     req->u.persist_coll.sched_type = MPIR_SCHED_INVALID;
     req->u.persist_coll.real_request = NULL;
     mpi_errno = MPIR_Iscan_sched_impl(sendbuf, recvbuf, count, datatype, op, comm_ptr, true,
@@ -6199,7 +6412,7 @@ int MPIR_Scan_init(const void *sendbuf, void *recvbuf, MPI_Aint count, MPI_Datat
 
 int MPIR_Exscan_allcomm_auto(const void *sendbuf, void *recvbuf, MPI_Aint count,
                              MPI_Datatype datatype, MPI_Op op, MPIR_Comm * comm_ptr,
-                             MPIR_Errflag_t * errflag)
+                             MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -6239,7 +6452,7 @@ int MPIR_Exscan_allcomm_auto(const void *sendbuf, void *recvbuf, MPI_Aint count,
 }
 
 int MPIR_Exscan_impl(const void *sendbuf, void *recvbuf, MPI_Aint count, MPI_Datatype datatype,
-                     MPI_Op op, MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
+                     MPI_Op op, MPIR_Comm * comm_ptr, MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -6273,7 +6486,7 @@ int MPIR_Exscan_impl(const void *sendbuf, void *recvbuf, MPI_Aint count, MPI_Dat
 }
 
 int MPIR_Exscan(const void *sendbuf, void *recvbuf, MPI_Aint count, MPI_Datatype datatype,
-                MPI_Op op, MPIR_Comm * comm_ptr, MPIR_Errflag_t * errflag)
+                MPI_Op op, MPIR_Comm * comm_ptr, MPIR_Errflag_t errflag)
 {
     int mpi_errno = MPI_SUCCESS;
     
@@ -6440,6 +6653,7 @@ int MPIR_Exscan_init_impl(const void *sendbuf, void *recvbuf, MPI_Aint count, MP
     MPIR_ERR_CHKANDJUMP(!req, mpi_errno, MPI_ERR_OTHER, "**nomem");
     MPIR_Comm_add_ref(comm_ptr);
     req->comm = comm_ptr;
+    MPIR_Comm_save_inactive_request(comm_ptr, req);
     req->u.persist_coll.sched_type = MPIR_SCHED_INVALID;
     req->u.persist_coll.real_request = NULL;
     mpi_errno = MPIR_Iexscan_sched_impl(sendbuf, recvbuf, count, datatype, op, comm_ptr, true,
@@ -6717,6 +6931,7 @@ int MPIR_Neighbor_allgather_init_impl(const void *sendbuf, MPI_Aint sendcount,
     MPIR_ERR_CHKANDJUMP(!req, mpi_errno, MPI_ERR_OTHER, "**nomem");
     MPIR_Comm_add_ref(comm_ptr);
     req->comm = comm_ptr;
+    MPIR_Comm_save_inactive_request(comm_ptr, req);
     req->u.persist_coll.sched_type = MPIR_SCHED_INVALID;
     req->u.persist_coll.real_request = NULL;
     mpi_errno = MPIR_Ineighbor_allgather_sched_impl(sendbuf, sendcount, sendtype, recvbuf,
@@ -6994,6 +7209,7 @@ int MPIR_Neighbor_allgatherv_init_impl(const void *sendbuf, MPI_Aint sendcount,
     MPIR_ERR_CHKANDJUMP(!req, mpi_errno, MPI_ERR_OTHER, "**nomem");
     MPIR_Comm_add_ref(comm_ptr);
     req->comm = comm_ptr;
+    MPIR_Comm_save_inactive_request(comm_ptr, req);
     req->u.persist_coll.sched_type = MPIR_SCHED_INVALID;
     req->u.persist_coll.real_request = NULL;
     mpi_errno = MPIR_Ineighbor_allgatherv_sched_impl(sendbuf, sendcount, sendtype, recvbuf,
@@ -7259,6 +7475,7 @@ int MPIR_Neighbor_alltoall_init_impl(const void *sendbuf, MPI_Aint sendcount, MP
     MPIR_ERR_CHKANDJUMP(!req, mpi_errno, MPI_ERR_OTHER, "**nomem");
     MPIR_Comm_add_ref(comm_ptr);
     req->comm = comm_ptr;
+    MPIR_Comm_save_inactive_request(comm_ptr, req);
     req->u.persist_coll.sched_type = MPIR_SCHED_INVALID;
     req->u.persist_coll.real_request = NULL;
     mpi_errno = MPIR_Ineighbor_alltoall_sched_impl(sendbuf, sendcount, sendtype, recvbuf, recvcount,
@@ -7545,6 +7762,7 @@ int MPIR_Neighbor_alltoallv_init_impl(const void *sendbuf, const MPI_Aint sendco
     MPIR_ERR_CHKANDJUMP(!req, mpi_errno, MPI_ERR_OTHER, "**nomem");
     MPIR_Comm_add_ref(comm_ptr);
     req->comm = comm_ptr;
+    MPIR_Comm_save_inactive_request(comm_ptr, req);
     req->u.persist_coll.sched_type = MPIR_SCHED_INVALID;
     req->u.persist_coll.real_request = NULL;
     mpi_errno = MPIR_Ineighbor_alltoallv_sched_impl(sendbuf, sendcounts, sdispls, sendtype, recvbuf,
@@ -7837,6 +8055,7 @@ int MPIR_Neighbor_alltoallw_init_impl(const void *sendbuf, const MPI_Aint sendco
     MPIR_ERR_CHKANDJUMP(!req, mpi_errno, MPI_ERR_OTHER, "**nomem");
     MPIR_Comm_add_ref(comm_ptr);
     req->comm = comm_ptr;
+    MPIR_Comm_save_inactive_request(comm_ptr, req);
     req->u.persist_coll.sched_type = MPIR_SCHED_INVALID;
     req->u.persist_coll.real_request = NULL;
     mpi_errno = MPIR_Ineighbor_alltoallw_sched_impl(sendbuf, sendcounts, sdispls, sendtypes,

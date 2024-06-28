@@ -1,10 +1,15 @@
-.TH MPI_Group_intersection 3 "2/22/2022" " " "MPI"
+.TH MPI_Group_intersection 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Group_intersection \-  Produces a group as the intersection of two existing groups 
 .SH SYNOPSIS
 .nf
-int MPI_Group_intersection(MPI_Group group1, MPI_Group group2, MPI_Group *newgroup)
 .fi
+.nf
+int MPI_Group_intersection(MPI_Group group1, MPI_Group group2,
+MPI_Group *newgroup)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -98,7 +103,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

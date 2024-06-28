@@ -1,5 +1,5 @@
 /**
- * Copyright (C) Mellanox Technologies Ltd. 2020.  ALL RIGHTS RESERVED.
+ * Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2020. ALL RIGHTS RESERVED.
  *
  * See file LICENSE for terms.
  */
@@ -13,6 +13,7 @@
 
 #include <ucp/proto/proto_single.inl>
 #include <ucp/rndv/proto_rndv.inl>
+#include <ucp/rndv/rndv.inl>
 
 
 void ucp_tag_rndv_matched(ucp_worker_h worker, ucp_request_t *rreq,
@@ -23,12 +24,8 @@ void ucp_tag_rndv_matched(ucp_worker_h worker, ucp_request_t *rreq,
     rreq->recv.tag.info.sender_tag = ucp_tag_hdr_from_rts(rts_hdr)->tag;
     rreq->recv.tag.info.length     = rts_hdr->size;
 
-    if (worker->context->config.ext.proto_enable) {
-        ucp_proto_rndv_receive_start(worker, rreq, rts_hdr, rts_hdr + 1,
-                                     hdr_length - sizeof(*rts_hdr));
-    } else {
-        ucp_rndv_receive(worker, rreq, rts_hdr, rts_hdr + 1);
-    }
+    ucp_rndv_receive_start(worker, rreq, rts_hdr, rts_hdr + 1,
+                           hdr_length - sizeof(*rts_hdr));
 }
 
 ucs_status_t ucp_tag_rndv_process_rts(ucp_worker_h worker,
@@ -81,12 +78,15 @@ UCS_PROFILE_FUNC(ucs_status_t, ucp_proto_progress_tag_rndv_rts, (self),
                  uct_pending_req_t *self)
 {
     ucp_request_t *sreq = ucs_container_of(self, ucp_request_t, send.uct);
+    ucs_status_t status;
 
-    return ucp_rndv_send_rts(sreq, ucp_tag_rndv_rts_pack,
-                             sizeof(ucp_rndv_rts_hdr_t));
+    status = ucp_rndv_send_rts(sreq, ucp_tag_rndv_rts_pack,
+                               sizeof(ucp_rndv_rts_hdr_t));
+    return ucp_rndv_send_handle_status_from_pending(sreq, status);
 }
 
-ucs_status_t ucp_tag_send_start_rndv(ucp_request_t *sreq)
+ucs_status_t
+ucp_tag_send_start_rndv(ucp_request_t *sreq, const ucp_request_param_t *param)
 {
     ucp_ep_h ep = sreq->send.ep;
     ucs_status_t status;
@@ -104,11 +104,11 @@ ucs_status_t ucp_tag_send_start_rndv(ucp_request_t *sreq)
     ucp_send_request_id_alloc(sreq);
 
     if (ucp_ep_config_key_has_tag_lane(&ucp_ep_config(ep)->key)) {
-        status = ucp_tag_offload_start_rndv(sreq);
+        status = ucp_tag_offload_start_rndv(sreq, param);
     } else {
         ucs_assert(sreq->send.lane == ucp_ep_get_am_lane(ep));
         sreq->send.uct.func = ucp_proto_progress_tag_rndv_rts;
-        status              = ucp_rndv_reg_send_buffer(sreq);
+        status              = ucp_rndv_reg_send_buffer(sreq, param);
     }
 
     return status;
@@ -142,17 +142,35 @@ UCS_PROFILE_FUNC(ucs_status_t, ucp_tag_rndv_rts_progress, (self),
         return UCS_OK;
     }
 
-    return UCS_PROFILE_CALL(ucp_proto_am_bcopy_single_progress, req,
+    status = UCS_PROFILE_CALL(ucp_proto_am_bcopy_single_progress, req,
                             UCP_AM_ID_RNDV_RTS, rpriv->lane,
                             ucp_tag_rndv_proto_rts_pack, req, max_rts_size,
-                            NULL);
+                            NULL, 0);
+    if (status == UCS_OK) {
+        UCP_EP_STAT_TAG_OP(req->send.ep, RNDV);
+    }
+
+    return status;
 }
 
-static ucp_proto_t ucp_tag_rndv_proto = {
-    .name       = "tag/rndv",
-    .flags      = 0,
-    .init       = ucp_proto_rndv_rts_init,
-    .config_str = ucp_proto_rndv_ctrl_config_str,
-    .progress   = {ucp_tag_rndv_rts_progress}
+ucs_status_t ucp_tag_rndv_rts_init(const ucp_proto_init_params_t *init_params)
+{
+    if (!ucp_proto_init_check_op(init_params,
+                                 UCS_BIT(UCP_OP_ID_TAG_SEND) |
+                                 UCS_BIT(UCP_OP_ID_TAG_SEND_SYNC))) {
+        return UCS_ERR_UNSUPPORTED;
+    }
+
+    return ucp_proto_rndv_rts_init(init_params);
+}
+
+ucp_proto_t ucp_tag_rndv_proto = {
+    .name     = "tag/rndv",
+    .desc     = NULL,
+    .flags    = 0,
+    .init     = ucp_tag_rndv_rts_init,
+    .query    = ucp_proto_rndv_rts_query,
+    .progress = {ucp_tag_rndv_rts_progress},
+    .abort    = ucp_proto_rndv_rts_abort,
+    .reset    = ucp_proto_rndv_rts_reset
 };
-UCP_PROTO_REGISTER(&ucp_tag_rndv_proto);

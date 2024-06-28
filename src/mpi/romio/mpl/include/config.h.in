@@ -22,15 +22,18 @@
 /* Defined if backtrace() could be fully identified. */
 #undef HAVE_BACKTRACE
 
-/* Define to 1 if you have the `bindprocessor' function. */
-#undef HAVE_BINDPROCESSOR
-
 /* define if valgrind is old and/or broken compared to what we are expecting
    */
 #undef HAVE_BROKEN_VALGRIND
 
+/* Define to 1 if the compiler supports __builtin_clz. */
+#undef HAVE_BUILTIN_CLZ
+
 /* Define to 1 if the compiler supports __builtin_expect. */
 #undef HAVE_BUILTIN_EXPECT
+
+/* Define to 1 if the compiler supports __builtin_popcount. */
+#undef HAVE_BUILTIN_POPCOUNT
 
 /* Define to 1 if we have support for C11 atomic intrinsics */
 #undef HAVE_C11_ATOMICS
@@ -65,6 +68,9 @@
 
 /* Define to 1 if you have the <drd.h> header file. */
 #undef HAVE_DRD_H
+
+/* Define to 1 if you have the <drm/i915_drm.h> header file. */
+#undef HAVE_DRM_I915_DRM_H
 
 /* Define to 1 if you have the <errno.h> header file. */
 #undef HAVE_ERRNO_H
@@ -117,20 +123,17 @@
 /* Define to 1 if you have the `abt' library (-labt). */
 #undef HAVE_LIBABT
 
-/* Define to 1 if you have the `amdhip64' library (-lamdhip64). */
-#undef HAVE_LIBAMDHIP64
-
 /* Define to 1 if you have the `cuda' library (-lcuda). */
 #undef HAVE_LIBCUDA
 
-/* Define to 1 if you have the `cudart' library (-lcudart). */
-#undef HAVE_LIBCUDART
+/* Define to 1 if you have the `dl' library (-ldl). */
+#undef HAVE_LIBDL
+
+/* Define to 1 if you have the <libdrm/i915_drm.h> header file. */
+#undef HAVE_LIBDRM_I915_DRM_H
 
 /* Define to 1 if you have the `uti' library (-luti). */
 #undef HAVE_LIBUTI
-
-/* Define to 1 if you have the `ze_loader' library (-lze_loader). */
-#undef HAVE_LIBZE_LOADER
 
 /* Define to 1 if you have the `mach_absolute_time' function. */
 #undef HAVE_MACH_ABSOLUTE_TIME
@@ -150,6 +153,12 @@
 /* Define to 1 if you have the `mkstemp' function. */
 #undef HAVE_MKSTEMP
 
+/* Define if avx is available */
+#undef HAVE_MM256_STOREU_SI256
+
+/* Define if avx512f is available */
+#undef HAVE_MM512_STOREU_SI512
+
 /* Define to 1 if you have the `mmap' function. */
 #undef HAVE_MMAP
 
@@ -168,7 +177,7 @@
 /* Define to 1 if you have the `pthread_mutexattr_setpshared' function. */
 #undef HAVE_PTHREAD_MUTEXATTR_SETPSHARED
 
-/* Define if pthread_setaffinity_np is available. */
+/* Define to 1 if you have the `pthread_setaffinity_np' function. */
 #undef HAVE_PTHREAD_SETAFFINITY_NP
 
 /* Define to 1 if you have the `pthread_yield' function. */
@@ -177,14 +186,8 @@
 /* Define to 1 if you have the `putenv' function. */
 #undef HAVE_PUTENV
 
-/* Define to 1 if you have the `sched_getaffinity' function. */
-#undef HAVE_SCHED_GETAFFINITY
-
 /* Define to 1 if you have the <sched.h> header file. */
 #undef HAVE_SCHED_H
-
-/* Define to 1 if you have the `sched_setaffinity' function. */
-#undef HAVE_SCHED_SETAFFINITY
 
 /* Define to 1 if you have the `sched_yield' function. */
 #undef HAVE_SCHED_YIELD
@@ -206,9 +209,6 @@
 
 /* Define to 1 if you have the `sleep' function. */
 #undef HAVE_SLEEP
-
-/* Define to 1 if you have the `snprintf' function. */
-#undef HAVE_SNPRINTF
 
 /* Define to 1 if you have the <stdarg.h> header file. */
 #undef HAVE_STDARG_H
@@ -258,9 +258,6 @@
 /* Define to 1 if you have the <thread.h> header file. */
 #undef HAVE_THREAD_H
 
-/* Define to 1 if you have the `thread_policy_set' function. */
-#undef HAVE_THREAD_POLICY_SET
-
 /* Define to 1 if you have the `thr_yield' function. */
 #undef HAVE_THR_YIELD
 
@@ -293,6 +290,9 @@
 
 /* Define to 1 if you have the <windows.h> header file. */
 #undef HAVE_WINDOWS_H
+
+/* Define to 1 if you have the <x86intrin.h> header file. */
+#undef HAVE_X86INTRIN_H
 
 /* Define to 1 if you have the `yield' function. */
 #undef HAVE_YIELD
@@ -335,9 +335,6 @@
 
 /* Define if putenv needs a declaration */
 #undef NEEDS_PUTENV_DECL
-
-/* Define if snprintf needs a declaration */
-#undef NEEDS_SNPRINTF_DECL
 
 /* Define if strdup needs a declaration */
 #undef NEEDS_STRDUP_DECL

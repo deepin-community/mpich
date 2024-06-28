@@ -20,7 +20,7 @@
 !
 !  initialize the mpi environment
 !
-      call mpi_init(ierr)
+      call mtest_init(ierr)
 
       call mpi_comm_create_keyval(MPI_COMM_DUP_FN, &
       &     MPI_NULL_DELETE_FN, &

@@ -1,13 +1,19 @@
-.TH MPIX_Grequest_start 3 "2/22/2022" " " "MPI"
+.TH MPIX_Grequest_start 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPIX_Grequest_start \-  Create and return a user-defined extended request 
 .SH SYNOPSIS
 .nf
-int MPIX_Grequest_start(MPI_Grequest_query_function *query_fn, MPI_Grequest_free_function *free_fn,
-MPI_Grequest_cancel_function *cancel_fn,
-MPIX_Grequest_poll_function *poll_fn, MPIX_Grequest_wait_function *wait_fn,
-void *extra_state, MPI_Request *request)
 .fi
+.nf
+int MPIX_Grequest_start(MPI_Grequest_query_function *query_fn,
+MPI_Grequest_free_function *free_fn,
+MPI_Grequest_cancel_function *cancel_fn,
+MPIX_Grequest_poll_function *poll_fn,
+MPIX_Grequest_wait_function *wait_fn, void *extra_state,
+MPI_Request *request)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -113,7 +119,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

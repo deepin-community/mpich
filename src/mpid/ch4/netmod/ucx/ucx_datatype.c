@@ -6,7 +6,7 @@
 #include "mpidimpl.h"
 #include "ucx_impl.h"
 #include <ucp/api/ucp.h>
-#ifdef HAVE_LIBHCOLL
+#ifdef HAVE_HCOLL
 #include "../../../common/hcoll/hcoll.h"
 #endif
 
@@ -69,7 +69,7 @@ static size_t pack(void *state, size_t offset, void *dest, size_t max_length)
     MPI_Aint actual_pack_bytes;
 
     MPIR_Typerep_pack(pack_state->buffer, pack_state->count, pack_state->datatype, offset,
-                      dest, max_length, &actual_pack_bytes);
+                      dest, max_length, &actual_pack_bytes, MPIR_TYPEREP_FLAG_NONE);
 
     return actual_pack_bytes;
 }
@@ -85,7 +85,7 @@ static ucs_status_t unpack(void *state, size_t offset, const void *src, size_t c
     max_unpack_bytes = MPL_MIN(packsize, count);
 
     MPIR_Typerep_unpack(src, max_unpack_bytes, pack_state->buffer, pack_state->count,
-                        pack_state->datatype, offset, &actual_unpack_bytes);
+                        pack_state->datatype, offset, &actual_unpack_bytes, MPIR_TYPEREP_FLAG_NONE);
     if (unlikely(actual_unpack_bytes != max_unpack_bytes)) {
         return UCS_ERR_MESSAGE_TRUNCATED;
     }
@@ -108,7 +108,7 @@ int MPIDI_UCX_mpi_type_free_hook(MPIR_Datatype * datatype_p)
         ucp_dt_destroy(datatype_p->dev.netmod.ucx.ucp_datatype);
         datatype_p->dev.netmod.ucx.ucp_datatype = -1;
     }
-#ifdef HAVE_LIBHCOLL
+#ifdef HAVE_HCOLL
     hcoll_type_free_hook(datatype_p);
 #endif
 
@@ -139,7 +139,7 @@ int MPIDI_UCX_mpi_type_commit_hook(MPIR_Datatype * datatype_p)
         datatype_p->dev.netmod.ucx.ucp_datatype = ucp_datatype;
 
     }
-#ifdef HAVE_LIBHCOLL
+#ifdef HAVE_HCOLL
     hcoll_type_commit_hook(datatype_p);
 #endif
 

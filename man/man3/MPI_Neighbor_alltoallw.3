@@ -1,12 +1,27 @@
-.TH MPI_Neighbor_alltoallw 3 "2/22/2022" " " "MPI"
+.TH MPI_Neighbor_alltoallw 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Neighbor_alltoallw \-  Like MPI_Neighbor_alltoallv but it allows one to send and receive with different types to and from each neighbor. 
 .SH SYNOPSIS
 .nf
-int MPI_Neighbor_alltoallw(const void *sendbuf, const int sendcounts[], const MPI_Aint sdispls[],
-const MPI_Datatype sendtypes[], void *recvbuf, const int recvcounts[],
-const MPI_Aint rdispls[], const MPI_Datatype recvtypes[], MPI_Comm comm)
 .fi
+.nf
+int MPI_Neighbor_alltoallw(const void *sendbuf, const int sendcounts[],
+const MPI_Aint sdispls[],
+const MPI_Datatype sendtypes[], void *recvbuf,
+const int recvcounts[], const MPI_Aint rdispls[],
+const MPI_Datatype recvtypes[], MPI_Comm comm)
+.fi
+
+.nf
+int MPI_Neighbor_alltoallw_c(const void *sendbuf, const MPI_Count sendcounts[],
+const MPI_Aint sdispls[],
+const MPI_Datatype sendtypes[], void *recvbuf,
+const MPI_Count recvcounts[],
+const MPI_Aint rdispls[],
+const MPI_Datatype recvtypes[], MPI_Comm comm)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -122,7 +137,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_BUFFER 

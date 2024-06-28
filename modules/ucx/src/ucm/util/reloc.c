@@ -1,5 +1,5 @@
 /**
- * Copyright (C) Mellanox Technologies Ltd. 2001-2015.  ALL RIGHTS RESERVED.
+ * Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2001-2015. ALL RIGHTS RESERVED.
  *
  * See file LICENSE for terms.
  */
@@ -17,7 +17,6 @@
 #include <ucs/sys/string.h>
 #include <ucs/sys/sys.h>
 
-#include <sys/fcntl.h>
 #include <sys/mman.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -28,6 +27,11 @@
 #include <fcntl.h>
 #include <link.h>
 #include <limits.h>
+
+#if HAVE_DECL_GETAUXVAL
+#include <sys/auxv.h>
+#endif
+
 
 /* Ensure this macro is defined (from <link.h>) - otherwise, cppcheck might
    fail with an "unknown macro" warning */
@@ -68,7 +72,7 @@ KHASH_MAP_INIT_INT64(ucm_dl_info_hash, ucm_dl_info_t)
 static UCS_LIST_HEAD(ucm_reloc_patch_list);
 static pthread_mutex_t ucm_reloc_patch_list_lock = PTHREAD_MUTEX_INITIALIZER;
 
-static khash_t(ucm_dl_info_hash) ucm_dl_info_hash;
+static khash_t(ucm_dl_info_hash) ucm_dl_info_hash      = KHASH_STATIC_INITIALIZER;
 static ucm_reloc_dlopen_func_t  ucm_reloc_orig_dlopen  = NULL;
 static ucm_reloc_dlclose_func_t ucm_reloc_orig_dlclose = NULL;
 
@@ -115,6 +119,14 @@ static ucs_status_t ucm_reloc_get_aux_phsize(int *phsize_p)
         *phsize_p = phsize;
         return UCS_OK;
     }
+
+#if HAVE_DECL_GETAUXVAL
+    phsize = getauxval(AT_PHENT);
+    if (phsize > 0) {
+        *phsize_p = phsize;
+        return UCS_OK;
+    }
+#endif
 
     fd = open(proc_auxv_filename, O_RDONLY);
     if (fd < 0) {
@@ -372,7 +384,7 @@ static ucs_status_t ucm_reloc_dl_info_get(const struct dl_phdr_info *phdr_info,
                                                strtab, symtab, dl_name);
     }
 
-    ucm_debug("added dl_info %p for %s with %u symbols range 0x%lx..0x%lx",
+    ucm_trace("added dl_info %p for %s with %u symbols range 0x%lx..0x%lx",
               dl_info, ucs_basename(dl_name), num_symbols, dl_info->start,
               dl_info->end);
 
@@ -617,7 +629,7 @@ out_apply_patches:
 
     pthread_mutex_lock(&ucm_reloc_patch_list_lock);
     ucs_list_for_each(patch, &ucm_reloc_patch_list, list) {
-        ucm_debug("in dlopen(%s), re-applying '%s' to %p", filename,
+        ucm_trace("in dlopen(%s), re-applying '%s' to %p", filename,
                   patch->symbol, patch->value);
         ucm_reloc_apply_patch(patch, 0);
     }
@@ -748,8 +760,4 @@ ucs_status_t ucm_reloc_modify(ucm_reloc_patch_t *patch)
 out_unlock:
     pthread_mutex_unlock(&ucm_reloc_patch_list_lock);
     return status;
-}
-
-UCS_STATIC_INIT {
-    kh_init_inplace(ucm_dl_info_hash, &ucm_dl_info_hash);
 }

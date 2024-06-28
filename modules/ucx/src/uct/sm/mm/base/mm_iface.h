@@ -1,6 +1,6 @@
 /**
  * Copyright (c) UT-Battelle, LLC. 2014-2015. ALL RIGHTS RESERVED.
- * Copyright (C) Mellanox Technologies Ltd. 2001-2015.  ALL RIGHTS RESERVED.
+ * Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2001-2015. ALL RIGHTS RESERVED.
  * Copyright (C) ARM Ltd. 2016.  ALL RIGHTS RESERVED.
  * See file LICENSE for terms.
  */
@@ -224,6 +224,12 @@ typedef struct uct_mm_iface {
 } uct_mm_iface_t;
 
 
+ucs_status_t
+uct_mm_iface_query_tl_devices(uct_md_h md,
+                              uct_tl_device_resource_t **tl_devices_p,
+                              unsigned *num_tl_devices_p);
+
+
 /*
  * Define a memory-mapper transport for MM.
  *
@@ -236,17 +242,11 @@ typedef struct uct_mm_iface {
  */
 #define UCT_MM_TL_DEFINE(_name, _md_ops, _rkey_unpack, _rkey_release, \
                          _cfg_prefix, _cfg_table) \
-    \
-    UCT_MM_COMPONENT_DEFINE(uct_##_name##_component, _name, _md_ops, \
-                            _rkey_unpack, _rkey_release, _cfg_prefix) \
-    \
-    UCT_TL_DEFINE(&(uct_##_name##_component).super, \
-                  _name, \
-                  uct_sm_base_query_tl_devices, \
-                  uct_mm_iface_t, \
-                  _cfg_prefix, \
-                  _cfg_table, \
-                  uct_mm_iface_config_t);
+    UCT_MM_COMPONENT_DEFINE(_name, _md_ops, _rkey_unpack, _rkey_release, \
+                            _cfg_prefix) \
+    UCT_TL_DEFINE_ENTRY(&UCT_COMPONENT_NAME(_name).super, _name, \
+                        uct_mm_iface_query_tl_devices, uct_mm_iface_t, \
+                        _cfg_prefix, _cfg_table, uct_mm_iface_config_t)
 
 
 extern ucs_config_field_t uct_mm_iface_config_table[];

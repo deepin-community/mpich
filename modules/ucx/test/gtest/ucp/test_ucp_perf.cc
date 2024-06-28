@@ -1,5 +1,5 @@
 /**
-* Copyright (C) Mellanox Technologies Ltd. 2001-2014.  ALL RIGHTS RESERVED.
+* Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2001-2014. ALL RIGHTS RESERVED.
 * Copyright (C) UT-Battelle, LLC. 2015. ALL RIGHTS RESERVED.
 * Copyright (C) ARM Ltd. 2020.  ALL RIGHTS RESERVED.
 *
@@ -11,6 +11,9 @@
 #include <common/test_perf.h>
 #include <ucp/core/ucp_types.h>
 
+extern "C" {
+#include <ucp/core/ucp_context.h>
+}
 
 #define MB   pow(1024.0, -2)
 #define UCT_PERF_TEST_MULTIPLIER  5
@@ -270,6 +273,13 @@ const test_perf::test_spec test_ucp_perf::tests[] =
     ucs_offsetof(ucx_perf_result_t, latency.total_average), 1e6, 0.001, 60.0,
     0 },
 
+  { "am_lat_memcpy", "usec",
+    UCX_PERF_API_UCP, UCX_PERF_CMD_AM, UCX_PERF_TEST_TYPE_PINGPONG,
+    UCX_PERF_WAIT_MODE_POLL,
+    UCP_PERF_DATATYPE_CONTIG, 0, 1, { 8 }, 1, 100000lu,
+    ucs_offsetof(ucx_perf_result_t, latency.total_average), 1e6, 0.001, 60.0,
+    UCX_PERF_TEST_FLAG_AM_RECV_COPY },
+
   { "am_lat_b", "usec",
     UCX_PERF_API_UCP, UCX_PERF_CMD_AM, UCX_PERF_TEST_TYPE_PINGPONG,
     UCX_PERF_WAIT_MODE_SLEEP,
@@ -318,6 +328,11 @@ UCS_TEST_SKIP_COND_P(test_ucp_perf, envelope, has_transport("self"))
 {
     bool check_perf = true;
     size_t max_iter = std::numeric_limits<size_t>::max();
+    test_spec test  = tests[get_variant_value(VARIANT_TEST_TYPE)];
+
+    if (test.is_amo() && m_ucp_config->ctx.proto_enable) {
+        UCS_TEST_SKIP_R("FIXME: proto_v2 selects SW AMO when HW device is present");
+    }
 
     if (has_transport("tcp")) {
         check_perf = false;
@@ -340,8 +355,6 @@ UCS_TEST_SKIP_COND_P(test_ucp_perf, envelope, has_transport("self"))
     /* coverity[tainted_string_argument] */
     ucs::scoped_setenv atomic_mode("UCX_ATOMIC_MODE", atomic_mode_str);
 
-    test_spec test = tests[get_variant_value(VARIANT_TEST_TYPE)];
-
     if (ucs_arch_get_cpu_model() == UCS_CPU_MODEL_ARM_AARCH64) {
         test.max *= UCT_ARM_PERF_TEST_MULTIPLIER;
         test.min /= UCT_ARM_PERF_TEST_MULTIPLIER;
@@ -350,6 +363,9 @@ UCS_TEST_SKIP_COND_P(test_ucp_perf, envelope, has_transport("self"))
         test.min /= UCT_PERF_TEST_MULTIPLIER;
     }
     test.iters = ucs_min(test.iters, max_iter);
+
+    test.send_mem_type = UCS_MEMORY_TYPE_HOST;
+    test.recv_mem_type = UCS_MEMORY_TYPE_HOST;
 
     run_test(test, 0, check_perf, "", "");
 }
@@ -361,6 +377,13 @@ class test_ucp_loopback : public test_ucp_perf {};
 UCS_TEST_P(test_ucp_loopback, envelope)
 {
     test_spec test = tests[get_variant_value(VARIANT_TEST_TYPE)];
+
+    if (test.is_amo() && m_ucp_config->ctx.proto_enable) {
+        UCS_TEST_SKIP_R("FIXME: proto_v2 selects SW AMO when HW device is present");
+    }
+
+    test.send_mem_type = UCS_MEMORY_TYPE_HOST;
+    test.recv_mem_type = UCS_MEMORY_TYPE_HOST;
 
     run_test(test, UCX_PERF_TEST_FLAG_LOOPBACK, true, "", "");
 }
@@ -397,7 +420,9 @@ UCS_TEST_P(test_ucp_wait_mem, envelope) {
                               0, 1, { 8 }, 1, 1000lu,
                               ucs_offsetof(ucx_perf_result_t,
                                            latency.total_average),
-                              1e6, 0.001, 30.0, 0 };
+                              1e6, 0.001, 30.0, 0,
+                              UCS_MEMORY_TYPE_HOST,
+                              UCS_MEMORY_TYPE_HOST };
     for (i = 0; i < max_iter; i++) {
         perf_iter = run_test(test1, 0, false, "", "");
         perf_avg += perf_iter;
@@ -417,7 +442,9 @@ UCS_TEST_P(test_ucp_wait_mem, envelope) {
                               0, 1, { 8 }, 1, 1000lu,
                               ucs_offsetof(ucx_perf_result_t,
                                            latency.total_average),
-                              1e6, perf_min * 0.3, perf_avg * 3, 0 };
+                              1e6, perf_min * 0.3, perf_avg * 3, 0,
+                              UCS_MEMORY_TYPE_HOST,
+                              UCS_MEMORY_TYPE_HOST };
     run_test(test2, 0, true, "", "");
 }
 

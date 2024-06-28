@@ -5,7 +5,7 @@
 
 #include "mpidimpl.h"
 
-int MPID_Imrecv(void *buf, int count, MPI_Datatype datatype,
+int MPID_Imrecv(void *buf, MPI_Aint count, MPI_Datatype datatype,
                 MPIR_Request *message, MPIR_Request **rreqp)
 {
     int mpi_errno = MPI_SUCCESS;
@@ -28,13 +28,12 @@ int MPID_Imrecv(void *buf, int count, MPI_Datatype datatype,
     rreq->dev.user_buf = buf;
     rreq->dev.user_count = count;
     rreq->dev.datatype = datatype;
+    MPII_RECVQ_REMEMBER(rreq, rreq->status.MPI_SOURCE, rreq->status.MPI_TAG, rreq->comm->recvcontext_id, buf, count);
 
 #ifdef ENABLE_COMM_OVERRIDES
     MPIDI_Comm_get_vc(comm, rreq->status.MPI_SOURCE, &vc);
     if (vc->comm_ops && vc->comm_ops->imrecv) {
-        MPID_THREAD_CS_ENTER(POBJ, vc->pobj_mutex);
         vc->comm_ops->imrecv(vc, rreq);
-        MPID_THREAD_CS_EXIT(POBJ, vc->pobj_mutex);
         goto fn_exit;
     }
 #endif

@@ -134,126 +134,125 @@ static void update_winattr_after_set_info(MPIR_Win * win)
     else
         MPIDI_WIN(win, winattr) &= ~((unsigned) MPIDI_WINATTR_ACCU_SAME_OP_NO_OP);
 
-    if (MPIDIG_WIN(win, info_args).perf_preference & (1 << MPIDIG_RMA_MR_PREFERRED))
-        MPIDI_WIN(win, winattr) |= MPIDI_WINATTR_MR_PREFERRED;
-    else
+    if ((MPIDIG_WIN(win, info_args).perf_preference & (1 << MPIDIG_RMA_LAT_PREFERRED)) &&
+        !(MPIDIG_WIN(win, info_args).perf_preference & (1 << MPIDIG_RMA_MR_PREFERRED))) {
         MPIDI_WIN(win, winattr) &= ~((unsigned) MPIDI_WINATTR_MR_PREFERRED);
+    } else {
+        MPIDI_WIN(win, winattr) |= MPIDI_WINATTR_MR_PREFERRED;
+    }
 }
+
+#define INFO_GET_BOOL(info, key, var) do { \
+    const char *_val = MPIR_Info_lookup(info, key); \
+    if (_val) { \
+        if (!strcmp(_val, "true")) \
+            var = 1; \
+        else if (!strcmp(_val, "false")) \
+            var = 0; \
+    } \
+} while (0)
 
 static int win_set_info(MPIR_Win * win, MPIR_Info * info, bool is_init)
 {
     int mpi_errno = MPI_SUCCESS;
     MPIR_FUNC_ENTER;
 
-    MPIR_Info *curr_ptr;
-    char *value, *token, *savePtr = NULL;
-    int save_ordering;
+    const char *val;
 
-    curr_ptr = info->next;
+    INFO_GET_BOOL(info, "no_locks", MPIDIG_WIN(win, info_args).no_locks);
 
-    while (curr_ptr) {
-        if (!strcmp(curr_ptr->key, "no_locks")) {
-            if (!strcmp(curr_ptr->value, "true"))
-                MPIDIG_WIN(win, info_args).no_locks = 1;
-            else if (!strcmp(curr_ptr->value, "false"))
-                MPIDIG_WIN(win, info_args).no_locks = 0;
-        } else if (!strcmp(curr_ptr->key, "accumulate_ordering")) {
-            save_ordering = MPIDIG_WIN(win, info_args).accumulate_ordering;
-            MPIDIG_WIN(win, info_args).accumulate_ordering = 0;
-            if (!strcmp(curr_ptr->value, "none")) {
-                /* For MPI-3, "none" means no ordering and is not default. */
-                goto next;
-            }
+    val = MPIR_Info_lookup(info, "accumulate_ordering");
+    if (val && strcmp(val, "none") == 0) {
+        /* For MPI-3, "none" means no ordering and is not default. */
+        MPIDIG_WIN(win, info_args).accumulate_ordering = 0;
+    } else if (val) {
+        int save_ordering = MPIDIG_WIN(win, info_args).accumulate_ordering;
+        MPIDIG_WIN(win, info_args).accumulate_ordering = 0;
 
-            /* value can never be NULL. */
-            MPIR_Assert(curr_ptr->value);
+        char *value, *token, *savePtr = NULL;
+        value = MPL_strdup(val);
+        token = (char *) strtok_r(value, ",", &savePtr);
 
-            value = curr_ptr->value;
-            token = (char *) strtok_r(value, ",", &savePtr);
-
-            while (token) {
-                if (!memcmp(token, "rar", 3))
-                    MPIDIG_WIN(win, info_args).accumulate_ordering =
-                        (MPIDIG_WIN(win, info_args).accumulate_ordering | MPIDIG_ACCU_ORDER_RAR);
-                else if (!memcmp(token, "raw", 3))
-                    MPIDIG_WIN(win, info_args).accumulate_ordering =
-                        (MPIDIG_WIN(win, info_args).accumulate_ordering | MPIDIG_ACCU_ORDER_RAW);
-                else if (!memcmp(token, "war", 3))
-                    MPIDIG_WIN(win, info_args).accumulate_ordering =
-                        (MPIDIG_WIN(win, info_args).accumulate_ordering | MPIDIG_ACCU_ORDER_WAR);
-                else if (!memcmp(token, "waw", 3))
-                    MPIDIG_WIN(win, info_args).accumulate_ordering =
-                        (MPIDIG_WIN(win, info_args).accumulate_ordering | MPIDIG_ACCU_ORDER_WAW);
-                else
-                    MPIR_ERR_SETANDSTMT(mpi_errno, MPI_ERR_ARG, goto fn_fail, "**info");
-
-                token = (char *) strtok_r(NULL, ",", &savePtr);
-            }
-
-            if (MPIDIG_WIN(win, info_args).accumulate_ordering == 0)
-                MPIDIG_WIN(win, info_args).accumulate_ordering = save_ordering;
-        } else if (!strcmp(curr_ptr->key, "accumulate_ops")) {
-            if (!strcmp(curr_ptr->value, "same_op"))
-                MPIDIG_WIN(win, info_args).accumulate_ops = MPIDIG_ACCU_SAME_OP;
-            else if (!strcmp(curr_ptr->value, "same_op_no_op"))
-                MPIDIG_WIN(win, info_args).accumulate_ops = MPIDIG_ACCU_SAME_OP_NO_OP;
-        } else if (!strcmp(curr_ptr->key, "same_disp_unit")) {
-            if (!strcmp(curr_ptr->value, "true"))
-                MPIDIG_WIN(win, info_args).same_disp_unit = 1;
-            else if (!strcmp(curr_ptr->value, "false"))
-                MPIDIG_WIN(win, info_args).same_disp_unit = 0;
-        } else if (!strcmp(curr_ptr->key, "same_size")) {
-            if (!strcmp(curr_ptr->value, "true"))
-                MPIDIG_WIN(win, info_args).same_size = 1;
-            else if (!strcmp(curr_ptr->value, "false"))
-                MPIDIG_WIN(win, info_args).same_size = 0;
-        } else if (!strcmp(curr_ptr->key, "alloc_shared_noncontig")) {
-            if (!strcmp(curr_ptr->value, "true"))
-                MPIDIG_WIN(win, info_args).alloc_shared_noncontig = 1;
-            else if (!strcmp(curr_ptr->value, "false"))
-                MPIDIG_WIN(win, info_args).alloc_shared_noncontig = 0;
-        } else if (!strcmp(curr_ptr->key, "alloc_shm")) {
-            if (!strcmp(curr_ptr->value, "true"))
-                MPIDIG_WIN(win, info_args).alloc_shm = 1;
-            else if (!strcmp(curr_ptr->value, "false"))
-                MPIDIG_WIN(win, info_args).alloc_shm = 0;
-        }
-        /* We allow the user to set the following atomics hint only at window init time,
-         * all future updates by win_set_info are ignored. This is because we do not
-         * have a good way to ensure all outstanding atomic ops have been completed
-         * on all processes especially in passive-target epochs. */
-        else if (is_init && !strcmp(curr_ptr->key, "which_accumulate_ops")) {
-            parse_info_accu_ops_str(curr_ptr->value,
-                                    &MPIDIG_WIN(win, info_args).which_accumulate_ops);
-        } else if (is_init && !strcmp(curr_ptr->key, "accumulate_noncontig_dtype")) {
-            if (!strcmp(curr_ptr->value, "true"))
-                MPIDIG_WIN(win, info_args).accumulate_noncontig_dtype = true;
-            else if (!strcmp(curr_ptr->value, "false"))
-                MPIDIG_WIN(win, info_args).accumulate_noncontig_dtype = false;
-        } else if (is_init && !strcmp(curr_ptr->key, "accumulate_max_bytes")) {
-            if (!strcmp(curr_ptr->value, "unlimited") || !strcmp(curr_ptr->value, "-1"))
-                MPIDIG_WIN(win, info_args).accumulate_max_bytes = -1;
-            else {
-                long max_bytes = atol(curr_ptr->value);
-                if (max_bytes >= 0)
-                    MPIDIG_WIN(win, info_args).accumulate_max_bytes = max_bytes;
-            }
-        } else if (is_init && !strcmp(curr_ptr->key, "disable_shm_accumulate")) {
-            if (!strcmp(curr_ptr->value, "true"))
-                MPIDIG_WIN(win, info_args).disable_shm_accumulate = true;
+        while (token) {
+            if (!memcmp(token, "rar", 3))
+                MPIDIG_WIN(win, info_args).accumulate_ordering =
+                    (MPIDIG_WIN(win, info_args).accumulate_ordering | MPIDIG_ACCU_ORDER_RAR);
+            else if (!memcmp(token, "raw", 3))
+                MPIDIG_WIN(win, info_args).accumulate_ordering =
+                    (MPIDIG_WIN(win, info_args).accumulate_ordering | MPIDIG_ACCU_ORDER_RAW);
+            else if (!memcmp(token, "war", 3))
+                MPIDIG_WIN(win, info_args).accumulate_ordering =
+                    (MPIDIG_WIN(win, info_args).accumulate_ordering | MPIDIG_ACCU_ORDER_WAR);
+            else if (!memcmp(token, "waw", 3))
+                MPIDIG_WIN(win, info_args).accumulate_ordering =
+                    (MPIDIG_WIN(win, info_args).accumulate_ordering | MPIDIG_ACCU_ORDER_WAW);
             else
-                MPIDIG_WIN(win, info_args).disable_shm_accumulate = false;
-        } else if (is_init && !strcmp(curr_ptr->key, "coll_attach")) {
-            if (!strcmp(curr_ptr->value, "true"))
-                MPIDIG_WIN(win, info_args).coll_attach = true;
-            else
-                MPIDIG_WIN(win, info_args).coll_attach = false;
-        } else if (is_init && !strcmp(curr_ptr->key, "perf_preference")) {
-            parse_info_perf_preference_str(curr_ptr->value,
-                                           &MPIDIG_WIN(win, info_args).perf_preference);
+                MPIR_ERR_SETANDSTMT(mpi_errno, MPI_ERR_ARG, goto fn_fail, "**info");
+
+            token = (char *) strtok_r(NULL, ",", &savePtr);
         }
-      next:
-        curr_ptr = curr_ptr->next;
+
+        if (MPIDIG_WIN(win, info_args).accumulate_ordering == 0)
+            MPIDIG_WIN(win, info_args).accumulate_ordering = save_ordering;
+
+        MPL_free(value);
+    }
+
+    val = MPIR_Info_lookup(info, "accumulate_ops");
+    if (val) {
+        if (!strcmp(val, "same_op"))
+            MPIDIG_WIN(win, info_args).accumulate_ops = MPIDIG_ACCU_SAME_OP;
+        else if (!strcmp(val, "same_op_no_op"))
+            MPIDIG_WIN(win, info_args).accumulate_ops = MPIDIG_ACCU_SAME_OP_NO_OP;
+    }
+
+    INFO_GET_BOOL(info, "same_disp_unit", MPIDIG_WIN(win, info_args).same_disp_unit);
+    INFO_GET_BOOL(info, "same_size", MPIDIG_WIN(win, info_args).same_size);
+    INFO_GET_BOOL(info, "alloc_shared_noncontig",
+                  MPIDIG_WIN(win, info_args).alloc_shared_noncontig);
+    INFO_GET_BOOL(info, "alloc_shm", MPIDIG_WIN(win, info_args).alloc_shm);
+    INFO_GET_BOOL(info, "optimized_mr", MPIDIG_WIN(win, info_args).optimized_mr);
+
+    /* We allow the user to set the following atomics hint only at window init time,
+     * all future updates by win_set_info are ignored. This is because we do not
+     * have a good way to ensure all outstanding atomic ops have been completed
+     * on all processes especially in passive-target epochs. */
+    val = MPIR_Info_lookup(info, "which_accumulate_ops");
+    if (val) {
+        parse_info_accu_ops_str(val, &MPIDIG_WIN(win, info_args).which_accumulate_ops);
+    }
+
+    INFO_GET_BOOL(info, "accumulate_noncontig_dtype",
+                  MPIDIG_WIN(win, info_args).accumulate_noncontig_dtype);
+
+    val = MPIR_Info_lookup(info, "accumulate_max_bytes");
+    if (val) {
+        if (!strcmp(val, "unlimited") || !strcmp(val, "-1"))
+            MPIDIG_WIN(win, info_args).accumulate_max_bytes = -1;
+        else {
+            long max_bytes = atol(val);
+            if (max_bytes >= 0)
+                MPIDIG_WIN(win, info_args).accumulate_max_bytes = max_bytes;
+        }
+    }
+
+    INFO_GET_BOOL(info, "disable_shm_accumulate",
+                  MPIDIG_WIN(win, info_args).disable_shm_accumulate);
+    INFO_GET_BOOL(info, "coll_attach", MPIDIG_WIN(win, info_args).coll_attach);
+
+    val = MPIR_Info_lookup(info, "perf_preference");
+    if (val) {
+        parse_info_perf_preference_str(val, &MPIDIG_WIN(win, info_args).perf_preference);
+    }
+
+    val = MPIR_Info_lookup(info, "mpi_accumulate_granularity");
+    if (val) {
+        int value = atoi(val);
+        if (value > 0) {
+            MPIDIG_WIN(win, info_args).accumulate_granularity = value;
+        } else {
+            MPIDIG_WIN(win, info_args).accumulate_granularity = 0;
+        }
     }
 
   fn_exit:
@@ -332,6 +331,8 @@ static int win_init(MPI_Aint length, int disp_unit, MPIR_Win ** win_ptr, MPIR_In
     MPIDIG_WIN(win, info_args).accumulate_max_bytes = -1;
     MPIDIG_WIN(win, info_args).disable_shm_accumulate = false;
     MPIDIG_WIN(win, info_args).coll_attach = false;
+    MPIDIG_WIN(win, info_args).optimized_mr = false;
+    MPIDIG_WIN(win, info_args).accumulate_granularity = 0;
 
     if ((info != NULL) && ((int *) info != (int *) MPI_INFO_NULL)) {
         mpi_errno = win_set_info(win, info, TRUE /* is_init */);
@@ -349,9 +350,27 @@ static int win_init(MPI_Aint length, int disp_unit, MPIR_Win ** win_ptr, MPIR_In
     MPIDIG_WIN(win, win_id) = MPIDIG_generate_win_id(comm_ptr);
     MPIDIU_map_set(MPIDI_global.win_map, MPIDIG_WIN(win, win_id), win, MPL_MEM_RMA);
 
-    /* we need consistent vci to run am operations.
-     * Note: netmod and shm may further hash it down */
-    MPIDI_WIN(win, am_vci) = MPIDI_get_vci(SRC_VCI_FROM_SENDER, win->comm_ptr, 0, 0, 0);
+    if (comm_ptr->stream_comm_type == MPIR_STREAM_COMM_NONE) {
+        MPIDI_WIN(win, am_vci) = MPIDI_get_vci(SRC_VCI_FROM_SENDER, win->comm_ptr, 0, 0, 0);
+        MPIDI_WIN(win, vci_table) = NULL;
+    } else if (comm_ptr->stream_comm_type == MPIR_STREAM_COMM_SINGLE) {
+        int *vci_table = MPL_malloc(comm_ptr->local_size * sizeof(int), MPL_MEM_OTHER);
+        for (int i = 0; i < comm_ptr->local_size; i++) {
+            vci_table[i] = comm_ptr->stream_comm.single.vci_table[i];
+        }
+        MPIDI_WIN(win, am_vci) = vci_table[comm_ptr->rank];
+        MPIDI_WIN(win, vci_table) = vci_table;
+    } else if (comm_ptr->stream_comm_type == MPIR_STREAM_COMM_MULTIPLEX) {
+        int *vci_table = MPL_malloc(comm_ptr->local_size * sizeof(int), MPL_MEM_OTHER);
+        for (int i = 0; i < comm_ptr->local_size; i++) {
+            int displ = comm_ptr->stream_comm.multiplex.vci_displs[i];
+            vci_table[i] = comm_ptr->stream_comm.multiplex.vci_table[displ];
+        }
+        MPIDI_WIN(win, am_vci) = vci_table[comm_ptr->rank];
+        MPIDI_WIN(win, vci_table) = vci_table;
+    } else {
+        MPIR_Assert(0);
+    }
 
     /* set winattr for performance optimization at fast path:
      * - check if comm is COMM_WORLD or dup of COMM_WORLD
@@ -370,13 +389,12 @@ static int win_init(MPI_Aint length, int disp_unit, MPIR_Win ** win_ptr, MPIR_In
 
     /* If no local processes on each node, set ACCU_NO_SHM to enable native atomics */
     bool no_local = false, all_no_local = false;
-    MPIR_Errflag_t errflag = MPIR_ERR_NONE;
     if (!comm_ptr->node_comm)
         no_local = true;
 
     mpi_errno = MPIR_Allreduce(&no_local, &all_no_local, 1, MPI_C_BOOL,
-                               MPI_LAND, comm_ptr, &errflag);
-    MPIR_ERR_CHKANDJUMP(errflag, mpi_errno, MPI_ERR_OTHER, "**coll_fail");
+                               MPI_LAND, comm_ptr, MPIR_ERR_NONE);
+    MPIR_ERR_CHECK(mpi_errno);
     if (all_no_local)
         MPIDI_WIN(win, winattr) |= MPIDI_WINATTR_ACCU_NO_SHM;
 
@@ -418,6 +436,8 @@ static int win_finalize(MPIR_Win ** win_ptr)
             (MPIR_cc_get(MPIDIG_WIN(win, remote_acc_cmpl_cnts)) == 0) &&
             all_local_completed && all_remote_completed;
     } while (all_completed != 1);
+
+    MPL_free(MPIDI_WIN(win, vci_table));
 
     mpi_errno = MPIDI_NM_mpi_win_free_hook(win);
     MPIR_ERR_CHECK(mpi_errno);
@@ -471,7 +491,6 @@ static int win_shm_alloc_impl(MPI_Aint size, int disp_unit, MPIR_Comm * comm_ptr
                               MPIR_Win ** win_ptr, int shm_option)
 {
     int i, mpi_errno = MPI_SUCCESS;
-    MPIR_Errflag_t errflag = MPIR_ERR_NONE;
     MPIR_Win *win = NULL;
     size_t total_shm_size = 0LL;
     MPIDIG_win_shared_info_t *shared_table = NULL;
@@ -484,9 +503,6 @@ static int win_shm_alloc_impl(MPI_Aint size, int disp_unit, MPIR_Comm * comm_ptr
     MPIR_CHKPMEM_DECL(2);
     MPIR_CHKLMEM_DECL(1);
     MPIR_FUNC_ENTER;
-
-    if (mpi_errno != MPI_SUCCESS)
-        goto fn_fail;
 
     win = *win_ptr;
     *base_ptr = NULL;
@@ -508,7 +524,7 @@ static int win_shm_alloc_impl(MPI_Aint size, int disp_unit, MPIR_Comm * comm_ptr
                                    MPI_DATATYPE_NULL,
                                    shared_table,
                                    sizeof(MPIDIG_win_shared_info_t), MPI_BYTE, shm_comm_ptr,
-                                   &errflag);
+                                   MPIR_ERR_NONE);
         MPIR_T_PVAR_TIMER_END(RMA, rma_wincreate_allgather);
         if (mpi_errno != MPI_SUCCESS)
             goto fn_fail;
@@ -516,10 +532,6 @@ static int win_shm_alloc_impl(MPI_Aint size, int disp_unit, MPIR_Comm * comm_ptr
         MPIR_CHKLMEM_MALLOC(shm_offsets, MPI_Aint *, shm_comm_ptr->local_size * sizeof(MPI_Aint),
                             mpi_errno, "shm offset", MPL_MEM_RMA);
 
-        /* No allreduce here because this is a shared memory domain
-         * and should be a relatively small number of processes
-         * and a non performance sensitive API.
-         */
         for (i = 0; i < shm_comm_ptr->local_size; i++) {
             shm_offsets[i] = (MPI_Aint) total_shm_size;
             if (MPIDIG_WIN(win, info_args).alloc_shared_noncontig)
@@ -549,8 +561,8 @@ static int win_shm_alloc_impl(MPI_Aint size, int disp_unit, MPIR_Comm * comm_ptr
          * - user sets alloc_shared_noncontig=true, thus we can internally make
          *   the size aligned on each process. */
         mpi_errno = MPIR_Allreduce(&symheap_flag, &global_symheap_flag, 1, MPI_C_BOOL,
-                                   MPI_LAND, comm_ptr, &errflag);
-        MPIR_ERR_CHKANDJUMP(errflag, mpi_errno, MPI_ERR_OTHER, "**coll_fail");
+                                   MPI_LAND, comm_ptr, MPIR_ERR_NONE);
+        MPIR_ERR_CHECK(mpi_errno);
     } else
         global_symheap_flag = false;
 
@@ -563,13 +575,10 @@ static int win_shm_alloc_impl(MPI_Aint size, int disp_unit, MPIR_Comm * comm_ptr
     if (global_symheap_flag) {
         size_t my_offset = (shm_comm_ptr) ? shm_offsets[shm_comm_ptr->rank] : 0;
         MPIDIG_WIN(win, mmap_sz) = mapsize;
-        mpi_errno =
-            MPIDU_shm_alloc_symm_all(comm_ptr, mapsize, my_offset, &MPIDIG_WIN(win, mmap_addr),
-                                     &symheap_mapfail_flag);
-        if (mpi_errno != MPI_SUCCESS)
-            goto fn_fail;
-
-        if (symheap_mapfail_flag) {
+        int rc = MPIDU_shm_alloc_symm_all(comm_ptr, mapsize, my_offset,
+                                          &MPIDIG_WIN(win, mmap_addr));
+        if (rc != MPI_SUCCESS) {
+            symheap_mapfail_flag = true;
             MPIDIG_WIN(win, mmap_sz) = 0;
             MPIDIG_WIN(win, mmap_addr) = NULL;
         }
@@ -579,13 +588,11 @@ static int win_shm_alloc_impl(MPI_Aint size, int disp_unit, MPIR_Comm * comm_ptr
     if (!global_symheap_flag || symheap_mapfail_flag) {
         if (shm_comm_ptr != NULL && mapsize) {
             MPIDIG_WIN(win, mmap_sz) = mapsize;
-            mpi_errno =
-                MPIDU_shm_alloc(shm_comm_ptr, mapsize, &MPIDIG_WIN(win, mmap_addr),
-                                &shm_mapfail_flag);
-            if (mpi_errno != MPI_SUCCESS)
-                goto fn_fail;
-
-            if (shm_mapfail_flag) {
+            int rc = MPIDU_shm_alloc(shm_comm_ptr, mapsize, &MPIDIG_WIN(win, mmap_addr));
+            if (rc == MPI_SUCCESS) {
+                symheap_mapfail_flag = false;
+            } else {
+                symheap_mapfail_flag = true;
                 MPIDIG_WIN(win, mmap_sz) = 0;
                 MPIDIG_WIN(win, mmap_addr) = NULL;
             }
@@ -677,7 +684,6 @@ int MPIDIG_RMA_Init_sync_pvars(void)
 int MPIDIG_mpi_win_set_info(MPIR_Win * win, MPIR_Info * info)
 {
     int mpi_errno = MPI_SUCCESS;
-    MPIR_Errflag_t errflag = MPIR_ERR_NONE;
     MPIR_FUNC_ENTER;
 
     mpi_errno = win_set_info(win, info, FALSE /* is_init */);
@@ -686,7 +692,7 @@ int MPIDIG_mpi_win_set_info(MPIR_Win * win, MPIR_Info * info)
     /* Do not update winattr except for info set at window creation.
      * Because it will change RMA's behavior which requires collective synchronization. */
 
-    mpi_errno = MPIR_Barrier(win->comm_ptr, &errflag);
+    mpi_errno = MPIR_Barrier(win->comm_ptr, MPIR_ERR_NONE);
   fn_exit:
     MPIR_FUNC_EXIT;
     return mpi_errno;
@@ -817,6 +823,20 @@ int MPIDIG_mpi_win_get_info(MPIR_Win * win, MPIR_Info ** info_p_p)
         MPIR_ERR_CHECK(mpi_errno);
     }
 
+    if (MPIDIG_WIN(win, info_args).optimized_mr) {
+        mpi_errno = MPIR_Info_set_impl(*info_p_p, "optimized_mr", "true");
+    } else {
+        mpi_errno = MPIR_Info_set_impl(*info_p_p, "optimized_mr", "false");
+    }
+    MPIR_ERR_CHECK(mpi_errno);
+
+    if (win->comm_ptr) {
+        char *memory_alloc_kinds;
+        MPIR_get_memory_kinds_from_comm(win->comm_ptr, &memory_alloc_kinds);
+        mpi_errno = MPIR_Info_set_impl(*info_p_p, "mpi_memory_alloc_kinds", memory_alloc_kinds);
+        MPIR_ERR_CHECK(mpi_errno);
+    }
+
   fn_exit:
     MPIR_FUNC_EXIT;
     return mpi_errno;
@@ -831,14 +851,13 @@ int MPIDIG_mpi_win_get_info(MPIR_Win * win, MPIR_Info ** info_p_p)
 int MPIDIG_mpi_win_free(MPIR_Win ** win_ptr)
 {
     int mpi_errno = MPI_SUCCESS;
-    MPIR_Errflag_t errflag = MPIR_ERR_NONE;
     MPIR_Win *win = *win_ptr;
     MPIR_FUNC_ENTER;
 
     MPIDIG_ACCESS_EPOCH_CHECK_NONE(win, mpi_errno, return mpi_errno);
     MPIDIG_EXPOSURE_EPOCH_CHECK_NONE(win, mpi_errno, return mpi_errno);
 
-    mpi_errno = MPIR_Barrier(win->comm_ptr, &errflag);
+    mpi_errno = MPIR_Barrier(win->comm_ptr, MPIR_ERR_NONE);
     if (mpi_errno != MPI_SUCCESS)
         goto fn_fail;
 
@@ -854,7 +873,6 @@ int MPIDIG_mpi_win_create(void *base, MPI_Aint length, int disp_unit, MPIR_Info 
                           MPIR_Comm * comm_ptr, MPIR_Win ** win_ptr)
 {
     int mpi_errno = MPI_SUCCESS;
-    MPIR_Errflag_t errflag = MPIR_ERR_NONE;
     MPIR_Win *win;
 
     MPIR_FUNC_ENTER;
@@ -876,7 +894,7 @@ int MPIDIG_mpi_win_create(void *base, MPI_Aint length, int disp_unit, MPIR_Info 
     MPIR_ERR_CHECK(mpi_errno);
 #endif
 
-    mpi_errno = MPIR_Barrier(win->comm_ptr, &errflag);
+    mpi_errno = MPIR_Barrier(win->comm_ptr, MPIR_ERR_NONE);
 
     if (mpi_errno != MPI_SUCCESS)
         goto fn_fail;
@@ -915,9 +933,15 @@ int MPIDIG_mpi_win_allocate_shared(MPI_Aint size, int disp_unit, MPIR_Info * inf
                                    MPIR_Comm * comm_ptr, void **base_ptr, MPIR_Win ** win_ptr)
 {
     int mpi_errno = MPI_SUCCESS;
-    MPIR_Errflag_t errflag = MPIR_ERR_NONE;
     MPIR_Win *win = NULL;
     MPIR_FUNC_ENTER;
+
+    /* return error if not all processes are on the same shared memory domain */
+    if (comm_ptr->local_size > 1 &&
+        (comm_ptr->node_comm == NULL || comm_ptr->node_comm->local_size < comm_ptr->local_size)) {
+        *win_ptr = NULL;
+        MPIR_ERR_SETANDJUMP(mpi_errno, MPI_ERR_OTHER, "**winallocnotshared");
+    }
 
     mpi_errno = win_init(size, disp_unit, win_ptr, info_ptr, comm_ptr, MPI_WIN_FLAVOR_SHARED,
                          MPI_WIN_UNIFIED);
@@ -938,13 +962,13 @@ int MPIDIG_mpi_win_allocate_shared(MPI_Aint size, int disp_unit, MPIR_Info * inf
     MPIR_ERR_CHECK(mpi_errno);
 #endif
 
-    mpi_errno = MPIR_Barrier(comm_ptr, &errflag);
+    mpi_errno = MPIR_Barrier(comm_ptr, MPIR_ERR_NONE);
 
   fn_exit:
     MPIR_FUNC_EXIT;
     return mpi_errno;
   fn_fail:
-    if (win_ptr)
+    if (win_ptr && *win_ptr)
         win_finalize(win_ptr);
     goto fn_exit;
 }
@@ -975,7 +999,6 @@ int MPIDIG_mpi_win_allocate(MPI_Aint size, int disp_unit, MPIR_Info * info, MPIR
                             void *baseptr, MPIR_Win ** win_ptr)
 {
     int mpi_errno = MPI_SUCCESS;
-    MPIR_Errflag_t errflag = MPIR_ERR_NONE;
     MPIR_Win *win;
     void **base_ptr = (void **) baseptr;
 
@@ -1003,7 +1026,7 @@ int MPIDIG_mpi_win_allocate(MPI_Aint size, int disp_unit, MPIR_Info * info, MPIR
     MPIR_ERR_CHECK(mpi_errno);
 #endif
 
-    mpi_errno = MPIR_Barrier(comm, &errflag);
+    mpi_errno = MPIR_Barrier(comm, MPIR_ERR_NONE);
 
     if (mpi_errno != MPI_SUCCESS)
         goto fn_fail;
@@ -1021,7 +1044,6 @@ int MPIDIG_mpi_win_create_dynamic(MPIR_Info * info, MPIR_Comm * comm, MPIR_Win *
 {
     int mpi_errno = MPI_SUCCESS;
     int rc = MPI_SUCCESS;
-    MPIR_Errflag_t errflag = MPIR_ERR_NONE;
 
     MPIR_FUNC_ENTER;
 
@@ -1043,7 +1065,7 @@ int MPIDIG_mpi_win_create_dynamic(MPIR_Info * info, MPIR_Comm * comm, MPIR_Win *
     MPIR_ERR_CHECK(mpi_errno);
 #endif
 
-    mpi_errno = MPIR_Barrier(comm, &errflag);
+    mpi_errno = MPIR_Barrier(comm, MPIR_ERR_NONE);
 
   fn_exit:
     MPIR_FUNC_EXIT;

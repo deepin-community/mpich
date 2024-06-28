@@ -1,5 +1,5 @@
 /**
- * Copyright (C) Mellanox Technologies Ltd. 2019.  ALL RIGHTS RESERVED.
+ * Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2019. ALL RIGHTS RESERVED.
  *
  * See file LICENSE for terms.
  */
@@ -80,8 +80,9 @@ UCS_ARRAY_DECLARE_TYPE(string_buffer, size_t, char)
 
 
 #define UCS_STRING_BUFFER_ONSTACK(_var, _capacity) \
-    UCS_STRING_BUFFER_FIXED(_var, UCS_ARRAY_ALLOC_ONSTACK(string_buffer, _capacity), \
-                            _capacity) \
+    UCS_STRING_BUFFER_FIXED(_var, \
+                            UCS_ARRAY_ALLOC_ONSTACK(string_buffer, _capacity), \
+                            _capacity)
 
 
 /**
@@ -91,6 +92,18 @@ UCS_ARRAY_DECLARE_TYPE(string_buffer, size_t, char)
 typedef struct ucs_string_buffer {
     ucs_array_t(string_buffer) str;
 } ucs_string_buffer_t;
+
+
+/**
+ * Callback function for @ref ucs_string_buffer_translate
+ *
+ * @param [in]  ch  Input character from the string
+ *
+ * @return Character to put in the string insted of the input character. If '\0'
+ *         is returned, it will cause the removal of the source character from
+ *         the string buffer without any replacement.
+ */
+typedef char (*ucs_string_buffer_translate_cb_t)(char ch);
 
 
 /**
@@ -203,6 +216,23 @@ void ucs_string_buffer_rtrim(ucs_string_buffer_t *strb, const char *charset);
 
 
 /**
+ * Remove one token from the end of the string.
+ *
+ * @param [inout] strb     String buffer to remove characters from.
+ * @param [in]    delim    C-string with the set of characters that are used as
+ *                         token delimiters.
+ *                         If NULL, this function removes whitespace characters,
+ *                         as defined by isspace (3).
+ *
+ * This function removes characters from the end of the input string 'strb', up
+ * to and including the first character that appears in 'delim'.
+ * If none of the characters in 'strb' appears in 'delim', the string remains
+ * unchanged.
+ */
+void ucs_string_buffer_rbrk(ucs_string_buffer_t *strb, const char *delim);
+
+
+/**
  * Return a temporary pointer to a C-style string which represents the string
  * buffer. The returned string is valid only as long as no other operation is
  * done on the string buffer (including append).
@@ -236,6 +266,58 @@ void ucs_string_buffer_dump(const ucs_string_buffer_t *strb,
  * @return C-style string representing the data in the buffer.
  */
 char *ucs_string_buffer_extract_mem(ucs_string_buffer_t *strb);
+
+
+/**
+ * Get the next token from the string. This operation can overwrite some of the
+ * string with '\0' characters, to separate the tokens.
+ *
+ * @param [in]  strb        String buffer to get next token from.
+ * @param [in]  token       Pointer to the current token, or NULL to start
+ *                          from the beginning.
+ * @param [in]  delimiters  Set of characters that separate between tokens.
+ *
+ * @return Pointer to the next token, after the given @a token, or NULL if no
+ *         more tokens are found.
+ */
+char *ucs_string_buffer_next_token(ucs_string_buffer_t *strb, char *token,
+                                   const char *delimiters);
+
+
+/**
+ * Append repeat character to a string buffer.
+ *
+ * @param [inout] strb     String buffer to append characters to.
+ * @param [in]    c        Character to append.
+ * @param [in]    count    Number of times to append @a c.
+ */
+void ucs_string_buffer_appendc(ucs_string_buffer_t *strb, int c, size_t count);
+
+
+/**
+ * Translate string characters one by one: call @a cb for each character in
+ * the string, and replace it by the return value of the callback.
+ *
+ * @param [inout] strb    String buffer to translate.
+ * @param [in]    cb      Callback function to translate characters.
+ */
+void ucs_string_buffer_translate(ucs_string_buffer_t *strb,
+                                 ucs_string_buffer_translate_cb_t cb);
+
+
+/**
+ * Split the string to tokens and iterate over them. This operation can
+ * overwrite some of the string with '\0' characters.
+ *
+ * @param _tok    A variable of type 'char *' which will be assigned to the
+ *                current token.
+ * @param _strb   String to iterate over.
+ * @param _delim  Set of characters that separate between tokens.
+ */
+#define ucs_string_buffer_for_each_token(_tok, _strb, _delim) \
+    for (_tok = ucs_string_buffer_next_token(_strb, NULL, _delim); \
+         _tok != NULL; \
+         _tok = ucs_string_buffer_next_token(_strb, _tok, _delim))
 
 END_C_DECLS
 

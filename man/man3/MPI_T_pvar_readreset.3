@@ -1,10 +1,15 @@
-.TH MPI_T_pvar_readreset 3 "2/22/2022" " " "MPI"
+.TH MPI_T_pvar_readreset 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_T_pvar_readreset \-  Read the value of a performance variable and then reset it 
 .SH SYNOPSIS
 .nf
-int MPI_T_pvar_readreset(MPI_T_pvar_session session, MPI_T_pvar_handle handle, void *buf)
 .fi
+.nf
+int MPI_T_pvar_readreset(MPI_T_pvar_session session, MPI_T_pvar_handle handle,
+void *buf)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -67,7 +72,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_T_ERR_INVALID 

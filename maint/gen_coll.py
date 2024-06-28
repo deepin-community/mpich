@@ -439,6 +439,7 @@ def dump_mpir_impl_persistent(name):
     G.out.append("MPIR_ERR_CHKANDJUMP(!req, mpi_errno, MPI_ERR_OTHER, \"**nomem\");")
     G.out.append("MPIR_Comm_add_ref(comm_ptr);")
     G.out.append("req->comm = comm_ptr;")
+    G.out.append("MPIR_Comm_save_inactive_request(comm_ptr, req);")
     G.out.append("req->u.persist_coll.sched_type = MPIR_SCHED_INVALID;")
     G.out.append("req->u.persist_coll.real_request = NULL;")
 
@@ -471,13 +472,13 @@ def dump_mpir(name, blocking_type):
         G.out.append("void *host_recvbuf = NULL;")
         G.out.append("")
         if name == "reduce_scatter":
-            G.out.append("int count = 0;")
+            G.out.append("MPI_Aint count = 0;")
             G.out.append("for (int i = 0; i < MPIR_Comm_size(comm_ptr); i++) {")
             G.out.append("    count += recvcounts[i];")
             G.out.append("}")
             G.out.append("")
         elif name == "reduce_scatter_block":
-            G.out.append("int count = MPIR_Comm_size(comm_ptr) * recvcount;")
+            G.out.append("MPI_Aint count = MPIR_Comm_size(comm_ptr) * recvcount;")
 
         if name == "reduce":
             use_recvbuf = "(comm_ptr->rank == root || root == MPI_ROOT) ? recvbuf : NULL"
@@ -600,37 +601,45 @@ def get_params_and_args(func):
 
 def get_algo_extra_args(algo, kind):
     (func_name, commkind) = algo['func-commkind'].split('-')
-    if kind == "csel":
-        prefix = "cnt->u.%s.%s_%s." % (func_name, commkind, algo['name'])
-        extra_args = re.sub(r'(\w+)', r"%s\1" % prefix, algo['extra_params'])
-    elif kind == "cvar":
-        prefix = "MPIR_CVAR_%s_" % func_name.upper() 
-        extra_args = re.sub(r'(\w+)', r"%s\1" % prefix, algo['cvar_params'])
-        if re.match(r"%sTREE_TYPE" % prefix, extra_args):
-            newname = "MPIR_%s_tree_type" % func_name.capitalize()
-            extra_args = re.sub(r"%sTREE_TYPE" % prefix, newname, extra_args)
-        elif re.match(r"%sTHROTTLE" % prefix, extra_args):
-            newname = "MPIR_CVAR_ALLTOALL_THROTTLE"
-            extra_args = re.sub(r"%sTHROTTLE" % prefix, newname, extra_args)
-    else:
-        raise Exception("Wrong kind!")
+    extra_params = algo['extra_params'].replace(' ', '').split(',')
+    cvar_params = algo['cvar_params'].replace(' ', '').split(',')
+    if len(extra_params) != len(cvar_params):
+        raise Exception("algorithm %s-%s-%s: extra_params and cvar_params sizes mismatch!" % (func_name, commkind, algo['name']))
 
-    if 'extra_const_params' in algo:
-        extra_const_args = re.sub(r'(\w+=)', '', algo['extra_const_params'])
-        return extra_const_args + ', ' + extra_args
-    else:
-        return extra_args
+    out_list = []
+    for i in range(len(extra_params)):
+        if RE.match(r'\w+=(.+)', extra_params[i]):
+            # constant parameter
+            out_list.append(RE.m.group(1))
+        else:
+            if kind == "csel":
+                prefix = "cnt->u.%s.%s_%s." % (func_name, commkind, algo['name'])
+                out_list.append(prefix + extra_params[i])
+            elif kind == "cvar":
+                prefix = "MPIR_CVAR_%s_" % func_name.upper() 
+                tmp = prefix + cvar_params[i]
+                if re.match(r"%sTREE_TYPE" % prefix, tmp):
+                    newname = "MPIR_%s_tree_type" % func_name.capitalize()
+                    tmp = re.sub(r"%sTREE_TYPE" % prefix, newname, tmp)
+                elif re.match(r"%sTHROTTLE" % prefix, tmp):
+                    newname = "MPIR_CVAR_ALLTOALL_THROTTLE"
+                    tmp = re.sub(r"%sTHROTTLE" % prefix, newname, tmp)
+                out_list.append(tmp)
+            else:
+                raise Exception("Wrong kind!")
+
+    return ', '.join(out_list)
 
 def get_algo_extra_params(algo):
-    extra_args = []
-    if 'extra_const_params' in algo:
-        t = re.sub(r'=[^,\s]+', '', algo['extra_const_params'])
-        extra_args.extend(t.replace(' ', '').split(','))
-    extra_args.extend(algo['extra_params'].replace(' ', '').split(','))
-    extra_params = []
-    for a in extra_args:
-        extra_params.append("int " + a)
-    return ', '.join(extra_params)
+    extra_params = algo['extra_params'].replace(' ', '').split(',')
+    out_list = []
+    for a in extra_params:
+        if RE.match(r'(\w+)=.+', a):
+            # constant parameter
+            out_list.append("int " + RE.m.group(1))
+        else:
+            out_list.append("int " + a)
+    return ', '.join(out_list)
 
 # additional wrappers
 def get_algo_args(args, algo, kind):
@@ -657,7 +666,7 @@ def get_algo_params(params, algo):
     elif algo['func-commkind'].startswith('i'):
         algo_params += ", MPIR_Sched_t s"
     elif not algo['func-commkind'].startswith('neighbor_'):
-        algo_params += ", MPIR_Errflag_t *errflag"
+        algo_params += ", MPIR_Errflag_t errflag"
 
     return algo_params
 
@@ -674,7 +683,7 @@ def get_func_params(params, name, kind):
     func_params = params
     if kind == "blocking":
         if not name.startswith('neighbor_'):
-            func_params += ", MPIR_Errflag_t * errflag"
+            func_params += ", MPIR_Errflag_t errflag"
     elif kind == "nonblocking":
         func_params += ", MPIR_Request ** request"
     elif kind == "persistent":

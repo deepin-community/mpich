@@ -25,8 +25,6 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_part_start(MPIR_Request * request)
 #endif
     MPIR_ERR_CHECK(mpi_errno);
 
-    MPIR_Part_request_activate(request);
-
   fn_exit:
     MPIR_FUNC_EXIT;
     return mpi_errno;
@@ -59,7 +57,7 @@ MPL_STATIC_INLINE_PREFIX int MPID_Pready_range(int partition_low, int partition_
     goto fn_exit;
 }
 
-MPL_STATIC_INLINE_PREFIX int MPID_Pready_list(int length, int array_of_partitions[],
+MPL_STATIC_INLINE_PREFIX int MPID_Pready_list(int length, const int array_of_partitions[],
                                               MPIR_Request * request)
 {
     int mpi_errno = MPI_SUCCESS;

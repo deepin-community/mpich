@@ -1,7 +1,9 @@
-.TH MPIX_Grequest_class_create 3 "2/22/2022" " " "MPI"
+.TH MPIX_Grequest_class_create 3 "2/9/2024" " " "MPI"
 .SH NAME
-MPIX_Grequest_class_create \-  Input Parameters: + query_fn - callback function invoked when request status is queried (function) . free_fn - callback function invoked when request is freed (function) . cancel_fn - callback function invoked when request is cancelled (function) . poll_fn - callback function invoked when request completion is tested (function) - wait_fn - callback function invoked when request is waited on (function) 
+MPIX_Grequest_class_create \-  [short description] 
 .SH SYNOPSIS
+.nf
+.fi
 .nf
 int MPIX_Grequest_class_create(MPI_Grequest_query_function *query_fn,
 MPI_Grequest_free_function *free_fn,
@@ -10,6 +12,35 @@ MPIX_Grequest_poll_function *poll_fn,
 MPIX_Grequest_wait_function *wait_fn,
 MPIX_Grequest_class *greq_class)
 .fi
+
+
+.SH INPUT PARAMETERS
+.PD 0
+.TP
+.B query_fn 
+- callback function invoked when request status is queried (function)
+.PD 1
+.PD 0
+.TP
+.B free_fn 
+- callback function invoked when request is freed (function)
+.PD 1
+.PD 0
+.TP
+.B cancel_fn 
+- callback function invoked when request is cancelled (function)
+.PD 1
+.PD 0
+.TP
+.B poll_fn 
+- callback function invoked when request completion is tested (function)
+.PD 1
+.PD 0
+.TP
+.B wait_fn 
+- callback function invoked when request is waited on (function)
+.PD 1
+
 .SH OUTPUT PARAMETERS
 .PD 0
 .TP
@@ -83,7 +114,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

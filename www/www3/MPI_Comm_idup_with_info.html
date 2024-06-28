@@ -9,8 +9,13 @@
 nonblocking communicator duplication 
 <H2>Synopsis</H2>
 <PRE>
-int MPI_Comm_idup_with_info(MPI_Comm comm, MPI_Info info, MPI_Comm *newcomm, MPI_Request *request)
 </PRE>
+<PRE>
+int MPI_Comm_idup_with_info(MPI_Comm comm, MPI_Info info, MPI_Comm *newcomm,
+                            MPI_Request *request)
+</PRE>
+
+<P>
 <H2>Input Parameters</H2>
 <DL>
 <DT><B>comm </B> <DD> communicator (handle)
@@ -23,6 +28,42 @@ int MPI_Comm_idup_with_info(MPI_Comm comm, MPI_Info info, MPI_Comm *newcomm, MPI
 <DT><B>newcomm </B> <DD> copy of comm (handle)
 
 <DT><B>request </B> <DD> communication request (handle)
+</DL>
+<P>
+<H2>Info hints</H2>
+<DL>
+<DT><B>mpi_assert_no_any_tag </B> <DD> boolean, default = false.
+If set to true, user promises that MPI_ANY_TAG will not be used with the
+communicator. This potentially allows MPICH to treat messages with different
+tags independent and seek to improve performance, e.g. by employ multiple
+network context.
+</DL>
+<DL>
+<DT><B>mpi_assert_no_any_source </B> <DD> boolean, default = false.
+If set to true, user promises that MPI_ANY_SOURCE will not be used with the
+communicator. This potentially allows MPICH to treat messages send to different
+ranks or receive from different ranks independent and seek to improve
+performance, e.g. by employ multiple network context.
+</DL>
+<DL>
+<DT><B>mpi_assert_exact_length </B> <DD> boolean, default = false.
+If set to true, user promises that the lengths of messages received by the
+process will always equal to the size of the corresponding receive buffers.
+</DL>
+<DL>
+<DT><B>mpi_assert_allow_overtaking </B> <DD> boolean, default = false.
+If set to true, user asserts that send operations are not required to be matched
+at the receiver in the order in which the send operations were performed by the
+sender, and receive operations are not required to be matched in the order in
+which they were performed by the receivers.
+</DL>
+<DL>
+<DT><B>mpi_assert_strict_persistent_collective_ordering </B> <DD> boolean, default = false.
+If set to true, then the implementation may assume that all the persistent
+collective operations are started in the same order across all MPI processes in
+the group of the communicator. It is required that if this assertion is made on
+one member of the communicator<tt>s group, then it must be made on all members of
+that communicator</tt>s group with the same value.
 </DL>
 <P>
 <H2>Thread and Interrupt Safety</H2>
@@ -61,7 +102,6 @@ possible.
 <DL>
 <DT><B>MPI_SUCCESS </B> <DD> No error; MPI routine completed successfully.
 </DL>
-<P>
 <DL>
 <DT><B>MPI_ERR_ARG </B> <DD> Invalid argument.  Some argument is invalid and is not
 identified by a specific error class (e.g., <tt>MPI_ERR_RANK</tt>).

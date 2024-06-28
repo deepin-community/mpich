@@ -29,14 +29,14 @@ int yaksuri_seqi_pack_hindexed_blkhindx_blklen_1_double(const void *inbuf, void 
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 1; k2++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -46,14 +46,14 @@ int yaksuri_seqi_pack_hindexed_blkhindx_blklen_1_double(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 1; k2++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -80,14 +80,14 @@ int yaksuri_seqi_pack_hindexed_blkhindx_blklen_1_double(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 1; k2++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -140,14 +140,14 @@ int yaksuri_seqi_unpack_hindexed_blkhindx_blklen_1_double(const void *inbuf, voi
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 1; k2++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -157,14 +157,14 @@ int yaksuri_seqi_unpack_hindexed_blkhindx_blklen_1_double(const void *inbuf, voi
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 1; k2++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -191,14 +191,14 @@ int yaksuri_seqi_unpack_hindexed_blkhindx_blklen_1_double(const void *inbuf, voi
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 1; k2++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -251,14 +251,14 @@ int yaksuri_seqi_pack_hindexed_blkhindx_blklen_2_double(const void *inbuf, void 
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 2; k2++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -268,14 +268,14 @@ int yaksuri_seqi_pack_hindexed_blkhindx_blklen_2_double(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 2; k2++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -302,14 +302,14 @@ int yaksuri_seqi_pack_hindexed_blkhindx_blklen_2_double(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 2; k2++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -362,14 +362,14 @@ int yaksuri_seqi_unpack_hindexed_blkhindx_blklen_2_double(const void *inbuf, voi
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 2; k2++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -379,14 +379,14 @@ int yaksuri_seqi_unpack_hindexed_blkhindx_blklen_2_double(const void *inbuf, voi
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 2; k2++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -413,14 +413,14 @@ int yaksuri_seqi_unpack_hindexed_blkhindx_blklen_2_double(const void *inbuf, voi
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 2; k2++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -473,14 +473,14 @@ int yaksuri_seqi_pack_hindexed_blkhindx_blklen_3_double(const void *inbuf, void 
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 3; k2++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -490,14 +490,14 @@ int yaksuri_seqi_pack_hindexed_blkhindx_blklen_3_double(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 3; k2++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -524,14 +524,14 @@ int yaksuri_seqi_pack_hindexed_blkhindx_blklen_3_double(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 3; k2++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -584,14 +584,14 @@ int yaksuri_seqi_unpack_hindexed_blkhindx_blklen_3_double(const void *inbuf, voi
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 3; k2++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -601,14 +601,14 @@ int yaksuri_seqi_unpack_hindexed_blkhindx_blklen_3_double(const void *inbuf, voi
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 3; k2++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -635,14 +635,14 @@ int yaksuri_seqi_unpack_hindexed_blkhindx_blklen_3_double(const void *inbuf, voi
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 3; k2++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -695,14 +695,14 @@ int yaksuri_seqi_pack_hindexed_blkhindx_blklen_4_double(const void *inbuf, void 
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 4; k2++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -712,14 +712,14 @@ int yaksuri_seqi_pack_hindexed_blkhindx_blklen_4_double(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 4; k2++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -746,14 +746,14 @@ int yaksuri_seqi_pack_hindexed_blkhindx_blklen_4_double(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 4; k2++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -806,14 +806,14 @@ int yaksuri_seqi_unpack_hindexed_blkhindx_blklen_4_double(const void *inbuf, voi
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 4; k2++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -823,14 +823,14 @@ int yaksuri_seqi_unpack_hindexed_blkhindx_blklen_4_double(const void *inbuf, voi
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 4; k2++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -857,14 +857,14 @@ int yaksuri_seqi_unpack_hindexed_blkhindx_blklen_4_double(const void *inbuf, voi
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 4; k2++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -917,14 +917,14 @@ int yaksuri_seqi_pack_hindexed_blkhindx_blklen_5_double(const void *inbuf, void 
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 5; k2++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -934,14 +934,14 @@ int yaksuri_seqi_pack_hindexed_blkhindx_blklen_5_double(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 5; k2++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -968,14 +968,14 @@ int yaksuri_seqi_pack_hindexed_blkhindx_blklen_5_double(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 5; k2++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -1028,14 +1028,14 @@ int yaksuri_seqi_unpack_hindexed_blkhindx_blklen_5_double(const void *inbuf, voi
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 5; k2++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -1045,14 +1045,14 @@ int yaksuri_seqi_unpack_hindexed_blkhindx_blklen_5_double(const void *inbuf, voi
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 5; k2++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -1079,14 +1079,14 @@ int yaksuri_seqi_unpack_hindexed_blkhindx_blklen_5_double(const void *inbuf, voi
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 5; k2++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -1139,14 +1139,14 @@ int yaksuri_seqi_pack_hindexed_blkhindx_blklen_6_double(const void *inbuf, void 
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 6; k2++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -1156,14 +1156,14 @@ int yaksuri_seqi_pack_hindexed_blkhindx_blklen_6_double(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 6; k2++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -1190,14 +1190,14 @@ int yaksuri_seqi_pack_hindexed_blkhindx_blklen_6_double(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 6; k2++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -1250,14 +1250,14 @@ int yaksuri_seqi_unpack_hindexed_blkhindx_blklen_6_double(const void *inbuf, voi
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 6; k2++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -1267,14 +1267,14 @@ int yaksuri_seqi_unpack_hindexed_blkhindx_blklen_6_double(const void *inbuf, voi
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 6; k2++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -1301,14 +1301,14 @@ int yaksuri_seqi_unpack_hindexed_blkhindx_blklen_6_double(const void *inbuf, voi
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 6; k2++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -1361,14 +1361,14 @@ int yaksuri_seqi_pack_hindexed_blkhindx_blklen_7_double(const void *inbuf, void 
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 7; k2++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -1378,14 +1378,14 @@ int yaksuri_seqi_pack_hindexed_blkhindx_blklen_7_double(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 7; k2++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -1412,14 +1412,14 @@ int yaksuri_seqi_pack_hindexed_blkhindx_blklen_7_double(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 7; k2++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -1472,14 +1472,14 @@ int yaksuri_seqi_unpack_hindexed_blkhindx_blklen_7_double(const void *inbuf, voi
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 7; k2++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -1489,14 +1489,14 @@ int yaksuri_seqi_unpack_hindexed_blkhindx_blklen_7_double(const void *inbuf, voi
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 7; k2++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -1523,14 +1523,14 @@ int yaksuri_seqi_unpack_hindexed_blkhindx_blklen_7_double(const void *inbuf, voi
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 7; k2++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -1583,14 +1583,14 @@ int yaksuri_seqi_pack_hindexed_blkhindx_blklen_8_double(const void *inbuf, void 
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 8; k2++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -1600,14 +1600,14 @@ int yaksuri_seqi_pack_hindexed_blkhindx_blklen_8_double(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 8; k2++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -1634,14 +1634,14 @@ int yaksuri_seqi_pack_hindexed_blkhindx_blklen_8_double(const void *inbuf, void 
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 8; k2++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -1694,14 +1694,14 @@ int yaksuri_seqi_unpack_hindexed_blkhindx_blklen_8_double(const void *inbuf, voi
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 8; k2++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -1711,14 +1711,14 @@ int yaksuri_seqi_unpack_hindexed_blkhindx_blklen_8_double(const void *inbuf, voi
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 8; k2++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -1745,14 +1745,14 @@ int yaksuri_seqi_unpack_hindexed_blkhindx_blklen_8_double(const void *inbuf, voi
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < 8; k2++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -1805,14 +1805,14 @@ int yaksuri_seqi_pack_hindexed_blkhindx_blklen_generic_double(const void *inbuf,
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < blocklength2; k2++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -1822,14 +1822,14 @@ int yaksuri_seqi_pack_hindexed_blkhindx_blklen_generic_double(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < blocklength2; k2++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -1856,14 +1856,14 @@ int yaksuri_seqi_pack_hindexed_blkhindx_blklen_generic_double(const void *inbuf,
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < blocklength2; k2++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -1916,14 +1916,14 @@ int yaksuri_seqi_unpack_hindexed_blkhindx_blklen_generic_double(const void *inbu
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < blocklength2; k2++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -1933,14 +1933,14 @@ int yaksuri_seqi_unpack_hindexed_blkhindx_blklen_generic_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < blocklength2; k2++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -1967,14 +1967,14 @@ int yaksuri_seqi_unpack_hindexed_blkhindx_blklen_generic_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
                     for (intptr_t k1 = 0; k1 < array_of_blocklengths1[j1]; k1++) {
                         for (intptr_t j2 = 0; j2 < count2; j2++) {
                             for (intptr_t k2 = 0; k2 < blocklength2; k2++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -2032,7 +2032,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_1_double(const void *inbu
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -2041,7 +2041,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_1_double(const void *inbu
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -2053,7 +2053,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_1_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -2062,7 +2062,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_1_double(const void *inbu
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -2095,7 +2095,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_1_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -2104,7 +2104,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_1_double(const void *inbu
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -2168,7 +2168,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_1_double(const void *in
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -2177,7 +2177,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_1_double(const void *in
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -2189,7 +2189,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_1_double(const void *in
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -2198,7 +2198,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_1_double(const void *in
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -2231,7 +2231,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_1_double(const void *in
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -2240,7 +2240,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_1_double(const void *in
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -2304,7 +2304,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_2_double(const void *inbu
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -2313,7 +2313,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_2_double(const void *inbu
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -2325,7 +2325,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_2_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -2334,7 +2334,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_2_double(const void *inbu
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -2367,7 +2367,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_2_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -2376,7 +2376,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_2_double(const void *inbu
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -2440,7 +2440,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_2_double(const void *in
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -2449,7 +2449,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_2_double(const void *in
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -2461,7 +2461,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_2_double(const void *in
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -2470,7 +2470,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_2_double(const void *in
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -2503,7 +2503,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_2_double(const void *in
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -2512,7 +2512,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_2_double(const void *in
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -2576,7 +2576,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_3_double(const void *inbu
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -2585,7 +2585,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_3_double(const void *inbu
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -2597,7 +2597,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_3_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -2606,7 +2606,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_3_double(const void *inbu
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -2639,7 +2639,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_3_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -2648,7 +2648,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_3_double(const void *inbu
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -2712,7 +2712,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_3_double(const void *in
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -2721,7 +2721,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_3_double(const void *in
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -2733,7 +2733,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_3_double(const void *in
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -2742,7 +2742,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_3_double(const void *in
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -2775,7 +2775,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_3_double(const void *in
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -2784,7 +2784,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_3_double(const void *in
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -2848,7 +2848,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_4_double(const void *inbu
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -2857,7 +2857,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_4_double(const void *inbu
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -2869,7 +2869,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_4_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -2878,7 +2878,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_4_double(const void *inbu
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -2911,7 +2911,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_4_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -2920,7 +2920,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_4_double(const void *inbu
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -2984,7 +2984,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_4_double(const void *in
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -2993,7 +2993,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_4_double(const void *in
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -3005,7 +3005,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_4_double(const void *in
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -3014,7 +3014,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_4_double(const void *in
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -3047,7 +3047,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_4_double(const void *in
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -3056,7 +3056,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_4_double(const void *in
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -3120,7 +3120,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_5_double(const void *inbu
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -3129,7 +3129,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_5_double(const void *inbu
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -3141,7 +3141,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_5_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -3150,7 +3150,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_5_double(const void *inbu
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -3183,7 +3183,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_5_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -3192,7 +3192,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_5_double(const void *inbu
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -3256,7 +3256,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_5_double(const void *in
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -3265,7 +3265,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_5_double(const void *in
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -3277,7 +3277,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_5_double(const void *in
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -3286,7 +3286,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_5_double(const void *in
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -3319,7 +3319,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_5_double(const void *in
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -3328,7 +3328,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_5_double(const void *in
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -3392,7 +3392,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_6_double(const void *inbu
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -3401,7 +3401,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_6_double(const void *inbu
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -3413,7 +3413,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_6_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -3422,7 +3422,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_6_double(const void *inbu
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -3455,7 +3455,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_6_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -3464,7 +3464,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_6_double(const void *inbu
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -3528,7 +3528,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_6_double(const void *in
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -3537,7 +3537,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_6_double(const void *in
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -3549,7 +3549,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_6_double(const void *in
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -3558,7 +3558,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_6_double(const void *in
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -3591,7 +3591,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_6_double(const void *in
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -3600,7 +3600,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_6_double(const void *in
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -3664,7 +3664,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_7_double(const void *inbu
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -3673,7 +3673,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_7_double(const void *inbu
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -3685,7 +3685,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_7_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -3694,7 +3694,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_7_double(const void *inbu
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -3727,7 +3727,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_7_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -3736,7 +3736,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_7_double(const void *inbu
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -3800,7 +3800,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_7_double(const void *in
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -3809,7 +3809,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_7_double(const void *in
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -3821,7 +3821,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_7_double(const void *in
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -3830,7 +3830,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_7_double(const void *in
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -3863,7 +3863,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_7_double(const void *in
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -3872,7 +3872,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_7_double(const void *in
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -3936,7 +3936,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_8_double(const void *inbu
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -3945,7 +3945,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_8_double(const void *inbu
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -3957,7 +3957,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_8_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -3966,7 +3966,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_8_double(const void *inbu
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -3999,7 +3999,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_8_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -4008,7 +4008,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_8_double(const void *inbu
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -4072,7 +4072,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_8_double(const void *in
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -4081,7 +4081,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_8_double(const void *in
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -4093,7 +4093,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_8_double(const void *in
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -4102,7 +4102,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_8_double(const void *in
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -4135,7 +4135,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_8_double(const void *in
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -4144,7 +4144,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_8_double(const void *in
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -4208,7 +4208,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_generic_double(const void
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -4217,7 +4217,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_generic_double(const void
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -4229,7 +4229,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_generic_double(const void
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -4238,7 +4238,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_generic_double(const void
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -4271,7 +4271,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_generic_double(const void
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -4280,7 +4280,7 @@ int yaksuri_seqi_pack_hvector_hindexed_blkhindx_blklen_generic_double(const void
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -4344,7 +4344,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_generic_double(const vo
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -4353,7 +4353,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_generic_double(const vo
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -4365,7 +4365,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_generic_double(const vo
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -4374,7 +4374,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_generic_double(const vo
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -4407,7 +4407,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_generic_double(const vo
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -4416,7 +4416,7 @@ int yaksuri_seqi_unpack_hvector_hindexed_blkhindx_blklen_generic_double(const vo
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -4480,7 +4480,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_1_double(const void *inb
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -4489,7 +4489,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_1_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -4501,7 +4501,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_1_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -4510,7 +4510,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_1_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -4543,7 +4543,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_1_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -4552,7 +4552,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_1_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -4616,7 +4616,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_1_double(const void *i
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -4625,7 +4625,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_1_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -4637,7 +4637,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_1_double(const void *i
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -4646,7 +4646,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_1_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -4679,7 +4679,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_1_double(const void *i
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -4688,7 +4688,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_1_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -4752,7 +4752,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_2_double(const void *inb
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -4761,7 +4761,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_2_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -4773,7 +4773,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_2_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -4782,7 +4782,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_2_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -4815,7 +4815,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_2_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -4824,7 +4824,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_2_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -4888,7 +4888,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_2_double(const void *i
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -4897,7 +4897,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_2_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -4909,7 +4909,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_2_double(const void *i
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -4918,7 +4918,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_2_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -4951,7 +4951,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_2_double(const void *i
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -4960,7 +4960,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_2_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -5024,7 +5024,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_3_double(const void *inb
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -5033,7 +5033,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_3_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -5045,7 +5045,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_3_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -5054,7 +5054,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_3_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -5087,7 +5087,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_3_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -5096,7 +5096,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_3_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -5160,7 +5160,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_3_double(const void *i
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -5169,7 +5169,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_3_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -5181,7 +5181,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_3_double(const void *i
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -5190,7 +5190,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_3_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -5223,7 +5223,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_3_double(const void *i
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -5232,7 +5232,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_3_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -5296,7 +5296,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_4_double(const void *inb
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -5305,7 +5305,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_4_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -5317,7 +5317,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_4_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -5326,7 +5326,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_4_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -5359,7 +5359,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_4_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -5368,7 +5368,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_4_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -5432,7 +5432,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_4_double(const void *i
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -5441,7 +5441,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_4_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -5453,7 +5453,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_4_double(const void *i
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -5462,7 +5462,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_4_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -5495,7 +5495,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_4_double(const void *i
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -5504,7 +5504,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_4_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -5568,7 +5568,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_5_double(const void *inb
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -5577,7 +5577,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_5_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -5589,7 +5589,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_5_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -5598,7 +5598,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_5_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -5631,7 +5631,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_5_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -5640,7 +5640,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_5_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -5704,7 +5704,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_5_double(const void *i
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -5713,7 +5713,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_5_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -5725,7 +5725,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_5_double(const void *i
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -5734,7 +5734,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_5_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -5767,7 +5767,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_5_double(const void *i
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -5776,7 +5776,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_5_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -5840,7 +5840,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_6_double(const void *inb
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -5849,7 +5849,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_6_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -5861,7 +5861,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_6_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -5870,7 +5870,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_6_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -5903,7 +5903,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_6_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -5912,7 +5912,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_6_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -5976,7 +5976,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_6_double(const void *i
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -5985,7 +5985,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_6_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -5997,7 +5997,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_6_double(const void *i
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -6006,7 +6006,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_6_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -6039,7 +6039,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_6_double(const void *i
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -6048,7 +6048,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_6_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -6112,7 +6112,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_7_double(const void *inb
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -6121,7 +6121,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_7_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -6133,7 +6133,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_7_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -6142,7 +6142,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_7_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -6175,7 +6175,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_7_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -6184,7 +6184,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_7_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -6248,7 +6248,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_7_double(const void *i
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -6257,7 +6257,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_7_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -6269,7 +6269,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_7_double(const void *i
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -6278,7 +6278,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_7_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -6311,7 +6311,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_7_double(const void *i
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -6320,7 +6320,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_7_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -6384,7 +6384,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_8_double(const void *inb
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -6393,7 +6393,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_8_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -6405,7 +6405,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_8_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -6414,7 +6414,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_8_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -6447,7 +6447,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_8_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -6456,7 +6456,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_8_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -6520,7 +6520,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_8_double(const void *i
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -6529,7 +6529,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_8_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -6541,7 +6541,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_8_double(const void *i
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -6550,7 +6550,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_8_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -6583,7 +6583,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_8_double(const void *i
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -6592,7 +6592,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_8_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -6656,7 +6656,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_generic_double(const voi
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -6665,7 +6665,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_generic_double(const voi
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -6677,7 +6677,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_generic_double(const voi
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -6686,7 +6686,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_generic_double(const voi
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -6719,7 +6719,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_generic_double(const voi
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -6728,7 +6728,7 @@ int yaksuri_seqi_pack_blkhindx_hindexed_blkhindx_blklen_generic_double(const voi
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -6792,7 +6792,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_generic_double(const v
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -6801,7 +6801,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_generic_double(const v
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -6813,7 +6813,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_generic_double(const v
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -6822,7 +6822,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_generic_double(const v
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -6855,7 +6855,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_generic_double(const v
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -6864,7 +6864,7 @@ int yaksuri_seqi_unpack_blkhindx_hindexed_blkhindx_blklen_generic_double(const v
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -6928,7 +6928,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_1_double(const void *inb
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -6937,7 +6937,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_1_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -6949,7 +6949,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_1_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -6958,7 +6958,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_1_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -6991,7 +6991,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_1_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -7000,7 +7000,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_1_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -7064,7 +7064,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_1_double(const void *i
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -7073,7 +7073,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_1_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -7085,7 +7085,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_1_double(const void *i
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -7094,7 +7094,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_1_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -7127,7 +7127,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_1_double(const void *i
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -7136,7 +7136,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_1_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -7200,7 +7200,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_2_double(const void *inb
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -7209,7 +7209,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_2_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -7221,7 +7221,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_2_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -7230,7 +7230,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_2_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -7263,7 +7263,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_2_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -7272,7 +7272,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_2_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -7336,7 +7336,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_2_double(const void *i
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -7345,7 +7345,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_2_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -7357,7 +7357,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_2_double(const void *i
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -7366,7 +7366,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_2_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -7399,7 +7399,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_2_double(const void *i
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -7408,7 +7408,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_2_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -7472,7 +7472,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_3_double(const void *inb
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -7481,7 +7481,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_3_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -7493,7 +7493,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_3_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -7502,7 +7502,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_3_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -7535,7 +7535,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_3_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -7544,7 +7544,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_3_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -7608,7 +7608,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_3_double(const void *i
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -7617,7 +7617,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_3_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -7629,7 +7629,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_3_double(const void *i
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -7638,7 +7638,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_3_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -7671,7 +7671,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_3_double(const void *i
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -7680,7 +7680,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_3_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -7744,7 +7744,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_4_double(const void *inb
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -7753,7 +7753,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_4_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -7765,7 +7765,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_4_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -7774,7 +7774,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_4_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -7807,7 +7807,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_4_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -7816,7 +7816,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_4_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -7880,7 +7880,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_4_double(const void *i
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -7889,7 +7889,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_4_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -7901,7 +7901,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_4_double(const void *i
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -7910,7 +7910,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_4_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -7943,7 +7943,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_4_double(const void *i
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -7952,7 +7952,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_4_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -8016,7 +8016,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_5_double(const void *inb
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -8025,7 +8025,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_5_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -8037,7 +8037,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_5_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -8046,7 +8046,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_5_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -8079,7 +8079,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_5_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -8088,7 +8088,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_5_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -8152,7 +8152,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_5_double(const void *i
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -8161,7 +8161,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_5_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -8173,7 +8173,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_5_double(const void *i
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -8182,7 +8182,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_5_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -8215,7 +8215,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_5_double(const void *i
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -8224,7 +8224,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_5_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -8288,7 +8288,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_6_double(const void *inb
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -8297,7 +8297,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_6_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -8309,7 +8309,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_6_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -8318,7 +8318,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_6_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -8351,7 +8351,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_6_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -8360,7 +8360,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_6_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -8424,7 +8424,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_6_double(const void *i
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -8433,7 +8433,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_6_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -8445,7 +8445,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_6_double(const void *i
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -8454,7 +8454,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_6_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -8487,7 +8487,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_6_double(const void *i
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -8496,7 +8496,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_6_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -8560,7 +8560,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_7_double(const void *inb
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -8569,7 +8569,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_7_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -8581,7 +8581,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_7_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -8590,7 +8590,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_7_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -8623,7 +8623,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_7_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -8632,7 +8632,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_7_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -8696,7 +8696,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_7_double(const void *i
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -8705,7 +8705,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_7_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -8717,7 +8717,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_7_double(const void *i
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -8726,7 +8726,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_7_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -8759,7 +8759,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_7_double(const void *i
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -8768,7 +8768,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_7_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -8832,7 +8832,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_8_double(const void *inb
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -8841,7 +8841,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_8_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -8853,7 +8853,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_8_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -8862,7 +8862,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_8_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -8895,7 +8895,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_8_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -8904,7 +8904,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_8_double(const void *inb
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -8968,7 +8968,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_8_double(const void *i
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -8977,7 +8977,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_8_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -8989,7 +8989,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_8_double(const void *i
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -8998,7 +8998,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_8_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -9031,7 +9031,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_8_double(const void *i
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -9040,7 +9040,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_8_double(const void *i
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -9104,7 +9104,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_generic_double(const voi
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -9113,7 +9113,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_generic_double(const voi
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -9125,7 +9125,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_generic_double(const voi
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -9134,7 +9134,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_generic_double(const voi
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -9167,7 +9167,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_generic_double(const voi
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -9176,7 +9176,7 @@ int yaksuri_seqi_pack_hindexed_hindexed_blkhindx_blklen_generic_double(const voi
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -9240,7 +9240,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_generic_double(const v
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -9249,7 +9249,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_generic_double(const v
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -9261,7 +9261,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_generic_double(const v
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -9270,7 +9270,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_generic_double(const v
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                        YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -9303,7 +9303,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_generic_double(const v
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -9312,7 +9312,7 @@ int yaksuri_seqi_unpack_hindexed_hindexed_blkhindx_blklen_generic_double(const v
                             for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                                 for (intptr_t j3 = 0; j3 < count3; j3++) {
                                     for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                        YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                        YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs1[j1] + k1 * extent2 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                         idx += sizeof(double);
                                     }
                                 }
@@ -9375,7 +9375,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_1_double(const void *inbuf
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -9383,7 +9383,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_1_double(const void *inbuf
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                     idx += sizeof(double);
                                 }
                             }
@@ -9394,7 +9394,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_1_double(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -9402,7 +9402,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_1_double(const void *inbuf
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                     idx += sizeof(double);
                                 }
                             }
@@ -9432,7 +9432,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_1_double(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -9440,7 +9440,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_1_double(const void *inbuf
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                     idx += sizeof(double);
                                 }
                             }
@@ -9500,7 +9500,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_1_double(const void *inb
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -9508,7 +9508,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_1_double(const void *inb
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                     idx += sizeof(double);
                                 }
                             }
@@ -9519,7 +9519,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_1_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -9527,7 +9527,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_1_double(const void *inb
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                     idx += sizeof(double);
                                 }
                             }
@@ -9557,7 +9557,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_1_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -9565,7 +9565,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_1_double(const void *inb
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                     idx += sizeof(double);
                                 }
                             }
@@ -9625,7 +9625,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_2_double(const void *inbuf
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -9633,7 +9633,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_2_double(const void *inbuf
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                     idx += sizeof(double);
                                 }
                             }
@@ -9644,7 +9644,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_2_double(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -9652,7 +9652,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_2_double(const void *inbuf
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                     idx += sizeof(double);
                                 }
                             }
@@ -9682,7 +9682,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_2_double(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -9690,7 +9690,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_2_double(const void *inbuf
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                     idx += sizeof(double);
                                 }
                             }
@@ -9750,7 +9750,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_2_double(const void *inb
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -9758,7 +9758,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_2_double(const void *inb
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                     idx += sizeof(double);
                                 }
                             }
@@ -9769,7 +9769,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_2_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -9777,7 +9777,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_2_double(const void *inb
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                     idx += sizeof(double);
                                 }
                             }
@@ -9807,7 +9807,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_2_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -9815,7 +9815,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_2_double(const void *inb
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                     idx += sizeof(double);
                                 }
                             }
@@ -9875,7 +9875,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_3_double(const void *inbuf
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -9883,7 +9883,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_3_double(const void *inbuf
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                     idx += sizeof(double);
                                 }
                             }
@@ -9894,7 +9894,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_3_double(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -9902,7 +9902,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_3_double(const void *inbuf
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                     idx += sizeof(double);
                                 }
                             }
@@ -9932,7 +9932,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_3_double(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -9940,7 +9940,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_3_double(const void *inbuf
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                     idx += sizeof(double);
                                 }
                             }
@@ -10000,7 +10000,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_3_double(const void *inb
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -10008,7 +10008,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_3_double(const void *inb
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                     idx += sizeof(double);
                                 }
                             }
@@ -10019,7 +10019,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_3_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -10027,7 +10027,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_3_double(const void *inb
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                     idx += sizeof(double);
                                 }
                             }
@@ -10057,7 +10057,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_3_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -10065,7 +10065,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_3_double(const void *inb
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                     idx += sizeof(double);
                                 }
                             }
@@ -10125,7 +10125,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_4_double(const void *inbuf
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -10133,7 +10133,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_4_double(const void *inbuf
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                     idx += sizeof(double);
                                 }
                             }
@@ -10144,7 +10144,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_4_double(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -10152,7 +10152,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_4_double(const void *inbuf
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                     idx += sizeof(double);
                                 }
                             }
@@ -10182,7 +10182,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_4_double(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -10190,7 +10190,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_4_double(const void *inbuf
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                     idx += sizeof(double);
                                 }
                             }
@@ -10250,7 +10250,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_4_double(const void *inb
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -10258,7 +10258,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_4_double(const void *inb
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                     idx += sizeof(double);
                                 }
                             }
@@ -10269,7 +10269,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_4_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -10277,7 +10277,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_4_double(const void *inb
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                     idx += sizeof(double);
                                 }
                             }
@@ -10307,7 +10307,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_4_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -10315,7 +10315,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_4_double(const void *inb
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                     idx += sizeof(double);
                                 }
                             }
@@ -10375,7 +10375,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_5_double(const void *inbuf
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -10383,7 +10383,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_5_double(const void *inbuf
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                     idx += sizeof(double);
                                 }
                             }
@@ -10394,7 +10394,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_5_double(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -10402,7 +10402,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_5_double(const void *inbuf
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                     idx += sizeof(double);
                                 }
                             }
@@ -10432,7 +10432,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_5_double(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -10440,7 +10440,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_5_double(const void *inbuf
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                     idx += sizeof(double);
                                 }
                             }
@@ -10500,7 +10500,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_5_double(const void *inb
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -10508,7 +10508,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_5_double(const void *inb
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                     idx += sizeof(double);
                                 }
                             }
@@ -10519,7 +10519,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_5_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -10527,7 +10527,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_5_double(const void *inb
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                     idx += sizeof(double);
                                 }
                             }
@@ -10557,7 +10557,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_5_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -10565,7 +10565,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_5_double(const void *inb
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                     idx += sizeof(double);
                                 }
                             }
@@ -10625,7 +10625,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_6_double(const void *inbuf
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -10633,7 +10633,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_6_double(const void *inbuf
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                     idx += sizeof(double);
                                 }
                             }
@@ -10644,7 +10644,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_6_double(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -10652,7 +10652,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_6_double(const void *inbuf
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                     idx += sizeof(double);
                                 }
                             }
@@ -10682,7 +10682,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_6_double(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -10690,7 +10690,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_6_double(const void *inbuf
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                     idx += sizeof(double);
                                 }
                             }
@@ -10750,7 +10750,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_6_double(const void *inb
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -10758,7 +10758,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_6_double(const void *inb
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                     idx += sizeof(double);
                                 }
                             }
@@ -10769,7 +10769,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_6_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -10777,7 +10777,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_6_double(const void *inb
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                     idx += sizeof(double);
                                 }
                             }
@@ -10807,7 +10807,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_6_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -10815,7 +10815,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_6_double(const void *inb
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                     idx += sizeof(double);
                                 }
                             }
@@ -10875,7 +10875,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_7_double(const void *inbuf
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -10883,7 +10883,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_7_double(const void *inbuf
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                     idx += sizeof(double);
                                 }
                             }
@@ -10894,7 +10894,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_7_double(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -10902,7 +10902,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_7_double(const void *inbuf
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                     idx += sizeof(double);
                                 }
                             }
@@ -10932,7 +10932,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_7_double(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -10940,7 +10940,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_7_double(const void *inbuf
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                     idx += sizeof(double);
                                 }
                             }
@@ -11000,7 +11000,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_7_double(const void *inb
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -11008,7 +11008,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_7_double(const void *inb
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                     idx += sizeof(double);
                                 }
                             }
@@ -11019,7 +11019,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_7_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -11027,7 +11027,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_7_double(const void *inb
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                     idx += sizeof(double);
                                 }
                             }
@@ -11057,7 +11057,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_7_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -11065,7 +11065,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_7_double(const void *inb
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                     idx += sizeof(double);
                                 }
                             }
@@ -11125,7 +11125,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_8_double(const void *inbuf
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -11133,7 +11133,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_8_double(const void *inbuf
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                     idx += sizeof(double);
                                 }
                             }
@@ -11144,7 +11144,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_8_double(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -11152,7 +11152,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_8_double(const void *inbuf
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                     idx += sizeof(double);
                                 }
                             }
@@ -11182,7 +11182,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_8_double(const void *inbuf
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -11190,7 +11190,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_8_double(const void *inbuf
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                     idx += sizeof(double);
                                 }
                             }
@@ -11250,7 +11250,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_8_double(const void *inb
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -11258,7 +11258,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_8_double(const void *inb
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                     idx += sizeof(double);
                                 }
                             }
@@ -11269,7 +11269,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_8_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -11277,7 +11277,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_8_double(const void *inb
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                     idx += sizeof(double);
                                 }
                             }
@@ -11307,7 +11307,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_8_double(const void *inb
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -11315,7 +11315,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_8_double(const void *inb
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                     idx += sizeof(double);
                                 }
                             }
@@ -11375,7 +11375,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_generic_double(const void 
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -11383,7 +11383,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_generic_double(const void 
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                     idx += sizeof(double);
                                 }
                             }
@@ -11394,7 +11394,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_generic_double(const void 
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -11402,7 +11402,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_generic_double(const void 
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                     idx += sizeof(double);
                                 }
                             }
@@ -11432,7 +11432,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_generic_double(const void 
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -11440,7 +11440,7 @@ int yaksuri_seqi_pack_contig_hindexed_blkhindx_blklen_generic_double(const void 
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                     idx += sizeof(double);
                                 }
                             }
@@ -11500,7 +11500,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_generic_double(const voi
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -11508,7 +11508,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_generic_double(const voi
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                     idx += sizeof(double);
                                 }
                             }
@@ -11519,7 +11519,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_generic_double(const voi
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -11527,7 +11527,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_generic_double(const voi
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                    YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                     idx += sizeof(double);
                                 }
                             }
@@ -11557,7 +11557,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_generic_double(const voi
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j1 = 0; j1 < count1; j1++) {
@@ -11565,7 +11565,7 @@ int yaksuri_seqi_unpack_contig_hindexed_blkhindx_blklen_generic_double(const voi
                         for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                             for (intptr_t j3 = 0; j3 < count3; j3++) {
                                 for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                    YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                    YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + j1 * stride1 + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                     idx += sizeof(double);
                                 }
                             }
@@ -11623,14 +11623,14 @@ int yaksuri_seqi_pack_resized_hindexed_blkhindx_blklen_1_double(const void *inbu
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -11640,14 +11640,14 @@ int yaksuri_seqi_pack_resized_hindexed_blkhindx_blklen_1_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -11674,14 +11674,14 @@ int yaksuri_seqi_pack_resized_hindexed_blkhindx_blklen_1_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -11736,14 +11736,14 @@ int yaksuri_seqi_unpack_resized_hindexed_blkhindx_blklen_1_double(const void *in
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -11753,14 +11753,14 @@ int yaksuri_seqi_unpack_resized_hindexed_blkhindx_blklen_1_double(const void *in
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -11787,14 +11787,14 @@ int yaksuri_seqi_unpack_resized_hindexed_blkhindx_blklen_1_double(const void *in
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 1; k3++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -11849,14 +11849,14 @@ int yaksuri_seqi_pack_resized_hindexed_blkhindx_blklen_2_double(const void *inbu
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -11866,14 +11866,14 @@ int yaksuri_seqi_pack_resized_hindexed_blkhindx_blklen_2_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -11900,14 +11900,14 @@ int yaksuri_seqi_pack_resized_hindexed_blkhindx_blklen_2_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -11962,14 +11962,14 @@ int yaksuri_seqi_unpack_resized_hindexed_blkhindx_blklen_2_double(const void *in
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -11979,14 +11979,14 @@ int yaksuri_seqi_unpack_resized_hindexed_blkhindx_blklen_2_double(const void *in
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -12013,14 +12013,14 @@ int yaksuri_seqi_unpack_resized_hindexed_blkhindx_blklen_2_double(const void *in
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 2; k3++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -12075,14 +12075,14 @@ int yaksuri_seqi_pack_resized_hindexed_blkhindx_blklen_3_double(const void *inbu
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -12092,14 +12092,14 @@ int yaksuri_seqi_pack_resized_hindexed_blkhindx_blklen_3_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -12126,14 +12126,14 @@ int yaksuri_seqi_pack_resized_hindexed_blkhindx_blklen_3_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -12188,14 +12188,14 @@ int yaksuri_seqi_unpack_resized_hindexed_blkhindx_blklen_3_double(const void *in
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -12205,14 +12205,14 @@ int yaksuri_seqi_unpack_resized_hindexed_blkhindx_blklen_3_double(const void *in
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -12239,14 +12239,14 @@ int yaksuri_seqi_unpack_resized_hindexed_blkhindx_blklen_3_double(const void *in
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 3; k3++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -12301,14 +12301,14 @@ int yaksuri_seqi_pack_resized_hindexed_blkhindx_blklen_4_double(const void *inbu
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -12318,14 +12318,14 @@ int yaksuri_seqi_pack_resized_hindexed_blkhindx_blklen_4_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -12352,14 +12352,14 @@ int yaksuri_seqi_pack_resized_hindexed_blkhindx_blklen_4_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -12414,14 +12414,14 @@ int yaksuri_seqi_unpack_resized_hindexed_blkhindx_blklen_4_double(const void *in
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -12431,14 +12431,14 @@ int yaksuri_seqi_unpack_resized_hindexed_blkhindx_blklen_4_double(const void *in
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -12465,14 +12465,14 @@ int yaksuri_seqi_unpack_resized_hindexed_blkhindx_blklen_4_double(const void *in
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 4; k3++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -12527,14 +12527,14 @@ int yaksuri_seqi_pack_resized_hindexed_blkhindx_blklen_5_double(const void *inbu
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -12544,14 +12544,14 @@ int yaksuri_seqi_pack_resized_hindexed_blkhindx_blklen_5_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -12578,14 +12578,14 @@ int yaksuri_seqi_pack_resized_hindexed_blkhindx_blklen_5_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -12640,14 +12640,14 @@ int yaksuri_seqi_unpack_resized_hindexed_blkhindx_blklen_5_double(const void *in
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -12657,14 +12657,14 @@ int yaksuri_seqi_unpack_resized_hindexed_blkhindx_blklen_5_double(const void *in
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -12691,14 +12691,14 @@ int yaksuri_seqi_unpack_resized_hindexed_blkhindx_blklen_5_double(const void *in
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 5; k3++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -12753,14 +12753,14 @@ int yaksuri_seqi_pack_resized_hindexed_blkhindx_blklen_6_double(const void *inbu
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -12770,14 +12770,14 @@ int yaksuri_seqi_pack_resized_hindexed_blkhindx_blklen_6_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -12804,14 +12804,14 @@ int yaksuri_seqi_pack_resized_hindexed_blkhindx_blklen_6_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -12866,14 +12866,14 @@ int yaksuri_seqi_unpack_resized_hindexed_blkhindx_blklen_6_double(const void *in
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -12883,14 +12883,14 @@ int yaksuri_seqi_unpack_resized_hindexed_blkhindx_blklen_6_double(const void *in
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -12917,14 +12917,14 @@ int yaksuri_seqi_unpack_resized_hindexed_blkhindx_blklen_6_double(const void *in
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 6; k3++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -12979,14 +12979,14 @@ int yaksuri_seqi_pack_resized_hindexed_blkhindx_blklen_7_double(const void *inbu
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -12996,14 +12996,14 @@ int yaksuri_seqi_pack_resized_hindexed_blkhindx_blklen_7_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -13030,14 +13030,14 @@ int yaksuri_seqi_pack_resized_hindexed_blkhindx_blklen_7_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -13092,14 +13092,14 @@ int yaksuri_seqi_unpack_resized_hindexed_blkhindx_blklen_7_double(const void *in
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -13109,14 +13109,14 @@ int yaksuri_seqi_unpack_resized_hindexed_blkhindx_blklen_7_double(const void *in
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -13143,14 +13143,14 @@ int yaksuri_seqi_unpack_resized_hindexed_blkhindx_blklen_7_double(const void *in
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 7; k3++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -13205,14 +13205,14 @@ int yaksuri_seqi_pack_resized_hindexed_blkhindx_blklen_8_double(const void *inbu
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -13222,14 +13222,14 @@ int yaksuri_seqi_pack_resized_hindexed_blkhindx_blklen_8_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -13256,14 +13256,14 @@ int yaksuri_seqi_pack_resized_hindexed_blkhindx_blklen_8_double(const void *inbu
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -13318,14 +13318,14 @@ int yaksuri_seqi_unpack_resized_hindexed_blkhindx_blklen_8_double(const void *in
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -13335,14 +13335,14 @@ int yaksuri_seqi_unpack_resized_hindexed_blkhindx_blklen_8_double(const void *in
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -13369,14 +13369,14 @@ int yaksuri_seqi_unpack_resized_hindexed_blkhindx_blklen_8_double(const void *in
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < 8; k3++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -13431,14 +13431,14 @@ int yaksuri_seqi_pack_resized_hindexed_blkhindx_blklen_generic_double(const void
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -13448,14 +13448,14 @@ int yaksuri_seqi_pack_resized_hindexed_blkhindx_blklen_generic_double(const void
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -13482,14 +13482,14 @@ int yaksuri_seqi_pack_resized_hindexed_blkhindx_blklen_generic_double(const void
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))), *((double *) (void *) (dbuf + idx)));
                                 idx += sizeof(double);
                             }
                         }
@@ -13544,14 +13544,14 @@ int yaksuri_seqi_unpack_resized_hindexed_blkhindx_blklen_generic_double(const vo
     
     uintptr_t idx = 0;
     switch (op) {
-        case YAKSA_OP__PROD:
+        case YAKSA_OP__MAX:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -13561,14 +13561,14 @@ int yaksuri_seqi_unpack_resized_hindexed_blkhindx_blklen_generic_double(const vo
             break;
         }
         
-        case YAKSA_OP__MAX:
+        case YAKSA_OP__SUM:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                YAKSURI_SEQI_OP_MAX_FLOAT(double, *((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }
@@ -13595,14 +13595,14 @@ int yaksuri_seqi_unpack_resized_hindexed_blkhindx_blklen_generic_double(const vo
             break;
         }
         
-        case YAKSA_OP__SUM:
+        case YAKSA_OP__PROD:
         {
             for (intptr_t i = 0; i < count; i++) {
                 for (intptr_t j2 = 0; j2 < count2; j2++) {
                     for (intptr_t k2 = 0; k2 < array_of_blocklengths2[j2]; k2++) {
                         for (intptr_t j3 = 0; j3 < count3; j3++) {
                             for (intptr_t k3 = 0; k3 < blocklength3; k3++) {
-                                YAKSURI_SEQI_OP_SUM(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
+                                YAKSURI_SEQI_OP_PROD(*((const double *) (const void *) (sbuf + idx)), *((double *) (void *) (dbuf + i * extent + array_of_displs2[j2] + k2 * extent3 + array_of_displs3[j3] + k3 * sizeof(double))));
                                 idx += sizeof(double);
                             }
                         }

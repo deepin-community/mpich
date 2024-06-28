@@ -1,3 +1,19 @@
-# Lintian thinks uploader Adam Powell's name violates policy
-#mpich source: uploader-address-missing "Adam C. Powell
-#mpich source: uploader-not-full-name IV"
+# image data
+very-long-line-length-in-source-file * > 512 [modules/libfabric/prov/efa/docs/*.drawio:*]
+
+# generated source code
+very-long-line-length-in-source-file * > 512 [modules/yaksa/src/backend/ze/pup/yaksuri_zei_pup_*_int*_t.cl:*]
+
+# test data
+very-long-line-length-in-source-file * > 512 [modules/hwloc/tests/hwloc/*/*.output:*]
+very-long-line-length-in-source-file * > 512 [src/pm/hydra/modules/hwloc/tests/hwloc/*/*.output:*]
+
+# autotools
+very-long-line-length-in-source-file * > 512 [Makefile.in:*]
+very-long-line-length-in-source-file * > 512 [*/configure:*]
+very-long-line-length-in-source-file * > 512 [*/libtool.m4:*]
+
+# upstream should not ship these
+source-contains-prebuilt-python-object [*/__pycache__/*.cpython-36.pyc]
+very-long-line-length-in-source-file * > 512 [*/__pycache__/*.cpython-36.pyc:*]
+very-long-line-length-in-source-file * > 512 [*/configure.orig:*]

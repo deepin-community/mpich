@@ -1,5 +1,5 @@
 /**
- * Copyright (C) Mellanox Technologies Ltd. 2001-2018.  ALL RIGHTS RESERVED.
+ * Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2001-2018. ALL RIGHTS RESERVED.
  *
  * See file LICENSE for terms.
  */
@@ -35,6 +35,10 @@ static ucs_status_t ucx_perf_cuda_init(ucx_perf_context_t *perf)
     if (cerr != cudaSuccess) {
         return UCS_ERR_NO_DEVICE;
     }
+
+    /* actually set device context as calling cudaSetDevice may result in
+     * context being initialized lazily */
+    cudaFree(0);
 
     return UCS_OK;
 }
@@ -127,6 +131,11 @@ static void ucx_perf_cuda_memcpy(void *dst, ucs_memory_type_t dst_mem_type,
     cerr = cudaMemcpy(dst, src, count, cudaMemcpyDefault);
     if (cerr != cudaSuccess) {
         ucs_error("failed to copy memory: %s", cudaGetErrorString(cerr));
+    }
+
+    cerr = cudaDeviceSynchronize();
+    if (cerr != cudaSuccess) {
+        ucs_error("failed to sync device: %s", cudaGetErrorString(cerr));
     }
 }
 

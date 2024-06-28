@@ -1,10 +1,15 @@
-.TH MPI_Publish_name 3 "2/22/2022" " " "MPI"
+.TH MPI_Publish_name 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Publish_name \-  Publish a service name for use with MPI_Comm_connect 
 .SH SYNOPSIS
 .nf
-int MPI_Publish_name(const char *service_name, MPI_Info info, const char *port_name)
 .fi
+.nf
+int MPI_Publish_name(const char *service_name, MPI_Info info,
+const char *port_name)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -96,7 +101,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

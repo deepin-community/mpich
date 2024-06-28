@@ -77,18 +77,20 @@
 /* Application checkpointing enabled */
 #undef ENABLE_CHECKPOINTING
 
-/* define to add per-vc function pointers to override send and recv functions
-   */
-#undef ENABLE_COMM_OVERRIDES
-
-/* Define to enable using Izem queues */
-#undef ENABLE_IZEM_QUEUE
-
 /* Define to skip initializing builtin world comm during MPI_Session_init */
 #undef ENABLE_LOCAL_SESSION_INIT
 
 /* Define to disable shared-memory communication */
 #undef ENABLE_NO_LOCAL
+
+/* Define to enable PMI1 protocol */
+#undef ENABLE_PMI1
+
+/* Define to enable PMI2 protocol */
+#undef ENABLE_PMI2
+
+/* Define to enable PMIX protocol */
+#undef ENABLE_PMIX
 
 /* Define to 1 to enable getdims-related MPI_T performance variables */
 #undef ENABLE_PVAR_DIMS
@@ -109,6 +111,9 @@
 
 /* Define if QMPI enabled */
 #undef ENABLE_QMPI
+
+/* "set to enable threadcomm feature" */
+#undef ENABLE_THREADCOMM
 
 /* The value of false in Fortran */
 #undef F77_FALSE_VALUE
@@ -225,7 +230,10 @@
 /* Define if C++ is supported */
 #undef HAVE_CXX_BINDING
 
-/* Define is C++ supports complex types */
+/* Define if C++ supports bool types */
+#undef HAVE_CXX_BOOL
+
+/* Define if C++ supports complex types */
 #undef HAVE_CXX_COMPLEX
 
 /* define if the compiler supports exceptions */
@@ -298,11 +306,11 @@
 /* Define to 1 if you have the `getsid' function. */
 #undef HAVE_GETSID
 
+/* Define if building hcoll */
+#undef HAVE_HCOLL
+
 /* Define if hwloc is available */
 #undef HAVE_HWLOC
-
-/* Define if struct hostent contains h_addr_list */
-#undef HAVE_H_ADDR_LIST
 
 /* Define to 1 if you have the `inet_pton' function. */
 #undef HAVE_INET_PTON
@@ -337,26 +345,11 @@
 /* Define if libfabric library has nic field in fi_info struct */
 #undef HAVE_LIBFABRIC_NIC
 
-/* Define to 1 if you have the `hcoll' library (-lhcoll). */
-#undef HAVE_LIBHCOLL
-
-/* Define to 1 if you have the `hwloc' library (-lhwloc). */
-#undef HAVE_LIBHWLOC
-
-/* Define to 1 if you have the `netloc' library (-lnetloc). */
-#undef HAVE_LIBNETLOC
-
 /* Define to 1 if you have the `pmi' library (-lpmi). */
 #undef HAVE_LIBPMI
 
-/* Define to 1 if you have the `pmix' library (-lpmix). */
-#undef HAVE_LIBPMIX
-
 /* Define to 1 if you have the `ucp' library (-lucp). */
 #undef HAVE_LIBUCP
-
-/* Define to 1 if you have the `xpmem' library (-lxpmem). */
-#undef HAVE_LIBXPMEM
 
 /* Define to 1 if you have the <limits.h> header file. */
 #undef HAVE_LIMITS_H
@@ -379,8 +372,8 @@
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H
 
-/* Define to 1 if you have the `mkstemp' function. */
-#undef HAVE_MKSTEMP
+/* Define if 256 bit streaming memcpy is available */
+#undef HAVE_MM256_STREAM_SI256
 
 /* Define so that we can test whether the mpichconf.h file has been included
    */
@@ -423,8 +416,11 @@
 /* Define if the Fortran types are not available in C */
 #undef HAVE_NO_FORTRAN_MPI_TYPES_IN_C
 
-/* Define is the OSX thread affinity policy macros defined */
+/* Define if the OSX thread affinity policy macros defined */
 #undef HAVE_OSX_THREAD_AFFINITY
+
+/* Define if PMI2_Set_threaded exist */
+#undef HAVE_PMI2_SET_THREADED
 
 /* Define to 1 if you have the <poll.h> header file. */
 #undef HAVE_POLL_H
@@ -449,9 +445,6 @@
 
 /* Define to 1 if you have the `qsort' function. */
 #undef HAVE_QSORT
-
-/* Define to 1 if you have the `rand' function. */
-#undef HAVE_RAND
 
 /* Define to 1 if you have the <random.h> header file. */
 #undef HAVE_RANDOM_H
@@ -492,14 +485,8 @@
 /* Define to 1 if you have the `sigset' function. */
 #undef HAVE_SIGSET
 
-/* Define to 1 if you have the `snprintf' function. */
-#undef HAVE_SNPRINTF
-
 /* Define if socklen_t is available */
 #undef HAVE_SOCKLEN_T
-
-/* Define to 1 if you have the `srand' function. */
-#undef HAVE_SRAND
 
 /* Define to 1 if you have the <stdarg.h> header file. */
 #undef HAVE_STDARG_H
@@ -539,12 +526,6 @@
 
 /* Define to 1 if you have the `strsignal' function. */
 #undef HAVE_STRSIGNAL
-
-/* Define if struct ifconf can be used */
-#undef HAVE_STRUCT_IFCONF
-
-/* Define if struct ifreq can be used */
-#undef HAVE_STRUCT_IFREQ
 
 /* Define to 1 if the system has the type `struct random_data'. */
 #undef HAVE_STRUCT_RANDOM_DATA
@@ -593,9 +574,6 @@
 
 /* Define to 1 if you have the <sys/uio.h> header file. */
 #undef HAVE_SYS_UIO_H
-
-/* Define to 1 if you have the <sys/un.h> header file. */
-#undef HAVE_SYS_UN_H
 
 /* Define to enable tag error bits */
 #undef HAVE_TAG_ERROR_BITS
@@ -661,6 +639,9 @@
    */
 #undef MAX_ALIGNMENT
 
+/* Define if PMI2_KEYVAL_T is missing */
+#undef MISSING_PMI2_KEYVAL_T
+
 /* Datatype engine */
 #undef MPICH_DATATYPE_ENGINE
 
@@ -679,6 +660,9 @@
 
 /* Define to enable mutex debugging */
 #undef MPICH_DEBUG_MUTEX
+
+/* Define to enable mutex debugging */
+#undef MPICH_DEBUG_PROGRESS
 
 /* define to enable error messages */
 #undef MPICH_ERROR_MSG_LEVEL
@@ -702,9 +686,6 @@
    */
 #undef MPICH_THREAD_SUPPRESS_PREDEFINED_REFCOUNTS
 
-/* CH4 should build locality info */
-#undef MPIDI_BUILD_CH4_LOCALITY_INFO
-
 /* CH4 Directly transfers data through the chosen netmode */
 #undef MPIDI_CH4_DIRECT_NETMOD
 
@@ -714,11 +695,17 @@
 /* Define to use bgq capability set */
 #undef MPIDI_CH4_OFI_USE_SET_BGQ
 
+/* Define to use cxi capability set */
+#undef MPIDI_CH4_OFI_USE_SET_CXI
+
 /* Define to use gni capability set */
 #undef MPIDI_CH4_OFI_USE_SET_GNI
 
 /* Define to use PSM2 capability set */
 #undef MPIDI_CH4_OFI_USE_SET_PSM2
+
+/* Define to use PSM3 capability set */
+#undef MPIDI_CH4_OFI_USE_SET_PSM3
 
 /* Define to use runtime capability set */
 #undef MPIDI_CH4_OFI_USE_SET_RUNTIME
@@ -741,9 +728,6 @@
 /* Define to enable direct multi-threading model */
 #undef MPIDI_CH4_USE_MT_DIRECT
 
-/* Define to enable hand-off multi-threading model */
-#undef MPIDI_CH4_USE_MT_HANDOFF
-
 /* Define to enable lockless multi-threading model */
 #undef MPIDI_CH4_USE_MT_LOCKLESS
 
@@ -756,7 +740,7 @@
 /* Enables AM-only communication */
 #undef MPIDI_ENABLE_AM_ONLY
 
-/* CH4/OFI should use domain for vni contexts */
+/* CH4/OFI should use domain for vci contexts */
 #undef MPIDI_OFI_VNI_USE_DOMAIN
 
 /* Define to turn on the inlining optimizations in Nemesis code */
@@ -770,6 +754,9 @@
 
 /* limits.h _MAX constant for MPI_Aint */
 #undef MPIR_AINT_MAX
+
+/* limits.h _MIN constant for MPI_Aint */
+#undef MPIR_AINT_MIN
 
 /* limits.h _MAX constant for MPI_Count */
 #undef MPIR_COUNT_MAX
@@ -828,17 +815,11 @@
 /* Define if getsid needs a declaration */
 #undef NEEDS_GETSID_DECL
 
-/* Define if mkstemp needs a declaration */
-#undef NEEDS_MKSTEMP_DECL
-
 /* Define if _POSIX_SOURCE needed to get sigaction */
 #undef NEEDS_POSIX_FOR_SIGACTION
 
 /* Define if putenv needs a declaration */
 #undef NEEDS_PUTENV_DECL
-
-/* Define if snprintf needs a declaration */
-#undef NEEDS_SNPRINTF_DECL
 
 /* Define if strdup needs a declaration */
 #undef NEEDS_STRDUP_DECL
@@ -854,6 +835,12 @@
 
 /* Define if vsnprintf needs a declaration */
 #undef NEEDS_VSNPRINTF_DECL
+
+/* Define if PMIX_INFO_LOAD macro is needed */
+#undef NEED_PMIX_INFO_LOAD
+
+/* The PMI library does not have PMI_Spawn_multiple. */
+#undef NO_PMI_SPAWN_MULTIPLE
 
 /* Name of package */
 #undef PACKAGE
@@ -905,6 +892,9 @@
 
 /* Define size of PAC_TYPE_NAME */
 #undef SIZEOF_F77_INTEGER
+
+/* Define size of PAC_TYPE_NAME */
+#undef SIZEOF_F77_LOGICAL
 
 /* Define size of PAC_TYPE_NAME */
 #undef SIZEOF_F77_REAL
@@ -1024,6 +1014,9 @@
    values */
 #undef USE_AINT_FOR_ATTRVAL
 
+/* define to use global config file */
+#undef USE_CONFIGFILE
+
 /* Define if performing coverage tests */
 #undef USE_COVERAGE
 
@@ -1043,18 +1036,11 @@
 /* Define if mpiexec should create a new process group session */
 #undef USE_NEW_SESSION
 
-/* Define if _POSIX_C_SOURCE needs to be undefined for struct ifconf */
-#undef USE_NOPOSIX_FOR_IFCONF
+/* Define if using Slurm PMI 1 */
+#undef USE_PMI1_SLURM
 
-/* Define if PMI2 API must be used */
-#undef USE_PMI2_API
-
-/* Define if PMIx API must be used */
-#undef USE_PMIX_API
-
-/* Define if access to PMI information through a port rather than just an fd
-   is allowed */
-#undef USE_PMI_PORT
+/* Define if using Slurm PMI 2 */
+#undef USE_PMI2_SLURM
 
 /* Define if sigaction should be used to set signals */
 #undef USE_SIGACTION
@@ -1064,9 +1050,6 @@
 
 /* Define it the socket verify macros should be enabled */
 #undef USE_SOCK_VERIFY
-
-/* Define if _SVID_SOURCE needs to be defined for struct ifconf */
-#undef USE_SVIDSOURCE_FOR_IFCONF
 
 /* Define if we can use a symmetric heap */
 #undef USE_SYM_HEAP

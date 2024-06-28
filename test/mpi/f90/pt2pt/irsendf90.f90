@@ -79,14 +79,15 @@
 !
          completed = 0
          do while (completed .lt. 2)
-            call MPI_Waitany(2, requests, index, statuses, ierr)
+            call MPI_Waitany(2, requests, index, status, ierr)
             completed = completed + 1
+            if (index .eq. 1) then
+                call msg_check( recv_buf, next, tag, count, status, &
+      &                          TEST_SIZE, 'irsend and irecv', errs )
+            endif
          end do
 !
          call rq_check( requests(1), 1, 'irsend and irecv' )
-!
-         call msg_check( recv_buf, next, tag, count, statuses, &
-      &           TEST_SIZE, 'irsend and irecv', errs )
 !
       else if (prev .eq. 0) then
 !

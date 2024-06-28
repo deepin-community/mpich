@@ -1,5 +1,5 @@
 /**
- * Copyright (C) Mellanox Technologies Ltd. 2001-2015.  ALL RIGHTS RESERVED.
+ * Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2001-2015. ALL RIGHTS RESERVED.
  *
  * See file LICENSE for terms.
  */
@@ -14,24 +14,51 @@
 #include <ucs/arch/bitops.h>
 #include <ucs/debug/log.h>
 #include <ucs/datastruct/mpool.h>
+#include <ucs/memory/rcache.h>
 
 #include <inttypes.h>
+
+
+/**
+ * Memory handle flags.
+ */
+enum {
+    /*
+     * Memory handle was imported and points to some peer's memory buffer.
+     */
+    UCP_MEMH_FLAG_IMPORTED  = UCS_BIT(0)
+};
+
+
+/**
+ * Memory handle buffer packed flags.
+ */
+enum {
+    UCP_MEMH_BUFFER_FLAG_EXPORTED = UCS_BIT(0) 
+};
 
 
 /**
  * Memory handle.
  * Contains general information, and a list of UCT handles.
  * md_map specifies which MDs from the current context are present in the array.
- * The array itself contains only the MDs specified in md_map, without gaps.
+ * The array itself contains only the MDs specified in md_map.
  */
 typedef struct ucp_mem {
-    void                          *address;     /* Region start address */
-    size_t                        length;       /* Region length */
-    uct_alloc_method_t            alloc_method; /* Method used to allocate the memory */
-    ucs_memory_type_t             mem_type;     /* Type of allocated or registered memory */
-    uct_md_h                      alloc_md;     /* MD used to allocated the memory */
-    ucp_md_map_t                  md_map;       /* Which MDs have valid memory handles */
-    uct_mem_h                     uct[0];       /* Valid memory handles, as popcount(md_map) */
+    ucs_rcache_region_t super;
+    uint8_t             flags;          /* Memory handle flags */
+    ucp_context_h       context;        /* UCP context that owns a memory handle */
+    uct_alloc_method_t  alloc_method;   /* Method used to allocate the memory */
+    ucs_sys_device_t    sys_dev;        /* System device index */
+    ucs_memory_type_t   mem_type;       /* Type of allocated or registered memory */
+    ucp_md_index_t      alloc_md_index; /* Index of MD used to allocate the memory */
+    uint64_t            remote_uuid;    /* Remote UUID */
+    ucp_md_map_t        md_map;         /* Which MDs have valid memory handles */
+    ucp_mem_h           parent;         /* - NULL if entry should be returned to rcache
+                                           - pointer to self if rcache disabled
+                                           - pointer to rcache memh if entry is a user memh */
+    uint64_t            reg_id;         /* Registration ID */
+    uct_mem_h           uct[0];         /* Sparse memory handles array num_mds in size */
 } ucp_mem_t;
 
 
@@ -39,18 +66,18 @@ typedef struct ucp_mem {
  * Memory descriptor.
  * Contains a memory handle of the chunk it belongs to.
  */
-typedef struct ucp_mem_desc {
-    ucp_mem_h                     memh;
-    void                          *ptr;
-} ucp_mem_desc_t;
+struct ucp_mem_desc {
+    ucp_mem_h           memh;
+    void                *ptr;
+};
 
 
 /**
  * Memory descriptor details for rndv fragments.
  */
 typedef struct ucp_rndv_frag_mp_chunk_hdr {
-    ucp_mem_h                     memh;
-    void                          *next_frag_ptr;
+    ucp_mem_h           memh;
+    void                *next_frag_ptr;
 } ucp_rndv_frag_mp_chunk_hdr_t;
 
 
@@ -58,9 +85,18 @@ typedef struct ucp_rndv_frag_mp_chunk_hdr {
  * Memory pool private data descriptor.
  */
 typedef struct ucp_rndv_mpool_priv {
-    ucp_worker_h                  worker;
-    ucs_memory_type_t             mem_type;
+    ucp_worker_h        worker;
+    ucs_memory_type_t   mem_type;
 } ucp_rndv_mpool_priv_t;
+
+
+typedef struct {
+    ucp_mem_t memh;
+    uct_mem_h uct[UCP_MAX_MDS];
+} ucp_mem_dummy_handle_t;
+
+
+extern ucp_mem_dummy_handle_t ucp_mem_dummy_handle;
 
 
 ucs_status_t ucp_reg_mpool_malloc(ucs_mpool_t *mp, size_t *size_p, void **chunk_p);
@@ -74,9 +110,6 @@ ucs_status_t ucp_frag_mpool_malloc(ucs_mpool_t *mp, size_t *size_p, void **chunk
 void ucp_frag_mpool_free(ucs_mpool_t *mp, void *chunk);
 
 void ucp_frag_mpool_obj_init(ucs_mpool_t *mp, void *obj, void *chunk);
-
-ucs_status_t
-ucp_mm_get_alloc_md_map(ucp_context_h context, ucp_md_map_t *md_map_p);
 
 
 /**
@@ -120,6 +153,30 @@ void ucp_mem_type_unreg_buffers(ucp_worker_h worker, ucs_memory_type_t mem_type,
                                 ucp_md_map_t *md_map,
                                 uct_rkey_bundle_t *rkey_bundle);
 
+ucs_status_t ucp_memh_get_slow(ucp_context_h context, void *address,
+                               size_t length, ucs_memory_type_t mem_type,
+                               ucp_md_map_t reg_md_map, unsigned uct_flags,
+                               ucp_mem_h *memh_p);
+
+void ucp_memh_cleanup(ucp_context_h context, ucp_mem_h memh);
+
+ucs_status_t ucp_mem_rcache_init(ucp_context_h context);
+
+void ucp_mem_rcache_cleanup(ucp_context_h context);
+
+/**
+ * Get memory domain index that is used to allocate host memory type.
+ *
+ * @param [in]  context UCP context containing memory domain indexes to use for
+ *                      the memory allocation.
+ * @param [out] md_idx  Index of the memory domain that is used to allocate host
+ *                      memory.
+ * 
+ * @return Error code as defined by @ref ucs_status_t.
+ */
+ucs_status_t
+ucp_mm_get_alloc_md_index(ucp_context_h context, ucp_md_index_t *md_idx);
+
 static UCS_F_ALWAYS_INLINE ucp_md_map_t
 ucp_rkey_packed_md_map(const void *rkey_buffer)
 {
@@ -142,10 +199,14 @@ ucp_memh_map2uct(const uct_mem_h *uct, ucp_md_map_t md_map, ucp_md_index_t md_id
     return uct[ucs_bitmap2idx(md_map, md_idx)];
 }
 
-static UCS_F_ALWAYS_INLINE uct_mem_h
-ucp_memh2uct(ucp_mem_h memh, ucp_md_index_t md_idx)
+static UCS_F_ALWAYS_INLINE void *ucp_memh_address(const ucp_mem_h memh)
 {
-    return ucp_memh_map2uct(memh->uct, memh->md_map, md_idx);
+    return (void*)memh->super.super.start;
+}
+
+static UCS_F_ALWAYS_INLINE size_t ucp_memh_length(const ucp_mem_h memh)
+{
+    return memh->super.super.end - memh->super.super.start;
 }
 
 
@@ -157,6 +218,7 @@ ucp_memh2uct(ucp_mem_h memh, ucp_md_index_t md_idx)
 #define UCP_MEM_IS_ACCESSIBLE_FROM_CPU(_mem_type) \
     (UCS_BIT(_mem_type) & UCS_MEMORY_TYPES_CPU_ACCESSIBLE)
 #define UCP_MEM_IS_GPU(_mem_type) ((_mem_type) == UCS_MEMORY_TYPE_CUDA || \
+                                   (_mem_type) == UCS_MEMORY_TYPE_CUDA_MANAGED || \
                                    (_mem_type) == UCS_MEMORY_TYPE_ROCM)
 
 #endif

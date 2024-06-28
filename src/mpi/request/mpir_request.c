@@ -7,7 +7,7 @@
 
 /* style:PMPIuse:PMPI_Status_f2c:2 sig:0 */
 
-MPIR_Request MPIR_Request_builtins[MPIR_REQUEST_BUILTIN_COUNT];
+MPIR_Request MPIR_Request_builtin[MPIR_REQUEST_N_BUILTIN];
 MPIR_Request MPIR_Request_direct[MPIR_REQUEST_PREALLOC];
 MPIR_Object_alloc_t MPIR_Request_mem[MPIR_REQUEST_NUM_POOLS];
 
@@ -17,9 +17,15 @@ static void init_builtin_request(MPIR_Request * req, int handle, MPIR_Request_ki
     req->kind = kind;
     MPIR_cc_set(&req->cc, 0);
     req->cc_ptr = &req->cc;
-    req->completion_notification = NULL;
     req->status.MPI_ERROR = MPI_SUCCESS;
     MPIR_STATUS_SET_CANCEL_BIT(req->status, FALSE);
+    if (kind == MPIR_REQUEST_KIND__RECV) {
+        /* precompleted recv request is returned when source is MPI_PROC_NULL,
+         * or when we are certain status won't be needed. Thus, initialize the
+         * status for MPI_PROC_NULL. */
+        req->status.MPI_SOURCE = MPI_PROC_NULL;
+        req->status.MPI_TAG = MPI_ANY_TAG;
+    }
     req->comm = NULL;
 }
 
@@ -41,38 +47,31 @@ void MPII_init_request(void)
 
     /* lightweight request, one for each kind */
     for (int i = 0; i < MPIR_REQUEST_KIND__LAST; i++) {
-        req = &MPIR_Request_builtins[i];
+        req = &MPIR_Request_builtin[i];
         init_builtin_request(req, MPIR_REQUEST_COMPLETE + i, (MPIR_Request_kind_t) i);
     }
-    MPII_REQUEST_CLEAR_DBG(&MPIR_Request_builtins[MPIR_REQUEST_KIND__SEND]);
-    MPIR_Request_builtins[MPIR_REQUEST_KIND__COLL].u.nbc.errflag = MPIR_ERR_NONE;
-    MPIR_Request_builtins[MPIR_REQUEST_KIND__COLL].u.nbc.coll.host_sendbuf = NULL;
-    MPIR_Request_builtins[MPIR_REQUEST_KIND__COLL].u.nbc.coll.host_recvbuf = NULL;
-    MPIR_Request_builtins[MPIR_REQUEST_KIND__COLL].u.nbc.coll.datatype = MPI_DATATYPE_NULL;
+    MPII_REQUEST_CLEAR_DBG(&MPIR_Request_builtin[MPIR_REQUEST_KIND__SEND]);
+    MPIR_Request_builtin[MPIR_REQUEST_KIND__COLL].u.nbc.errflag = MPIR_ERR_NONE;
+    MPIR_Request_builtin[MPIR_REQUEST_KIND__COLL].u.nbc.coll.host_sendbuf = NULL;
+    MPIR_Request_builtin[MPIR_REQUEST_KIND__COLL].u.nbc.coll.host_recvbuf = NULL;
+    MPIR_Request_builtin[MPIR_REQUEST_KIND__COLL].u.nbc.coll.datatype = MPI_DATATYPE_NULL;
 
     /* for recv from MPI_PROC_NULL */
-    req = MPIR_Request_builtins + HANDLE_INDEX(MPIR_REQUEST_NULL_RECV);
+    req = MPIR_Request_builtin + HANDLE_INDEX(MPIR_REQUEST_NULL_RECV);
     init_builtin_request(req, MPIR_REQUEST_NULL_RECV, MPIR_REQUEST_KIND__RECV);
     MPIR_Status_set_procnull(&req->status);
 }
 
-/* Complete a request, saving the status data if necessary.
-   If debugger information is being provided for pending (user-initiated)
-   send operations, the macros MPII_SENDQ_FORGET will be defined to
-   call the routine MPII_Sendq_forget; otherwise that macro will be a no-op.
-   The implementation of the MPIR_Sendq_xxx is in src/mpi/debugger/dbginit.c .
-*/
+/* Complete a request, saving the status data if necessary. */
 int MPIR_Request_completion_processing(MPIR_Request * request_ptr, MPI_Status * status)
 {
     int mpi_errno = MPI_SUCCESS;
-    int rc;
 
     switch (request_ptr->kind) {
         case MPIR_REQUEST_KIND__SEND:
             {
                 MPIR_Status_set_cancel_bit(status, MPIR_STATUS_GET_CANCEL_BIT(request_ptr->status));
                 mpi_errno = request_ptr->status.MPI_ERROR;
-                MPII_SENDQ_FORGET(request_ptr);
                 break;
             }
         case MPIR_REQUEST_KIND__COLL:
@@ -112,23 +111,9 @@ int MPIR_Request_completion_processing(MPIR_Request * request_ptr, MPI_Status * 
                     request_ptr->cc_ptr = &request_ptr->cc;
                     request_ptr->u.persist.real_request = NULL;
 
-                    if (prequest_ptr->kind != MPIR_REQUEST_KIND__GREQUEST) {
-                        MPIR_Status_set_cancel_bit(status,
-                                                   MPIR_STATUS_GET_CANCEL_BIT((prequest_ptr->status)));
-                        mpi_errno = prequest_ptr->status.MPI_ERROR;
-                    } else {
-                        mpi_errno = MPIR_Grequest_query(prequest_ptr);
-                        MPIR_Status_set_cancel_bit(status,
-                                                   MPIR_STATUS_GET_CANCEL_BIT
-                                                   (prequest_ptr->status));
-                        if (mpi_errno == MPI_SUCCESS) {
-                            mpi_errno = prequest_ptr->status.MPI_ERROR;
-                        }
-                        rc = MPIR_Grequest_free(prequest_ptr);
-                        if (mpi_errno == MPI_SUCCESS) {
-                            mpi_errno = rc;
-                        }
-                    }
+                    MPIR_Status_set_cancel_bit(status,
+                                               MPIR_STATUS_GET_CANCEL_BIT((prequest_ptr->status)));
+                    mpi_errno = prequest_ptr->status.MPI_ERROR;
 
                     MPIR_Request_free(prequest_ptr);
                 } else {
@@ -221,11 +206,6 @@ int MPIR_Request_completion_processing(MPIR_Request * request_ptr, MPI_Status * 
             {
                 mpi_errno = MPIR_Grequest_query(request_ptr);
                 MPIR_Request_extract_status(request_ptr, status);
-                rc = MPIR_Grequest_free(request_ptr);
-                if (mpi_errno == MPI_SUCCESS) {
-                    mpi_errno = rc;
-                }
-
                 break;
             }
 
@@ -279,13 +259,7 @@ int MPIR_Request_get_error(MPIR_Request * request_ptr)
         case MPIR_REQUEST_KIND__PREQUEST_SEND:
             {
                 if (request_ptr->u.persist.real_request != NULL) {
-                    if (request_ptr->u.persist.real_request->kind == MPIR_REQUEST_KIND__GREQUEST) {
-                        /* This is needed for persistent Bsend requests */
-                        mpi_errno = MPIR_Grequest_query(request_ptr->u.persist.real_request);
-                    }
-                    if (mpi_errno == MPI_SUCCESS) {
-                        mpi_errno = request_ptr->u.persist.real_request->status.MPI_ERROR;
-                    }
+                    mpi_errno = request_ptr->u.persist.real_request->status.MPI_ERROR;
                 } else {
                     mpi_errno = request_ptr->status.MPI_ERROR;
                 }
@@ -483,4 +457,28 @@ int MPIR_Grequest_free(MPIR_Request * request_ptr)
     }
 
     return mpi_errno;
+}
+
+void MPIR_Request_debug(void)
+{
+    for (int i = 0; i < MPIR_REQUEST_NUM_POOLS; i++) {
+        int n_pending = MPIR_Request_mem[i].num_allocated - MPIR_Request_mem[i].num_avail;
+        if (n_pending > 0) {
+            printf("%d pending requests in pool %d\n", n_pending, i);
+#ifdef MPICH_DEBUG_PROGRESS
+            if (i == 0) {
+                MPIR_Request *pool = MPIR_Request_direct;
+                for (int j = 0; j < MPIR_Request_mem[0].direct_size; j++) {
+                    MPIR_REQUEST_DEBUG(&pool[j]);
+                }
+            }
+            for (int k = 0; k < MPIR_Request_mem[i].indirect_size; k++) {
+                MPIR_Request *pool = MPIR_Request_mem[i].indirect[k];
+                for (int j = 0; j < REQUEST_NUM_INDICES; j++) {
+                    MPIR_REQUEST_DEBUG(&pool[j]);
+                }
+            }
+#endif
+        }
+    }
 }

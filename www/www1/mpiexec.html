@@ -69,6 +69,15 @@ to run the program <tt>ocean</tt> on 4 processes and <tt>air</tt> on 8 processes
 <P>
 <H2>MPICH-Specific Arguments</H2>
 <P>
+MPICH implements a few process managers. Here we list a general set of
+arguments that many of the implementations support. More detailed options
+that are supported by a particular implementation, e.g. hydra, are
+available via:
+<PRE>
+    mpiexec -h
+</PRE>
+
+<P>
 Many of the implementations of process managers in MPICH support the
 following arguments to <tt>mpiexec</tt>:
 <P>
@@ -130,23 +139,10 @@ this is <tt>&lt;low&gt;:&lt;high&gt;</tt>.  For example, to specify any port bet
 <DT><B>MPICH_PORT_RANGE </B> <DD> Has the same meaning as <tt>MPIEXEC_PORT_RANGE</tt> and 
 is used if <tt>MPIEXEC_PORT_RANGE</tt> is not set.
 
-<DT><B>MPIEXEC_PREFIX_DEFAULT </B> <DD> If this environment variable is set, output
-to standard output is prefixed by the rank in <tt>MPI_COMM_WORLD</tt> of the 
-process and output to standard error is prefixed by the rank and the 
-text <tt>(err)</tt>; both are followed by an angle bracket (<tt>&gt;</tt>).  If
-this variable is not set, there is no prefix.
-
-<DT><B>MPIEXEC_PREFIX_STDOUT </B> <DD> Set the prefix used for lines sent to standard
-output.  A <tt>%d</tt> is replaced with the rank in <tt>MPI_COMM_WORLD</tt>; a <tt>%w</tt> is 
-replaced with an indication of which <tt>MPI_COMM_WORLD</tt> in MPI jobs that
-involve multiple <tt>MPI_COMM_WORLD</tt>s (e.g., ones that use <tt>MPI_Comm_spawn</tt> or
-<tt>MPI_Comm_connect</tt>).
-
-<DT><B>MPIEXEC_PREFIX_STDERR </B> <DD> Like <tt>MPIEXEC_PREFIX_STDOUT</tt>, but for standard error.
-</DL>
 <P>
 <H2>Return Status</H2>
 <tt>mpiexec</tt> returns the maximum of the exit status values of all of the
 processes created by <tt>mpiexec</tt>.
 <P>
+<P><B>Location:</B>/var/tmp/jbAQ60iA2q/mpich-4.2.0/src/pm/hydra/mansrc/mpiexec.txt<P>
 </BODY></HTML>

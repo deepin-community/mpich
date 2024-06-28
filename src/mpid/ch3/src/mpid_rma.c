@@ -53,7 +53,7 @@ static int win_init(MPI_Aint size, int disp_unit, int create_flavor, int model, 
                     MPIR_Comm * comm_ptr, MPIR_Win ** win_ptr);
 
 
-int MPID_Win_create(void *base, MPI_Aint size, int disp_unit, MPIR_Info * info,
+int MPID_Win_create(void *base, MPI_Aint size, MPI_Aint disp_unit, MPIR_Info * info,
                     MPIR_Comm * comm_ptr, MPIR_Win ** win_ptr)
 {
     int mpi_errno = MPI_SUCCESS;
@@ -66,13 +66,15 @@ int MPID_Win_create(void *base, MPI_Aint size, int disp_unit, MPIR_Info * info,
         MPIR_ERR_SETANDJUMP(mpi_errno, MPIX_ERR_REVOKED, "**revoked");
     }
 
-    mpi_errno =
-        win_init(size, disp_unit, MPI_WIN_FLAVOR_CREATE, MPI_WIN_UNIFIED, info, comm_ptr, win_ptr);
+    MPIR_Assert(disp_unit <= INT_MAX);
+    int my_disp_unit = (int) disp_unit;
+    mpi_errno = win_init(size, my_disp_unit, MPI_WIN_FLAVOR_CREATE, MPI_WIN_UNIFIED,
+                         info, comm_ptr, win_ptr);
     MPIR_ERR_CHECK(mpi_errno);
 
     (*win_ptr)->base = base;
 
-    mpi_errno = MPIDI_CH3U_Win_fns.create(base, size, disp_unit, info, comm_ptr, win_ptr);
+    mpi_errno = MPIDI_CH3U_Win_fns.create(base, size, my_disp_unit, info, comm_ptr, win_ptr);
     MPIR_ERR_CHECK(mpi_errno);
 
   fn_fail:
@@ -81,19 +83,20 @@ int MPID_Win_create(void *base, MPI_Aint size, int disp_unit, MPIR_Info * info,
 }
 
 
-int MPID_Win_allocate(MPI_Aint size, int disp_unit, MPIR_Info * info,
+int MPID_Win_allocate(MPI_Aint size, MPI_Aint disp_unit, MPIR_Info * info,
                       MPIR_Comm * comm_ptr, void *baseptr, MPIR_Win ** win_ptr)
 {
     int mpi_errno = MPI_SUCCESS;
 
     MPIR_FUNC_ENTER;
 
-    mpi_errno =
-        win_init(size, disp_unit, MPI_WIN_FLAVOR_ALLOCATE, MPI_WIN_UNIFIED, info, comm_ptr,
-                 win_ptr);
+    MPIR_Assert(disp_unit <= INT_MAX);
+    int my_disp_unit = (int) disp_unit;
+    mpi_errno = win_init(size, my_disp_unit, MPI_WIN_FLAVOR_ALLOCATE, MPI_WIN_UNIFIED,
+                         info, comm_ptr, win_ptr);
     MPIR_ERR_CHECK(mpi_errno);
 
-    mpi_errno = MPIDI_CH3U_Win_fns.allocate(size, disp_unit, info, comm_ptr, baseptr, win_ptr);
+    mpi_errno = MPIDI_CH3U_Win_fns.allocate(size, my_disp_unit, info, comm_ptr, baseptr, win_ptr);
     MPIR_ERR_CHECK(mpi_errno);
 
   fn_fail:
@@ -153,20 +156,21 @@ int MPID_Free_mem(void *ptr)
 }
 
 
-int MPID_Win_allocate_shared(MPI_Aint size, int disp_unit, MPIR_Info * info, MPIR_Comm * comm_ptr,
+int MPID_Win_allocate_shared(MPI_Aint size, MPI_Aint disp_unit, MPIR_Info * info, MPIR_Comm * comm_ptr,
                              void *base_ptr, MPIR_Win ** win_ptr)
 {
     int mpi_errno = MPI_SUCCESS;
 
-
     MPIR_FUNC_ENTER;
 
-    mpi_errno =
-        win_init(size, disp_unit, MPI_WIN_FLAVOR_SHARED, MPI_WIN_UNIFIED, info, comm_ptr, win_ptr);
+    MPIR_Assert(disp_unit <= INT_MAX);
+    int my_disp_unit = (int) disp_unit;
+    mpi_errno = win_init(size, my_disp_unit, MPI_WIN_FLAVOR_SHARED, MPI_WIN_UNIFIED,
+                         info, comm_ptr, win_ptr);
     MPIR_ERR_CHECK(mpi_errno);
 
     mpi_errno =
-        MPIDI_CH3U_Win_fns.allocate_shared(size, disp_unit, info, comm_ptr, base_ptr, win_ptr);
+        MPIDI_CH3U_Win_fns.allocate_shared(size, my_disp_unit, info, comm_ptr, base_ptr, win_ptr);
     MPIR_ERR_CHECK(mpi_errno);
 
   fn_fail:
@@ -202,7 +206,6 @@ static int win_init(MPI_Aint size, int disp_unit, int create_flavor, int model, 
 
     MPIR_FUNC_ENTER;
 
-    MPID_THREAD_CS_ENTER(POBJ, MPIR_THREAD_GLOBAL_ALLFUNC_MUTEX);
     if (initRMAoptions) {
 
         MPIDI_CH3_RMA_Init_sync_pvars();
@@ -210,7 +213,6 @@ static int win_init(MPI_Aint size, int disp_unit, int create_flavor, int model, 
 
         initRMAoptions = 0;
     }
-    MPID_THREAD_CS_EXIT(POBJ, MPIR_THREAD_GLOBAL_ALLFUNC_MUTEX);
 
     *win_ptr = (MPIR_Win *) MPIR_Handle_obj_alloc(&MPIR_Win_mem);
     MPIR_ERR_CHKANDJUMP1(!(*win_ptr), mpi_errno, MPI_ERR_OTHER, "**nomem",
@@ -270,6 +272,7 @@ static int win_init(MPI_Aint size, int disp_unit, int create_flavor, int model, 
         (*win_ptr)->create_flavor == MPI_WIN_FLAVOR_SHARED) {
         (*win_ptr)->info_args.alloc_shm = TRUE;
     }
+    (*win_ptr)->info_args.accumulate_granularity = 0;
 
     /* Set info_args on window based on info provided by user */
     mpi_errno = MPID_Win_set_info((*win_ptr), info);

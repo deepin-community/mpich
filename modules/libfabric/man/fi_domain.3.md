@@ -19,6 +19,9 @@ fi_domain \- Open a fabric access domain
 int fi_domain(struct fid_fabric *fabric, struct fi_info *info,
     struct fid_domain **domain, void *context);
 
+int fi_domain2(struct fid_fabric *fabric, struct fi_info *info,
+    struct fid_domain **domain, uint64_t flags, void *context);
+
 int fi_close(struct fid *domain);
 
 int fi_domain_bind(struct fid_domain *domain, struct fid *eq,
@@ -69,6 +72,11 @@ resources belonging to the same domain may share resources.
 Opens a fabric access domain, also referred to as a resource domain.
 Fabric domains are identified by a name.  The properties of the opened
 domain are specified using the info parameter.
+
+## fi_domain2
+
+Similar to fi_domain, but accepts an extra parameter *flags*. Mainly
+used for opening peer domain. See [`fi_peer`(3)](fi_peer.3.html).
 
 ## fi_open_ops
 
@@ -333,10 +341,16 @@ are defined.
   that the desired functionality is implemented by the provider
   hardware or is a standard service of the operating system.
 
-  All providers are required to support FI_PROGRESS_AUTO.  However, if
-  a provider does not natively support automatic progress, forcing the
-  use of FI_PROGRESS_AUTO may result in threads being allocated below
-  the fabric interfaces.
+  It is recommended that providers support FI_PROGRESS_AUTO.  However,
+  if a provider does not natively support automatic progress, forcing
+  the use of FI_PROGRESS_AUTO may result in threads being allocated
+  below the fabric interfaces.
+
+  Note that prior versions of the library required providers to support
+  FI_PROGRESS_AUTO.  However, in some cases progress threads cannot be
+  blocked when communication is idle, which results in threads spinning
+  in progress functions.  As a result, those providers only supported
+  FI_PROGRESS_MANUAL.
 
 *FI_PROGRESS_MANUAL*
 : This progress model indicates that the provider requires the use of
@@ -446,8 +460,10 @@ transfer operation.
   seen by the initiator of a request.  For FI_EP_DGRAM endpoints, if the target EP
   queues are unable to accept incoming messages, received messages will
   be dropped.  For reliable endpoints, if RM is disabled, the transmit
-  operation will complete in error.  If RM is enabled, the provider will
-  internally retry the operation.
+  operation will complete in error. A provider may choose to return an error
+  completion with the error code FI_ENORX for that transmit operation so that
+  it can be retried. If RM is enabled, the provider will internally retry the
+  operation.
 
 *Rx Buffer Overrun*
 : This refers to buffers posted to receive incoming tagged or untagged messages,
@@ -524,6 +540,10 @@ The following values may be specified.
 *FI_MR_ALLOCATED*
 : Indicates that memory registration occurs on allocated data buffers, and
   physical pages must back all virtual addresses being registered.
+
+*FI_MR_COLLECTIVE*
+: Requires data buffers passed to collective operations be explicitly
+  registered for collective operations using the FI_COLLECTIVE flag.
 
 *FI_MR_ENDPOINT*
 : Memory registration occurs at the endpoint level, rather than domain.
@@ -749,7 +769,7 @@ provider to optimize any memory registration cache or lookup tables.
 ## Traffic Class (tclass)
 
 This specifies the default traffic class that will be associated any endpoints
-created within the domain.  See [`fi_endpoint`(3)](fi_endpoint.3.html
+created within the domain.  See [`fi_endpoint`(3)](fi_endpoint.3.html)
 for additional information.
 
 # RETURN VALUE
@@ -781,6 +801,6 @@ installed provider(s).
 [`fi_getinfo`(3)](fi_getinfo.3.html),
 [`fi_endpoint`(3)](fi_endpoint.3.html),
 [`fi_av`(3)](fi_av.3.html),
-[`fi_ep`(3)](fi_ep.3.html),
 [`fi_eq`(3)](fi_eq.3.html),
 [`fi_mr`(3)](fi_mr.3.html)
+[`fi_peer`(3)](fi_peer.3.html)

@@ -21,7 +21,6 @@ int MPIR_TSP_Ialltoallw_sched_intra_inplace(const void *sendbuf, const MPI_Aint 
     MPI_Aint true_extent, true_lb;
     int nranks, rank, nvtcs;
     int i, dst, send_id, recv_id, dtcopy_id = -1, vtcs[2];
-    int max_size;
     void *tmp_buf = NULL, *adj_tmp_buf = NULL;
     MPIR_Errflag_t errflag ATTRIBUTE((unused)) = MPIR_ERR_NONE;
 
@@ -37,6 +36,11 @@ int MPIR_TSP_Ialltoallw_sched_intra_inplace(const void *sendbuf, const MPI_Aint 
     mpi_errno = MPIR_Sched_next_tag(comm, &tag);
     MPIR_ERR_CHECK(mpi_errno);
 
+    /* FIXME: Here we allocate tmp_buf using extent and send/recv with datatype directly,
+     *        which can be potentially very inefficient. Why don't we use bytes as in
+     *        ialltoallw_intra_sched_inplace.c ?
+     */
+    MPI_Aint max_size;
     max_size = 0;
     for (i = 0; i < nranks; ++i) {
         /* only look at recvtypes/recvcounts because the send vectors are
@@ -61,11 +65,11 @@ int MPIR_TSP_Ialltoallw_sched_intra_inplace(const void *sendbuf, const MPI_Aint 
             mpi_errno = MPIR_TSP_sched_isend((char *) recvbuf + rdispls[dst],
                                              recvcounts[dst], recvtypes[dst], dst, tag, comm, sched,
                                              nvtcs, vtcs, &send_id);
-            MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag);
+            MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
             mpi_errno =
                 MPIR_TSP_sched_irecv(adj_tmp_buf, recvcounts[dst], recvtypes[dst], dst, tag, comm,
                                      sched, nvtcs, vtcs, &recv_id);
-            MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag);
+            MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
 
             nvtcs = 2;
             vtcs[0] = send_id;
@@ -73,7 +77,7 @@ int MPIR_TSP_Ialltoallw_sched_intra_inplace(const void *sendbuf, const MPI_Aint 
             mpi_errno = MPIR_TSP_sched_localcopy(adj_tmp_buf, recvcounts[dst], recvtypes[dst],
                                                  ((char *) recvbuf + rdispls[dst]), recvcounts[dst],
                                                  recvtypes[dst], sched, nvtcs, vtcs, &dtcopy_id);
-            MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag);
+            MPIR_ERR_COLL_CHECKANDCONT(mpi_errno, errflag, mpi_errno_ret);
         }
     }
 

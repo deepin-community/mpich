@@ -1,5 +1,5 @@
 /**
- * Copyright (C) Mellanox Technologies Ltd. 2001-2015.  ALL RIGHTS RESERVED.
+ * Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2001-2015. ALL RIGHTS RESERVED.
  *
  * See file LICENSE for terms.
  */
@@ -58,6 +58,8 @@
 
 extern const char *ucm_log_level_names[];
 
+
+void ucm_init_log();
 
 void __ucm_log(const char *file, unsigned line, const char *function,
                ucs_log_level_t level, const char *message, ...)

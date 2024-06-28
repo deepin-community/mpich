@@ -6,6 +6,18 @@
 #include "mpiimpl.h"
 #include "group.h"
 
+int MPIR_Group_rank_impl(MPIR_Group * group_ptr, int *rank)
+{
+    *rank = group_ptr->rank;
+    return MPI_SUCCESS;
+}
+
+int MPIR_Group_size_impl(MPIR_Group * group_ptr, int *size)
+{
+    *size = group_ptr->size;
+    return MPI_SUCCESS;
+}
+
 int MPIR_Group_compare_impl(MPIR_Group * group_ptr1, MPIR_Group * group_ptr2, int *result)
 {
     int mpi_errno = MPI_SUCCESS;
@@ -117,6 +129,8 @@ int MPIR_Group_difference_impl(MPIR_Group * group_ptr1, MPIR_Group * group_ptr2,
         /* TODO calculate is_local_dense_monotonic */
     }
 
+    MPIR_Group_set_session_ptr(*new_group_ptr, group_ptr1->session_ptr);
+
   fn_exit:
     MPL_free(flags);
     MPIR_FUNC_EXIT;
@@ -162,6 +176,8 @@ int MPIR_Group_excl_impl(MPIR_Group * group_ptr, int n, const int ranks[],
     (*new_group_ptr)->size = size - n;
     (*new_group_ptr)->idx_of_first_lpid = -1;
     /* TODO calculate is_local_dense_monotonic */
+
+    MPIR_Group_set_session_ptr(*new_group_ptr, group_ptr->session_ptr);
 
   fn_exit:
     MPL_free(flags);
@@ -214,6 +230,8 @@ int MPIR_Group_incl_impl(MPIR_Group * group_ptr, int n, const int ranks[],
     (*new_group_ptr)->size = n;
     (*new_group_ptr)->idx_of_first_lpid = -1;
     /* TODO calculate is_local_dense_monotonic */
+
+    MPIR_Group_set_session_ptr(*new_group_ptr, group_ptr->session_ptr);
 
 
   fn_exit:
@@ -284,6 +302,8 @@ int MPIR_Group_intersection_impl(MPIR_Group * group_ptr1, MPIR_Group * group_ptr
             k++;
         }
     }
+
+    MPIR_Group_set_session_ptr(*new_group_ptr, group_ptr1->session_ptr);
 
   fn_exit:
     MPL_free(flags);
@@ -366,6 +386,8 @@ int MPIR_Group_range_excl_impl(MPIR_Group * group_ptr, int n, int ranges[][3],
 
     /* TODO calculate is_local_dense_monotonic */
 
+    MPIR_Group_set_session_ptr(*new_group_ptr, group_ptr->session_ptr);
+
   fn_exit:
     MPL_free(flags);
     MPIR_FUNC_EXIT;
@@ -430,6 +452,8 @@ int MPIR_Group_range_incl_impl(MPIR_Group * group_ptr, int n, int ranges[][3],
     }
 
     /* TODO calculate is_local_dense_monotonic */
+
+    MPIR_Group_set_session_ptr(*new_group_ptr, group_ptr->session_ptr);
 
   fn_exit:
     MPIR_FUNC_EXIT;
@@ -607,6 +631,8 @@ int MPIR_Group_union_impl(MPIR_Group * group_ptr1, MPIR_Group * group_ptr2,
 
     /* TODO calculate is_local_dense_monotonic */
 
+    MPIR_Group_set_session_ptr(*new_group_ptr, group_ptr1->session_ptr);
+
   fn_exit:
     MPL_free(flags);
     MPIR_FUNC_EXIT;
@@ -648,6 +674,8 @@ int MPIR_Group_from_session_pset_impl(MPIR_Session * session_ptr, const char *ps
         /* TODO: Implement pset struct, locate pset struct ptr */
         MPIR_ERR_SETANDSTMT(mpi_errno, MPI_ERR_ARG, goto fn_fail, "**psetinvalidname");
     }
+
+    MPIR_Group_set_session_ptr(group_ptr, session_ptr);
 
     *new_group_ptr = group_ptr;
 

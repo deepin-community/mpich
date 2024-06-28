@@ -1,10 +1,20 @@
-.TH MPI_Send 3 "2/22/2022" " " "MPI"
+.TH MPI_Send 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Send \-  Performs a blocking send 
 .SH SYNOPSIS
 .nf
-int MPI_Send(const void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm)
 .fi
+.nf
+int MPI_Send(const void *buf, int count, MPI_Datatype datatype, int dest,
+int tag, MPI_Comm comm)
+.fi
+
+.nf
+int MPI_Send_c(const void *buf, MPI_Count count, MPI_Datatype datatype,
+int dest, int tag, MPI_Comm comm)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -107,7 +117,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_BUFFER 

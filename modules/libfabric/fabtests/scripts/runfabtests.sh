@@ -61,6 +61,9 @@ declare FORK=0
 declare OOB=0
 declare C_ARGS=""
 declare S_ARGS=""
+declare PIN_CORE=""
+declare PROVIDER_TESTS=0
+declare gdb_cmd=""
 
 declare cur_excludes=""
 declare file_excludes=""
@@ -98,9 +101,12 @@ functional_tests=(
 	"fi_av_xfer -e rdm"
 	"fi_av_xfer -e dgram"
 	"fi_cm_data"
-	"fi_cq_data -e msg"
-	"fi_cq_data -e rdm"
-	"fi_cq_data -e dgram"
+	"fi_cq_data -e msg -o senddata"
+	"fi_cq_data -e rdm -o senddata"
+	"fi_cq_data -e dgram -o senddata"
+	"fi_cq_data -e msg -o writedata"
+	"fi_cq_data -e rdm -o writedata"
+	"fi_cq_data -e dgram -o writedata"
 	"fi_dgram"
 	"fi_dgram_waitset"
 	"fi_msg"
@@ -126,18 +132,20 @@ functional_tests=(
 	"fi_rdm_shared_av"
 	"fi_multi_mr -e msg -V"
 	"fi_multi_mr -e rdm -V"
+	"fi_multi_ep -e msg -v"
+	"fi_multi_ep -e rdm -v"
 	"fi_recv_cancel -e rdm -V"
-	"fi_unexpected_msg -e msg -i 10"
-	"fi_unexpected_msg -e rdm -i 10"
-	"fi_inj_complete -e msg"
-	"fi_inj_complete -e rdm"
-	"fi_inj_complete -e dgram"
-	"fi_inj_complete -e msg -SR"
-	"fi_inj_complete -e rdm -SR"
-	"fi_inj_complete -e dgram -SR"
+	"fi_unexpected_msg -e msg -I 10"
+	"fi_unexpected_msg -e rdm -I 10"
+	"fi_inject_test -A inject -v"
+	"fi_inject_test -N -A inject -v"
+	"fi_inject_test -A inj_complete -v"
+	"fi_inject_test -N -A inj_complete -v"
 	"fi_bw -e rdm -v -T 1"
 	"fi_bw -e rdm -v -T 1 -U"
 	"fi_bw -e msg -v -T 1"
+	"fi_rdm_multi_client -C 10 -I 5"
+	"fi_rdm_multi_client -C 10 -I 5 -U"
 )
 
 short_tests=(
@@ -217,12 +225,18 @@ standard_tests=(
 
 unit_tests=(
 	"fi_getinfo_test -s SERVER_ADDR GOOD_ADDR"
-	"fi_av_test -g GOOD_ADDR -n 1 -s SERVER_ADDR"
+	"fi_av_test -g GOOD_ADDR -n 1 -s SERVER_ADDR -e rdm"
+	"fi_av_test -g GOOD_ADDR -n 1 -s SERVER_ADDR -e dgram"
 	"fi_dom_test -n 2"
 	"fi_eq_test"
 	"fi_cq_test"
 	"fi_mr_test"
 	"fi_cntr_test"
+	"fi_setopt_test"
+)
+
+regression_tests=(
+	"sighandler_test"
 )
 
 complex_tests=(
@@ -233,6 +247,36 @@ multinode_tests=(
 	"fi_multinode -C msg"
 	"fi_multinode -C rma"
 	"fi_multinode_coll"
+)
+
+prov_efa_tests=( \
+	"fi_efa_rnr_read_cq_error"
+	"fi_efa_rnr_queue_resend -c 0 -S 1048576"
+	"fi_efa_rnr_queue_resend -c 0 -o read -S 4"
+	"fi_efa_rnr_queue_resend -c 0 -A read -S 4"
+	"fi_efa_rnr_queue_resend -c 0 -U -S 4"
+	"fi_efa_rnr_queue_resend -c 1 -S 4"
+	"fi_efa_rnr_queue_resend -c 1 -T -S 4"
+	"fi_efa_rnr_queue_resend -c 1 -S 16384"
+	"fi_efa_rnr_queue_resend -c 1 -T -S 16384"
+	"fi_efa_rnr_queue_resend -c 1 -S 1048576"
+	"fi_efa_rnr_queue_resend -c 1 -T -S 1048576"
+	"fi_efa_rnr_queue_resend -c 1 -o write -S 4"
+	"fi_efa_rnr_queue_resend -c 1 -o write -S 1048576"
+	"fi_efa_rnr_queue_resend -c 1 -o read -S 4"
+	"fi_efa_rnr_queue_resend -c 1 -o read -S 1048576"
+	"fi_efa_rnr_queue_resend -c 1 -A write -S 4"
+	"fi_efa_rnr_queue_resend -c 1 -A read -S 4"
+	"fi_efa_rnr_queue_resend -c 1 -A cswap -S 4"
+	"fi_efa_rnr_queue_resend -c 1 -U -S 4"
+	"fi_efa_rnr_queue_resend -c 1 -T -U -S 4"
+	"fi_efa_rnr_queue_resend -c 1 -U -S 16384"
+	"fi_efa_rnr_queue_resend -c 1 -T -U -S 16384"
+	"fi_efa_rnr_queue_resend -c 1 -U -S 1048576"
+	"fi_efa_rnr_queue_resend -c 1 -T -U -S 1048576"
+	"fi_efa_rnr_queue_resend -c 1 -o write -U -S 4"
+	"fi_efa_rnr_queue_resend -c 1 -o write -U -S 1048576"
+	"fi_efa_rnr_queue_resend -c 1 -A write -U -S 4"
 )
 
 function errcho {
@@ -275,6 +319,7 @@ function print_results {
 		esac
 
 		printf -- "- name:   %s\n" "$test_exe"
+		printf -- "  timestamp: %s\n" "$(date -u +'%Y%m%d-%H%M%S%z')"
 		printf -- "  result: %s\n" "$test_result"
 		printf -- "  time:   %s\n" "$test_time"
 		if [ $emit_stdout -eq 1 -a "$server_out_file" != "" ] ; then
@@ -409,7 +454,7 @@ function unit_test {
 
 	start_time=$(date '+%s')
 
-	cmd="${BIN_PATH}${test_exe}"
+	cmd="${gdb_cmd} ${BIN_PATH}${test_exe}"
 	${SERVER_CMD} "${EXPORT_ENV} $cmd" &> $s_outp &
 	p1=$!
 
@@ -449,6 +494,11 @@ function cs_test {
 	local start_time
 	local end_time
 	local test_time
+	local pin_core
+
+	if [ $# -eq 2 ]; then
+		pin_core=$2
+	fi
 
 	is_excluded "$test" && return
 
@@ -459,7 +509,7 @@ function cs_test {
 	else
 		s_arg="-s $S_INTERFACE"
 	fi
-	s_cmd="${BIN_PATH}${test_exe} ${S_ARGS} $s_arg"
+	s_cmd="${gdb_cmd} ${BIN_PATH}${test_exe} ${S_ARGS} ${pin_core} $s_arg"
 	${SERVER_CMD} "${EXPORT_ENV} $s_cmd" &> $s_outp &
 	s_pid=$!
 	sleep 1
@@ -469,7 +519,7 @@ function cs_test {
 	else
 		c_arg="-s $C_INTERFACE $S_INTERFACE"
 	fi
-	c_cmd="${BIN_PATH}${test_exe} ${C_ARGS} $c_arg"
+	c_cmd="${gdb_cmd} ${BIN_PATH}${test_exe} ${C_ARGS} ${pin_core} $c_arg"
 	${CLIENT_CMD} "${EXPORT_ENV} $c_cmd" &> $c_outp &
 	c_pid=$!
 
@@ -543,8 +593,10 @@ function complex_test {
 
 	set_cfg_file $config
 	if [[ -z "$COMPLEX_CFG" ]]; then
-		is_excluded "$test" && return
+		return
 	fi
+
+	is_excluded "$test" && return
 
 	start_time=$(date '+%s')
 
@@ -558,12 +610,12 @@ function complex_test {
 		opts+=" -E"
 	fi
 
-	s_cmd="${BIN_PATH}${test_exe} ${S_ARGS} -x $opts"
+	s_cmd="${gdb_cmd} ${BIN_PATH}${test_exe} ${S_ARGS} -x $opts"
 	FI_LOG_LEVEL=error ${SERVER_CMD} "${EXPORT_ENV} $s_cmd" &> $s_outp &
 	s_pid=$!
 	sleep 1
 
-	c_cmd="${BIN_PATH}${test_exe} ${C_ARGS} -u "${COMPLEX_CFG}" $S_INTERFACE $opts"
+	c_cmd="${gdb_cmd} ${BIN_PATH}${test_exe} ${C_ARGS} -u "${COMPLEX_CFG}" $S_INTERFACE $opts"
 	FI_LOG_LEVEL=error ${CLIENT_CMD} "${EXPORT_ENV} $c_cmd" &> $c_outp &
 	c_pid=$!
 
@@ -621,7 +673,7 @@ function multinode_test {
 
 	start_time=$(date '+%s')
 
-	s_cmd="${BIN_PATH}${test_exe} ${S_ARGS} -s ${S_INTERFACE}"
+	s_cmd="${gdb_cmd} ${BIN_PATH}${test_exe} ${S_ARGS} -s ${S_INTERFACE}"
 	${SERVER_CMD} "${EXPORT_ENV} $s_cmd" &> $s_outp &
 	s_pid=$!
 	sleep 1
@@ -630,7 +682,7 @@ function multinode_test {
 	for ((i=1; i<num_procs; i++))
 	do
 		local c_out=$(mktemp fabtests.c_outp${i}.XXXXXX)
-		c_cmd="${BIN_PATH}${test_exe} ${S_ARGS} -s ${S_INTERFACE}"
+		c_cmd="${gdb_cmd} ${BIN_PATH}${test_exe} ${S_ARGS} -s ${S_INTERFACE}"
 		${CLIENT_CMD} "${EXPORT_ENV} $c_cmd" &> $c_out &
 		c_pid_arr+=($!)
 		c_out_arr+=($c_out)
@@ -668,6 +720,7 @@ function multinode_test {
 		skip_count+=1
 	elif [ $s_ret -ne 0 -o $c_ret -ne 0 ]; then
 		print_results "$test_exe" "Fail" "$test_time" "$s_outp" "$s_cmd" "" "$c_cmd"
+		printf -- "  client_cmd: %s\n" "$c_cmd"
 		for c_out in "${c_out_arr[@]}"
 		do
 			printf -- "  client_stdout $pe: |\n"
@@ -680,6 +733,7 @@ function multinode_test {
 		fail_count+=1
 	else
 		print_results "$test_exe" "Pass" "$test_time" "$s_outp" "$s_cmd" "" "$c_cmd"
+		printf -- "  client_cmd: %s\n" "$c_cmd"
 		for c_out in "${c_out_arr[@]}"
 		do
 			printf -- "  client_stdout $pe: |\n"
@@ -688,6 +742,12 @@ function multinode_test {
 		done
 		pass_count+=1
 	fi
+}
+
+function prov_efa_test {
+	for test in "${prov_efa_tests[@]}"; do
+		cs_test "$test"
+	done
 }
 
 function set_core_util {
@@ -719,7 +779,7 @@ function main {
 		local -r tests="complex"
 		complex_type=$1
 	else
-		local -r tests=$(echo $1 | sed 's/all/unit,functional,standard,complex,multinode/g' | tr ',' ' ')
+		local -r tests=$(echo $1 | sed 's/all/unit,regression,functional,standard,complex,multinode/g' | tr ',' ' ')
 		if [[ $1 == "all" || $1 == "complex" ]]; then
 			complex_type="all"
 		fi
@@ -743,6 +803,11 @@ function main {
 				done
 			fi
 		;;
+		regression)
+			for test in "${regression_tests[@]}"; do
+				unit_test "$test" "0"
+			done
+		;;
 		functional)
 			for test in "${functional_tests[@]}"; do
 				cs_test "$test"
@@ -755,7 +820,11 @@ function main {
 		;;
 		standard)
 			for test in "${standard_tests[@]}"; do
-				cs_test "$test"
+				if [ ! -z $PIN_CORE ]; then
+					cs_test "$test" "--pin-core $PIN_CORE"
+				else
+					cs_test "$test"
+				fi
 			done
 		;;
 		complex)
@@ -774,6 +843,10 @@ function main {
 		;;
 	esac
 	done
+
+	if [[ $PROVIDER_TESTS -eq 1 ]]; then
+		prov_${PROV}_test
+	fi
 
 	total=$(( $pass_count + $fail_count ))
 
@@ -823,65 +896,87 @@ function usage {
 	errcho -e " -C\tAdditional client test arguments: Parameters to pass to client fabtests"
 	errcho -e " -L\tAdditional server test arguments: Parameters to pass to server fabtests"
 	errcho -e " -b\tenable out-of-band address exchange over the default port"
+	errcho -e " -P\tRun provider specific tests"
+	errcho -e " --pin-core\tSpecify cores to pin when running standard tests. Cores can specified via a comma-delimited list, e.g. 0,2-4"
+	errcho -e " -G\tRun with gdb and print backtraces"
 	exit 1
 }
 
-while getopts ":vt:p:g:e:f:c:s:u:T:C:L:NRSbkE:" opt; do
-case ${opt} in
-	t) TEST_TYPE=$OPTARG
-	;;
-	v) VERBOSE+=1
-	;;
-	p) BIN_PATH="${OPTARG}/"
-	;;
-	g) GOOD_ADDR=${OPTARG}
-	;;
-	f) read_exclude_file ${OPTARG}
-	;;
-	e) [[ -z "$input_excludes" ]] && input_excludes=${OPTARG} || \
-		input_excludes="${input_excludes},${OPTARG}"
-	;;
-	c) C_INTERFACE=${OPTARG}
-	;;
-	s) S_INTERFACE=${OPTARG}
-	;;
-	u) COMPLEX_CFG=${OPTARG}
-	;;
-	T) TIMEOUT_VAL=${OPTARG}
-	;;
-	N) SKIP_NEG+=1
-	;;
-	R)
-	;;
-	S) STRICT_MODE=1
-	;;
-	b) OOB=1
-	;;
-	k) FORK=1
-	;;
-	C) C_ARGS="${OPTARG}"
-	;;
-	L) S_ARGS="${OPTARG}"
-	;;
-	E)
-	delimiter="="
-	value=${OPTARG#*$delimiter}
-	var=${OPTARG:0:$(( ${#OPTARG} - ${#value} - ${#delimiter} ))}
-	EXPORT_STRING="export $var=\"$value\""
-	if [[ -z $EXPORT_ENV ]] ; then
-		EXPORT_ENV="$EXPORT_STRING ;"
-	else
-		EXPORT_ENV="$EXPORT_ENV $EXPORT_STRING ;"
-	fi
-	;;
-	:|\?) usage
-	;;
-esac
+Options=$(getopt --options v,t:,p:,g:,e:,f:,c:,s:,u:,T:,C:,L:,N,R,S,b,k,P,E:,G,h \
+		 --longoptions pin-core:,help \
+		 --quiet \
+		 -- "$@")
+
+eval set -- "$Options"
+
+while true; do
+	case "$1" in
+		-t)
+		    TEST_TYPE=$2; shift 2 ;;
+		-v)
+		    VERBOSE+=1; shift ;;
+		-p)
+		    BIN_PATH="$2/"; shift 2 ;;
+		-g)
+		    GOOD_ADDR=$2; shift 2 ;;
+		-f)
+		    read_exclude_file $2; shift 2 ;;
+		-e)
+		    [[ -z "$input_excludes" ]] && input_excludes=${2} || \
+		    input_excludes="${input_excludes},${2}"
+		    shift 2 ;;
+		-c)
+		    C_INTERFACE=$2; shift 2 ;;
+		-s)
+		    S_INTERFACE=$2; shift 2 ;;
+		-u)
+		    COMPLEX_CFG=$2; shift 2 ;;
+		-T)
+		    TIMEOUT_VAL=$2; shift 2 ;;
+		-N)
+		    SKIP_NEG+=1; shift ;;
+		-P)
+		    PROVIDER_TESTS=1; shift ;;
+		-R)
+		    shift ;;
+		-S)
+		    STRICT_MODE=1; shift ;;
+		-b)
+		    OOB=1; shift ;;
+		-k)
+		    FORK=1; shift ;;
+		-C)
+		    C_ARGS=$2; shift 2 ;;
+		-L)
+		    S_ARGS=$2; shift 2 ;;
+		-E)
+		    delimiter="="
+		    value=${2#*$delimiter}
+		    var=${2:0:$(( ${#2} - ${#value} - ${#delimiter} ))}
+		    EXPORT_STRING="export $var=\"$value\""
+		    if [[ -z $EXPORT_ENV ]] ; then
+			EXPORT_ENV="$EXPORT_STRING ;"
+		    else
+			EXPORT_ENV="$EXPORT_ENV $EXPORT_STRING ;"
+		    fi
+		    shift 2 ;;
+		-G)
+		    gdb_cmd="gdb -batch -ex run -ex bt -ex quit --args";
+		    shift ;;
+		--pin-core)
+		    PIN_CORE=$2; shift 2 ;;
+		-h | --help)
+		    usage ;;
+		--)
+		    shift ; break ;;
+		*)
+		    usage ;;
+	esac
 
 done
 
 # base ssh command
-declare bssh="ssh -n -o StrictHostKeyChecking=no -o ConnectTimeout=2 -o BatchMode=yes"
+declare bssh="ssh -n -o StrictHostKeyChecking=no -o ConnectTimeout=30 -o BatchMode=yes"
 if [ -z "$(which timeout 2> /dev/null)" ]; then
 	# forego timeout
 	declare SERVER_CMD="eval"

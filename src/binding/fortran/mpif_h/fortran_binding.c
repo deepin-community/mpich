@@ -2636,6 +2636,17 @@ FORT_DLL_SPEC void FORT_CALL mpi_intercomm_merge_(MPI_Fint *intercomm, MPI_Fint 
 }
 
 
+FORT_DLL_SPEC void FORT_CALL mpix_comm_test_threadcomm_(MPI_Fint *comm, MPI_Fint *flag, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+    int flag_i;
+    *ierr = MPIX_Comm_test_threadcomm((MPI_Comm) (*comm), &flag_i);
+    if (*ierr == MPI_SUCCESS) {
+        *flag = MPII_TO_FLOG(flag_i);
+    }
+}
+
+
 FORT_DLL_SPEC void FORT_CALL mpix_comm_revoke_(MPI_Fint *comm, MPI_Fint *ierr) {
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
     
@@ -2686,6 +2697,20 @@ FORT_DLL_SPEC void FORT_CALL mpix_comm_agree_(MPI_Fint *comm, MPI_Fint *flag, MP
     if (*ierr == MPI_SUCCESS) {
         *flag = MPII_TO_FLOG(flag_i);
     }
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpix_comm_get_failed_(MPI_Fint *comm, MPI_Fint *failedgrp, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+#ifdef HAVE_FINT_IS_INT
+    *ierr = MPIX_Comm_get_failed((MPI_Comm) (*comm), (MPI_Group *) failedgrp);
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    MPI_Group failedgrp_i;
+    *ierr = MPIX_Comm_get_failed((MPI_Comm) (*comm), &failedgrp_i);
+    *failedgrp = (MPI_Fint) failedgrp_i;
+#endif
 }
 
 
@@ -3184,6 +3209,20 @@ FORT_DLL_SPEC void FORT_CALL mpi_type_get_true_extent_x_(MPI_Fint *datatype, MPI
 }
 
 
+FORT_DLL_SPEC void FORT_CALL mpi_type_get_value_index_(MPI_Fint *value_type, MPI_Fint *index_type, MPI_Fint *pair_type, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+#ifdef HAVE_FINT_IS_INT
+    *ierr = MPI_Type_get_value_index((MPI_Datatype) (*value_type), (MPI_Datatype) (*index_type), (MPI_Datatype *) pair_type);
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    MPI_Datatype pair_type_i;
+    *ierr = MPI_Type_get_value_index((MPI_Datatype) (*value_type), (MPI_Datatype) (*index_type), &pair_type_i);
+    *pair_type = (MPI_Fint) pair_type_i;
+#endif
+}
+
+
 FORT_DLL_SPEC void FORT_CALL mpi_type_indexed_(MPI_Fint *count, MPI_Fint *array_of_blocklengths, MPI_Fint *array_of_displacements, MPI_Fint *oldtype, MPI_Fint *newtype, MPI_Fint *ierr) {
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
     
@@ -3567,7 +3606,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_error_string_(MPI_Fint *errorcode, char *string
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_call_errhandler_(MPI_Fint *fh, MPI_Fint *errorcode, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -3578,7 +3617,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_call_errhandler_(MPI_Fint *fh, MPI_Fint *e
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_create_errhandler_(MPI_File_errhandler_function file_errhandler_fn, MPI_Fint *errhandler, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -3599,7 +3638,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_create_errhandler_(MPI_File_errhandler_fun
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_get_errhandler_(MPI_Fint *file, MPI_Fint *errhandler, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -3617,13 +3656,34 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_get_errhandler_(MPI_Fint *file, MPI_Fint *
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_set_errhandler_(MPI_Fint *file, MPI_Fint *errhandler, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
     
     *ierr = MPI_File_set_errhandler(MPI_File_f2c(*file), (MPI_Errhandler) (*errhandler));
 #endif
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpi_remove_error_class_(MPI_Fint *errorclass, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+    *ierr = MPI_Remove_error_class((int) (*errorclass));
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpi_remove_error_code_(MPI_Fint *errorcode, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+    *ierr = MPI_Remove_error_code((int) (*errorcode));
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpi_remove_error_string_(MPI_Fint *errorcode, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+    *ierr = MPI_Remove_error_string((int) (*errorcode));
 }
 
 
@@ -4109,6 +4169,19 @@ FORT_DLL_SPEC void FORT_CALL mpi_info_set_(MPI_Fint *info, char *key FORT_MIXED_
 }
 
 
+FORT_DLL_SPEC void FORT_CALL mpix_info_set_hex_(MPI_Fint *info, char *key FORT_MIXED_LEN(key_len), void *value, MPI_Fint *value_size, MPI_Fint *ierr FORT_END_LEN(key_len)) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+    char *key_i = MPIR_fort_dup_str(key, key_len);
+    if (value == MPIR_F_MPI_BOTTOM) {
+        value = MPI_BOTTOM;
+    }
+    
+    *ierr = MPIX_Info_set_hex((MPI_Info) (*info), key_i, value, (int) (*value_size));
+    free(key_i);
+}
+
+
 FORT_DLL_SPEC void FORT_CALL mpi_abort_(MPI_Fint *comm, MPI_Fint *errorcode, MPI_Fint *ierr) {
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
     
@@ -4574,8 +4647,8 @@ FORT_DLL_SPEC void FORT_CALL mpi_bsend_init_(void *buf, MPI_Fint *count, MPI_Fin
 FORT_DLL_SPEC void FORT_CALL mpi_buffer_attach_(void *buffer, MPI_Fint *size, MPI_Fint *ierr) {
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
     
-    if (buffer == MPIR_F_MPI_BOTTOM) {
-        buffer = MPI_BOTTOM;
+    if (buffer == MPIR_F_MPI_BUFFER_AUTOMATIC) {
+        buffer = MPI_BUFFER_AUTOMATIC;
     }
     
     *ierr = MPI_Buffer_attach(buffer, (int) (*size));
@@ -4595,6 +4668,75 @@ FORT_DLL_SPEC void FORT_CALL mpi_buffer_detach_(MPI_Aint *buffer_addr, MPI_Fint 
     *size = (MPI_Fint) size_i;
 #endif
     *buffer_addr = (MPI_Aint) buffer_addr_i;
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpi_buffer_flush_(MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+    *ierr = MPI_Buffer_flush();
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpi_buffer_iflush_(MPI_Fint *request, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+#ifdef HAVE_FINT_IS_INT
+    *ierr = MPI_Buffer_iflush((MPI_Request *) request);
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    MPI_Request request_i;
+    *ierr = MPI_Buffer_iflush(&request_i);
+    *request = (MPI_Fint) request_i;
+#endif
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpi_comm_attach_buffer_(MPI_Fint *comm, void *buffer, MPI_Fint *size, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+    if (buffer == MPIR_F_MPI_BOTTOM) {
+        buffer = MPI_BOTTOM;
+    }
+    
+    *ierr = MPI_Comm_attach_buffer((MPI_Comm) (*comm), buffer, (int) (*size));
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpi_comm_detach_buffer_(MPI_Fint *comm, MPI_Aint *buffer_addr, MPI_Fint *size, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+    void * buffer_addr_i;
+#ifdef HAVE_FINT_IS_INT
+    *ierr = MPI_Comm_detach_buffer((MPI_Comm) (*comm), &buffer_addr_i, (int *) size);
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    int size_i;
+    *ierr = MPI_Comm_detach_buffer((MPI_Comm) (*comm), &buffer_addr_i, &size_i);
+    *size = (MPI_Fint) size_i;
+#endif
+    *buffer_addr = (MPI_Aint) buffer_addr_i;
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpi_comm_flush_buffer_(MPI_Fint *comm, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+    *ierr = MPI_Comm_flush_buffer((MPI_Comm) (*comm));
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpi_comm_iflush_buffer_(MPI_Fint *comm, MPI_Fint *request, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+#ifdef HAVE_FINT_IS_INT
+    *ierr = MPI_Comm_iflush_buffer((MPI_Comm) (*comm), (MPI_Request *) request);
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    MPI_Request request_i;
+    *ierr = MPI_Comm_iflush_buffer((MPI_Comm) (*comm), &request_i);
+    *request = (MPI_Fint) request_i;
+#endif
 }
 
 
@@ -5100,6 +5242,54 @@ FORT_DLL_SPEC void FORT_CALL mpi_sendrecv_replace_(void *buf, MPI_Fint *count, M
 }
 
 
+FORT_DLL_SPEC void FORT_CALL mpi_session_attach_buffer_(MPI_Fint *session, void *buffer, MPI_Fint *size, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+    if (buffer == MPIR_F_MPI_BOTTOM) {
+        buffer = MPI_BOTTOM;
+    }
+    
+    *ierr = MPI_Session_attach_buffer((MPI_Session) (*session), buffer, (int) (*size));
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpi_session_detach_buffer_(MPI_Fint *session, MPI_Aint *buffer_addr, MPI_Fint *size, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+    void * buffer_addr_i;
+#ifdef HAVE_FINT_IS_INT
+    *ierr = MPI_Session_detach_buffer((MPI_Session) (*session), &buffer_addr_i, (int *) size);
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    int size_i;
+    *ierr = MPI_Session_detach_buffer((MPI_Session) (*session), &buffer_addr_i, &size_i);
+    *size = (MPI_Fint) size_i;
+#endif
+    *buffer_addr = (MPI_Aint) buffer_addr_i;
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpi_session_flush_buffer_(MPI_Fint *session, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+    *ierr = MPI_Session_flush_buffer((MPI_Session) (*session));
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpi_session_iflush_buffer_(MPI_Fint *session, MPI_Fint *request, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+#ifdef HAVE_FINT_IS_INT
+    *ierr = MPI_Session_iflush_buffer((MPI_Session) (*session), (MPI_Request *) request);
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    MPI_Request request_i;
+    *ierr = MPI_Session_iflush_buffer((MPI_Session) (*session), &request_i);
+    *request = (MPI_Fint) request_i;
+#endif
+}
+
+
 FORT_DLL_SPEC void FORT_CALL mpi_ssend_(void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *dest, MPI_Fint *tag, MPI_Fint *comm, MPI_Fint *ierr) {
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
     
@@ -5217,6 +5407,145 @@ FORT_DLL_SPEC void FORT_CALL mpi_request_get_status_(MPI_Fint *request, MPI_Fint
 }
 
 
+FORT_DLL_SPEC void FORT_CALL mpi_request_get_status_all_(MPI_Fint *count, MPI_Fint *array_of_requests, MPI_Fint *flag, MPI_Fint *array_of_statuses, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+    int flag_i;
+#ifdef HAVE_FINT_IS_INT
+    if (array_of_statuses == MPI_F_STATUSES_IGNORE) {
+        array_of_statuses = (MPI_Fint *) MPI_STATUSES_IGNORE;
+    }
+    *ierr = MPI_Request_get_status_all((int) (*count), (int *) array_of_requests, &flag_i, (MPI_Status *) array_of_statuses);
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    MPI_Request *array_of_requests_i;
+    array_of_requests_i = malloc(sizeof(MPI_Request) * (*count));
+    for (int i = 0; i < (*count); i++) {
+        array_of_requests_i[i] = (MPI_Request) array_of_requests[i];
+    }
+    MPI_Status *statuses_i;
+    if (array_of_statuses == MPI_F_STATUSES_IGNORE) {
+        statuses_i = MPI_STATUS_IGNORE;
+    } else {
+        statuses_i = malloc((*count) * sizeof(MPI_Status));
+        int *p = (int *) statuses_i;
+        for (int i = 0; i < (*count) * MPI_F_STATUS_SIZE; i++) {
+            p[i] = (int) array_of_statuses[i];
+        }
+    }
+    *ierr = MPI_Request_get_status_all((int) (*count), array_of_requests_i, &flag_i, statuses_i);
+    free(array_of_requests_i);
+    if (array_of_statuses != MPI_F_STATUSES_IGNORE) {
+        int *p = (int *) statuses_i;
+        for (int i = 0; i < (*count) * MPI_F_STATUS_SIZE; i++) {
+            array_of_statuses[i] = (MPI_Fint) p[i];
+        }
+        free(statuses_i);
+    }
+#endif
+    if (*ierr == MPI_SUCCESS) {
+        *flag = MPII_TO_FLOG(flag_i);
+    }
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpi_request_get_status_any_(MPI_Fint *count, MPI_Fint *array_of_requests, MPI_Fint *indx, MPI_Fint *flag, MPI_Fint *status, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+    int indx_i;
+    int flag_i;
+#ifdef HAVE_FINT_IS_INT
+    if (status == MPI_F_STATUS_IGNORE) {
+        status = (MPI_Fint *) MPI_STATUS_IGNORE;
+    }
+    *ierr = MPI_Request_get_status_any((int) (*count), (int *) array_of_requests, &indx_i, &flag_i, (MPI_Status *) status);
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    MPI_Request *array_of_requests_i;
+    array_of_requests_i = malloc(sizeof(MPI_Request) * (*count));
+    for (int i = 0; i < (*count); i++) {
+        array_of_requests_i[i] = (MPI_Request) array_of_requests[i];
+    }
+    MPI_Status * status_arg;
+    int status_i[MPI_F_STATUS_SIZE];
+    if (status == MPI_F_STATUS_IGNORE) {
+        status_arg = MPI_STATUS_IGNORE;
+    } else {
+        status_arg = (MPI_Status *) status_i;
+        for (int i = 0; i < MPI_F_STATUS_SIZE; i++) {
+            status_i[i] = (int) status[i];
+        }
+    }
+    *ierr = MPI_Request_get_status_any((int) (*count), array_of_requests_i, &indx_i, &flag_i, status_arg);
+    free(array_of_requests_i);
+    if (status != MPI_F_STATUS_IGNORE) {
+    for (int i = 0; i < MPI_F_STATUS_SIZE; i++) {
+        status[i] = (MPI_Fint) status_i[i];
+    }
+    }
+#endif
+    if (*ierr == MPI_SUCCESS) {
+        if (indx_i == MPI_UNDEFINED) {
+            *indx = indx_i;
+        } else {
+            *indx = indx_i + 1;
+        }
+    }
+    if (*ierr == MPI_SUCCESS) {
+        *flag = MPII_TO_FLOG(flag_i);
+    }
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpi_request_get_status_some_(MPI_Fint *incount, MPI_Fint *array_of_requests, MPI_Fint *outcount, MPI_Fint *array_of_indices, MPI_Fint *array_of_statuses, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+#ifdef HAVE_FINT_IS_INT
+    if (array_of_statuses == MPI_F_STATUSES_IGNORE) {
+        array_of_statuses = (MPI_Fint *) MPI_STATUSES_IGNORE;
+    }
+    *ierr = MPI_Request_get_status_some((int) (*incount), (int *) array_of_requests, (int *) outcount, (int *) array_of_indices, (MPI_Status *) array_of_statuses);
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    MPI_Request *array_of_requests_i;
+    array_of_requests_i = malloc(sizeof(MPI_Request) * (*incount));
+    for (int i = 0; i < (*incount); i++) {
+        array_of_requests_i[i] = (MPI_Request) array_of_requests[i];
+    }
+    int outcount_i;
+    int *array_of_indices_i;
+    array_of_indices_i = malloc(sizeof(int) * (*incount));
+    MPI_Status *statuses_i;
+    if (array_of_statuses == MPI_F_STATUSES_IGNORE) {
+        statuses_i = MPI_STATUS_IGNORE;
+    } else {
+        statuses_i = malloc((*incount) * sizeof(MPI_Status));
+        int *p = (int *) statuses_i;
+        for (int i = 0; i < (*incount) * MPI_F_STATUS_SIZE; i++) {
+            p[i] = (int) array_of_statuses[i];
+        }
+    }
+    *ierr = MPI_Request_get_status_some((int) (*incount), array_of_requests_i, &outcount_i, array_of_indices_i, statuses_i);
+    free(array_of_requests_i);
+    *outcount = (MPI_Fint) outcount_i;
+    for (int i = 0; i < (*outcount); i++) {
+        array_of_indices[i] = (MPI_Fint) array_of_indices_i[i];
+    }
+    free(array_of_indices_i);
+    if (array_of_statuses != MPI_F_STATUSES_IGNORE) {
+        int *p = (int *) statuses_i;
+        for (int i = 0; i < (*outcount) * MPI_F_STATUS_SIZE; i++) {
+            array_of_statuses[i] = (MPI_Fint) p[i];
+        }
+        free(statuses_i);
+    }
+#endif
+    for (int i = 0; i < (*outcount); i++) {
+        array_of_indices[i] += 1;
+    }
+}
+
+
 FORT_DLL_SPEC void FORT_CALL mpi_start_(MPI_Fint *request, MPI_Fint *ierr) {
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
     
@@ -5249,6 +5578,120 @@ FORT_DLL_SPEC void FORT_CALL mpi_startall_(MPI_Fint *count, MPI_Fint *array_of_r
         array_of_requests[i] = (MPI_Fint) array_of_requests_i[i];
     }
     free(array_of_requests_i);
+#endif
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpi_status_get_error_(MPI_Fint *status, MPI_Fint *error, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+#ifdef HAVE_FINT_IS_INT
+    *ierr = MPI_Status_get_error((MPI_Status *) status, (int *) error);
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    MPI_Status * status_arg;
+    int status_i[MPI_F_STATUS_SIZE];
+    status_arg = (MPI_Status *) status_i;
+    for (int i = 0; i < MPI_F_STATUS_SIZE; i++) {
+        status_i[i] = (int) status[i];
+    }
+    int error_i;
+    *ierr = MPI_Status_get_error(status_arg, &error_i);
+    *error = (MPI_Fint) error_i;
+#endif
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpi_status_get_source_(MPI_Fint *status, MPI_Fint *source, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+#ifdef HAVE_FINT_IS_INT
+    *ierr = MPI_Status_get_source((MPI_Status *) status, (int *) source);
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    MPI_Status * status_arg;
+    int status_i[MPI_F_STATUS_SIZE];
+    status_arg = (MPI_Status *) status_i;
+    for (int i = 0; i < MPI_F_STATUS_SIZE; i++) {
+        status_i[i] = (int) status[i];
+    }
+    int source_i;
+    *ierr = MPI_Status_get_source(status_arg, &source_i);
+    *source = (MPI_Fint) source_i;
+#endif
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpi_status_get_tag_(MPI_Fint *status, MPI_Fint *tag, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+#ifdef HAVE_FINT_IS_INT
+    *ierr = MPI_Status_get_tag((MPI_Status *) status, (int *) tag);
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    MPI_Status * status_arg;
+    int status_i[MPI_F_STATUS_SIZE];
+    status_arg = (MPI_Status *) status_i;
+    for (int i = 0; i < MPI_F_STATUS_SIZE; i++) {
+        status_i[i] = (int) status[i];
+    }
+    int tag_i;
+    *ierr = MPI_Status_get_tag(status_arg, &tag_i);
+    *tag = (MPI_Fint) tag_i;
+#endif
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpi_status_set_error_(MPI_Fint *status, MPI_Fint *error, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+#ifdef HAVE_FINT_IS_INT
+    *ierr = MPI_Status_set_error((MPI_Status *) status, (int) (*error));
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    MPI_Status * status_arg;
+    int status_i[MPI_F_STATUS_SIZE];
+    status_arg = (MPI_Status *) status_i;
+    for (int i = 0; i < MPI_F_STATUS_SIZE; i++) {
+        status_i[i] = (int) status[i];
+    }
+    *ierr = MPI_Status_set_error(status_arg, (int) (*error));
+#endif
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpi_status_set_source_(MPI_Fint *status, MPI_Fint *source, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+#ifdef HAVE_FINT_IS_INT
+    *ierr = MPI_Status_set_source((MPI_Status *) status, (int) (*source));
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    MPI_Status * status_arg;
+    int status_i[MPI_F_STATUS_SIZE];
+    status_arg = (MPI_Status *) status_i;
+    for (int i = 0; i < MPI_F_STATUS_SIZE; i++) {
+        status_i[i] = (int) status[i];
+    }
+    *ierr = MPI_Status_set_source(status_arg, (int) (*source));
+#endif
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpi_status_set_tag_(MPI_Fint *status, MPI_Fint *tag, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+#ifdef HAVE_FINT_IS_INT
+    *ierr = MPI_Status_set_tag((MPI_Status *) status, (int) (*tag));
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    MPI_Status * status_arg;
+    int status_i[MPI_F_STATUS_SIZE];
+    status_arg = (MPI_Status *) status_i;
+    for (int i = 0; i < MPI_F_STATUS_SIZE; i++) {
+        status_i[i] = (int) status[i];
+    }
+    *ierr = MPI_Status_set_tag(status_arg, (int) (*tag));
 #endif
 }
 
@@ -5414,7 +5857,11 @@ FORT_DLL_SPEC void FORT_CALL mpi_testany_(MPI_Fint *count, MPI_Fint *array_of_re
     }
 #endif
     if (*ierr == MPI_SUCCESS) {
-        *indx = indx_i + 1;
+        if (indx_i == MPI_UNDEFINED) {
+            *indx = indx_i;
+        } else {
+            *indx = indx_i + 1;
+        }
     }
     if (*ierr == MPI_SUCCESS) {
         *flag = MPII_TO_FLOG(flag_i);
@@ -5586,7 +6033,11 @@ FORT_DLL_SPEC void FORT_CALL mpi_waitany_(MPI_Fint *count, MPI_Fint *array_of_re
     }
 #endif
     if (*ierr == MPI_SUCCESS) {
-        *indx = indx_i + 1;
+        if (indx_i == MPI_UNDEFINED) {
+            *indx = indx_i;
+        } else {
+            *indx = indx_i + 1;
+        }
     }
 }
 
@@ -5660,6 +6111,14 @@ FORT_DLL_SPEC void FORT_CALL mpi_alloc_mem_(MPI_Aint *size, MPI_Fint *info, MPI_
     void * baseptr_i;
     *ierr = MPI_Alloc_mem(*size, (MPI_Info) (*info), &baseptr_i);
     *baseptr = (MPI_Aint) baseptr_i;
+}
+
+FORT_DLL_SPEC void FORT_CALL mpi_alloc_mem_cptr_(MPI_Aint *size, MPI_Fint *info, void * *baseptr, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+    void * baseptr_i;
+    *ierr = MPI_Alloc_mem(*size, (MPI_Info) (*info), &baseptr_i);
+    *baseptr = (void *) baseptr_i;
 }
 
 
@@ -5836,6 +6295,21 @@ FORT_DLL_SPEC void FORT_CALL mpi_win_allocate_(MPI_Aint *size, MPI_Fint *disp_un
     *baseptr = (MPI_Aint) baseptr_i;
 }
 
+FORT_DLL_SPEC void FORT_CALL mpi_win_allocate_cptr_(MPI_Aint *size, MPI_Fint *disp_unit, MPI_Fint *info, MPI_Fint *comm, void * *baseptr, MPI_Fint *win, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+    void * baseptr_i;
+#ifdef HAVE_FINT_IS_INT
+    *ierr = MPI_Win_allocate(*size, (int) (*disp_unit), (MPI_Info) (*info), (MPI_Comm) (*comm), &baseptr_i, (MPI_Win *) win);
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    MPI_Win win_i;
+    *ierr = MPI_Win_allocate(*size, (int) (*disp_unit), (MPI_Info) (*info), (MPI_Comm) (*comm), &baseptr_i, &win_i);
+    *win = (MPI_Fint) win_i;
+#endif
+    *baseptr = (void *) baseptr_i;
+}
+
 
 FORT_DLL_SPEC void FORT_CALL mpi_win_allocate_shared_(MPI_Aint *size, MPI_Fint *disp_unit, MPI_Fint *info, MPI_Fint *comm, MPI_Aint *baseptr, MPI_Fint *win, MPI_Fint *ierr) {
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -5850,6 +6324,21 @@ FORT_DLL_SPEC void FORT_CALL mpi_win_allocate_shared_(MPI_Aint *size, MPI_Fint *
     *win = (MPI_Fint) win_i;
 #endif
     *baseptr = (MPI_Aint) baseptr_i;
+}
+
+FORT_DLL_SPEC void FORT_CALL mpi_win_allocate_shared_cptr_(MPI_Aint *size, MPI_Fint *disp_unit, MPI_Fint *info, MPI_Fint *comm, void * *baseptr, MPI_Fint *win, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+    void * baseptr_i;
+#ifdef HAVE_FINT_IS_INT
+    *ierr = MPI_Win_allocate_shared(*size, (int) (*disp_unit), (MPI_Info) (*info), (MPI_Comm) (*comm), &baseptr_i, (MPI_Win *) win);
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    MPI_Win win_i;
+    *ierr = MPI_Win_allocate_shared(*size, (int) (*disp_unit), (MPI_Info) (*info), (MPI_Comm) (*comm), &baseptr_i, &win_i);
+    *win = (MPI_Fint) win_i;
+#endif
+    *baseptr = (void *) baseptr_i;
 }
 
 
@@ -6061,6 +6550,21 @@ FORT_DLL_SPEC void FORT_CALL mpi_win_shared_query_(MPI_Fint *win, MPI_Fint *rank
     *disp_unit = (MPI_Fint) disp_unit_i;
 #endif
     *baseptr = (MPI_Aint) baseptr_i;
+}
+
+FORT_DLL_SPEC void FORT_CALL mpi_win_shared_query_cptr_(MPI_Fint *win, MPI_Fint *rank, MPI_Aint *size, MPI_Fint *disp_unit, void * *baseptr, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+    void * baseptr_i;
+#ifdef HAVE_FINT_IS_INT
+    *ierr = MPI_Win_shared_query((MPI_Win) (*win), (int) (*rank), size, (int *) disp_unit, &baseptr_i);
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    int disp_unit_i;
+    *ierr = MPI_Win_shared_query((MPI_Win) (*win), (int) (*rank), size, &disp_unit_i, &baseptr_i);
+    *disp_unit = (MPI_Fint) disp_unit_i;
+#endif
+    *baseptr = (void *) baseptr_i;
 }
 
 
@@ -6348,6 +6852,398 @@ FORT_DLL_SPEC void FORT_CALL mpi_unpublish_name_(char *service_name FORT_MIXED_L
     *ierr = MPI_Unpublish_name(service_name_i, (MPI_Info) (*info), port_name_i);
     free(service_name_i);
     free(port_name_i);
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpix_stream_create_(MPI_Fint *info, MPI_Fint *stream, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+#ifdef HAVE_FINT_IS_INT
+    *ierr = MPIX_Stream_create((MPI_Info) (*info), (MPIX_Stream *) stream);
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    MPIX_Stream stream_i;
+    *ierr = MPIX_Stream_create((MPI_Info) (*info), &stream_i);
+    *stream = (MPI_Fint) stream_i;
+#endif
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpix_stream_free_(MPI_Fint *stream, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+#ifdef HAVE_FINT_IS_INT
+    *ierr = MPIX_Stream_free((MPIX_Stream *) stream);
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    MPIX_Stream stream_i;
+    stream_i = (MPIX_Stream) *stream;
+    *ierr = MPIX_Stream_free(&stream_i);
+    *stream = (MPI_Fint) stream_i;
+#endif
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpix_stream_comm_create_(MPI_Fint *comm, MPI_Fint *stream, MPI_Fint *newcomm, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+#ifdef HAVE_FINT_IS_INT
+    *ierr = MPIX_Stream_comm_create((MPI_Comm) (*comm), (MPIX_Stream) (*stream), (MPI_Comm *) newcomm);
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    MPI_Comm newcomm_i;
+    *ierr = MPIX_Stream_comm_create((MPI_Comm) (*comm), (MPIX_Stream) (*stream), &newcomm_i);
+    *newcomm = (MPI_Fint) newcomm_i;
+#endif
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpix_stream_comm_create_multiplex_(MPI_Fint *comm, MPI_Fint *count, MPI_Fint *array_of_streams, MPI_Fint *newcomm, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+#ifdef HAVE_FINT_IS_INT
+    *ierr = MPIX_Stream_comm_create_multiplex((MPI_Comm) (*comm), (int) (*count), (int *) array_of_streams, (MPI_Comm *) newcomm);
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    MPIX_Stream *array_of_streams_i;
+    array_of_streams_i = malloc(sizeof(MPIX_Stream) * (*count));
+    for (int i = 0; i < (*count); i++) {
+        array_of_streams_i[i] = (MPIX_Stream) array_of_streams[i];
+    }
+    MPI_Comm newcomm_i;
+    *ierr = MPIX_Stream_comm_create_multiplex((MPI_Comm) (*comm), (int) (*count), array_of_streams_i, &newcomm_i);
+    free(array_of_streams_i);
+    *newcomm = (MPI_Fint) newcomm_i;
+#endif
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpix_comm_get_stream_(MPI_Fint *comm, MPI_Fint *idx, MPI_Fint *stream, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+#ifdef HAVE_FINT_IS_INT
+    *ierr = MPIX_Comm_get_stream((MPI_Comm) (*comm), (int) (*idx - 1), (MPIX_Stream *) stream);
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    MPIX_Stream stream_i;
+    *ierr = MPIX_Comm_get_stream((MPI_Comm) (*comm), (int) (*idx - 1), &stream_i);
+    *stream = (MPI_Fint) stream_i;
+#endif
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpix_stream_progress_(MPI_Fint *stream, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+    *ierr = MPIX_Stream_progress((MPIX_Stream) (*stream));
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpix_start_progress_thread_(MPI_Fint *stream, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+    *ierr = MPIX_Start_progress_thread((MPIX_Stream) (*stream));
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpix_stop_progress_thread_(MPI_Fint *stream, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+    *ierr = MPIX_Stop_progress_thread((MPIX_Stream) (*stream));
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpix_stream_send_(void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *dest, MPI_Fint *tag, MPI_Fint *comm, MPI_Fint *source_stream_index, MPI_Fint *dest_stream_index, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+    if (buf == MPIR_F_MPI_BOTTOM) {
+        buf = MPI_BOTTOM;
+    }
+    
+    *ierr = MPIX_Stream_send(buf, (int) (*count), (MPI_Datatype) (*datatype), (int) (*dest), (int) (*tag), (MPI_Comm) (*comm), (int) (*source_stream_index - 1), (int) (*dest_stream_index - 1));
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpix_stream_isend_(void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *dest, MPI_Fint *tag, MPI_Fint *comm, MPI_Fint *source_stream_index, MPI_Fint *dest_stream_index, MPI_Fint *request, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+    if (buf == MPIR_F_MPI_BOTTOM) {
+        buf = MPI_BOTTOM;
+    }
+    
+#ifdef HAVE_FINT_IS_INT
+    *ierr = MPIX_Stream_isend(buf, (int) (*count), (MPI_Datatype) (*datatype), (int) (*dest), (int) (*tag), (MPI_Comm) (*comm), (int) (*source_stream_index - 1), (int) (*dest_stream_index - 1), (MPI_Request *) request);
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    MPI_Request request_i;
+    *ierr = MPIX_Stream_isend(buf, (int) (*count), (MPI_Datatype) (*datatype), (int) (*dest), (int) (*tag), (MPI_Comm) (*comm), (int) (*source_stream_index - 1), (int) (*dest_stream_index - 1), &request_i);
+    *request = (MPI_Fint) request_i;
+#endif
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpix_stream_recv_(void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *source, MPI_Fint *tag, MPI_Fint *comm, MPI_Fint *source_stream_index, MPI_Fint *dest_stream_index, MPI_Fint *status, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+    if (buf == MPIR_F_MPI_BOTTOM) {
+        buf = MPI_BOTTOM;
+    }
+    
+#ifdef HAVE_FINT_IS_INT
+    if (status == MPI_F_STATUS_IGNORE) {
+        status = (MPI_Fint *) MPI_STATUS_IGNORE;
+    }
+    *ierr = MPIX_Stream_recv(buf, (int) (*count), (MPI_Datatype) (*datatype), (int) (*source), (int) (*tag), (MPI_Comm) (*comm), (int) (*source_stream_index - 1), (int) (*dest_stream_index - 1), (MPI_Status *) status);
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    MPI_Status * status_arg;
+    int status_i[MPI_F_STATUS_SIZE];
+    if (status == MPI_F_STATUS_IGNORE) {
+        status_arg = MPI_STATUS_IGNORE;
+    } else {
+        status_arg = (MPI_Status *) status_i;
+        for (int i = 0; i < MPI_F_STATUS_SIZE; i++) {
+            status_i[i] = (int) status[i];
+        }
+    }
+    *ierr = MPIX_Stream_recv(buf, (int) (*count), (MPI_Datatype) (*datatype), (int) (*source), (int) (*tag), (MPI_Comm) (*comm), (int) (*source_stream_index - 1), (int) (*dest_stream_index - 1), status_arg);
+    if (status != MPI_F_STATUS_IGNORE) {
+    for (int i = 0; i < MPI_F_STATUS_SIZE; i++) {
+        status[i] = (MPI_Fint) status_i[i];
+    }
+    }
+#endif
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpix_stream_irecv_(void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *source, MPI_Fint *tag, MPI_Fint *comm, MPI_Fint *source_stream_index, MPI_Fint *dest_stream_index, MPI_Fint *request, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+    if (buf == MPIR_F_MPI_BOTTOM) {
+        buf = MPI_BOTTOM;
+    }
+    
+#ifdef HAVE_FINT_IS_INT
+    *ierr = MPIX_Stream_irecv(buf, (int) (*count), (MPI_Datatype) (*datatype), (int) (*source), (int) (*tag), (MPI_Comm) (*comm), (int) (*source_stream_index - 1), (int) (*dest_stream_index - 1), (MPI_Request *) request);
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    MPI_Request request_i;
+    *ierr = MPIX_Stream_irecv(buf, (int) (*count), (MPI_Datatype) (*datatype), (int) (*source), (int) (*tag), (MPI_Comm) (*comm), (int) (*source_stream_index - 1), (int) (*dest_stream_index - 1), &request_i);
+    *request = (MPI_Fint) request_i;
+#endif
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpix_send_enqueue_(void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *dest, MPI_Fint *tag, MPI_Fint *comm, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+    if (buf == MPIR_F_MPI_BOTTOM) {
+        buf = MPI_BOTTOM;
+    }
+    
+    *ierr = MPIX_Send_enqueue(buf, (int) (*count), (MPI_Datatype) (*datatype), (int) (*dest), (int) (*tag), (MPI_Comm) (*comm));
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpix_recv_enqueue_(void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *source, MPI_Fint *tag, MPI_Fint *comm, MPI_Fint *status, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+    if (buf == MPIR_F_MPI_BOTTOM) {
+        buf = MPI_BOTTOM;
+    }
+    
+#ifdef HAVE_FINT_IS_INT
+    if (status == MPI_F_STATUS_IGNORE) {
+        status = (MPI_Fint *) MPI_STATUS_IGNORE;
+    }
+    *ierr = MPIX_Recv_enqueue(buf, (int) (*count), (MPI_Datatype) (*datatype), (int) (*source), (int) (*tag), (MPI_Comm) (*comm), (MPI_Status *) status);
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    MPI_Status * status_arg;
+    int status_i[MPI_F_STATUS_SIZE];
+    if (status == MPI_F_STATUS_IGNORE) {
+        status_arg = MPI_STATUS_IGNORE;
+    } else {
+        status_arg = (MPI_Status *) status_i;
+        for (int i = 0; i < MPI_F_STATUS_SIZE; i++) {
+            status_i[i] = (int) status[i];
+        }
+    }
+    *ierr = MPIX_Recv_enqueue(buf, (int) (*count), (MPI_Datatype) (*datatype), (int) (*source), (int) (*tag), (MPI_Comm) (*comm), status_arg);
+    if (status != MPI_F_STATUS_IGNORE) {
+    for (int i = 0; i < MPI_F_STATUS_SIZE; i++) {
+        status[i] = (MPI_Fint) status_i[i];
+    }
+    }
+#endif
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpix_isend_enqueue_(void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *dest, MPI_Fint *tag, MPI_Fint *comm, MPI_Fint *request, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+    if (buf == MPIR_F_MPI_BOTTOM) {
+        buf = MPI_BOTTOM;
+    }
+    
+#ifdef HAVE_FINT_IS_INT
+    *ierr = MPIX_Isend_enqueue(buf, (int) (*count), (MPI_Datatype) (*datatype), (int) (*dest), (int) (*tag), (MPI_Comm) (*comm), (MPI_Request *) request);
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    MPI_Request request_i;
+    *ierr = MPIX_Isend_enqueue(buf, (int) (*count), (MPI_Datatype) (*datatype), (int) (*dest), (int) (*tag), (MPI_Comm) (*comm), &request_i);
+    *request = (MPI_Fint) request_i;
+#endif
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpix_irecv_enqueue_(void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *source, MPI_Fint *tag, MPI_Fint *comm, MPI_Fint *request, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+    if (buf == MPIR_F_MPI_BOTTOM) {
+        buf = MPI_BOTTOM;
+    }
+    
+#ifdef HAVE_FINT_IS_INT
+    *ierr = MPIX_Irecv_enqueue(buf, (int) (*count), (MPI_Datatype) (*datatype), (int) (*source), (int) (*tag), (MPI_Comm) (*comm), (MPI_Request *) request);
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    MPI_Request request_i;
+    *ierr = MPIX_Irecv_enqueue(buf, (int) (*count), (MPI_Datatype) (*datatype), (int) (*source), (int) (*tag), (MPI_Comm) (*comm), &request_i);
+    *request = (MPI_Fint) request_i;
+#endif
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpix_wait_enqueue_(MPI_Fint *request, MPI_Fint *status, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+#ifdef HAVE_FINT_IS_INT
+    if (status == MPI_F_STATUS_IGNORE) {
+        status = (MPI_Fint *) MPI_STATUS_IGNORE;
+    }
+    *ierr = MPIX_Wait_enqueue((MPI_Request *) request, (MPI_Status *) status);
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    MPI_Request request_i;
+    request_i = (MPI_Request) *request;
+    MPI_Status * status_arg;
+    int status_i[MPI_F_STATUS_SIZE];
+    if (status == MPI_F_STATUS_IGNORE) {
+        status_arg = MPI_STATUS_IGNORE;
+    } else {
+        status_arg = (MPI_Status *) status_i;
+        for (int i = 0; i < MPI_F_STATUS_SIZE; i++) {
+            status_i[i] = (int) status[i];
+        }
+    }
+    *ierr = MPIX_Wait_enqueue(&request_i, status_arg);
+    *request = (MPI_Fint) request_i;
+    if (status != MPI_F_STATUS_IGNORE) {
+    for (int i = 0; i < MPI_F_STATUS_SIZE; i++) {
+        status[i] = (MPI_Fint) status_i[i];
+    }
+    }
+#endif
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpix_waitall_enqueue_(MPI_Fint *count, MPI_Fint *array_of_requests, MPI_Fint *array_of_statuses, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+#ifdef HAVE_FINT_IS_INT
+    if (array_of_statuses == MPI_F_STATUSES_IGNORE) {
+        array_of_statuses = (MPI_Fint *) MPI_STATUSES_IGNORE;
+    }
+    *ierr = MPIX_Waitall_enqueue((int) (*count), (int *) array_of_requests, (MPI_Status *) array_of_statuses);
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    MPI_Request *array_of_requests_i;
+    array_of_requests_i = malloc(sizeof(MPI_Request) * (*count));
+    for (int i = 0; i < (*count); i++) {
+        array_of_requests_i[i] = (MPI_Request) array_of_requests[i];
+    }
+    MPI_Status *statuses_i;
+    if (array_of_statuses == MPI_F_STATUSES_IGNORE) {
+        statuses_i = MPI_STATUS_IGNORE;
+    } else {
+        statuses_i = malloc((*count) * sizeof(MPI_Status));
+        int *p = (int *) statuses_i;
+        for (int i = 0; i < (*count) * MPI_F_STATUS_SIZE; i++) {
+            p[i] = (int) array_of_statuses[i];
+        }
+    }
+    *ierr = MPIX_Waitall_enqueue((int) (*count), array_of_requests_i, statuses_i);
+    for (int i = 0; i < (*count); i++) {
+        array_of_requests[i] = (MPI_Fint) array_of_requests_i[i];
+    }
+    free(array_of_requests_i);
+    if (array_of_statuses != MPI_F_STATUSES_IGNORE) {
+        int *p = (int *) statuses_i;
+        for (int i = 0; i < (*count) * MPI_F_STATUS_SIZE; i++) {
+            array_of_statuses[i] = (MPI_Fint) p[i];
+        }
+        free(statuses_i);
+    }
+#endif
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpix_allreduce_enqueue_(void *sendbuf, void *recvbuf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *op, MPI_Fint *comm, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+    if (sendbuf == MPIR_F_MPI_BOTTOM) {
+        sendbuf = MPI_BOTTOM;
+    }
+    
+    if (recvbuf == MPIR_F_MPI_BOTTOM) {
+        recvbuf = MPI_BOTTOM;
+    }
+    
+    *ierr = MPIX_Allreduce_enqueue(sendbuf, recvbuf, (int) (*count), (MPI_Datatype) (*datatype), (MPI_Op) (*op), (MPI_Comm) (*comm));
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpix_threadcomm_init_(MPI_Fint *comm, MPI_Fint *num_threads, MPI_Fint *newthreadcomm, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+#ifdef HAVE_FINT_IS_INT
+    *ierr = MPIX_Threadcomm_init((MPI_Comm) (*comm), (int) (*num_threads), (MPI_Comm *) newthreadcomm);
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    MPI_Comm newthreadcomm_i;
+    *ierr = MPIX_Threadcomm_init((MPI_Comm) (*comm), (int) (*num_threads), &newthreadcomm_i);
+    *newthreadcomm = (MPI_Fint) newthreadcomm_i;
+#endif
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpix_threadcomm_free_(MPI_Fint *threadcomm, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+#ifdef HAVE_FINT_IS_INT
+    *ierr = MPIX_Threadcomm_free((MPI_Comm *) threadcomm);
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    MPI_Comm threadcomm_i;
+    threadcomm_i = (MPI_Comm) *threadcomm;
+    *ierr = MPIX_Threadcomm_free(&threadcomm_i);
+    *threadcomm = (MPI_Fint) threadcomm_i;
+#endif
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpix_threadcomm_start_(MPI_Fint *threadcomm, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+    *ierr = MPIX_Threadcomm_start((MPI_Comm) (*threadcomm));
+}
+
+
+FORT_DLL_SPEC void FORT_CALL mpix_threadcomm_finish_(MPI_Fint *threadcomm, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+    *ierr = MPIX_Threadcomm_finish((MPI_Comm) (*threadcomm));
 }
 
 
@@ -6743,6 +7639,20 @@ FORT_DLL_SPEC void FORT_CALL mpi_dist_graph_neighbors_count_(MPI_Fint *comm, MPI
 }
 
 
+FORT_DLL_SPEC void FORT_CALL mpi_get_hw_resource_info_(MPI_Fint *hw_info, MPI_Fint *ierr) {
+    if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
+    
+#ifdef HAVE_FINT_IS_INT
+    *ierr = MPI_Get_hw_resource_info((MPI_Info *) hw_info);
+    
+#else  /* ! HAVE_FINT_IS_INT */
+    MPI_Info hw_info_i;
+    *ierr = MPI_Get_hw_resource_info(&hw_info_i);
+    *hw_info = (MPI_Fint) hw_info_i;
+#endif
+}
+
+
 FORT_DLL_SPEC void FORT_CALL mpi_graph_create_(MPI_Fint *comm_old, MPI_Fint *nnodes, MPI_Fint *indx, MPI_Fint *edges, MPI_Fint *reorder, MPI_Fint *comm_graph, MPI_Fint *ierr) {
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
     
@@ -6882,7 +7792,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_topo_test_(MPI_Fint *comm, MPI_Fint *status, MP
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_close_(MPI_Fint *fh, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -6895,7 +7805,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_close_(MPI_Fint *fh, MPI_Fint *ierr) {
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_delete_(char *filename FORT_MIXED_LEN(filename_len), MPI_Fint *info, MPI_Fint *ierr FORT_END_LEN(filename_len)) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -6908,7 +7818,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_delete_(char *filename FORT_MIXED_LEN(file
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_get_amode_(MPI_Fint *fh, MPI_Fint *amode, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -6926,7 +7836,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_get_amode_(MPI_Fint *fh, MPI_Fint *amode, 
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_get_atomicity_(MPI_Fint *fh, MPI_Fint *flag, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -6941,7 +7851,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_get_atomicity_(MPI_Fint *fh, MPI_Fint *fla
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_get_byte_offset_(MPI_Fint *fh, MPI_Offset *offset, MPI_Offset *disp, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -6952,7 +7862,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_get_byte_offset_(MPI_Fint *fh, MPI_Offset 
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_get_group_(MPI_Fint *fh, MPI_Fint *group, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -6970,7 +7880,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_get_group_(MPI_Fint *fh, MPI_Fint *group, 
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_get_info_(MPI_Fint *fh, MPI_Fint *info_used, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -6988,7 +7898,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_get_info_(MPI_Fint *fh, MPI_Fint *info_use
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_get_position_(MPI_Fint *fh, MPI_Offset *offset, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -6999,7 +7909,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_get_position_(MPI_Fint *fh, MPI_Offset *of
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_get_position_shared_(MPI_Fint *fh, MPI_Offset *offset, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7010,7 +7920,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_get_position_shared_(MPI_Fint *fh, MPI_Off
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_get_size_(MPI_Fint *fh, MPI_Offset *size, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7021,7 +7931,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_get_size_(MPI_Fint *fh, MPI_Offset *size, 
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_get_type_extent_(MPI_Fint *fh, MPI_Fint *datatype, MPI_Aint *extent, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7032,7 +7942,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_get_type_extent_(MPI_Fint *fh, MPI_Fint *d
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_get_view_(MPI_Fint *fh, MPI_Offset *disp, MPI_Fint *etype, MPI_Fint *filetype, char *datarep FORT_MIXED_LEN(datarep_len), MPI_Fint *ierr FORT_END_LEN(datarep_len)) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7057,7 +7967,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_get_view_(MPI_Fint *fh, MPI_Offset *disp, 
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_iread_(MPI_Fint *fh, void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *request, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7079,7 +7989,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_iread_(MPI_Fint *fh, void *buf, MPI_Fint *
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_iread_all_(MPI_Fint *fh, void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *request, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7101,7 +8011,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_iread_all_(MPI_Fint *fh, void *buf, MPI_Fi
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_iread_at_(MPI_Fint *fh, MPI_Offset *offset, void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *request, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7123,7 +8033,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_iread_at_(MPI_Fint *fh, MPI_Offset *offset
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_iread_at_all_(MPI_Fint *fh, MPI_Offset *offset, void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *request, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7145,7 +8055,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_iread_at_all_(MPI_Fint *fh, MPI_Offset *of
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_iread_shared_(MPI_Fint *fh, void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *request, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7167,7 +8077,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_iread_shared_(MPI_Fint *fh, void *buf, MPI
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_iwrite_(MPI_Fint *fh, void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *request, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7189,7 +8099,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_iwrite_(MPI_Fint *fh, void *buf, MPI_Fint 
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_iwrite_all_(MPI_Fint *fh, void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *request, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7211,7 +8121,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_iwrite_all_(MPI_Fint *fh, void *buf, MPI_F
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_iwrite_at_(MPI_Fint *fh, MPI_Offset *offset, void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *request, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7233,7 +8143,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_iwrite_at_(MPI_Fint *fh, MPI_Offset *offse
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_iwrite_at_all_(MPI_Fint *fh, MPI_Offset *offset, void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *request, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7255,7 +8165,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_iwrite_at_all_(MPI_Fint *fh, MPI_Offset *o
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_iwrite_shared_(MPI_Fint *fh, void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *request, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7277,7 +8187,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_iwrite_shared_(MPI_Fint *fh, void *buf, MP
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_open_(MPI_Fint *comm, char *filename FORT_MIXED_LEN(filename_len), MPI_Fint *amode, MPI_Fint *info, MPI_Fint *fh, MPI_Fint *ierr FORT_END_LEN(filename_len)) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7292,7 +8202,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_open_(MPI_Fint *comm, char *filename FORT_
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_preallocate_(MPI_Fint *fh, MPI_Offset *size, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7303,7 +8213,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_preallocate_(MPI_Fint *fh, MPI_Offset *siz
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_read_(MPI_Fint *fh, void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *status, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7341,7 +8251,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_read_(MPI_Fint *fh, void *buf, MPI_Fint *c
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_read_all_(MPI_Fint *fh, void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *status, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7379,7 +8289,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_read_all_(MPI_Fint *fh, void *buf, MPI_Fin
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_read_all_begin_(MPI_Fint *fh, void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7394,7 +8304,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_read_all_begin_(MPI_Fint *fh, void *buf, M
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_read_all_end_(MPI_Fint *fh, void *buf, MPI_Fint *status, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7432,7 +8342,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_read_all_end_(MPI_Fint *fh, void *buf, MPI
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_read_at_(MPI_Fint *fh, MPI_Offset *offset, void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *status, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7470,7 +8380,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_read_at_(MPI_Fint *fh, MPI_Offset *offset,
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_read_at_all_(MPI_Fint *fh, MPI_Offset *offset, void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *status, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7508,7 +8418,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_read_at_all_(MPI_Fint *fh, MPI_Offset *off
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_read_at_all_begin_(MPI_Fint *fh, MPI_Offset *offset, void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7523,7 +8433,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_read_at_all_begin_(MPI_Fint *fh, MPI_Offse
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_read_at_all_end_(MPI_Fint *fh, void *buf, MPI_Fint *status, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7561,7 +8471,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_read_at_all_end_(MPI_Fint *fh, void *buf, 
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_read_ordered_(MPI_Fint *fh, void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *status, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7599,7 +8509,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_read_ordered_(MPI_Fint *fh, void *buf, MPI
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_read_ordered_begin_(MPI_Fint *fh, void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7614,7 +8524,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_read_ordered_begin_(MPI_Fint *fh, void *bu
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_read_ordered_end_(MPI_Fint *fh, void *buf, MPI_Fint *status, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7652,7 +8562,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_read_ordered_end_(MPI_Fint *fh, void *buf,
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_read_shared_(MPI_Fint *fh, void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *status, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7690,7 +8600,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_read_shared_(MPI_Fint *fh, void *buf, MPI_
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_seek_(MPI_Fint *fh, MPI_Offset *offset, MPI_Fint *whence, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7701,7 +8611,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_seek_(MPI_Fint *fh, MPI_Offset *offset, MP
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_seek_shared_(MPI_Fint *fh, MPI_Offset *offset, MPI_Fint *whence, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7712,7 +8622,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_seek_shared_(MPI_Fint *fh, MPI_Offset *off
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_set_atomicity_(MPI_Fint *fh, MPI_Fint *flag, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7723,7 +8633,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_set_atomicity_(MPI_Fint *fh, MPI_Fint *fla
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_set_info_(MPI_Fint *fh, MPI_Fint *info, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7734,7 +8644,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_set_info_(MPI_Fint *fh, MPI_Fint *info, MP
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_set_size_(MPI_Fint *fh, MPI_Offset *size, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7745,7 +8655,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_set_size_(MPI_Fint *fh, MPI_Offset *size, 
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_set_view_(MPI_Fint *fh, MPI_Offset *disp, MPI_Fint *etype, MPI_Fint *filetype, char *datarep FORT_MIXED_LEN(datarep_len), MPI_Fint *info, MPI_Fint *ierr FORT_END_LEN(datarep_len)) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7758,7 +8668,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_set_view_(MPI_Fint *fh, MPI_Offset *disp, 
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_sync_(MPI_Fint *fh, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7769,7 +8679,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_sync_(MPI_Fint *fh, MPI_Fint *ierr) {
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_write_(MPI_Fint *fh, void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *status, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7807,7 +8717,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_write_(MPI_Fint *fh, void *buf, MPI_Fint *
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_write_all_(MPI_Fint *fh, void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *status, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7845,7 +8755,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_write_all_(MPI_Fint *fh, void *buf, MPI_Fi
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_write_all_begin_(MPI_Fint *fh, void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7860,7 +8770,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_write_all_begin_(MPI_Fint *fh, void *buf, 
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_write_all_end_(MPI_Fint *fh, void *buf, MPI_Fint *status, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7898,7 +8808,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_write_all_end_(MPI_Fint *fh, void *buf, MP
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_write_at_(MPI_Fint *fh, MPI_Offset *offset, void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *status, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7936,7 +8846,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_write_at_(MPI_Fint *fh, MPI_Offset *offset
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_write_at_all_(MPI_Fint *fh, MPI_Offset *offset, void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *status, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7974,7 +8884,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_write_at_all_(MPI_Fint *fh, MPI_Offset *of
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_write_at_all_begin_(MPI_Fint *fh, MPI_Offset *offset, void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -7989,7 +8899,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_write_at_all_begin_(MPI_Fint *fh, MPI_Offs
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_write_at_all_end_(MPI_Fint *fh, void *buf, MPI_Fint *status, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -8027,7 +8937,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_write_at_all_end_(MPI_Fint *fh, void *buf,
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_write_ordered_(MPI_Fint *fh, void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *status, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -8065,7 +8975,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_write_ordered_(MPI_Fint *fh, void *buf, MP
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_write_ordered_begin_(MPI_Fint *fh, void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -8080,7 +8990,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_write_ordered_begin_(MPI_Fint *fh, void *b
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_write_ordered_end_(MPI_Fint *fh, void *buf, MPI_Fint *status, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -8118,7 +9028,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_write_ordered_end_(MPI_Fint *fh, void *buf
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_file_write_shared_(MPI_Fint *fh, void *buf, MPI_Fint *count, MPI_Fint *datatype, MPI_Fint *status, MPI_Fint *ierr) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}
@@ -8156,7 +9066,7 @@ FORT_DLL_SPEC void FORT_CALL mpi_file_write_shared_(MPI_Fint *fh, void *buf, MPI
 
 
 FORT_DLL_SPEC void FORT_CALL mpi_register_datarep_(char *datarep FORT_MIXED_LEN(datarep_len), MPI_Datarep_conversion_function read_conversion_fn, MPI_Datarep_conversion_function write_conversion_fn, MPI_Datarep_extent_function dtype_file_extent_fn, void *extra_state, MPI_Fint *ierr FORT_END_LEN(datarep_len)) {
-#ifndef MPI_MODE_RDONLY
+#ifndef HAVE_ROMIO
     *ierr = MPI_ERR_INTERN;
 #else
     if (MPIR_F_NeedInit) {mpirinitf_(); MPIR_F_NeedInit = 0;}

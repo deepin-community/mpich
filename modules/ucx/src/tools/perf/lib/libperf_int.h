@@ -1,5 +1,5 @@
 /**
-* Copyright (C) Mellanox Technologies Ltd. 2001-2015.  ALL RIGHTS RESERVED.
+* Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2001-2015. ALL RIGHTS RESERVED.
 * Copyright (C) The University of Tennessee and The University
 *               of Tennessee Research Foundation. 2016. ALL RIGHTS RESERVED.
 *
@@ -27,7 +27,7 @@ BEGIN_C_DECLS
 
 #define TIMING_QUEUE_SIZE    2048
 #define UCT_PERF_TEST_AM_ID  5
-#define ADDR_BUF_SIZE        2048
+#define ADDR_BUF_SIZE        4096
 #define EXTRA_INFO_SIZE      256
 
 #define UCX_PERF_TEST_FOREACH(perf) \
@@ -81,7 +81,10 @@ struct ucx_perf_context {
 
     ucs_time_t                   timing_queue[TIMING_QUEUE_SIZE];
     unsigned                     timing_queue_head;
-    const ucx_perf_allocator_t   *allocator;
+
+    const ucx_perf_allocator_t   *send_allocator;
+    const ucx_perf_allocator_t   *recv_allocator;
+
     char                         extra_info[EXTRA_INFO_SIZE];
 
     union {
@@ -159,8 +162,9 @@ ucs_status_t ucx_perf_thread_spawn(ucx_perf_context_t *perf,
                                    ucx_perf_result_t* result);
 void ucx_perf_test_prepare_new_run(ucx_perf_context_t *perf,
                                    const ucx_perf_params_t *params);
-void ucx_perf_set_warmup(ucx_perf_context_t* perf,
-                         const ucx_perf_params_t* params);
+ucs_status_t
+ucx_perf_do_warmup(ucx_perf_context_t *perf, const ucx_perf_params_t *params);
+
 /**
  * Get the total length of the message size given by parameters
  */

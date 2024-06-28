@@ -1,12 +1,17 @@
-.TH MPI_T_event_register_callback 3 "2/22/2022" " " "MPI"
+.TH MPI_T_event_register_callback 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_T_event_register_callback \-  Associates a user-defined function with an allocated event-registration handle 
 .SH SYNOPSIS
 .nf
+.fi
+.nf
 int MPI_T_event_register_callback(MPI_T_event_registration event_registration,
-MPI_T_cb_safety cb_safety, MPI_Info info, void *user_data,
+MPI_T_cb_safety cb_safety, MPI_Info info,
+void *user_data,
 MPI_T_event_cb_function event_cb_function)
 .fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -77,7 +82,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_INFO 

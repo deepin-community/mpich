@@ -1,11 +1,16 @@
-.TH MPI_Comm_spawn 3 "2/22/2022" " " "MPI"
+.TH MPI_Comm_spawn 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Comm_spawn \-  Spawn up to maxprocs instances of a single MPI application 
 .SH SYNOPSIS
 .nf
-int MPI_Comm_spawn(const char *command, char *argv[], int maxprocs, MPI_Info info, int root,
-MPI_Comm comm, MPI_Comm *intercomm, int array_of_errcodes[])
 .fi
+.nf
+int MPI_Comm_spawn(const char *command, char *argv[], int maxprocs,
+MPI_Info info, int root, MPI_Comm comm, MPI_Comm *intercomm,
+int array_of_errcodes[])
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -47,7 +52,7 @@ MPI_Comm comm, MPI_Comm *intercomm, int array_of_errcodes[])
 .PD 0
 .TP
 .B array_of_errcodes 
-- one code per process (array of integer) (integer)
+- one code per process (array of integer)
 .PD 1
 
 .SH THREAD AND INTERRUPT SAFETY
@@ -116,7 +121,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

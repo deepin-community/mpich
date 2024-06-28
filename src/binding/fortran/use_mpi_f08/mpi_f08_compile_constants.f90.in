@@ -25,7 +25,7 @@ private :: c_Offset
 
 ! MPI version
 integer, parameter :: MPI_VERSION                      = 4
-integer, parameter :: MPI_SUBVERSION                   = 0
+integer, parameter :: MPI_SUBVERSION                   = 1
 
 ! Error classes
 integer, parameter :: MPI_SUCCESS                      = 0
@@ -89,6 +89,7 @@ integer, parameter :: MPI_ERR_RMA_FLAVOR               = 58
 integer, parameter :: MPI_ERR_SESSION                  = 75
 integer, parameter :: MPI_ERR_PROC_ABORTED             = 76
 integer, parameter :: MPI_ERR_VALUE_TOO_LARGE          = 77
+integer, parameter :: MPI_ERR_ERRHANDLER               = 80
 integer, parameter :: MPI_ERR_LASTCODE                 = 1073741823 ! 0x3fffffff
 
 ! Predefined error handlers

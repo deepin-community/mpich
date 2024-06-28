@@ -119,6 +119,9 @@
 /* Define to 1 if you have the <mpix.h> header file. */
 #undef HAVE_MPIX_H
 
+/* Define if MPI library provides MPIX_Type_iov and MPIX_Type_iov_len */
+#undef HAVE_MPIX_TYPE_IOV
+
 /* Define if MPI combiners available */
 #undef HAVE_MPI_COMBINERS
 
@@ -218,8 +221,17 @@
 /* Define to 1 if `aio_whence' is a member of `struct aiocb'. */
 #undef HAVE_STRUCT_AIOCB_AIO_WHENCE
 
-/* Define if struct statfs can be compiled */
-#undef HAVE_STRUCT_STATFS
+/* Define to 1 if `f_fstypename' is a member of `struct statfs'. */
+#undef HAVE_STRUCT_STATFS_F_FSTYPENAME
+
+/* Define to 1 if `f_type' is a member of `struct statfs'. */
+#undef HAVE_STRUCT_STATFS_F_TYPE
+
+/* Define to 1 if `f_basetype' is a member of `struct statvfs'. */
+#undef HAVE_STRUCT_STATVFS_F_BASETYPE
+
+/* Define to 1 if `st_fstype' is a member of `struct stat'. */
+#undef HAVE_STRUCT_STAT_ST_FSTYPE
 
 /* Define to 1 if you have the <sys/aio.h> header file. */
 #undef HAVE_SYS_AIO_H
@@ -241,6 +253,9 @@
 
 /* Define to 1 if you have the <sys/types.h> header file. */
 #undef HAVE_SYS_TYPES_H
+
+/* Define to 1 if you have the <sys/type.h> header file. */
+#undef HAVE_SYS_TYPE_H
 
 /* Define to 1 if you have the <sys/vfs.h> header file. */
 #undef HAVE_SYS_VFS_H
@@ -355,18 +370,6 @@
 
 /* Define if aio_suspend needs two arguments */
 #undef ROMIO_HAVE_AIO_SUSPEND_TWO_ARGS
-
-/* Define if statfs has f_fstypename */
-#undef ROMIO_HAVE_STRUCT_STATFS_WITH_F_FSTYPENAME
-
-/* Define if statfs has f_type */
-#undef ROMIO_HAVE_STRUCT_STATFS_WITH_F_TYPE
-
-/* defined if struct statvfs has a f_basetype member */
-#undef ROMIO_HAVE_STRUCT_STATVFS_WITH_F_BASETYPE
-
-/* Define if struct stat has a st_fstype member */
-#undef ROMIO_HAVE_STRUCT_STAT_WITH_ST_FSTYPE
 
 /* Define if AIO calls seem to work */
 #undef ROMIO_HAVE_WORKING_AIO

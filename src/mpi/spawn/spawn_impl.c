@@ -6,6 +6,7 @@
 #include "mpiimpl.h"
 #include "namepub.h"
 
+#include <fcntl.h>
 
 #ifdef HAVE_ERRNO_H
 #include <errno.h>      /* needed for read/write error codes */
@@ -19,6 +20,14 @@
 #endif
 #define SOCKET_EINTR        EINTR
 #endif
+
+int MPIR_Comm_get_parent_impl(MPI_Comm * parent)
+{
+    *parent = (MPIR_Process.comm_parent == NULL) ? MPI_COMM_NULL :
+        (MPIR_Process.comm_parent)->handle;
+
+    return MPI_SUCCESS;
+}
 
 static int MPIR_fd_send(int fd, void *buffer, int length)
 {
@@ -219,8 +228,9 @@ int MPIR_Comm_disconnect_impl(MPIR_Comm * comm_ptr)
      */
     /* FIXME-MT should we be checking this? */
     if (MPIR_Object_get_ref(comm_ptr) > 1) {
-        MPID_Progress_state progress_state;
+        MPIR_Comm_free_inactive_requests(comm_ptr);
 
+        MPID_Progress_state progress_state;
         MPID_Progress_start(&progress_state);
         while (MPIR_Object_get_ref(comm_ptr) > 1) {
             mpi_errno = MPID_Progress_wait(&progress_state);

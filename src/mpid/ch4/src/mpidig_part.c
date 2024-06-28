@@ -22,6 +22,7 @@ static int part_req_create(void *buf, int partitions, MPI_Aint count,
 
     MPIR_Comm_add_ref(comm);
     req->comm = comm;
+    MPIR_Comm_save_inactive_request(comm, req);
 
     MPIR_Datatype_add_ref_if_not_builtin(datatype);
 
@@ -131,7 +132,7 @@ int MPIDIG_mpi_psend_init(const void *buf, int partitions, MPI_Aint count,
     goto fn_exit;
 }
 
-int MPIDIG_mpi_precv_init(void *buf, int partitions, int count,
+int MPIDIG_mpi_precv_init(void *buf, int partitions, MPI_Aint count,
                           MPI_Datatype datatype, int source, int tag,
                           MPIR_Comm * comm, MPIR_Info * info, MPIR_Request ** request)
 {

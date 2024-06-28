@@ -15,7 +15,7 @@ typedef unsigned int uint32_t;
 typedef unsigned long uint64_t;
 #include "yaksuri_zei_md.h"
 
-__kernel void yaksuri_zei_kernel_pack_MIN_int32_t(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
+__kernel void yaksuri_zei_kernel_pack_BAND_int32_t(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
 {
     __global const char *__restrict__ sbuf = (__global char *) inbuf;
     __global char *__restrict__ dbuf = (__global char *) outbuf;
@@ -29,10 +29,10 @@ __kernel void yaksuri_zei_kernel_pack_MIN_int32_t(__global const void *inbuf, __
     
     uintptr_t x0 = res;
     
-    *((int32_t *) (void *) (dbuf + idx * sizeof(int32_t))) = *((int32_t *) (void *) (dbuf + idx * sizeof(int32_t))) ^ ((*((const int32_t *) (const void *) (sbuf + x0 * extent)) ^ *((int32_t *) (void *) (dbuf + idx * sizeof(int32_t)))) & -( *((const int32_t *) (const void *) (sbuf + x0 * extent)) < *((int32_t *) (void *) (dbuf + idx * sizeof(int32_t)))));
+    *((int32_t *) (void *) (dbuf + idx * sizeof(int32_t))) &= *((const int32_t *) (const void *) (sbuf + x0 * extent));
 }
 
-__kernel void yaksuri_zei_kernel_unpack_MIN_int32_t(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
+__kernel void yaksuri_zei_kernel_unpack_BAND_int32_t(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
 {
     __global const char *__restrict__ sbuf = (__global char *) inbuf;
     __global char *__restrict__ dbuf = (__global char *) outbuf;
@@ -46,7 +46,7 @@ __kernel void yaksuri_zei_kernel_unpack_MIN_int32_t(__global const void *inbuf, 
     
     uintptr_t x0 = res;
     
-    *((int32_t *) (void *) (dbuf + x0 * extent)) = *((int32_t *) (void *) (dbuf + x0 * extent)) ^ ((*((const int32_t *) (const void *) (sbuf + idx * sizeof(int32_t))) ^ *((int32_t *) (void *) (dbuf + x0 * extent))) & -( *((const int32_t *) (const void *) (sbuf + idx * sizeof(int32_t))) < *((int32_t *) (void *) (dbuf + x0 * extent))));
+    *((int32_t *) (void *) (dbuf + x0 * extent)) &= *((const int32_t *) (const void *) (sbuf + idx * sizeof(int32_t)));
 }
 
 __kernel void yaksuri_zei_kernel_pack_REPLACE_int32_t(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
@@ -81,6 +81,74 @@ __kernel void yaksuri_zei_kernel_unpack_REPLACE_int32_t(__global const void *inb
     uintptr_t x0 = res;
     
     *((int32_t *) (void *) (dbuf + x0 * extent)) = *((const int32_t *) (const void *) (sbuf + idx * sizeof(int32_t)));
+}
+
+__kernel void yaksuri_zei_kernel_pack_BOR_int32_t(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
+{
+    __global const char *__restrict__ sbuf = (__global char *) inbuf;
+    __global char *__restrict__ dbuf = (__global char *) outbuf;
+    uintptr_t extent = md->extent;
+    uintptr_t idx = get_global_id(0);
+    uintptr_t res = idx;
+    uintptr_t inner_elements = md->num_elements;
+    
+    if (idx >= (count * inner_elements))
+        return;
+    
+    uintptr_t x0 = res;
+    
+    *((int32_t *) (void *) (dbuf + idx * sizeof(int32_t))) |= *((const int32_t *) (const void *) (sbuf + x0 * extent));
+}
+
+__kernel void yaksuri_zei_kernel_unpack_BOR_int32_t(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
+{
+    __global const char *__restrict__ sbuf = (__global char *) inbuf;
+    __global char *__restrict__ dbuf = (__global char *) outbuf;
+    uintptr_t extent = md->extent;
+    uintptr_t idx = get_global_id(0);
+    uintptr_t res = idx;
+    uintptr_t inner_elements = md->num_elements;
+    
+    if (idx >= (count * inner_elements))
+        return;
+    
+    uintptr_t x0 = res;
+    
+    *((int32_t *) (void *) (dbuf + x0 * extent)) |= *((const int32_t *) (const void *) (sbuf + idx * sizeof(int32_t)));
+}
+
+__kernel void yaksuri_zei_kernel_pack_BXOR_int32_t(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
+{
+    __global const char *__restrict__ sbuf = (__global char *) inbuf;
+    __global char *__restrict__ dbuf = (__global char *) outbuf;
+    uintptr_t extent = md->extent;
+    uintptr_t idx = get_global_id(0);
+    uintptr_t res = idx;
+    uintptr_t inner_elements = md->num_elements;
+    
+    if (idx >= (count * inner_elements))
+        return;
+    
+    uintptr_t x0 = res;
+    
+    *((int32_t *) (void *) (dbuf + idx * sizeof(int32_t))) ^= *((const int32_t *) (const void *) (sbuf + x0 * extent));
+}
+
+__kernel void yaksuri_zei_kernel_unpack_BXOR_int32_t(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
+{
+    __global const char *__restrict__ sbuf = (__global char *) inbuf;
+    __global char *__restrict__ dbuf = (__global char *) outbuf;
+    uintptr_t extent = md->extent;
+    uintptr_t idx = get_global_id(0);
+    uintptr_t res = idx;
+    uintptr_t inner_elements = md->num_elements;
+    
+    if (idx >= (count * inner_elements))
+        return;
+    
+    uintptr_t x0 = res;
+    
+    *((int32_t *) (void *) (dbuf + x0 * extent)) ^= *((const int32_t *) (const void *) (sbuf + idx * sizeof(int32_t)));
 }
 
 __kernel void yaksuri_zei_kernel_pack_LAND_int32_t(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
@@ -151,7 +219,7 @@ __kernel void yaksuri_zei_kernel_unpack_SUM_int32_t(__global const void *inbuf, 
     *((int32_t *) (void *) (dbuf + x0 * extent)) += *((const int32_t *) (const void *) (sbuf + idx * sizeof(int32_t)));
 }
 
-__kernel void yaksuri_zei_kernel_pack_PROD_int32_t(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
+__kernel void yaksuri_zei_kernel_pack_LXOR_int32_t(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
 {
     __global const char *__restrict__ sbuf = (__global char *) inbuf;
     __global char *__restrict__ dbuf = (__global char *) outbuf;
@@ -165,10 +233,10 @@ __kernel void yaksuri_zei_kernel_pack_PROD_int32_t(__global const void *inbuf, _
     
     uintptr_t x0 = res;
     
-    *((int32_t *) (void *) (dbuf + idx * sizeof(int32_t))) *= *((const int32_t *) (const void *) (sbuf + x0 * extent));
+    *((int32_t *) (void *) (dbuf + idx * sizeof(int32_t))) = !(*((int32_t *) (void *) (dbuf + idx * sizeof(int32_t)))) != !(*((const int32_t *) (const void *) (sbuf + x0 * extent)));
 }
 
-__kernel void yaksuri_zei_kernel_unpack_PROD_int32_t(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
+__kernel void yaksuri_zei_kernel_unpack_LXOR_int32_t(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
 {
     __global const char *__restrict__ sbuf = (__global char *) inbuf;
     __global char *__restrict__ dbuf = (__global char *) outbuf;
@@ -182,10 +250,10 @@ __kernel void yaksuri_zei_kernel_unpack_PROD_int32_t(__global const void *inbuf,
     
     uintptr_t x0 = res;
     
-    *((int32_t *) (void *) (dbuf + x0 * extent)) *= *((const int32_t *) (const void *) (sbuf + idx * sizeof(int32_t)));
+    *((int32_t *) (void *) (dbuf + x0 * extent)) = !(*((int32_t *) (void *) (dbuf + x0 * extent))) != !(*((const int32_t *) (const void *) (sbuf + idx * sizeof(int32_t))));
 }
 
-__kernel void yaksuri_zei_kernel_pack_BXOR_int32_t(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
+__kernel void yaksuri_zei_kernel_pack_MAX_int32_t(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
 {
     __global const char *__restrict__ sbuf = (__global char *) inbuf;
     __global char *__restrict__ dbuf = (__global char *) outbuf;
@@ -199,10 +267,10 @@ __kernel void yaksuri_zei_kernel_pack_BXOR_int32_t(__global const void *inbuf, _
     
     uintptr_t x0 = res;
     
-    *((int32_t *) (void *) (dbuf + idx * sizeof(int32_t))) ^= *((const int32_t *) (const void *) (sbuf + x0 * extent));
+    *((int32_t *) (void *) (dbuf + idx * sizeof(int32_t))) = *((const int32_t *) (const void *) (sbuf + x0 * extent)) ^ ((*((const int32_t *) (const void *) (sbuf + x0 * extent)) ^ *((int32_t *) (void *) (dbuf + idx * sizeof(int32_t)))) & -( *((const int32_t *) (const void *) (sbuf + x0 * extent)) < *((int32_t *) (void *) (dbuf + idx * sizeof(int32_t)))));
 }
 
-__kernel void yaksuri_zei_kernel_unpack_BXOR_int32_t(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
+__kernel void yaksuri_zei_kernel_unpack_MAX_int32_t(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
 {
     __global const char *__restrict__ sbuf = (__global char *) inbuf;
     __global char *__restrict__ dbuf = (__global char *) outbuf;
@@ -216,7 +284,7 @@ __kernel void yaksuri_zei_kernel_unpack_BXOR_int32_t(__global const void *inbuf,
     
     uintptr_t x0 = res;
     
-    *((int32_t *) (void *) (dbuf + x0 * extent)) ^= *((const int32_t *) (const void *) (sbuf + idx * sizeof(int32_t)));
+    *((int32_t *) (void *) (dbuf + x0 * extent)) = *((const int32_t *) (const void *) (sbuf + idx * sizeof(int32_t))) ^ ((*((const int32_t *) (const void *) (sbuf + idx * sizeof(int32_t))) ^ *((int32_t *) (void *) (dbuf + x0 * extent))) & -( *((const int32_t *) (const void *) (sbuf + idx * sizeof(int32_t))) < *((int32_t *) (void *) (dbuf + x0 * extent))));
 }
 
 __kernel void yaksuri_zei_kernel_pack_LOR_int32_t(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
@@ -253,7 +321,7 @@ __kernel void yaksuri_zei_kernel_unpack_LOR_int32_t(__global const void *inbuf, 
     *((int32_t *) (void *) (dbuf + x0 * extent)) = (*((int32_t *) (void *) (dbuf + x0 * extent))) || (*((const int32_t *) (const void *) (sbuf + idx * sizeof(int32_t))));
 }
 
-__kernel void yaksuri_zei_kernel_pack_LXOR_int32_t(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
+__kernel void yaksuri_zei_kernel_pack_PROD_int32_t(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
 {
     __global const char *__restrict__ sbuf = (__global char *) inbuf;
     __global char *__restrict__ dbuf = (__global char *) outbuf;
@@ -267,10 +335,10 @@ __kernel void yaksuri_zei_kernel_pack_LXOR_int32_t(__global const void *inbuf, _
     
     uintptr_t x0 = res;
     
-    *((int32_t *) (void *) (dbuf + idx * sizeof(int32_t))) = !(*((int32_t *) (void *) (dbuf + idx * sizeof(int32_t)))) != !(*((const int32_t *) (const void *) (sbuf + x0 * extent)));
+    *((int32_t *) (void *) (dbuf + idx * sizeof(int32_t))) *= *((const int32_t *) (const void *) (sbuf + x0 * extent));
 }
 
-__kernel void yaksuri_zei_kernel_unpack_LXOR_int32_t(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
+__kernel void yaksuri_zei_kernel_unpack_PROD_int32_t(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
 {
     __global const char *__restrict__ sbuf = (__global char *) inbuf;
     __global char *__restrict__ dbuf = (__global char *) outbuf;
@@ -284,10 +352,10 @@ __kernel void yaksuri_zei_kernel_unpack_LXOR_int32_t(__global const void *inbuf,
     
     uintptr_t x0 = res;
     
-    *((int32_t *) (void *) (dbuf + x0 * extent)) = !(*((int32_t *) (void *) (dbuf + x0 * extent))) != !(*((const int32_t *) (const void *) (sbuf + idx * sizeof(int32_t))));
+    *((int32_t *) (void *) (dbuf + x0 * extent)) *= *((const int32_t *) (const void *) (sbuf + idx * sizeof(int32_t)));
 }
 
-__kernel void yaksuri_zei_kernel_pack_BAND_int32_t(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
+__kernel void yaksuri_zei_kernel_pack_MIN_int32_t(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
 {
     __global const char *__restrict__ sbuf = (__global char *) inbuf;
     __global char *__restrict__ dbuf = (__global char *) outbuf;
@@ -301,10 +369,10 @@ __kernel void yaksuri_zei_kernel_pack_BAND_int32_t(__global const void *inbuf, _
     
     uintptr_t x0 = res;
     
-    *((int32_t *) (void *) (dbuf + idx * sizeof(int32_t))) &= *((const int32_t *) (const void *) (sbuf + x0 * extent));
+    *((int32_t *) (void *) (dbuf + idx * sizeof(int32_t))) = *((int32_t *) (void *) (dbuf + idx * sizeof(int32_t))) ^ ((*((const int32_t *) (const void *) (sbuf + x0 * extent)) ^ *((int32_t *) (void *) (dbuf + idx * sizeof(int32_t)))) & -( *((const int32_t *) (const void *) (sbuf + x0 * extent)) < *((int32_t *) (void *) (dbuf + idx * sizeof(int32_t)))));
 }
 
-__kernel void yaksuri_zei_kernel_unpack_BAND_int32_t(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
+__kernel void yaksuri_zei_kernel_unpack_MIN_int32_t(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
 {
     __global const char *__restrict__ sbuf = (__global char *) inbuf;
     __global char *__restrict__ dbuf = (__global char *) outbuf;
@@ -318,74 +386,6 @@ __kernel void yaksuri_zei_kernel_unpack_BAND_int32_t(__global const void *inbuf,
     
     uintptr_t x0 = res;
     
-    *((int32_t *) (void *) (dbuf + x0 * extent)) &= *((const int32_t *) (const void *) (sbuf + idx * sizeof(int32_t)));
-}
-
-__kernel void yaksuri_zei_kernel_pack_BOR_int32_t(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
-{
-    __global const char *__restrict__ sbuf = (__global char *) inbuf;
-    __global char *__restrict__ dbuf = (__global char *) outbuf;
-    uintptr_t extent = md->extent;
-    uintptr_t idx = get_global_id(0);
-    uintptr_t res = idx;
-    uintptr_t inner_elements = md->num_elements;
-    
-    if (idx >= (count * inner_elements))
-        return;
-    
-    uintptr_t x0 = res;
-    
-    *((int32_t *) (void *) (dbuf + idx * sizeof(int32_t))) |= *((const int32_t *) (const void *) (sbuf + x0 * extent));
-}
-
-__kernel void yaksuri_zei_kernel_unpack_BOR_int32_t(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
-{
-    __global const char *__restrict__ sbuf = (__global char *) inbuf;
-    __global char *__restrict__ dbuf = (__global char *) outbuf;
-    uintptr_t extent = md->extent;
-    uintptr_t idx = get_global_id(0);
-    uintptr_t res = idx;
-    uintptr_t inner_elements = md->num_elements;
-    
-    if (idx >= (count * inner_elements))
-        return;
-    
-    uintptr_t x0 = res;
-    
-    *((int32_t *) (void *) (dbuf + x0 * extent)) |= *((const int32_t *) (const void *) (sbuf + idx * sizeof(int32_t)));
-}
-
-__kernel void yaksuri_zei_kernel_pack_MAX_int32_t(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
-{
-    __global const char *__restrict__ sbuf = (__global char *) inbuf;
-    __global char *__restrict__ dbuf = (__global char *) outbuf;
-    uintptr_t extent = md->extent;
-    uintptr_t idx = get_global_id(0);
-    uintptr_t res = idx;
-    uintptr_t inner_elements = md->num_elements;
-    
-    if (idx >= (count * inner_elements))
-        return;
-    
-    uintptr_t x0 = res;
-    
-    *((int32_t *) (void *) (dbuf + idx * sizeof(int32_t))) = *((const int32_t *) (const void *) (sbuf + x0 * extent)) ^ ((*((const int32_t *) (const void *) (sbuf + x0 * extent)) ^ *((int32_t *) (void *) (dbuf + idx * sizeof(int32_t)))) & -( *((const int32_t *) (const void *) (sbuf + x0 * extent)) < *((int32_t *) (void *) (dbuf + idx * sizeof(int32_t)))));
-}
-
-__kernel void yaksuri_zei_kernel_unpack_MAX_int32_t(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
-{
-    __global const char *__restrict__ sbuf = (__global char *) inbuf;
-    __global char *__restrict__ dbuf = (__global char *) outbuf;
-    uintptr_t extent = md->extent;
-    uintptr_t idx = get_global_id(0);
-    uintptr_t res = idx;
-    uintptr_t inner_elements = md->num_elements;
-    
-    if (idx >= (count * inner_elements))
-        return;
-    
-    uintptr_t x0 = res;
-    
-    *((int32_t *) (void *) (dbuf + x0 * extent)) = *((const int32_t *) (const void *) (sbuf + idx * sizeof(int32_t))) ^ ((*((const int32_t *) (const void *) (sbuf + idx * sizeof(int32_t))) ^ *((int32_t *) (void *) (dbuf + x0 * extent))) & -( *((const int32_t *) (const void *) (sbuf + idx * sizeof(int32_t))) < *((int32_t *) (void *) (dbuf + x0 * extent))));
+    *((int32_t *) (void *) (dbuf + x0 * extent)) = *((int32_t *) (void *) (dbuf + x0 * extent)) ^ ((*((const int32_t *) (const void *) (sbuf + idx * sizeof(int32_t))) ^ *((int32_t *) (void *) (dbuf + x0 * extent))) & -( *((const int32_t *) (const void *) (sbuf + idx * sizeof(int32_t))) < *((int32_t *) (void *) (dbuf + x0 * extent))));
 }
 

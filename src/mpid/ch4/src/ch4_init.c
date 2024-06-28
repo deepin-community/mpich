@@ -7,6 +7,7 @@
 #include "mpidch4r.h"
 #include "datatype.h"
 #include "mpidu_init_shm.h"
+#include "stream_workq.h"
 
 #include <strings.h>    /* for strncasecmp */
 #ifdef HAVE_SIGNAL_H
@@ -71,7 +72,6 @@ cvars:
       description : >-
         Specifies the CH4 multi-threading model. Possible values are:
         direct (default)
-        handoff
         lockless
 
     - name        : MPIR_CVAR_CH4_NUM_VCIS
@@ -82,7 +82,17 @@ cvars:
       verbosity   : MPI_T_VERBOSITY_USER_BASIC
       scope       : MPI_T_SCOPE_LOCAL
       description : >-
-        Sets the number of VCIs that user needs (should be a subset of MPIDI_CH4_MAX_VCIS).
+        Sets the number of VCIs to be implicitly used (should be a subset of MPIDI_CH4_MAX_VCIS).
+
+    - name        : MPIR_CVAR_CH4_RESERVE_VCIS
+      category    : CH4
+      type        : int
+      default     : 0
+      class       : none
+      verbosity   : MPI_T_VERBOSITY_USER_BASIC
+      scope       : MPI_T_SCOPE_LOCAL
+      description : >-
+        Sets the number of VCIs that user can explicitly allocate (should be a subset of MPIDI_CH4_MAX_VCIS).
 
     - name        : MPIR_CVAR_CH4_COLL_SELECTION_TUNING_JSON_FILE
       category    : COLLECTIVE
@@ -104,6 +114,71 @@ cvars:
       description : >-
         Defines the threshold of high-density datatype. The
         density is calculated by (datatype_size / datatype_num_contig_blocks).
+
+    - name        : MPIR_CVAR_CH4_PACK_BUFFER_SIZE
+      category    : CH4
+      type        : int
+      default     : 16384
+      class       : none
+      verbosity   : MPI_T_VERBOSITY_USER_BASIC
+      scope       : MPI_T_SCOPE_LOCAL
+      description : >-
+        Specifies the number of buffers for packing/unpacking active messages in
+        each block of the pool. The size here should be greater or equal to the
+        max of the eager buffer limit of SHM and NETMOD.
+
+    - name        : MPIR_CVAR_CH4_NUM_PACK_BUFFERS_PER_CHUNK
+      category    : CH4
+      type        : int
+      default     : 64
+      class       : none
+      verbosity   : MPI_T_VERBOSITY_USER_BASIC
+      scope       : MPI_T_SCOPE_LOCAL
+      description : >-
+        Specifies the number of buffers for packing/unpacking active messages in
+        each block of the pool.
+
+    - name        : MPIR_CVAR_CH4_MAX_NUM_PACK_BUFFERS
+      category    : CH4
+      type        : int
+      default     : 0
+      class       : none
+      verbosity   : MPI_T_VERBOSITY_USER_BASIC
+      scope       : MPI_T_SCOPE_LOCAL
+      description : >-
+        Specifies the max number of buffers for packing/unpacking buffers in the
+        pool. Use 0 for unlimited.
+
+    - name        : MPIR_CVAR_CH4_GPU_COLL_SWAP_BUFFER_SZ
+      category    : CH4_OFI
+      type        : int
+      default     : 1048576
+      class       : none
+      verbosity   : MPI_T_VERBOSITY_USER_BASIC
+      scope       : MPI_T_SCOPE_LOCAL
+      description : >-
+        Specifies the buffer size (in bytes) for GPU collectives data transfer.
+
+    - name        : MPIR_CVAR_CH4_GPU_COLL_NUM_BUFFERS_PER_CHUNK
+      category    : CH4_OFI
+      type        : int
+      default     : 1
+      class       : none
+      verbosity   : MPI_T_VERBOSITY_USER_BASIC
+      scope       : MPI_T_SCOPE_LOCAL
+      description : >-
+        Specifies the number of buffers for GPU collectives data transfer in
+        each block/chunk of the pool.
+
+    - name        : MPIR_CVAR_CH4_GPU_COLL_MAX_NUM_BUFFERS
+      category    : CH4_OFI
+      type        : int
+      default     : 256
+      class       : none
+      verbosity   : MPI_T_VERBOSITY_USER_BASIC
+      scope       : MPI_T_SCOPE_LOCAL
+      description : >-
+        Specifies the total number of buffers for GPU collectives data transfer.
 === END_MPI_T_CVAR_INFO_BLOCK ===
 */
 
@@ -142,6 +217,8 @@ static void *create_container(struct json_object *obj)
         else if (!strcmp(ckey, "composition=MPIDI_Alltoall_intra_composition_alpha"))
             cnt->id =
                 MPIDI_CSEL_CONTAINER_TYPE__COMPOSITION__MPIDI_Alltoall_intra_composition_alpha;
+        else if (!strcmp(ckey, "composition=MPIDI_Alltoall_intra_composition_beta"))
+            cnt->id = MPIDI_CSEL_CONTAINER_TYPE__COMPOSITION__MPIDI_Alltoall_intra_composition_beta;
         else if (!strcmp(ckey, "composition=MPIDI_Alltoallv_intra_composition_alpha"))
             cnt->id =
                 MPIDI_CSEL_CONTAINER_TYPE__COMPOSITION__MPIDI_Alltoallv_intra_composition_alpha;
@@ -151,6 +228,9 @@ static void *create_container(struct json_object *obj)
         else if (!strcmp(ckey, "composition=MPIDI_Allgather_intra_composition_alpha"))
             cnt->id =
                 MPIDI_CSEL_CONTAINER_TYPE__COMPOSITION__MPIDI_Allgather_intra_composition_alpha;
+        else if (!strcmp(ckey, "composition=MPIDI_Allgather_intra_composition_beta"))
+            cnt->id =
+                MPIDI_CSEL_CONTAINER_TYPE__COMPOSITION__MPIDI_Allgather_intra_composition_beta;
         else if (!strcmp(ckey, "composition=MPIDI_Allgatherv_intra_composition_alpha"))
             cnt->id =
                 MPIDI_CSEL_CONTAINER_TYPE__COMPOSITION__MPIDI_Allgatherv_intra_composition_alpha;
@@ -229,7 +309,6 @@ static int set_runtime_configurations(void);
 
 static const char *mt_model_names[MPIDI_CH4_NUM_MT_MODELS] = {
     "direct",
-    "handoff",
     "lockless",
 };
 
@@ -300,6 +379,20 @@ static int set_runtime_configurations(void)
 #error "Thread Granularity:  Invalid"
 #endif
 
+static void *host_alloc_registered(uintptr_t size)
+{
+    void *ptr = MPL_malloc(size, MPL_MEM_BUFFER);
+    MPIR_Assert(ptr);
+    MPIR_gpu_register_host(ptr, size);
+    return ptr;
+}
+
+static void host_free_registered(void *ptr)
+{
+    MPIR_gpu_unregister_host(ptr);
+    MPL_free(ptr);
+}
+
 /* Register CH4-specific hints */
 static void register_comm_hints(void)
 {
@@ -349,14 +442,16 @@ int MPID_Init(int requested, int *provided)
     MPIR_ERR_CHKANDJUMP1(MPIDI_global.prev_sighandler == SIG_ERR, mpi_errno, MPI_ERR_OTHER,
                          "**signal", "**signal %s",
                          MPIR_Strerror(errno, strerrbuf, MPIR_STRERROR_BUF_SIZE));
-    if (MPIDI_global.prev_sighandler == SIG_IGN || MPIDI_global.prev_sighandler == SIG_DFL)
+    if (MPIDI_global.prev_sighandler == SIG_IGN || MPIDI_global.prev_sighandler == SIG_DFL ||
+        MPIDI_global.prev_sighandler == MPIDI_sigusr1_handler) {
         MPIDI_global.prev_sighandler = NULL;
+    }
 #endif
 
-    choose_netmod();
-
-    mpi_errno = MPIR_pmi_init();
+    mpi_errno = MPIDI_Self_init();
     MPIR_ERR_CHECK(mpi_errno);
+
+    choose_netmod();
 
     /* Create all ch4-layer granular locks.
      * Note: some locks (e.g. MPIDIU_THREAD_HCOLL_MUTEX) may be unused due to configuration.
@@ -379,9 +474,6 @@ int MPID_Init(int requested, int *provided)
         fprintf(stdout, "==== Various sizes and limits ====\n");
         fprintf(stdout, "sizeof(MPIDI_per_vci_t): %d\n", (int) sizeof(MPIDI_per_vci_t));
     }
-#ifdef MPIDI_CH4_USE_WORK_QUEUES
-    MPIDI_workq_init(&MPIDI_global.workqueue);
-#endif /* #ifdef MPIDI_CH4_USE_WORK_QUEUES */
 
     /* These mutex are used for the lockless MT model. */
     if (MPIDI_CH4_MT_MODEL == MPIDI_CH4_MT_LOCKLESS) {
@@ -399,16 +491,24 @@ int MPID_Init(int requested, int *provided)
 
     /* Initialize multiple VCIs */
     /* TODO: add checks to ensure MPIDI_vci_t is padded or aligned to MPL_CACHELINE_SIZE */
-    MPIDI_global.n_vcis = 1;
-    if (MPIR_CVAR_CH4_NUM_VCIS > 1) {
-        MPIDI_global.n_vcis = MPIR_CVAR_CH4_NUM_VCIS;
-        /* There are configured maxes that we need observe. */
-        /* TODO: check them at configure time to avoid discrepancy */
-        MPIR_Assert(MPIDI_global.n_vcis <= MPIDI_CH4_MAX_VCIS);
-        MPIR_Assert(MPIDI_global.n_vcis <= MPIR_REQUEST_NUM_POOLS);
+    MPIR_Assert(MPIR_CVAR_CH4_NUM_VCIS >= 1);   /* number of vcis used in implicit vci hashing */
+    MPIR_Assert(MPIR_CVAR_CH4_RESERVE_VCIS >= 0);       /* maximum number of vcis can be reserved */
+
+    MPIDI_global.n_vcis = MPIR_CVAR_CH4_NUM_VCIS;
+    MPIDI_global.n_total_vcis = MPIDI_global.n_vcis + MPIR_CVAR_CH4_RESERVE_VCIS;
+    MPIDI_global.n_reserved_vcis = 0;
+    MPIDI_global.share_reserved_vcis = false;
+
+    MPIDI_global.all_num_vcis = MPL_malloc(sizeof(int) * MPIR_Process.size, MPL_MEM_OTHER);
+    MPIR_Assert(MPIDI_global.all_num_vcis);
+    for (int i = 0; i < MPIR_Process.size; i++) {
+        MPIDI_global.all_num_vcis[i] = MPIDI_global.n_vcis;
     }
 
-    for (int i = 0; i < MPIDI_global.n_vcis; i++) {
+    MPIR_Assert(MPIDI_global.n_total_vcis <= MPIDI_CH4_MAX_VCIS);
+    MPIR_Assert(MPIDI_global.n_total_vcis <= MPIR_REQUEST_NUM_POOLS);
+
+    for (int i = 0; i < MPIDI_global.n_total_vcis; i++) {
         int err;
         MPID_Thread_mutex_create(&MPIDI_VCI(i).lock, &err);
         MPIR_Assert(err == 0);
@@ -420,8 +520,17 @@ int MPID_Init(int requested, int *provided)
         else
             MPIR_Request_register_pool_lock(i, &MPIDI_VCI(i).lock);
 
-        /* TODO: workq */
+        /* Initialize registered host buffer pool to be used as temporary unpack buffers */
+        mpi_errno = MPIDU_genq_private_pool_create(MPIR_CVAR_CH4_PACK_BUFFER_SIZE,
+                                                   MPIR_CVAR_CH4_NUM_PACK_BUFFERS_PER_CHUNK,
+                                                   MPIR_CVAR_CH4_MAX_NUM_PACK_BUFFERS,
+                                                   host_alloc_registered,
+                                                   host_free_registered,
+                                                   &MPIDI_global.per_vci[i].pack_buf_pool);
+        MPIR_ERR_CHECK(mpi_errno);
+
     }
+
 
     /* internally does per-vci am initialization */
     MPIDIG_am_init();
@@ -471,6 +580,18 @@ int MPID_Init(int requested, int *provided)
 
     register_comm_hints();
 
+    mpi_errno = MPIDU_stream_workq_init();
+    MPIR_ERR_CHECK(mpi_errno);
+
+    /* Create genq for GPU collectives */
+    mpi_errno =
+        MPIDU_genq_private_pool_create(MPIR_CVAR_CH4_GPU_COLL_SWAP_BUFFER_SZ,
+                                       MPIR_CVAR_CH4_GPU_COLL_NUM_BUFFERS_PER_CHUNK,
+                                       MPIR_CVAR_CH4_GPU_COLL_MAX_NUM_BUFFERS,
+                                       host_alloc_registered,
+                                       host_free_registered, &MPIDI_global.gpu_coll_pool);
+    MPIR_ERR_CHECK(mpi_errno);
+
   fn_exit:
     MPIR_FUNC_EXIT;
     return mpi_errno;
@@ -486,7 +607,8 @@ int MPID_InitCompleted(void)
 
     if (MPIR_Process.has_parent) {
         char parent_port[MPI_MAX_PORT_NAME];
-        mpi_errno = MPIR_pmi_kvs_get(-1, MPIDI_PARENT_PORT_KVSKEY, parent_port, MPI_MAX_PORT_NAME);
+        mpi_errno =
+            MPIR_pmi_kvs_parent_get(MPIDI_PARENT_PORT_KVSKEY, parent_port, MPI_MAX_PORT_NAME);
         MPIR_ERR_CHECK(mpi_errno);
         MPID_Comm_connect(parent_port, NULL, 0, MPIR_Process.comm_world, &MPIR_Process.comm_parent);
         MPIR_Assert(MPIR_Process.comm_parent != NULL);
@@ -498,6 +620,148 @@ int MPID_InitCompleted(void)
   fn_exit:
     return mpi_errno;
 
+  fn_fail:
+    goto fn_exit;
+}
+
+/* This is called from MPIR_init_comm_world() -> MPID_Comm_commit_pre_hook() */
+int MPIDI_world_pre_init(void)
+{
+    int mpi_errno = MPI_SUCCESS;
+
+    mpi_errno = MPIDU_Init_shm_init();
+    MPIR_ERR_CHECK(mpi_errno);
+
+#ifndef MPIDI_CH4_DIRECT_NETMOD
+    mpi_errno = MPIDI_SHM_init_world();
+    MPIR_ERR_CHECK(mpi_errno);
+#endif
+    mpi_errno = MPIDI_NM_init_world();
+    MPIR_ERR_CHECK(mpi_errno);
+
+  fn_exit:
+    return mpi_errno;
+  fn_fail:
+    goto fn_exit;
+}
+
+/* This is called from MPIR_init_comm_world() -> MPID_Comm_commit_post_hook() */
+int MPIDI_world_post_init(void)
+{
+    int mpi_errno = MPI_SUCCESS;
+
+    /* FIXME: currently ofi require each process to have the same number of nics,
+     *        thus need access to world_comm for collectives. We should remove
+     *        this restriction, then we can move MPIDI_NM_init_vcis to
+     *        MPIDI_world_pre_init.
+     */
+    int num_vcis_actual;
+    mpi_errno = MPIDI_NM_init_vcis(MPIDI_global.n_total_vcis, &num_vcis_actual);
+    MPIR_ERR_CHECK(mpi_errno);
+
+#if MPIDI_CH4_MAX_VCIS == 1
+    MPIR_Assert(num_vcis_actual == 1);
+#else
+    MPIR_Assert(num_vcis_actual > 0 && num_vcis_actual <= MPIDI_global.n_total_vcis);
+    int diff = MPIDI_global.n_total_vcis - num_vcis_actual;
+    /* we can shrink implicit vcis down to 1, then n_reserved_vcis down to 0 */
+    MPIDI_global.n_total_vcis -= diff;
+    if (MPIDI_global.n_vcis > diff + 1) {
+        MPIDI_global.n_vcis -= diff;
+    } else {
+        diff -= (MPIDI_global.n_vcis - 1);
+        MPIDI_global.n_vcis = 1;
+        MPIDI_global.n_reserved_vcis -= diff;
+    }
+
+    mpi_errno = MPIR_Allgather_fallback(&MPIDI_global.n_vcis, 1, MPI_INT,
+                                        MPIDI_global.all_num_vcis, 1, MPI_INT,
+                                        MPIR_Process.comm_world, MPIR_ERR_NONE);
+    MPIR_ERR_CHECK(mpi_errno);
+#endif
+
+#ifndef MPIDI_CH4_DIRECT_NETMOD
+    mpi_errno = MPIDI_SHM_post_init();
+    MPIR_ERR_CHECK(mpi_errno);
+#endif
+    mpi_errno = MPIDI_NM_post_init();
+    MPIR_ERR_CHECK(mpi_errno);
+
+    MPIDI_global.is_initialized = 1;
+
+  fn_exit:
+    return mpi_errno;
+  fn_fail:
+    goto fn_exit;
+}
+
+int MPID_Allocate_vci(int *vci, bool is_shared)
+{
+    int mpi_errno = MPI_SUCCESS;
+
+    *vci = 0;
+#if MPIDI_CH4_MAX_VCIS == 1
+    MPIR_ERR_SET(mpi_errno, MPI_ERR_OTHER, "**ch4nostream");
+#else
+
+    if (MPIDI_global.n_vcis + MPIDI_global.n_reserved_vcis >= MPIDI_global.n_total_vcis) {
+        MPIR_ERR_SET(mpi_errno, MPI_ERR_OTHER, "**outofstream");
+    } else {
+        MPIDI_global.n_reserved_vcis++;
+        for (int i = MPIDI_global.n_vcis; i < MPIDI_global.n_total_vcis; i++) {
+            if (!MPIDI_VCI(i).allocated) {
+                MPIDI_VCI(i).allocated = true;
+                *vci = i;
+                break;
+            }
+        }
+    }
+#endif
+    if (is_shared) {
+        MPIDI_global.share_reserved_vcis = true;
+    }
+    return mpi_errno;
+}
+
+int MPID_Deallocate_vci(int vci)
+{
+    MPIR_Assert(vci < MPIDI_global.n_total_vcis && vci >= MPIDI_global.n_vcis);
+    MPIR_Assert(MPIDI_VCI(vci).allocated);
+    MPIDI_VCI(vci).allocated = false;
+    MPIDI_global.n_reserved_vcis--;
+    return MPI_SUCCESS;
+}
+
+int MPID_Stream_create_hook(MPIR_Stream * stream)
+{
+    int mpi_errno = MPI_SUCCESS;
+    MPIR_FUNC_ENTER;
+
+    if (stream->type == MPIR_STREAM_GPU) {
+        mpi_errno = MPIDU_stream_workq_alloc(&stream->dev.workq, stream->vci);
+        MPIR_ERR_CHECK(mpi_errno);
+    }
+
+  fn_exit:
+    MPIR_FUNC_EXIT;
+    return mpi_errno;
+  fn_fail:
+    goto fn_exit;
+}
+
+int MPID_Stream_free_hook(MPIR_Stream * stream)
+{
+    int mpi_errno = MPI_SUCCESS;
+    MPIR_FUNC_ENTER;
+
+    if (stream->dev.workq) {
+        mpi_errno = MPIDU_stream_workq_dealloc(stream->dev.workq);
+        MPIR_ERR_CHECK(mpi_errno);
+    }
+
+  fn_exit:
+    MPIR_FUNC_EXIT;
+    return mpi_errno;
   fn_fail:
     goto fn_exit;
 }
@@ -521,9 +785,14 @@ int MPID_Finalize(void)
 
     MPIDIG_am_finalize();
 
+    MPIDU_genq_private_pool_destroy(MPIDI_global.gpu_coll_pool);
+
     MPIDIU_avt_destroy();
 
     mpi_errno = MPIDU_Init_shm_finalize();
+    MPIR_ERR_CHECK(mpi_errno);
+
+    mpi_errno = MPIDU_stream_workq_finalize();
     MPIR_ERR_CHECK(mpi_errno);
 
     MPIR_pmi_finalize();
@@ -534,11 +803,17 @@ int MPID_Finalize(void)
         MPIR_Assert(err == 0);
     }
 
-    for (int i = 0; i < MPIDI_global.n_vcis; i++) {
+    for (int i = 0; i < MPIDI_global.n_total_vcis; i++) {
+        MPIDU_genq_private_pool_destroy(MPIDI_global.per_vci[i].pack_buf_pool);
+
         int err;
         MPID_Thread_mutex_destroy(&MPIDI_VCI(i).lock, &err);
         MPIR_Assert(err == 0);
     }
+
+    MPL_free(MPIDI_global.all_num_vcis);
+
+    memset(&MPIDI_global, 0, sizeof(MPIDI_global));
 
   fn_exit:
     MPIR_FUNC_EXIT;
@@ -575,7 +850,7 @@ int MPID_Get_processor_name(char *name, int namelen, int *resultlen)
             MPIDI_global.pname_len = (int) strlen(MPIDI_global.pname);
 
 #else
-        MPL_snprintf(MPIDI_global.pname, MPI_MAX_PROCESSOR_NAME, "%d", MPIR_Process.rank);
+        snprintf(MPIDI_global.pname, MPI_MAX_PROCESSOR_NAME, "%d", MPIR_Process.rank);
         MPIDI_global.pname_len = (int) strlen(MPIDI_global.pname);
 #endif
         MPIDI_global.pname_set = 1;
@@ -618,59 +893,51 @@ void *MPID_Alloc_mem(MPI_Aint size, MPIR_Info * info_ptr)
 {
     MPIR_FUNC_ENTER;
 
-    char val[MPI_MAX_INFO_VAL + 1];
     MPIR_hwtopo_gid_t mem_gid = MPIR_HWTOPO_GID_ROOT;
     alloc_mem_buf_type_e buf_type = ALLOC_MEM_BUF_TYPE__UNSET;
     void *user_buf = NULL;
     void *real_buf;
     int alignment = MAX_ALIGNMENT;
 
-    MPIR_Info *curr_info;
-    LL_FOREACH(info_ptr, curr_info) {
-        if (curr_info->key == NULL)
-            continue;
-
-        int flag = 0;
-        MPIR_Info_get_impl(info_ptr, "mpich_buf_type", MPI_MAX_INFO_VAL, val, &flag);
-
-        if (flag) {
-            if (!strcmp(val, "ddr")) {
-                mem_gid = MPIR_hwtopo_get_obj_by_type(MPIR_HWTOPO_TYPE__DDR);
-                if (mem_gid == MPIR_HWTOPO_GID_ROOT) {
-                    buf_type = ALLOC_MEM_BUF_TYPE__UNSET;
-                } else {
-                    buf_type = ALLOC_MEM_BUF_TYPE__DDR;
-                }
-            } else if (!strcmp(val, "hbm")) {
-                mem_gid = MPIR_hwtopo_get_obj_by_type(MPIR_HWTOPO_TYPE__HBM);
-                if (mem_gid == MPIR_HWTOPO_GID_ROOT) {
-                    /* if mem_gid = MPIR_HWTOPO_GID_ROOT and mem_type
-                     * is non-default (DDR) it can mean either that
-                     * the requested memory type is not available in
-                     * the system or the requested memory type is
-                     * available but there are many devices of such
-                     * type and the process requesting memory is not
-                     * bound to any of them. Regardless the reason we
-                     * do not fall back to the default allocation and
-                     * return a NULL pointer to the upper layer
-                     * instead. */
-                    goto fn_exit;
-                } else {
-                    buf_type = ALLOC_MEM_BUF_TYPE__HBM;
-                }
-            } else if (!strcmp(val, "network")) {
-                buf_type = ALLOC_MEM_BUF_TYPE__NETMOD;
-            } else if (!strcmp(val, "shmem")) {
-                buf_type = ALLOC_MEM_BUF_TYPE__SHMMOD;
+    const char *val;
+    val = MPIR_Info_lookup(info_ptr, "mpich_buf_type");
+    if (val) {
+        if (!strcmp(val, "ddr")) {
+            mem_gid = MPIR_hwtopo_get_obj_by_type(MPIR_HWTOPO_TYPE__DDR);
+            if (mem_gid == MPIR_HWTOPO_GID_ROOT) {
+                buf_type = ALLOC_MEM_BUF_TYPE__UNSET;
             } else {
-                assert(0);
+                buf_type = ALLOC_MEM_BUF_TYPE__DDR;
             }
+        } else if (!strcmp(val, "hbm")) {
+            mem_gid = MPIR_hwtopo_get_obj_by_type(MPIR_HWTOPO_TYPE__HBM);
+            if (mem_gid == MPIR_HWTOPO_GID_ROOT) {
+                /* if mem_gid = MPIR_HWTOPO_GID_ROOT and mem_type
+                 * is non-default (DDR) it can mean either that
+                 * the requested memory type is not available in
+                 * the system or the requested memory type is
+                 * available but there are many devices of such
+                 * type and the process requesting memory is not
+                 * bound to any of them. Regardless the reason we
+                 * do not fall back to the default allocation and
+                 * return a NULL pointer to the upper layer
+                 * instead. */
+                goto fn_exit;
+            } else {
+                buf_type = ALLOC_MEM_BUF_TYPE__HBM;
+            }
+        } else if (!strcmp(val, "network")) {
+            buf_type = ALLOC_MEM_BUF_TYPE__NETMOD;
+        } else if (!strcmp(val, "shmem")) {
+            buf_type = ALLOC_MEM_BUF_TYPE__SHMMOD;
+        } else {
+            assert(0);
         }
+    }
 
-        MPIR_Info_get_impl(info_ptr, "mpi_minimum_memory_alignment", MPI_MAX_INFO_VAL, val, &flag);
-        if (flag) {
-            alignment = atoi(val);
-        }
+    val = MPIR_Info_lookup(info_ptr, "mpi_minimum_memory_alignment");
+    if (val) {
+        alignment = atoi(val);
     }
 
     switch (buf_type) {
@@ -745,7 +1012,7 @@ int MPID_Free_mem(void *user_buf)
 #ifdef MAP_ANON
             MPL_munmap(container->real_buf, container->size, MPL_MEM_USER);
 #else
-            MPL_free(container->real_buf, MPL_MEM_USER);
+            MPL_free(container->real_buf);
 #endif
             break;
 
@@ -800,6 +1067,12 @@ int MPID_Get_node_id(MPIR_Comm * comm, int rank, int *id_p)
     int mpi_errno = MPI_SUCCESS;
     MPIR_FUNC_ENTER;
 
+    if (comm->comm_kind == MPIR_COMM_KIND__INTERCOMM) {
+        if (!comm->local_comm) {
+            MPII_Setup_intercomm_localcomm(comm);
+        }
+        comm = comm->local_comm;
+    }
     MPIDIU_get_node_id(comm, rank, id_p);
 
     MPIR_FUNC_EXIT;

@@ -200,6 +200,19 @@ int MPII_hwtopo_init(void)
 #ifdef HAVE_HWLOC
     bindset = hwloc_bitmap_alloc();
     hwloc_topology_init(&hwloc_topology);
+    char *xmlfile = MPIR_pmi_get_jobattr("PMI_hwloc_xmlfile");
+    if (xmlfile != NULL) {
+        int rc;
+        rc = hwloc_topology_set_xml(hwloc_topology, xmlfile);
+        if (rc == 0) {
+            /* To have hwloc still actually call OS-specific hooks, the
+             * HWLOC_TOPOLOGY_FLAG_IS_THISSYSTEM has to be set to assert that the loaded
+             * file is really the underlying system. */
+            hwloc_topology_set_flags(hwloc_topology, HWLOC_TOPOLOGY_FLAG_IS_THISSYSTEM);
+        }
+        MPL_free(xmlfile);
+    }
+
     hwloc_topology_set_io_types_filter(hwloc_topology, HWLOC_TYPE_FILTER_KEEP_ALL);
     if (!hwloc_topology_load(hwloc_topology))
         bindset_is_valid =
@@ -582,8 +595,12 @@ bool MPIR_hwtopo_is_dev_close_by_name(const char *name)
     MPIR_hwtopo_gid_t gid = MPIR_hwtopo_get_obj_by_name(name);
     int hwloc_obj_index = HWTOPO_GET_INDEX(gid);
     int hwloc_obj_depth = HWTOPO_GET_DEPTH(gid);
-    is_close = pci_device_is_close(hwloc_get_obj_by_depth(hwloc_topology, hwloc_obj_depth,
-                                                          hwloc_obj_index));
+    hwloc_obj_t obj = hwloc_get_obj_by_depth(hwloc_topology, hwloc_obj_depth, hwloc_obj_index);
+    if (obj != NULL) {
+        is_close = pci_device_is_close(obj);
+    } else {
+        return false;
+    }
 #endif
     return is_close;
 }

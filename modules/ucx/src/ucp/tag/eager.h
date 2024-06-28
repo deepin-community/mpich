@@ -1,5 +1,5 @@
 /**
- * Copyright (C) Mellanox Technologies Ltd. 2001-2015.  ALL RIGHTS RESERVED.
+ * Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2001-2015. ALL RIGHTS RESERVED.
  *
  * See file LICENSE for terms.
  */
@@ -13,8 +13,15 @@
 #include <ucp/core/ucp_ep.h>
 #include <ucp/core/ucp_ep.inl>
 #include <ucp/core/ucp_request.h>
+#include <ucp/proto/proto_init.h>
 #include <ucp/dt/dt.inl>
 
+
+/* Convenience macros for setting eager protocols descriptions  */
+#define UCP_PROTO_EAGER_BCOPY_DESC \
+    "eager " UCP_PROTO_COPY_IN_DESC " " UCP_PROTO_COPY_OUT_DESC
+#define UCP_PROTO_EAGER_ZCOPY_DESC \
+    "eager " UCP_PROTO_ZCOPY_DESC " " UCP_PROTO_COPY_OUT_DESC
 
 /*
  * EAGER_ONLY, EAGER_MIDDLE
@@ -84,7 +91,7 @@ static UCS_F_ALWAYS_INLINE int
 ucp_proto_eager_check_op_id(const ucp_proto_init_params_t *init_params,
                             ucp_operation_id_t op_id, int offload_enabled)
 {
-    return (init_params->select_param->op_id == op_id) &&
+    return ucp_proto_init_check_op(init_params, UCS_BIT(op_id)) &&
            (offload_enabled ==
             ucp_ep_config_key_has_tag_lane(init_params->ep_config_key));
 }

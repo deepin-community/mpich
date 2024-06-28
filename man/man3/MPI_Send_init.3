@@ -1,11 +1,20 @@
-.TH MPI_Send_init 3 "2/22/2022" " " "MPI"
+.TH MPI_Send_init 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Send_init \-  Create a persistent request for a standard send 
 .SH SYNOPSIS
 .nf
-int MPI_Send_init(const void *buf, int count, MPI_Datatype datatype, int dest, int tag,
-MPI_Comm comm, MPI_Request *request)
 .fi
+.nf
+int MPI_Send_init(const void *buf, int count, MPI_Datatype datatype, int dest,
+int tag, MPI_Comm comm, MPI_Request *request)
+.fi
+
+.nf
+int MPI_Send_init_c(const void *buf, MPI_Count count, MPI_Datatype datatype,
+int dest, int tag, MPI_Comm comm, MPI_Request *request)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -111,7 +120,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

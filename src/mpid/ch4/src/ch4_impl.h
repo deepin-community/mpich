@@ -56,24 +56,6 @@ uint64_t MPIDIG_generate_win_id(MPIR_Comm * comm_ptr);
 
 /* Static inlines */
 
-/* Reconstruct context offset associated with a persistent request.
- * Input must be a persistent request. */
-MPL_STATIC_INLINE_PREFIX int MPIDI_prequest_get_context_offset(MPIR_Request * preq)
-{
-    int context_offset;
-
-    MPIR_FUNC_ENTER;
-
-    MPIR_Assert(preq->kind == MPIR_REQUEST_KIND__PREQUEST_SEND ||
-                preq->kind == MPIR_REQUEST_KIND__PREQUEST_RECV);
-
-    context_offset = MPIDI_PREQUEST(preq, context_id) - preq->comm->context_id;
-
-    MPIR_FUNC_EXIT;
-
-    return context_offset;
-}
-
 MPL_STATIC_INLINE_PREFIX MPIR_Context_id_t MPIDIG_win_id_to_context(uint64_t win_id)
 {
     MPIR_Context_id_t ret;
@@ -97,20 +79,6 @@ MPL_STATIC_INLINE_PREFIX MPIR_Context_id_t MPIDIG_win_to_context(const MPIR_Win 
 
     MPIR_FUNC_EXIT;
     return ret;
-}
-
-MPL_STATIC_INLINE_PREFIX void MPIDIU_request_complete(MPIR_Request * req)
-{
-    int incomplete;
-
-    MPIR_FUNC_ENTER;
-
-    MPIR_cc_decr(req->cc_ptr, &incomplete);
-    if (!incomplete) {
-        MPIDI_CH4_REQUEST_FREE(req);
-    }
-
-    MPIR_FUNC_EXIT;
 }
 
 MPL_STATIC_INLINE_PREFIX MPIDIG_win_target_t *MPIDIG_win_target_add(MPIR_Win * win, int rank)
@@ -445,6 +413,7 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_progress_test_vci(int vci);
         mpi_errno = MPIDI_progress_test_vci(vci);   \
         MPIR_ERR_CHECK(mpi_errno); \
         MPID_THREAD_CS_YIELD(GLOBAL, MPIR_THREAD_GLOBAL_ALLFUNC_MUTEX); \
+        MPID_THREAD_CS_YIELD(VCI, MPIDI_VCI(vci).lock);                 \
     }
 
 #define MPIDIU_PROGRESS_DO_WHILE(cond, vci) \
@@ -452,6 +421,7 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_progress_test_vci(int vci);
         mpi_errno = MPIDI_progress_test_vci(vci); \
         MPIR_ERR_CHECK(mpi_errno); \
         MPID_THREAD_CS_YIELD(GLOBAL, MPIR_THREAD_GLOBAL_ALLFUNC_MUTEX); \
+        MPID_THREAD_CS_YIELD(VCI, MPIDI_VCI(vci).lock);                 \
     } while (cond)
 
 #ifdef HAVE_ERROR_CHECKING
@@ -619,6 +589,9 @@ MPL_STATIC_INLINE_PREFIX int MPIDI_progress_test_vci(int vci);
 #define MPIDIG_RMA_OP_CHECK_SYNC(target_rank, win) if (0) goto fn_fail;
 #define MPIDIG_EPOCH_FENCE_EVENT(win, massert) do {} while (0)
 #endif /* HAVE_ERROR_CHECKING */
+
+#define MPIDI_WIN_TARGET_VCI(win, rank) \
+    (MPIDI_WIN(win, vci_table) ? MPIDI_WIN(win, vci_table)[rank] : MPIDI_WIN(win, am_vci))
 
 /*
   Calculate base address of the target window at the origin side
@@ -972,9 +945,9 @@ MPL_STATIC_INLINE_PREFIX int MPIDIG_wait_am_acc(MPIR_Win * win, int target_rank)
  * The source datatype can be only predefined; the target datatype can be
  * predefined or derived. If the source buffer has been packed by the caller,
  * src_kind must be set to MPIDIG_ACC_SRCBUF_PACKED.*/
-MPL_STATIC_INLINE_PREFIX int MPIDIG_compute_acc_op(void *source_buf, int source_count,
+MPL_STATIC_INLINE_PREFIX int MPIDIG_compute_acc_op(void *source_buf, MPI_Aint source_count,
                                                    MPI_Datatype source_dtp, void *target_buf,
-                                                   int target_count, MPI_Datatype target_dtp,
+                                                   MPI_Aint target_count, MPI_Datatype target_dtp,
                                                    MPI_Op acc_op, int src_kind)
 {
     int mpi_errno = MPI_SUCCESS;

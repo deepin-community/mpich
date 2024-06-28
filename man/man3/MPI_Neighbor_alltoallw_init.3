@@ -1,14 +1,31 @@
-.TH MPI_Neighbor_alltoallw_init 3 "2/22/2022" " " "MPI"
+.TH MPI_Neighbor_alltoallw_init 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Neighbor_alltoallw_init \-  Create a persistent request for neighbor_alltoallw. 
 .SH SYNOPSIS
 .nf
-int MPI_Neighbor_alltoallw_init(const void *sendbuf, const int sendcounts[],
-const MPI_Aint sdispls[], const MPI_Datatype sendtypes[],
-void *recvbuf, const int recvcounts[], const MPI_Aint rdispls[],
-const MPI_Datatype recvtypes[], MPI_Comm comm, MPI_Info info,
-MPI_Request *request)
 .fi
+.nf
+int MPI_Neighbor_alltoallw_init(const void *sendbuf, const int sendcounts[],
+const MPI_Aint sdispls[],
+const MPI_Datatype sendtypes[], void *recvbuf,
+const int recvcounts[],
+const MPI_Aint rdispls[],
+const MPI_Datatype recvtypes[], MPI_Comm comm,
+MPI_Info info, MPI_Request *request)
+.fi
+
+.nf
+int MPI_Neighbor_alltoallw_init_c(const void *sendbuf,
+const MPI_Count sendcounts[],
+const MPI_Aint sdispls[],
+const MPI_Datatype sendtypes[], void *recvbuf,
+const MPI_Count recvcounts[],
+const MPI_Aint rdispls[],
+const MPI_Datatype recvtypes[], MPI_Comm comm,
+MPI_Info info, MPI_Request *request)
+.fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -134,7 +151,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

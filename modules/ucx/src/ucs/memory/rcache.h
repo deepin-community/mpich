@@ -1,5 +1,5 @@
 /**
- * Copyright (C) Mellanox Technologies Ltd. 2001-2018.  ALL RIGHTS RESERVED.
+ * Copyright (c) NVIDIA CORPORATION & AFFILIATES, 2001-2018. ALL RIGHTS RESERVED.
  *
  * See file LICENSE for terms.
  */
@@ -24,6 +24,11 @@
 #define UCS_RCACHE_PROT_ARG(_prot) \
     ((_prot) & PROT_READ)  ? 'r' : '-', \
     ((_prot) & PROT_WRITE) ? 'w' : '-'
+
+/*
+ * Minimal rcache alignment.
+ */
+#define UCS_RCACHE_MIN_ALIGNMENT UCS_PGT_ADDR_ALIGN
 
 
 typedef struct ucs_rcache         ucs_rcache_t;

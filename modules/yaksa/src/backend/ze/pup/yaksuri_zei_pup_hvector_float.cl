@@ -15,60 +15,6 @@ typedef unsigned int uint32_t;
 typedef unsigned long uint64_t;
 #include "yaksuri_zei_md.h"
 
-__kernel void yaksuri_zei_kernel_pack_MIN_hvector_float(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
-{
-    __global const char *__restrict__ sbuf = (__global char *) inbuf;
-    __global char *__restrict__ dbuf = (__global char *) outbuf;
-    sbuf = (__global const char *) ((__global char *)sbuf - md->true_lb);
-    uintptr_t extent = md->extent;
-    uintptr_t idx = get_global_id(0);
-    uintptr_t res = idx;
-    uintptr_t inner_elements = md->num_elements;
-    
-    if (idx >= (count * inner_elements))
-        return;
-    
-    uintptr_t x0 = res / inner_elements;
-    res %= inner_elements;
-    inner_elements /= md->u.hvector.count;
-    
-    uintptr_t x1 = res / inner_elements;
-    res %= inner_elements;
-    inner_elements /= md->u.hvector.blocklength;
-    uintptr_t x2 = res;
-    
-    intptr_t stride1 = md->u.hvector.stride;
-    float x_[2] = {*((const float *) (const void *) (sbuf + x0 * extent + x1 * stride1 + x2 * sizeof(float))), *((float *) (void *) (dbuf + idx * sizeof(float)))};
-    *((float *) (void *) (dbuf + idx * sizeof(float))) = x_[*((const float *) (const void *) (sbuf + x0 * extent + x1 * stride1 + x2 * sizeof(float))) > *((float *) (void *) (dbuf + idx * sizeof(float)))];
-}
-
-__kernel void yaksuri_zei_kernel_unpack_MIN_hvector_float(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
-{
-    __global const char *__restrict__ sbuf = (__global char *) inbuf;
-    __global char *__restrict__ dbuf = (__global char *) outbuf;
-    dbuf = dbuf - md->true_lb;
-    uintptr_t extent = md->extent;
-    uintptr_t idx = get_global_id(0);
-    uintptr_t res = idx;
-    uintptr_t inner_elements = md->num_elements;
-    
-    if (idx >= (count * inner_elements))
-        return;
-    
-    uintptr_t x0 = res / inner_elements;
-    res %= inner_elements;
-    inner_elements /= md->u.hvector.count;
-    
-    uintptr_t x1 = res / inner_elements;
-    res %= inner_elements;
-    inner_elements /= md->u.hvector.blocklength;
-    uintptr_t x2 = res;
-    
-    intptr_t stride1 = md->u.hvector.stride;
-    float x_[2] = {*((const float *) (const void *) (sbuf + idx * sizeof(float))), *((float *) (void *) (dbuf + x0 * extent + x1 * stride1 + x2 * sizeof(float)))};
-    *((float *) (void *) (dbuf + x0 * extent + x1 * stride1 + x2 * sizeof(float))) = x_[*((const float *) (const void *) (sbuf + idx * sizeof(float))) > *((float *) (void *) (dbuf + x0 * extent + x1 * stride1 + x2 * sizeof(float)))];
-}
-
 __kernel void yaksuri_zei_kernel_pack_REPLACE_hvector_float(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
 {
     __global const char *__restrict__ sbuf = (__global char *) inbuf;
@@ -173,58 +119,6 @@ __kernel void yaksuri_zei_kernel_unpack_SUM_hvector_float(__global const void *i
     *((float *) (void *) (dbuf + x0 * extent + x1 * stride1 + x2 * sizeof(float))) += *((const float *) (const void *) (sbuf + idx * sizeof(float)));
 }
 
-__kernel void yaksuri_zei_kernel_pack_PROD_hvector_float(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
-{
-    __global const char *__restrict__ sbuf = (__global char *) inbuf;
-    __global char *__restrict__ dbuf = (__global char *) outbuf;
-    sbuf = (__global const char *) ((__global char *)sbuf - md->true_lb);
-    uintptr_t extent = md->extent;
-    uintptr_t idx = get_global_id(0);
-    uintptr_t res = idx;
-    uintptr_t inner_elements = md->num_elements;
-    
-    if (idx >= (count * inner_elements))
-        return;
-    
-    uintptr_t x0 = res / inner_elements;
-    res %= inner_elements;
-    inner_elements /= md->u.hvector.count;
-    
-    uintptr_t x1 = res / inner_elements;
-    res %= inner_elements;
-    inner_elements /= md->u.hvector.blocklength;
-    uintptr_t x2 = res;
-    
-    intptr_t stride1 = md->u.hvector.stride;
-    *((float *) (void *) (dbuf + idx * sizeof(float))) *= *((const float *) (const void *) (sbuf + x0 * extent + x1 * stride1 + x2 * sizeof(float)));
-}
-
-__kernel void yaksuri_zei_kernel_unpack_PROD_hvector_float(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
-{
-    __global const char *__restrict__ sbuf = (__global char *) inbuf;
-    __global char *__restrict__ dbuf = (__global char *) outbuf;
-    dbuf = dbuf - md->true_lb;
-    uintptr_t extent = md->extent;
-    uintptr_t idx = get_global_id(0);
-    uintptr_t res = idx;
-    uintptr_t inner_elements = md->num_elements;
-    
-    if (idx >= (count * inner_elements))
-        return;
-    
-    uintptr_t x0 = res / inner_elements;
-    res %= inner_elements;
-    inner_elements /= md->u.hvector.count;
-    
-    uintptr_t x1 = res / inner_elements;
-    res %= inner_elements;
-    inner_elements /= md->u.hvector.blocklength;
-    uintptr_t x2 = res;
-    
-    intptr_t stride1 = md->u.hvector.stride;
-    *((float *) (void *) (dbuf + x0 * extent + x1 * stride1 + x2 * sizeof(float))) *= *((const float *) (const void *) (sbuf + idx * sizeof(float)));
-}
-
 __kernel void yaksuri_zei_kernel_pack_MAX_hvector_float(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
 {
     __global const char *__restrict__ sbuf = (__global char *) inbuf;
@@ -277,5 +171,111 @@ __kernel void yaksuri_zei_kernel_unpack_MAX_hvector_float(__global const void *i
     intptr_t stride1 = md->u.hvector.stride;
     float x_[2] = {*((const float *) (const void *) (sbuf + idx * sizeof(float))), *((float *) (void *) (dbuf + x0 * extent + x1 * stride1 + x2 * sizeof(float)))};
     *((float *) (void *) (dbuf + x0 * extent + x1 * stride1 + x2 * sizeof(float))) = x_[*((const float *) (const void *) (sbuf + idx * sizeof(float))) < *((float *) (void *) (dbuf + x0 * extent + x1 * stride1 + x2 * sizeof(float)))];
+}
+
+__kernel void yaksuri_zei_kernel_pack_PROD_hvector_float(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
+{
+    __global const char *__restrict__ sbuf = (__global char *) inbuf;
+    __global char *__restrict__ dbuf = (__global char *) outbuf;
+    sbuf = (__global const char *) ((__global char *)sbuf - md->true_lb);
+    uintptr_t extent = md->extent;
+    uintptr_t idx = get_global_id(0);
+    uintptr_t res = idx;
+    uintptr_t inner_elements = md->num_elements;
+    
+    if (idx >= (count * inner_elements))
+        return;
+    
+    uintptr_t x0 = res / inner_elements;
+    res %= inner_elements;
+    inner_elements /= md->u.hvector.count;
+    
+    uintptr_t x1 = res / inner_elements;
+    res %= inner_elements;
+    inner_elements /= md->u.hvector.blocklength;
+    uintptr_t x2 = res;
+    
+    intptr_t stride1 = md->u.hvector.stride;
+    *((float *) (void *) (dbuf + idx * sizeof(float))) *= *((const float *) (const void *) (sbuf + x0 * extent + x1 * stride1 + x2 * sizeof(float)));
+}
+
+__kernel void yaksuri_zei_kernel_unpack_PROD_hvector_float(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
+{
+    __global const char *__restrict__ sbuf = (__global char *) inbuf;
+    __global char *__restrict__ dbuf = (__global char *) outbuf;
+    dbuf = dbuf - md->true_lb;
+    uintptr_t extent = md->extent;
+    uintptr_t idx = get_global_id(0);
+    uintptr_t res = idx;
+    uintptr_t inner_elements = md->num_elements;
+    
+    if (idx >= (count * inner_elements))
+        return;
+    
+    uintptr_t x0 = res / inner_elements;
+    res %= inner_elements;
+    inner_elements /= md->u.hvector.count;
+    
+    uintptr_t x1 = res / inner_elements;
+    res %= inner_elements;
+    inner_elements /= md->u.hvector.blocklength;
+    uintptr_t x2 = res;
+    
+    intptr_t stride1 = md->u.hvector.stride;
+    *((float *) (void *) (dbuf + x0 * extent + x1 * stride1 + x2 * sizeof(float))) *= *((const float *) (const void *) (sbuf + idx * sizeof(float)));
+}
+
+__kernel void yaksuri_zei_kernel_pack_MIN_hvector_float(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
+{
+    __global const char *__restrict__ sbuf = (__global char *) inbuf;
+    __global char *__restrict__ dbuf = (__global char *) outbuf;
+    sbuf = (__global const char *) ((__global char *)sbuf - md->true_lb);
+    uintptr_t extent = md->extent;
+    uintptr_t idx = get_global_id(0);
+    uintptr_t res = idx;
+    uintptr_t inner_elements = md->num_elements;
+    
+    if (idx >= (count * inner_elements))
+        return;
+    
+    uintptr_t x0 = res / inner_elements;
+    res %= inner_elements;
+    inner_elements /= md->u.hvector.count;
+    
+    uintptr_t x1 = res / inner_elements;
+    res %= inner_elements;
+    inner_elements /= md->u.hvector.blocklength;
+    uintptr_t x2 = res;
+    
+    intptr_t stride1 = md->u.hvector.stride;
+    float x_[2] = {*((const float *) (const void *) (sbuf + x0 * extent + x1 * stride1 + x2 * sizeof(float))), *((float *) (void *) (dbuf + idx * sizeof(float)))};
+    *((float *) (void *) (dbuf + idx * sizeof(float))) = x_[*((const float *) (const void *) (sbuf + x0 * extent + x1 * stride1 + x2 * sizeof(float))) > *((float *) (void *) (dbuf + idx * sizeof(float)))];
+}
+
+__kernel void yaksuri_zei_kernel_unpack_MIN_hvector_float(__global const void *inbuf, __global void *outbuf, unsigned long count, __global const yaksuri_zei_md_s *__restrict__ md)
+{
+    __global const char *__restrict__ sbuf = (__global char *) inbuf;
+    __global char *__restrict__ dbuf = (__global char *) outbuf;
+    dbuf = dbuf - md->true_lb;
+    uintptr_t extent = md->extent;
+    uintptr_t idx = get_global_id(0);
+    uintptr_t res = idx;
+    uintptr_t inner_elements = md->num_elements;
+    
+    if (idx >= (count * inner_elements))
+        return;
+    
+    uintptr_t x0 = res / inner_elements;
+    res %= inner_elements;
+    inner_elements /= md->u.hvector.count;
+    
+    uintptr_t x1 = res / inner_elements;
+    res %= inner_elements;
+    inner_elements /= md->u.hvector.blocklength;
+    uintptr_t x2 = res;
+    
+    intptr_t stride1 = md->u.hvector.stride;
+    float x_[2] = {*((const float *) (const void *) (sbuf + idx * sizeof(float))), *((float *) (void *) (dbuf + x0 * extent + x1 * stride1 + x2 * sizeof(float)))};
+    *((float *) (void *) (dbuf + x0 * extent + x1 * stride1 + x2 * sizeof(float))) = x_[*((const float *) (const void *) (sbuf + idx * sizeof(float))) > *((float *) (void *) (dbuf + x0 * extent + x1 * stride1 + x2 * sizeof(float)))];
 }
 

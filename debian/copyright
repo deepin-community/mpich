@@ -98,22 +98,10 @@ License: BSD-3-clause
 Files: modules/ucx/install-sh
  modules/json-c/*
  modules/libfabric/src/fasthash.c
- modules/yaksa/m4/install-sh
- src/mpl/confdb/install-sh
  test/mpi/confdb/install-sh
- modules/libfabric/fabtests/common/jsmn.c
  modules/libfabric/fabtests/include/jsmn.h
- src/mpi/romio/confdb/install-sh
- src/pm/hydra/confdb/install-sh
- src/pm/hydra2/confdb/install-sh
  test/mpi/dtpools/confdb/install-sh
  modules/ucx/src/ucs/datastruct/khash.h
- modules/ucx/test/gtest/common/tap.h
- src/mpi/romio/mpl/confdb/install-sh
- src/pm/hydra/mpl/confdb/install-sh
- src/pm/hydra2/mpl/confdb/install-sh
- src/pm/hydra/tools/topo/hwloc/hwloc/config/install-sh
- src/pm/hydra2/libhydra/topo/hwloc/hwloc/config/install-sh
 Copyright: (C) 1994 X Consortium
 License: Expat
 
@@ -140,7 +128,6 @@ License: Apache-2.0 or MIT
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS F OR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER  N AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 Files: confdb/*
- modules/izem/m4/*
  modules/yaksa/m4/*
 Copyright: (C) 1996-2014 Free Software Foundation, Inc.
 License: GPL-2
@@ -153,9 +140,6 @@ Files: src/mpi/romio/confdb/*
  src/mpi/romio/mpl/confdb/*
  src/mpl/confdb/*
  src/pm/hydra/confdb/*
- src/pm/hydra2/mpl/confdb/*
- src/pm/hydra2/confdb/*
- src/pm/hydra2/libhydra/topo/hwloc/hwloc/config/*
 Copyright: 2007-2016 Free Software Foundation, Inc.
 License: FSF-Permissive
  This file is free software; the Free Software Foundation
@@ -184,20 +168,3 @@ License: EXPAT
  be used in advertising or otherwise to promote the sale, use or other deal-
  ings in this Software without prior written authorization from the X Consor-
  tium.
-
-Files: hwloc/hwloc/base64.c
- src/pm/hydra/tools/topo/hwloc/hwloc/hwloc/base64.c
-Copyright: 1996 by Internet Software Consortium.
-License: ISC
- Permission to use, copy, modify, and distribute this software for any
- purpose with or without fee is hereby granted, provided that the above
- copyright notice and this permission notice appear in all copies.
- .
- THE SOFTWARE IS PROVIDED "AS IS" AND INTERNET SOFTWARE CONSORTIUM DISCLAIMS
- ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES
- OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL INTERNET SOFTWARE
- CONSORTIUM BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL
- DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR
- PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
- ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
- SOFTWARE.

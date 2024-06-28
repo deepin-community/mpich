@@ -1,10 +1,14 @@
-.TH MPI_Topo_test 3 "2/22/2022" " " "MPI"
+.TH MPI_Topo_test 3 "2/9/2024" " " "MPI"
 .SH NAME
 MPI_Topo_test \-  Determines the type of topology (if any) associated with a communicator 
 .SH SYNOPSIS
 .nf
+.fi
+.nf
 int MPI_Topo_test(MPI_Comm comm, int *status)
 .fi
+
+
 .SH INPUT PARAMETERS
 .PD 0
 .TP
@@ -85,7 +89,6 @@ possible.
 .B MPI_SUCCESS 
 - No error; MPI routine completed successfully.
 .PD 1
-
 .PD 0
 .TP
 .B MPI_ERR_ARG 

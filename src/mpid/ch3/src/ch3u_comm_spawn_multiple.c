@@ -9,17 +9,6 @@
    Place all of this within the mpid_comm_spawn_multiple file */
 
 #ifndef MPIDI_CH3_HAS_NO_DYNAMIC_PROCESS
-/* 
- * We require support for the PMI calls.  If a channel cannot support
- * a PMI call, it should provide a stub and return an error code.
- */
-   
-
-#ifdef USE_PMI2_API
-#include "pmi2.h"
-#else
-#include "pmi.h"
-#endif
 
 /* Define the name of the kvs key used to provide the port name to the
    children */
@@ -86,17 +75,14 @@ int MPIDI_Comm_spawn_multiple(int count, char **commands,
     }
 
     if (errcodes != MPI_ERRCODES_IGNORE) {
-        MPIR_Errflag_t errflag = MPIR_ERR_NONE;
-        mpi_errno = MPIR_Bcast(&should_accept, 1, MPI_INT, root, comm_ptr, &errflag);
+        mpi_errno = MPIR_Bcast(&should_accept, 1, MPI_INT, root, comm_ptr, MPIR_ERR_NONE);
         MPIR_ERR_CHECK(mpi_errno);
 
-        mpi_errno = MPIR_Bcast(&total_num_processes, 1, MPI_INT, root, comm_ptr, &errflag);
+        mpi_errno = MPIR_Bcast(&total_num_processes, 1, MPI_INT, root, comm_ptr, MPIR_ERR_NONE);
         MPIR_ERR_CHECK(mpi_errno);
         
-        mpi_errno = MPIR_Bcast(errcodes, total_num_processes, MPI_INT, root, comm_ptr, &errflag);
+        mpi_errno = MPIR_Bcast(errcodes, total_num_processes, MPI_INT, root, comm_ptr, MPIR_ERR_NONE);
         MPIR_ERR_CHECK(mpi_errno);
-
-        MPIR_ERR_CHKANDJUMP(errflag, mpi_errno, MPI_ERR_OTHER, "**coll_fail");
     }
 
     if (should_accept) {
@@ -147,36 +133,14 @@ static char *parent_port_name = 0;    /* Name of parent port if this
 int MPIDI_CH3_GetParentPort(char ** parent_port)
 {
     int mpi_errno = MPI_SUCCESS;
-    int pmi_errno;
     char val[MPIDI_MAX_KVS_VALUE_LEN];
 
-    if (parent_port_name == NULL)
-    {
-	char *kvsname = NULL;
-	/* We can always use PMI_KVS_Get on our own process group */
-	MPIDI_PG_GetConnKVSname( &kvsname );
-#ifdef USE_PMI2_API
-        {
-            int vallen = 0;
-            MPID_THREAD_CS_ENTER(POBJ, MPIR_THREAD_POBJ_PMI_MUTEX);
-            pmi_errno = PMI2_KVS_Get(kvsname, PMI2_ID_NULL, PARENT_PORT_KVSKEY, val, sizeof(val), &vallen);
-            MPID_THREAD_CS_EXIT(POBJ, MPIR_THREAD_POBJ_PMI_MUTEX);
-            if (pmi_errno)
-                MPIR_ERR_SETANDJUMP1(mpi_errno, MPI_ERR_OTHER, "**pmi_kvsget", "**pmi_kvsget %s", PARENT_PORT_KVSKEY);
-        }
-#else
-	MPID_THREAD_CS_ENTER(POBJ, MPIR_THREAD_POBJ_PMI_MUTEX);
-	pmi_errno = PMI_KVS_Get( kvsname, PARENT_PORT_KVSKEY, val, sizeof(val));
-	MPID_THREAD_CS_EXIT(POBJ, MPIR_THREAD_POBJ_PMI_MUTEX);
-	if (pmi_errno) {
-            mpi_errno = MPIR_Err_create_code(MPI_SUCCESS, MPIR_ERR_FATAL, __func__, __LINE__, MPI_ERR_OTHER, "**pmi_kvsget", "**pmi_kvsget %d", pmi_errno);
-            goto fn_exit;
-	}
-#endif
+    if (parent_port_name == NULL) {
+        mpi_errno = MPIR_pmi_kvs_parent_get(PARENT_PORT_KVSKEY, val, sizeof(val));
+        MPIR_ERR_CHECK(mpi_errno);
+
 	parent_port_name = MPL_strdup(val);
-	if (parent_port_name == NULL) {
-	    MPIR_ERR_POP(mpi_errno); /* FIXME DARIUS */
-	}
+        MPIR_ERR_CHKANDJUMP(parent_port_name == NULL, mpi_errno, MPI_ERR_OTHER, "**nomem");
     }
 
     *parent_port = parent_port_name;
