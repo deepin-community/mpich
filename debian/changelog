@@ -1,3 +1,9 @@
+mpich (4.2.0-6deepin1) unstable; urgency=medium
+
+  * remove symbols.
+
+ -- LiChengGang <lichenggang@uniontech.com>  Thu, 29 Aug 2024 17:54:55 +0800
+
 mpich (4.2.0-6) unstable; urgency=medium
 
   * Team upload.
