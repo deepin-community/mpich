@@ -1,0 +1,50 @@
+Description: add sunway support
+Author: Miao Changwei <miaochangwei@uniontech.com>
+
+---
+Last-Update: 2022-05-14
+
+Index: mpich/modules/hwloc/hwloc/topology-linux.c
+===================================================================
+--- mpich.orig/modules/hwloc/hwloc/topology-linux.c
++++ mpich/modules/hwloc/hwloc/topology-linux.c
+@@ -100,6 +100,8 @@ struct hwloc_linux_backend_data_s {
+ #         define __NR_sched_setaffinity 241
+ /*#       elif defined(__mips__)
+   #         define __NR_sched_setaffinity TODO (32/64/nabi) */
++#       elif defined(__sw_64__)
++#         define __NR_sched_setaffinity 395
+ #       else
+ #         warning "don't know the syscall number for sched_setaffinity on this architecture, will not support binding"
+ #         define sched_setaffinity(pid, lg, mask) (errno = ENOSYS, -1)
+@@ -135,6 +137,8 @@ struct hwloc_linux_backend_data_s {
+ #         define __NR_sched_getaffinity 242
+ /*#       elif defined(__mips__)
+   #         define __NR_sched_getaffinity TODO (32/64/nabi) */
++#       elif defined(__sw_64__)
++#         define __NR_sched_getaffinity 396
+ #       else
+ #         warning "don't know the syscall number for sched_getaffinity on this architecture, will not support getting binding"
+ #         define sched_getaffinity(pid, lg, mask) (errno = ENOSYS, -1)
+Index: mpich/src/pm/hydra/modules/hwloc/hwloc/topology-linux.c
+===================================================================
+--- mpich.orig/src/pm/hydra/modules/hwloc/hwloc/topology-linux.c
++++ mpich/src/pm/hydra/modules/hwloc/hwloc/topology-linux.c
+@@ -100,6 +100,8 @@ struct hwloc_linux_backend_data_s {
+ #         define __NR_sched_setaffinity 241
+ /*#       elif defined(__mips__)
+   #         define __NR_sched_setaffinity TODO (32/64/nabi) */
++#       elif defined(__sw_64__)
++#         define __NR_sched_setaffinity 395
+ #       else
+ #         warning "don't know the syscall number for sched_setaffinity on this architecture, will not support binding"
+ #         define sched_setaffinity(pid, lg, mask) (errno = ENOSYS, -1)
+@@ -135,6 +137,8 @@ struct hwloc_linux_backend_data_s {
+ #         define __NR_sched_getaffinity 242
+ /*#       elif defined(__mips__)
+   #         define __NR_sched_getaffinity TODO (32/64/nabi) */
++#       elif defined(__sw_64__)
++#         define __NR_sched_getaffinity 396
+ #       else
+ #         warning "don't know the syscall number for sched_getaffinity on this architecture, will not support getting binding"
+ #         define sched_getaffinity(pid, lg, mask) (errno = ENOSYS, -1)

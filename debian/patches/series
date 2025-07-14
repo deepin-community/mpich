@@ -1,2 +1,3 @@
 missing-conf.patch
 0002-autogen.sh-Avoid-debian-buggy-which-output.patch
+0001-deepin-sw_64-support.diff
