@@ -24,6 +24,7 @@ Build-Depends: debhelper-compat (= 13),
                quilt,
                txt2man,
                valgrind [i386 arm64 ppc64el ppc64 amd64 powerpc armhf],
+               autoconf2.69 [sw64],
                x11proto-core-dev
 Build-Conflicts: libamdhip64-dev
 Build-Depends-Indep: texlive-latex-extra,
